@@ -93,6 +93,7 @@ const Signup = () => {
             error()
         }
     }
+    const isEmptyOTP = otp.trim() === '';
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -122,7 +123,11 @@ const Signup = () => {
                 <Input.OTP formatter={(str) => str.toUpperCase()} {...sharedProps} />
             </div>
             <div className="w-full py-6 px-6">
-                <Button htmlType="submit" style={{backgroundColor: '#0958d9', color: 'white' }} size="large" block>Xác nhận</Button>
+                {
+                    isEmptyOTP ? 
+                    <Button htmlType="submit" disabled size="large" block>Xác nhận</Button> :
+                    <Button htmlType="submit" style={{backgroundColor: '#0958d9', color: 'white' }} size="large" block>Xác nhận</Button>
+                }
             </div>
         </form>
         <div className="w-full py-6 px-6">

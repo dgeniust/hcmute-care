@@ -51,12 +51,13 @@ const Signup = () => {
             success()
             setTimeout(() => {
                 navigate('/verifyOTP?type=getPhone');
-            }, 1000); // Wait for 2 seconds before redirecting
+            }, 1000); // Wait for 1 seconds before redirecting
         }
         else{
             error()
         }
     }
+    const isEmptyPhone = phone.trim() === ''
 
     return <div className="flex justify-center items-center h-screen w-screen login-bg bg-cover bg-center">
         <div className="flex flex-col justify-center items-center h-[80vh] w-[60vh] border border-black bg-white">
@@ -80,7 +81,11 @@ const Signup = () => {
                 onChange={handlePhoneChange}  size="large" placeholder="Số điện thoại..." prefix={<PhoneOutlined />} value={phone} />
             </div>
             <div className="w-full py-6 px-6">
-                <Button htmlType="submit" style={{backgroundColor: '#0958d9', color: 'white' }} size="large" block>Xác nhận</Button>
+                {
+                    isEmptyPhone ?
+                    <Button htmlType="submit" disabled size="large" block>Xác nhận</Button> : 
+                    <Button htmlType="submit" style={{backgroundColor: '#0958d9', color: 'white' }} size="large" block>Xác nhận</Button>
+                }
             </div>
         </form>
         </div>
