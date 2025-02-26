@@ -19,6 +19,7 @@ const HomePage = () => {
     height: '100vh',
     position: 'sticky',
     insetInlineStart: 0,
+    backgroundColor: 'transparent',
     top: 0,
     bottom: 0,
     scrollbarWidth: 'thin',
@@ -28,32 +29,7 @@ const HomePage = () => {
 //     key,
 //     label: `nav ${key}`,
 //   }));
-  const items1 = [
-    {
-      key: '1',
-      label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-          1st menu item
-        </a>
-      ),
-    },
-    {
-      key: '2',
-      label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-          2nd menu item
-        </a>
-      ),
-    },
-    {
-      key: '3',
-      label: (
-        <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-          3rd menu item
-        </a>
-      ),
-    },
-  ];
+  
   const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
     const key = String(index + 1);
     return {
@@ -72,8 +48,8 @@ const HomePage = () => {
     };
   });
   return (
-    <Layout >
-        <HeaderNavbar />
+    <Layout>
+        <HeaderNavbar/>
         {/* <Header
           style={{
             display: 'flex',
@@ -81,17 +57,7 @@ const HomePage = () => {
           }}
         >
             <div className="demo-logo" /> */}
-          {/* <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-              color: 'white'
-            }}
-          /> */}
+          
           {/* <Menu
           theme="dark"
           mode="horizontal"
@@ -105,7 +71,7 @@ const HomePage = () => {
         </Header> */}
         
         <Layout>
-        <Sider style={siderStyle} onCollapse={(value) => setCollapsed(value)} collapsible collapsed={collapsed}>
+        <Sider style={siderStyle} trigger={null} onCollapse={(value) => setCollapsed(value)} collapsible collapsed={collapsed}>
         <Menu
             mode="inline"
             defaultSelectedKeys={['1']}
@@ -138,10 +104,10 @@ const HomePage = () => {
           />
             <Content
             style={{
-                margin: '24px 16px',
-                padding: 24,
+                // margin: '24px 16px',
+                // padding: 24,
                 minHeight: 280,
-                backgroundColor: 'white',
+                backgroundColor: 'transparent',
                 borderRadius: borderRadiusLG,
                 overflow: 'initial',
             }}

@@ -113,7 +113,7 @@ const Login = () => {
       </div>
     </form>
     <div>
-        <Link to={"/getPhone"}>Quên tài khoản hoặc mật khẩu</Link>
+        <Link className="text-sky-600" to={"/getPhone"}>Quên tài khoản hoặc mật khẩu</Link>
     </div>
     <div className="w-full py-6 px-6">
       <Button variant="outlined"color="primary" size="large"block onClick={handleSignupRedirect}>Đăng kí tài khoản mới</Button>

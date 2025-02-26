@@ -130,7 +130,7 @@ const Signup = () => {
                 }
             </div>
         </form>
-        <div className="w-full py-6 px-6">
+        <div className="w-full py-6 px-6 flex flex-col items-center">
             <p className="text-black btn-otp">
                 {isTimeUp ? 
                 <Button color="primary" variant="link" onClick={resetOTP}>
