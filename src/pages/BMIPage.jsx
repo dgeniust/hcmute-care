@@ -44,8 +44,8 @@ const BMIPage = () => {
             margin: '16px 0',
           }}
         >
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>BMI</Breadcrumb.Item>
+          <Breadcrumb.Item>TRANG CHỦ</Breadcrumb.Item>
+          <Breadcrumb.Item>CÔNG CỤ TÍNH BMI</Breadcrumb.Item>
         </Breadcrumb>
         <Layout
           style={{

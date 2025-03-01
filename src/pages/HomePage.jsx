@@ -67,7 +67,7 @@ const HomePage = () => {
             margin: '16px 0',
           }}
         >
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>TRANG CHỦ</Breadcrumb.Item>
         </Breadcrumb>
         <Layout
           style={{
