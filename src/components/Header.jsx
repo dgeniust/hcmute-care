@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {Layout, Menu, Dropdown, Space, Button } from 'antd';
 import {
-  DownOutlined, UpOutlined, MenuUnfoldOutlined, MenuFoldOutlined
+  CaretDownOutlined, CaretUpOutlined
 } from '@ant-design/icons';
+import logo from '../assets/logo_hcmute_care.png';
 const { Header  } = Layout;
 const HeaderNavbar = () => {
   const [isHover, setIsHover] = useState(false);
-  const items = [
+  const [position, setPosition] = useState('end');
+
+  const items1 = [
     {
       key: 'sub1',
       label: 'Đặt khám',
@@ -56,6 +59,48 @@ const HeaderNavbar = () => {
     }
     
   ]
+  const items = [
+    {
+      key: '1',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+          Khám chuyên khoa
+        </a>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+          Khám theo ngày
+        </a>
+      ),
+    },
+    {
+      key: '3',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+          Khám theo bác sĩ
+        </a>
+      ),
+    },
+    {
+      key: '4',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+          Lịch khám bệnh
+        </a>
+      ),
+    },
+    {
+      key: '5',
+      label: (
+        <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+          Lịch sử Đặt khám
+        </a>
+      ),
+    },
+  ];
   const menu_items = [
     {
       key: 'sub2',
@@ -77,7 +122,7 @@ const HeaderNavbar = () => {
 
     },
   ]
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (e) => {
     setIsHover(true);
   };
 
@@ -85,54 +130,41 @@ const HeaderNavbar = () => {
     setIsHover(false);
   };
   return (
+    // 
     <Header
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',backgroundColor: 'white',
-            height: '7vh',
-          }}
-        >
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-              color: 'white'
-            }}
-          />
-          <Menu
-          theme="light"
-          mode="horizontal"
-          defaultSelectedKeys={['2']}
-          items={menu_items}
-          style={{  
-            minWidth: 0,
-            backgroundColor: 'transparent',
-          }}
-           className="custom-menu"
-        />
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          backgroundColor: 'white',
+          boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+        }}
+      >
+      <div className="w-fit flex items-center justify-center">
+        <img src={logo} alt="" width="70px" height="70px" />
+      </div>
+      <div className="flex flex-row justify-between h-full w-[80vw]">
         <Dropdown
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-          menu={{
-            items,
-          }}
+        menu={{
+          items,
+        }}
+        placement="bottom"
+        arrow
         >
-          <a onClick={(e) => e.preventDefault()}>
-            <Space>
-              Hover me
-              {
-                isHover ? <UpOutlined /> : <DownOutlined />
-              }
-                
-            </Space>
-          </a>
+        <Button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} 
+        style={{backgroundColor: isHover ?'#f5f6fa' : 'transparent', color: 'black', fontWeight: 'bold', boxShadow: 'none',border: 'none', height: "100%"}} icon={isHover ? <CaretDownOutlined /> : <CaretUpOutlined />} iconPosition={position}>Đặt khám</Button>
         </Dropdown>
-        </Header>
+        <Button 
+        style={{color: 'black', fontWeight: 'bold', boxShadow: 'none',border: 'none', height: "100%", marginRight: '15px'}}>Thanh toán viện phí, đơn thuốc</Button>
+        <Button 
+        style={{color: 'black', fontWeight: 'bold', boxShadow: 'none',border: 'none', height: "100%", marginRight: '15px'}}>Đặt lịch uống thuốc</Button>
+        <Button 
+        style={{color: 'black', fontWeight: 'bold', boxShadow: 'none',border: 'none', height: "100%", marginRight: '15px'}}>Hỗ trợ</Button>
+        <Button 
+        style={{color: 'black', fontWeight: 'bold', boxShadow: 'none',border: 'none', height: "100%", marginRight: '15px'}}>Theo dõi sức khỏe</Button>
+      </div>
+      </Header>
+      
   );
 };
 

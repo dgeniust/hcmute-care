@@ -6,6 +6,7 @@ import ConfirmPassword from './pages/ConfirmPassword';
 import GetPhone from './pages/GetPhone';
 import GetPassword from './pages/GetPassword';
 import HomePage from './pages/HomePage';
+import BMIPage from './pages/BMIPage';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/getPhone" element={<GetPhone/>} />
           <Route path="/getPassword" element={<GetPassword/>} />
           <Route path="/home" element={<HomePage/>} />
+          <Route path="/bmi" element={<BMIPage/>} />
         </Routes>
       </div>
     </Router>

@@ -1,0 +1,4 @@
+.custom-menu .ant-menu-item:hover {
+    background-color: transparent !important; /* Remove background color on hover */
+    color: inherit !important; /* Keep the text color unchanged */
+  }

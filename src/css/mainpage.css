@@ -1,0 +1,57 @@
+.card-container-1{
+    background-image: url('https://img.freepik.com/free-vector/funky-tone-memphis-background_53876-99526.jpg?t=st=1740710720~exp=1740714320~hmac=ccc2c4718a00587c04796d8f26562580a8d96b663622b0b865ccf959f988fb6d&w=1800');
+    background-size: cover;
+    background-position: center;
+}
+.card-container-2{
+    background-image: url('https://img.freepik.com/free-vector/funky-tone-memphis-blog-banner-template_53876-98943.jpg?t=st=1740710741~exp=1740714341~hmac=4a7364cd0ac762cc1af063e80f8433e2501e6ee16264e8e251bbca88de05fa71&w=1800');
+    background-size: cover;
+    background-position: center;
+}
+.card-container-3{
+    background-image: url('https://img.freepik.com/free-vector/friends-celebrating-birthday-party-background-vector_53876-168911.jpg?t=st=1740710892~exp=1740714492~hmac=d78a803a00ad7f8529485c5e25f08867964adabc9058d2d5b1380732321cefe1&w=1800');
+    background-size: cover;
+    background-position: center;
+}
+.card-container-4{
+    background-image: url('https://img.freepik.com/free-vector/hand-drawn-abstract-background-with-leaves_23-2149322635.jpg?t=st=1740711156~exp=1740714756~hmac=89570eb3fc8f1fbdcf4f111a950a4da4901ca793342aa75e34c88cdd6a1e7e6f&w=1380');
+    background-size: cover;
+    background-position: center;
+}
+.card-container-5{
+    background-image: url('https://img.freepik.com/free-vector/colorful-background-with-geometric-shapes_87374-92.jpg?t=st=1740711030~exp=1740714630~hmac=ef7236a078507319a4be057b505b6597afafb231dfdafd3b714bd5eadb81104f&w=1380');
+    background-size: cover;
+    background-position: center;
+}
+.card-container-6{
+    background-image: url('https://img.freepik.com/free-vector/colorful-leafy-memphis-frame_53876-118218.jpg?t=st=1740711199~exp=1740714799~hmac=0d6887be044cc7d30e4379ee0cc753fe2e44de7b1aa7fcbf48b83c888a7451ed&w=1380');
+    background-size: cover;
+    background-position: center;
+}
+/* .hello-content {
+    background-image: url('https://img.freepik.com/free-vector/national-doctor-s-day-hand-drawn-background_23-2149438164.jpg?t=st=1740712133~exp=1740715733~hmac=daaa5d7ac60a9fe4657836c748c65eea762a24443534ec389db3dfa54c7045e0&w=1380');
+    background-size: cover;     
+    background-position: center;
+    background-repeat: no-repeat;      
+} */
+ .carousel-1 {
+    background-image: url('https://img.freepik.com/free-vector/cartoon-doctors-nurses_52683-59918.jpg?t=st=1740724472~exp=1740728072~hmac=23f96a348a7c6cf14cd8f9e2338588932ba1dc859c716a22b9f8bb07d2367be7&w=1380');
+    background-size: cover;     
+    background-position: top center;
+}
+.carousel-2{
+    background-image: url('https://img.freepik.com/free-vector/flat-world-health-day-background_23-2149300397.jpg?t=st=1740724656~exp=1740728256~hmac=9cdfdd0cc2fb50c5a0cf02d469b1e65f093a206370b0c816981a0c56e0606769&w=1380');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.carousel-3{
+    background-image: url('https://img.freepik.com/free-vector/flat-hand-drawn-illustration-coronavirus-vaccine_23-2148846281.jpg?t=st=1740725038~exp=1740728638~hmac=af53feb3cdc49d1495aac9c1ad7ffcd9e29fcbe3bfda2168ca2e0f2b07b1478e&w=1380');
+    background-size: cover;
+    background-position: center;
+}
+.carousel-4{
+    background-image: url('https://img.freepik.com/free-psd/3d-background-with-medical-elements-sale_23-2150732521.jpg?t=st=1740725272~exp=1740728872~hmac=2b3681d0c4692e0636a7a01ef1eaa64a7bcc10472e807d9ae2af86764d8783fa&w=1380');
+    background-size: cover;
+    background-position: center;
+}

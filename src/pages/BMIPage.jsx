@@ -26,31 +26,8 @@ import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import HeaderNavbar from '../components/Header';
 // const {Content, Footer } = Layout;
 import SideBar from '../components/Sidebar';
-import MainPage from '../components/MainPage';
-import BMIPage from './BMIPage';
-const HomePage = () => {
-  const [currentPage, setCurrentPage] = useState('main');
-
-  const handleChangePage = (page) => {
-    setCurrentPage(page);
-  }
-  // const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
-  //         const key = String(index + 1);
-  //         return {
-  //           key: `sub${key}`,
-  //           icon: React.createElement(icon),
-  //           label: `subnav ${key}`,
-  //           children: Array.from({
-  //             length: 4,
-  //           }).map((_, j) => {
-  //             const subKey = index * 4 + j + 1;
-  //             return {
-  //               key: subKey,
-  //               label: `option${subKey}`,
-  //             };
-  //           }),
-  //         };
-  //       });
+import BMIContent from '../components/BMIContent';
+const BMIPage = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -68,6 +45,7 @@ const HomePage = () => {
           }}
         >
           <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>BMI</Breadcrumb.Item>
         </Breadcrumb>
         <Layout
           style={{
@@ -79,8 +57,7 @@ const HomePage = () => {
           }}
         >
           <SideBar/>
-          {currentPage === 'main' && <MainPage onPageChange={handleChangePage}/>}
-          {currentPage === 'bmi' && <BMIPage/>}
+          <BMIContent/>
         </Layout>
       </div>
       {/* <Footer
@@ -93,4 +70,4 @@ const HomePage = () => {
     </Layout>
   );
 };
-export default HomePage;
+export default BMIPage;
