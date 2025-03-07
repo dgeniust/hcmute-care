@@ -14,6 +14,7 @@ const NoRecord_Booking = ({setStatus}) => {
     const handleChange = (value) => {
         console.log(`selected ${value}`);
       };
+    const today = dayjs();
     return (
         <div className='w-full h-full space-y-4'>
             <div className='flex flex-row gap-4 w-full h-full items-center'onClick={() => handleSetStatus('records')} >
@@ -50,7 +51,7 @@ const NoRecord_Booking = ({setStatus}) => {
                             </div>
                             <div>
                                 <label htmlFor="" className="flex flex-row items-center space-x-2">Ngày sinh<span className="ml-1"><img width="10" height="10" src="https://img.icons8.com/forma-bold-filled-sharp/24/FA5252/asterisk.png" alt="asterisk"/></span></label>
-                                <DatePicker defaultValue={dayjs('2015/01/01', dateFormat)} format={dateFormat} style={{width:'100%'}}/>
+                                <DatePicker defaultValue={dayjs(today, dateFormat)} format={dateFormat} style={{width:'100%'}}/>
                             </div>
                             <div className="flex flex-row space-x-2 w-full">
                                 <div className="w-full">
@@ -58,7 +59,7 @@ const NoRecord_Booking = ({setStatus}) => {
                                     <Select
                                     defaultValue="Chọn"
                                     style={{
-                                        width: 200,
+                                        width: '100%',
                                     }}
                                     onChange={handleChange}
                                     options={[
@@ -73,12 +74,12 @@ const NoRecord_Booking = ({setStatus}) => {
                                     ]}
                                     />
                                 </div>
-                                <div>
+                                <div className="w-full">
                                 <label htmlFor="" className="flex flex-row items-center space-x-2">Quốc gia<span className="ml-1"><img width="10" height="10" src="https://img.icons8.com/forma-bold-filled-sharp/24/FA5252/asterisk.png" alt="asterisk"/></span></label>
                                     <Select
                                     defaultValue="Chọn"
                                     style={{
-                                        width: 200,
+                                        width: '100%',
                                     }}
                                     onChange={handleChange}
                                     options={[
@@ -104,7 +105,7 @@ const NoRecord_Booking = ({setStatus}) => {
                                     <Select
                                     defaultValue="Chọn"
                                     style={{
-                                        width: 200,
+                                        width: '100%',
                                     }}
                                     onChange={handleChange}
                                     options={[
@@ -119,12 +120,12 @@ const NoRecord_Booking = ({setStatus}) => {
                                     ]}
                                     />
                                 </div>
-                                <div>
+                                <div className="w-full">
                                 <label htmlFor="" className="flex flex-row items-center space-x-2">Nghề nghiệp<span className="ml-1"><img width="10" height="10" src="https://img.icons8.com/forma-bold-filled-sharp/24/FA5252/asterisk.png" alt="asterisk"/></span></label>
                                     <Select
                                     defaultValue="Chọn"
                                     style={{
-                                        width: 200,
+                                        width: '100%',
                                     }}
                                     onChange={handleChange}
                                     options={[
@@ -174,7 +175,7 @@ const NoRecord_Booking = ({setStatus}) => {
                                     <Select
                                     defaultValue="Chọn"
                                     style={{
-                                        width: 200,
+                                        width: '100%',
                                     }}
                                     onChange={handleChange}
                                     options={[
@@ -189,12 +190,12 @@ const NoRecord_Booking = ({setStatus}) => {
                                     ]}
                                     />
                                 </div>
-                                <div>
+                                <div className="w-full">
                                 <label htmlFor="" className="flex flex-row items-center space-x-2">Phường xã<span className="ml-1"><img width="10" height="10" src="https://img.icons8.com/forma-bold-filled-sharp/24/FA5252/asterisk.png" alt="asterisk"/></span></label>
                                     <Select
                                     defaultValue="Chọn"
                                     style={{
-                                        width: 200,
+                                        width: '100%',
                                     }}
                                     onChange={handleChange}
                                     options={[

@@ -10,3 +10,17 @@
     background-position: center;
     background-size: contain;
 }
+/* Đổi màu nền của ngày hiện tại */
+.react-calendar__tile--now {
+    background-color: #ff9900;
+    color: white;
+    border-radius: 50%;
+  }
+  
+  /* Đổi màu cho ngày đã chọn */
+  .react-calendar__tile--active {
+    background-color: #273c75;
+    color: white;
+    border-radius: 50%;
+  }
+  

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { Button, Input, Select } from 'antd';
-import {ArrowLeftOutlined, InfoCircleTwoTone, ArrowRightOutlined, BarcodeOutlined, PhoneOutlined, RightOutlined,SearchOutlined,HomeOutlined   } from '@ant-design/icons';
+import {SearchOutlined   } from '@ant-design/icons';
 // import '../css/BookingContent.css';
 
 const ForgetRecord_Booking = () => {
@@ -22,18 +22,15 @@ const ForgetRecord_Booking = () => {
                                 <label htmlFor="">Tên</label>
                                 <Input placeholder="VD: Đạt..." />
                             </div>
-                            <div>
+                            <div className="flex flex-col space-x-2">
                                 <label htmlFor="">Số điện thoại</label>
                                 <Input placeholder="SĐT: 09xxxxxx..." />
                             </div>
                             <div className="flex flex-row space-x-2">
-                                <div>
-                                    <label htmlFor="">Số điện thoại</label>
+                                <div className="flex flex-col w-full">
+                                    <label htmlFor="">Giới tính</label>
                                     <Select
                                     defaultValue="Chọn"
-                                    style={{
-                                        width: 200,
-                                    }}
                                     onChange={handleChange}
                                     options={[
                                         {
@@ -47,7 +44,7 @@ const ForgetRecord_Booking = () => {
                                     ]}
                                     />
                                 </div>
-                                <div>
+                                <div className="flex flex-col w-full">
                                     <label htmlFor="">Năm sinh</label>
                                     <Input placeholder="Năm sinh..." />
                                 </div>

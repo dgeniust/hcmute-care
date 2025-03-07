@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import { Button, Input, Select } from 'antd';
-import {ArrowLeftOutlined, InfoCircleTwoTone, ArrowRightOutlined, BarcodeOutlined, PhoneOutlined, RightOutlined,SearchOutlined,HomeOutlined   } from '@ant-design/icons';
+import { Button, Input } from 'antd';
+import {InfoCircleTwoTone, ArrowRightOutlined, BarcodeOutlined, PhoneOutlined, RightOutlined   } from '@ant-design/icons';
 
 
 const FindRecord_Booking = () => {

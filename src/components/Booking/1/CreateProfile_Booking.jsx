@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, Tag } from 'antd';
-
+import { Button } from 'antd';
 
 import HaveRecord_Booking from './HaveRecord_Booking';
 import ChooseProfile_Booking from './ChooseProfile_Booking';
@@ -12,7 +11,7 @@ const CreateProfile_Booking = () => {
 
     // Conditional content rendering based on `hasAcc` and `status`
     return (
-        <div className='w-[970px] h-full min-h-[460px]'>
+        <div className='w-full h-full min-h-[460px]'>
             {/* Content when there is no account (new user case) */}
             {!hasAcc ? (
                 <div className='bg-cp-booking w-full h-[460px] items-center justify-center flex flex-col'>

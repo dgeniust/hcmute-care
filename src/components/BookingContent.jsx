@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Button, message, Steps, theme } from 'antd';
 import { LoadingOutlined, SnippetsOutlined, CreditCardOutlined, UserOutlined, ForkOutlined } from '@ant-design/icons';
 import CreateProfile_Booking from './Booking/1/CreateProfile_Booking';
+import CureInfo_Booking from './Booking/2/CureInfo_Booking';
 import '../css/BookingContent.css';
 const steps = [
     {
@@ -10,8 +11,8 @@ const steps = [
       icon: <UserOutlined />,
     },
     {
-      title: '2. Bác sĩ',
-      content: 'Chọn thời gian khám và bác sĩ',
+      title: '2. Thông tin khám',
+      content: <CureInfo_Booking/>,
       icon: <ForkOutlined />,
     },
     {
@@ -49,6 +50,7 @@ const BookingContent = () => {
         backgroundColor: token.colorFillAlter,
         borderRadius: token.borderRadiusLG,
         border: `1px dashed ${token.colorBorder}`,
+        height: 'fit-content',
     };
     return (
         <div className='flex flex-col items-center w-full h-[100vh] gap-4'>
@@ -56,7 +58,7 @@ const BookingContent = () => {
             <div className='w-full p-8 h-full'>
                 <Steps current={current} items={items}/>
                 <div style={contentStyle}>{steps[current].content}</div>
-                {/* <div
+                <div
                     style={{
                     marginTop: 24,
                     }}
@@ -81,7 +83,7 @@ const BookingContent = () => {
                         Previous
                     </Button>
                     )}
-                </div> */}
+                </div>
             </div>
         </div>
     );
