@@ -6,7 +6,6 @@ const Specialty_Booking = ({setSpecialty, setPrice, setChoosedSpecialty, setStep
     const handleCureInfo = (name, price) => {
         setSpecialty(name);
         setPrice(price);
-        alert('name: ' + name + ", price : "+ price)
         setChoosedSpecialty(true)
         setStep(2)
     }

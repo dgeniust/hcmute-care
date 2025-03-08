@@ -7,7 +7,7 @@ import TimeADoctor_Booking from './TimeADoctor_Booking';
 
 const Timeline_Booking = ({choosedSpecialty, specialty, step, result, selectedTime, selectedValue, selectedDoctor}) => {
     return (
-        <div className='w-1/4 h-full min-h-[460px] flex justify-center items-center'>
+        <div className='flex justify-center items-center w-full h-full'>
             <Timeline style={{width: '100%', height: '100%'}}
                 items={[
                 {
