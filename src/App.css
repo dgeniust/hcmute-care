@@ -1,8 +1,9 @@
 @import "tailwindcss";
-#root {
+/* #root {
   max-width: 1280px;
+  height: 100vh;
   text-align: center;
-}
+} */
 
 .logo {
   height: 6em;

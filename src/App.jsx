@@ -8,6 +8,7 @@ import GetPassword from './pages/GetPassword';
 import HomePage from './pages/HomePage';
 import BMIPage from './pages/BMIPage';
 import BookingPage from './pages/BookingPage';
+import Book_Review from './components/Book_Review';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/home" element={<HomePage/>} />
           <Route path="/bmi" element={<BMIPage/>} />
           <Route path="/booking" element={<BookingPage/>} />
+          <Route path="/book" element={<Book_Review/>}/>
         </Routes>
       </div>
     </Router>

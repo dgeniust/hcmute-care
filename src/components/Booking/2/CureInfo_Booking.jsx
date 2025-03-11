@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Divider, Radio, notification } from 'antd';
-import {ArrowLeftOutlined, ForkOutlined, BulbTwoTone} from '@ant-design/icons';
+import {ArrowLeftOutlined, ForkOutlined, BulbTwoTone, CaretDownOutlined,RestOutlined} from '@ant-design/icons';
 import Specialty_Booking from './Specialty_Booking';
 import Date_Booking from './Date_Booking';
 import TimeADoctor_Booking from './TimeADoctor_Booking';
 import Timeline_Booking from './Timeline_Booking';
 const CureInfo_Booking = () => {
+    const [bookingList, setBookingList] = useState([]);
     const [specialty, setSpecialty] = useState('');
     const [price, setPrice] = useState('');
     const [choosedSpecialty, setChoosedSpecialty] = useState(false)
@@ -14,23 +15,27 @@ const CureInfo_Booking = () => {
 
 
     const [selectedValue, setSelectedValue] = useState(null);
-
+    const [selectedRoom, setSelectedRoom] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
     const [selectedDoctor, setSelectedDoctor] = useState(null);
 
     const [radio1, setRadio1] = useState();
     const [radio2, setRadio2] = useState();
 
+    const [clickNext, setClickNext] = useState(false);
+    const [clickContinue, setClickContinue] = useState(false);
+
     const [api, contextHolder] = notification.useNotification();
-    
+    const [totalPrice, setTotalPrice] = useState(0);
     const onSelectDate = (newValue) => {
         setSelectedValue(newValue)
         setStep(3)
     }
     
-    const handleSlotClick = (time, doctorName) => {
+    const handleSlotClick = (time, doctorName, room) => {
         setSelectedTime(time);
         setSelectedDoctor(doctorName);
+        setSelectedRoom(room);
     };
 
     const radioOnchange1 = ({ target: { value } }) => {
@@ -39,7 +44,50 @@ const CureInfo_Booking = () => {
     const radioOnchange2 = ({ target: { value } }) => {
         setRadio2(value)
     }
+    useEffect(() => {
+        console.log('bookingList changed:', bookingList);
+    }, [bookingList]);
 
+    const newBooking = () => {
+        const newBookingElement = {
+            specialty: specialty,
+            price: price,
+            date: selectedValue ? selectedValue.format('DD-MM-YYYY') : null,
+            time: selectedTime,
+            room: selectedRoom,
+            doctor: selectedDoctor,
+            insurance: radio1 === 1 ? 'Có' : 'Không',
+            guarantee: radio2 === 1 ? 'Có' : 'Không',
+        };
+        const isDuplicate = bookingList.some(item =>
+            item.specialty === newBookingElement.specialty &&
+            item.date === newBookingElement.date &&
+            item.time === newBookingElement.time &&
+            item.room === newBookingElement.room &&
+            item.doctor === newBookingElement.doctor
+        );
+    
+        if (isDuplicate) {
+            openNotification('Thông tin khám đã được lưu lại');
+        } else {
+            // Thêm phần tử mới vào bookingList
+            setBookingList(prevList => [...prevList, newBookingElement]); // Cập nhật lại state
+            openNotification('Đã thêm thông tin khám');
+        }
+    }
+    const handleClickNext = () => {
+        if (radio1 === undefined ) {
+            openNotification('Vui lòng chọn thông tin bảo hiểm y tế');
+        } 
+        else if(radio2 === undefined) {
+            openNotification('Vui lòng chọn thông tin bảo lãnh viện phí');
+        } 
+        else {
+            setClickNext(true);
+            newBooking();
+            console.log('bookingList: ', bookingList);
+        }
+    }
     const continueBooking = () => {
         try {
             if (radio1 === undefined ) {
@@ -49,12 +97,28 @@ const CureInfo_Booking = () => {
                 openNotification('Vui lòng chọn thông tin bảo lãnh viện phí');
             } 
             else {
-                openNotification('Đã thêm thông tin khám');
+                newBooking();
+                setClickContinue(true);
+                setClickNext(false);
+                resetBooking();
+                console.log('bookingList: ', bookingList);
             }
         } catch (error) {
             console.error('Lỗi trong continueBooking:', error);
         }
     };
+    const resetBooking = () => {
+        setSpecialty('');
+        setPrice('');
+        setChoosedSpecialty(false);
+        setStep(1);
+        setSelectedValue(null);
+        setSelectedTime(null);
+        setSelectedRoom(null);
+        setSelectedDoctor(null);
+        setRadio1(undefined);
+        setRadio2(undefined);
+    }
     
     const openNotification = (message) => {
         try {
@@ -68,118 +132,133 @@ const CureInfo_Booking = () => {
             console.error('Lỗi trong openNotification:', error);
         }
     };
-    // const getItems = (panelStyle) => [
-    //     {
-    //       key: '1',
-    //       label: (
-    //         <div className='flex flex-col items-center w-full space-y-2'>
-    //             <div className='flex flex-row justify-between items-center w-full'>
-    //                 <div className='space-x-4'>
-    //                     <ForkOutlined style={{border: '1px solid transparent', borderRadius: '50%', padding: '3px', backgroundColor: '#dfe6e9'}}/>
-    //                     <span>{schedule.name}</span>
-    //                 </div>
-    //             </div>
-    //             <div className='flex flex-row justify-between items-center w-full'>
-    //                 <div className='space-x-4 text-sm font-normal'>
-    //                     <FileSearchOutlined style={{border: '1px solid transparent', borderRadius: '50%', padding: '3px', backgroundColor: '#dfe6e9'}}/>
-    //                     <span>{schedule.room}</span>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //       ),
-    //       children: (
-    //         <div className='w-full'>
-    //             {
-    //                 schedule.timeSlots.map((time, index) => (
-    //                     <Button key={index} 
-    //                     onClick={() => handleSlotClick(time)}
-    //                     style={{ 
-    //                       padding: '10px 20px', 
-    //                       marginRight: '4px', 
-    //                       borderRadius: '8px', 
-    //                       border: '1px solid #273c75', 
-    //                       backgroundColor: 'white', 
-    //                       cursor: 'pointer' 
-    //                     }}>
-    //                         {time}
-    //                     </Button>
-    //                 ))
-    //             }
-    //         </div>
-    //       ),
-    //       style: panelStyle,
-    //     }
-    //   ];
     
     const result = selectedValue ? selectedValue.format('DD-MM-YYYY') : null ; // Ensure selectedValue is dayjs object
     console.log('step: ', step)
+
+    useEffect(() => {
+        const calculatedTotalPrice = bookingList.reduce((total, item) => {
+          const itemPrice = parseInt(item.price.replace(/[^\d]/g, ''), 10);
+          return total + (isNaN(itemPrice) ? 0 : itemPrice);
+        }, 0);
+    
+        setTotalPrice(calculatedTotalPrice);
+      }, [bookingList]);
     return (
         <div className='w-full h-fit min-h-[460px] border border-red-600 p-8'>
             <div className='flex flex-row gap-4 w-full h-full items-center' onClick={() => handleSetStatus('records')}>
                 <Button icon={<ArrowLeftOutlined />} style={{backgroundColor:'transparent', border: 'none', boxShadow: 'none'}}></Button>
                 <h1 className='text-black font-bold text-lg'>Chọn thông tin khám</h1>
             </div>
-            <div className='w-full h-full flex flex-row space-x-4 mt-4 justify-center items-center'>
-                <div className='flex flex-col w-1/4 h-fit'>
-                    <Timeline_Booking choosedSpecialty={choosedSpecialty} specialty={specialty} step={step} result={result} selectedValue={selectedValue} selectedTime={selectedTime} selectedDoctor={selectedDoctor}/>
-                    {
-                        selectedTime && (
-                            <div className='w-full h-full p-4'>
-                                <Divider variant="dashed" style={{ borderColor: '#7cb305', width:'fit-content', height: 'fit-content' }} dashed></Divider>
-                                <div className='w-full h-full flex flex-col'>
-                                    <p className='font-bold text-black text-sm tracking-wider'>Bảo hiểm Y tế:</p>
-                                    <div>
-                                    <Radio.Group
-                                        name="radiogroup"
-                                        options={[
-                                        { value: 1, label: 'Có' },
-                                        { value: 2, label: 'Không' },
-                                        ]}
-                                        onChange={radioOnchange1}
-                                    />
+            {
+                !clickNext ? (
+                    <div className='w-full h-full flex flex-row space-x-4 mt-4 justify-center items-center'>
+                        <div className='flex flex-col w-1/4 h-fit'>
+                            <Timeline_Booking choosedSpecialty={choosedSpecialty} specialty={specialty} step={step} result={result} selectedValue={selectedValue} selectedTime={selectedTime} selectedDoctor={selectedDoctor}/>
+                            {
+                                selectedTime && (
+                                    <div className='w-full h-full p-4'>
+                                        <Divider variant="dashed" style={{ borderColor: '#7cb305', width:'fit-content', height: 'fit-content', margin:'5px' }} dashed></Divider>
+                                        <div className='w-full h-full flex flex-col'>
+                                            <p className='font-bold text-black text-sm tracking-wider'>Bảo hiểm Y tế:</p>
+                                            <div>
+                                            <Radio.Group
+                                                name="radiogroup"
+                                                options={[
+                                                { value: 1, label: 'Có' },
+                                                { value: 2, label: 'Không' },
+                                                ]}
+                                                onChange={radioOnchange1}
+                                            />
+                                            </div>
+                                        </div>
+                                        <Divider variant="dashed" style={{ borderColor: '#7cb305', width:'fit-content', height: 'fit-content', margin:'5px' }} dashed></Divider>
+                                        <div className='w-full h-full flex flex-col'>
+                                            <p className='font-bold text-black text-sm tracking-wider'>Bảo lãnh viện phí:</p>
+                                            <div>
+                                            <Radio.Group
+                                                name="radiogroup"
+                                                options={[
+                                                { value: 1, label: 'Có' },
+                                                { value: 2, label: 'Không' },
+                                                ]}
+                                                onChange={radioOnchange2}
+                                            />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <Divider variant="dashed" style={{ borderColor: '#7cb305', width:'fit-content', height: 'fit-content' }} dashed></Divider>
-                                <div className='w-full h-full flex flex-col'>
-                                    <p className='font-bold text-black text-sm tracking-wider'>Bảo lãnh viện phí:</p>
-                                    <div>
-                                    <Radio.Group
-                                        name="radiogroup"
-                                        options={[
-                                        { value: 1, label: 'Có' },
-                                        { value: 2, label: 'Không' },
-                                        ]}
-                                        onChange={radioOnchange2}
-                                    />
+                                )
+                            }
+                        </div>
+                        {step === 1 && (
+                            <Specialty_Booking setSpecialty = {setSpecialty} setPrice ={setPrice} setChoosedSpecialty = {setChoosedSpecialty} setStep = {setStep}/>
+                        )}
+                        {choosedSpecialty && step === 2 && ( 
+                            <Date_Booking selectedValue={selectedValue} onSelectDate={onSelectDate}/>
+                        
+                        )}
+                        {step === 3 && (
+                            <TimeADoctor_Booking handleSlotClick={handleSlotClick}/>
+                        )}
+                    </div>
+                ) : null
+            }
+            {
+                selectedTime !== null && selectedDoctor !== null && clickNext ?(
+                    <div className='w-full h-full flex flex-col space-x-4 mt-4 border border-black rounded-xl min-h-fit'>
+                        <div className='w-full h-fit flex flex-row justify-between items-center text-black p-4'>
+                            <p className='text-black'>Chuyên khoa đã chọn <span className='text-[#273c75] font-bold'>(2)</span></p>
+                            <CaretDownOutlined />
+                        </div>
+                        <Divider variant="dashed" style={{ borderColor: '#7cb305', margin: '0'}} dashed></Divider>
+                        {
+                            bookingList.map((item, index) => (
+                                <div className='w-full h-fit flex flex-col justify-between items-center text-black' key={index}>
+                                    <div className='w-full h-fit flex flex-row justify-between items-center text-black'>
+                                        <div className="w-[95%] h-fit grid grid-cols-2 grid-flow-row gap-3 text-black p-4">
+                                            <div className='grid grid-flow-row grid-cols-[150px_1fr]'>
+                                                <p>Chuyên khoa: </p>
+                                                <p className='font-bold text-[#273c75]'>{item.specialty}</p>
+                                            </div>
+                                            <div className='grid grid-flow-row grid-cols-[150px_1fr]'>
+                                                <p>Phí khám: </p>
+                                                <p className='font-bold text-[#273c75]'>{item.price}</p>
+                                            </div>
+                                            <div className='grid grid-flow-row grid-cols-[150px_1fr]'>
+                                                <p>Ngày khám: </p>
+                                                <p className='font-bold text-[#273c75]'>{item.date}</p>
+                                            </div>
+                                            <div className='grid grid-flow-row grid-cols-[150px_1fr]'>
+                                                <p>Phòng - Giờ khám: </p>
+                                                <p className='font-bold text-[#273c75]'>{item.room}</p>
+                                            </div>
+                                        </div>
+                                        <div className='w-[5%]'>
+                                            <RestOutlined style={{color: 'red', border: '1px solid red', borderRadius:'50%', width:'20px', height:'20px', display: 'flex', justifyContent:"center", backgroundColor:'transparent', cursor:'pointer'}}/>
+                                        </div>
                                     </div>
+                                    {/* Only show Divider if it's not the last item */}
+                                    {index !== bookingList.length - 1 && (
+                                        <Divider variant="dashed" style={{ borderColor: '#7cb305', margin: '0' }} dashed />
+                                    )}
                                 </div>
-                            </div>
-                        )
-                    }
-                </div>
-                {step === 1 && (
-                    <Specialty_Booking setSpecialty = {setSpecialty} setPrice ={setPrice} setChoosedSpecialty = {setChoosedSpecialty} setStep = {setStep}/>
-                )}
-                {choosedSpecialty && step === 2 && ( 
-                    <Date_Booking selectedValue={selectedValue} onSelectDate={onSelectDate}/>
-                
-                )}
-                {step === 3 && (
-                    <TimeADoctor_Booking handleSlotClick={handleSlotClick}/>
-                )}
-            </div>
+                            ))
+                        }
+                    </div>
+                ) : null
+            }
             {
                 selectedTime && (
                     <div className='flex flex-col justify-center items-center w-full h-fit p-8 '>
-                <div className='flex flex-row justify-between items-center w-[36vw] h-fit'>
-                    <p className='text-black text-base font-bold'>Thanh toán tạm tính: </p>
-                    <p className='text-[#273c75] font-bold text-xl'>150.000đ</p>
-                </div>
-                <div className='flex flex-row justify-center items-center w-full h-fit space-x-4'>
-                    <Button type="primary" className='w-full h-fit mt-4' icon={<ForkOutlined/>} style={{width:'300px', height:'40px', fontSize:'15px', fontWeight:'bold', backgroundColor:'white', color:'blue', border:'1px solid blue'}} >Thêm chuyên khoa</Button>
-                    <Button type="primary" className='w-full h-fit mt-4' style={{width:'200px', height:'40px', fontSize:'15px', fontWeight:'bold', backgroundColor:'blue'}} onClick={continueBooking}>Tiếp tục</Button>
-                </div>
-            </div>
+                        <div className='flex flex-row justify-between items-center w-[36vw] h-fit'>
+                            <p className='text-black text-base font-bold'>Thanh toán tạm tính: </p>
+                            <p className='text-[#273c75] font-bold text-xl'>{totalPrice.toLocaleString()}đ</p>
+                        </div>
+                        <div className='flex flex-row justify-center items-center w-full h-fit space-x-4'>
+                            <Button type="primary" className='w-full h-fit mt-4' icon={<ForkOutlined/>} style={{width:'300px', height:'40px', fontSize:'15px', fontWeight:'bold', backgroundColor:'white', color:'blue', border:'1px solid blue'}} onClick={continueBooking}>Thêm chuyên khoa</Button>
+                            <Button type="primary" className='w-full h-fit mt-4' style={{width:'200px', height:'40px', fontSize:'15px', fontWeight:'bold', backgroundColor:'blue'}} onClick={handleClickNext}>Tiếp tục</Button>
+                        </div>
+                    </div>
                 )
             }
             {contextHolder}

@@ -28,29 +28,13 @@ import HeaderNavbar from '../components/Header';
 import SideBar from '../components/Sidebar';
 import MainPage from '../components/MainPage';
 import BMIPage from './BMIPage';
+
 const HomePage = () => {
   const [currentPage, setCurrentPage] = useState('main');
 
   const handleChangePage = (page) => {
     setCurrentPage(page);
   }
-  // const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
-  //         const key = String(index + 1);
-  //         return {
-  //           key: `sub${key}`,
-  //           icon: React.createElement(icon),
-  //           label: `subnav ${key}`,
-  //           children: Array.from({
-  //             length: 4,
-  //           }).map((_, j) => {
-  //             const subKey = index * 4 + j + 1;
-  //             return {
-  //               key: subKey,
-  //               label: `option${subKey}`,
-  //             };
-  //           }),
-  //         };
-  //       });
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -83,13 +67,6 @@ const HomePage = () => {
           {currentPage === 'bmi' && <BMIPage/>}
         </Layout>
       </div>
-      {/* <Footer
-        style={{
-          textAlign: 'center',
-        }}
-      >
-        Ant Design ©{new Date().getFullYear()} Created by Ant UED
-      </Footer> */}
     </Layout>
   );
 };

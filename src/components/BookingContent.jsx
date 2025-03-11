@@ -3,6 +3,9 @@ import { Button, message, Steps, theme } from 'antd';
 import { LoadingOutlined, SnippetsOutlined, CreditCardOutlined, UserOutlined, ForkOutlined } from '@ant-design/icons';
 import CreateProfile_Booking from './Booking/1/CreateProfile_Booking';
 import CureInfo_Booking from './Booking/2/CureInfo_Booking';
+import ConfirmInfo_Booking from './Booking/3/ConfirmInfo_Booking';
+import Payment_Booking from './Booking/4/Payment_Booking';
+import ConfirmBill_Booking from './Booking/5/ConfirmBill_Booking';
 import '../css/BookingContent.css';
 const steps = [
     {
@@ -17,17 +20,17 @@ const steps = [
     },
     {
       title: '3. Thông tin',
-      content: 'Kiểm tra thông tin đặt khám',
+      content: <ConfirmInfo_Booking/>,
       icon: <SnippetsOutlined />,
     },
     {
       title: '4. Thanh toán',
-      content: 'Phương thức thanh toán',
+      content: <Payment_Booking/>,
       icon: <CreditCardOutlined />,
     },
     {
       title: '5. In bill',
-      content: 'Kiểm tra số phiếu',
+      content: <ConfirmBill_Booking/>,
       icon: <SnippetsOutlined />,
     },
   ];

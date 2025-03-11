@@ -1,15 +1,27 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import {Layout, Menu, Dropdown, Space, Button } from 'antd';
+import {Layout, Menu, Dropdown, Button, Modal } from 'antd';
+import { Canvas } from "@react-three/fiber";
+import { Suspense } from "react";
+import { Experience } from "./Sliding Book/Experience";
+import { UI } from "./Sliding Book/UI";
 import {
   CaretDownOutlined, CaretUpOutlined
 } from '@ant-design/icons';
 import logo from '../assets/logo_hcmute_care.png';
 const { Header  } = Layout;
 const HeaderNavbar = () => {
-  const [isHover, setIsHover] = useState(false);
   const [position, setPosition] = useState('end');
+  const [isHover, setIsHover] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Sử dụng 'open' thay vì 'visible'
 
+  const handleOpenBook = () => {
+    setIsModalOpen(true); // Mở modal khi nhấn nút "Hỗ trợ"
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false); // Đóng modal khi nhấn nút "Cancel"
+  };
   const items1 = [
     {
       key: 'sub1',
@@ -130,7 +142,6 @@ const HeaderNavbar = () => {
     setIsHover(false);
   };
   return (
-    // 
     <Header
         style={{
           display: 'flex',
@@ -159,12 +170,11 @@ const HeaderNavbar = () => {
         <Button 
         style={{color: 'black', fontWeight: 'bold', boxShadow: 'none',border: 'none', height: "100%", marginRight: '15px'}}>Đặt lịch uống thuốc</Button>
         <Button 
-        style={{color: 'black', fontWeight: 'bold', boxShadow: 'none',border: 'none', height: "100%", marginRight: '15px'}}>Hỗ trợ</Button>
+        style={{color: 'black', fontWeight: 'bold', boxShadow: 'none',border: 'none', height: "100%", marginRight: '15px'}} onClick={handleOpenBook}>Hỗ trợ</Button>
         <Button 
         style={{color: 'black', fontWeight: 'bold', boxShadow: 'none',border: 'none', height: "100%", marginRight: '15px'}}>Theo dõi sức khỏe</Button>
       </div>
       </Header>
-      
   );
 };
 

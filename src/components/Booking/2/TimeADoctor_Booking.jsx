@@ -110,7 +110,7 @@ const TimeADoctor_Booking = ({handleSlotClick}) => {
                         doctor.timeSlots.map((time, index) => (
                             <Button
                                 key={index}
-                                onClick={() => handleSlotClick(time, doctor.name)} // Truyền tên bác sĩ
+                                onClick={() => handleSlotClick(time, doctor.name, doctor.room)} // Truyền tên bác sĩ
                                 style={{
                                     padding: '10px 20px',
                                     marginRight: '4px',
