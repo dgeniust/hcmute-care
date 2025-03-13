@@ -28,46 +28,10 @@ import HeaderNavbar from '../components/Header';
 import SideBar from '../components/Sidebar';
 import BMIContent from '../components/BMIContent';
 const BMIPage = () => {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
   return (
-      // <Layout>
-      // <HeaderNavbar/>
-      // <div
-      //   style={{
-      //     padding: '0 48px',
-      //   }}
-      // >
-      //   <Breadcrumb
-      //     style={{
-      //       margin: '16px 0',
-      //     }}
-      //   >
-      //     <Breadcrumb.Item>TRANG CHỦ</Breadcrumb.Item>
-      //     <Breadcrumb.Item>CÔNG CỤ TÍNH BMI</Breadcrumb.Item>
-      //   </Breadcrumb>
-      //   <Layout
-      //     style={{
-      //       background: colorBgContainer,
-      //       borderRadius: borderRadiusLG,
-      //       minHeight: '300vh',
-      //       display: 'flex',
-      //       flexDirection: 'row',
-      //     }}
-      //   >
-      //     <SideBar/>
-          <BMIContent/>
-    //     </Layout>
-    //   </div>
-    //   {/* <Footer
-    //     style={{
-    //       textAlign: 'center',
-    //     }}
-    //   >
-    //     Ant Design ©{new Date().getFullYear()} Created by Ant UED
-    //   </Footer> */}
-    // </Layout>
+    <>
+      <BMIContent/>
+    </>
   );
 };
 export default BMIPage;

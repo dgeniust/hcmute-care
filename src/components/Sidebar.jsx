@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import {Layout, Menu, Avatar , theme, Card } from 'antd';
+import {Layout, Menu} from 'antd';
 import {
     UserOutlined, LaptopOutlined, NotificationOutlined, UserSwitchOutlined, MessageOutlined, FileTextOutlined, SnippetsOutlined, SafetyCertificateOutlined, LogoutOutlined, AuditOutlined, ReconciliationOutlined, ProfileOutlined, ForkOutlined, PhoneOutlined, BellOutlined
 } from '@ant-design/icons';
 
 const {Sider} = Layout
-const SideBar = () => { 
+const SideBar = ({handleChangePage}) => { 
+
+    const onHandleChangePage = (page) => {
+      handleChangePage(page.key);
+      console.log('click123', page.key);
+    }
     
       const menu_items2 = [
         {
@@ -15,19 +19,19 @@ const SideBar = () => {
           icon: <UserOutlined />,
           children: [
             {
-              key: 'subnav1',
+              key: 'personal-profile',
               label: 'Thông tin cá nhân',
-              icon: <UserSwitchOutlined />
+              icon: <UserSwitchOutlined />,
             },
             {
-              key: 'subnav2',
-              label: 'Hỗ trợ',
-              icon: <MessageOutlined />
+              key: 'medical-records',
+              label: 'Hồ sơ sức khỏe',
+              icon: <AuditOutlined />
             },
             {
               key: 'subnav3',
-              label: 'Điều khoản dịch vụ',
-              icon: <ReconciliationOutlined />
+              label: 'Lịch sử đặt khám',
+              icon: <ProfileOutlined/>
             },
             {
               key: 'subnav4',
@@ -80,13 +84,13 @@ const SideBar = () => {
         },
         {
           key: 'sub3',
-          label: 'Hồ sơ sức khỏe',
-          icon: <AuditOutlined />,
+          label: 'Hỗ trợ',
+          icon: <MessageOutlined />,
         },
         {
           key: 'sub4',
-          label: 'Lịch sử đặt khám',
-          icon: <ProfileOutlined />,
+          label: 'Điều khoản dịch vụ',
+          icon: <ReconciliationOutlined />,
         },
         {
           key: 'sub5',
@@ -136,6 +140,7 @@ const SideBar = () => {
             height: '100%',
             }}
             items={menu_items2}
+            onClick={onHandleChangePage}
         />
     </Sider>
 };

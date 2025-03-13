@@ -1,10 +1,10 @@
 // import './App.css'
-import Signup from './pages/SignupPage';
-import Login from './pages/LoginPage';
-import VerifyOTP from './pages/VerifyOTP';
-import ConfirmPassword from './pages/ConfirmPassword';
-import GetPhone from './pages/GetPhone';
-import GetPassword from './pages/GetPassword';
+import Signup from './pages/login signup/SignupPage';
+import Login from './pages/login signup/LoginPage';
+import VerifyOTP from './pages/login signup/VerifyOTP';
+import ConfirmPassword from './pages/login signup/ConfirmPassword';
+import GetPhone from './pages/login signup/GetPhone';
+import GetPassword from './pages/login signup/GetPassword';
 import HomePage from './pages/HomePage';
 import BMIPage from './pages/BMIPage';
 import BookingPage from './pages/BookingPage';

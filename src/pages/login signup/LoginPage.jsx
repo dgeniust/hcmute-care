@@ -85,8 +85,8 @@ const Login = () => {
   console.log("disabled: "+isFormEmpty);
   return <div className="flex justify-center items-center h-screen w-screen login-bg bg-cover bg-center">
     <div className="flex flex-col justify-center items-center h-[80vh] w-[60vh] border border-black bg-white">
-    <div className="w-full flex flex-row pt-3 items-center px-6">
-        <img src="/img/logo_hcmute_care.png" alt="" width={"150px"} height={"150px"} />
+    <div className="w-full flex flex-row pt-3 items-center px-6 space-x-8">
+        {/* <img src={logo} alt="" width={"100px"} height={"100px"} /> */}
         <div className="text-black text-xl font-bold flex-col text-left"><p>Chào mừng đến với</p> <span className="text-sky-700 text-left">HCMUTE CARE</span></div>
     </div>
     <div className="px-6 pb-6 w-full text-left">

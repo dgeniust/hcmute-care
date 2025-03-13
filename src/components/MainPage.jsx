@@ -6,6 +6,7 @@ import Icon, {
 } from '@ant-design/icons';
 import '../css/mainpage.css'
 import axios from "axios";
+import InfiniteScrollingCarousel from "./InfiniteScrollingCarousel";
 const contentStyle = {
   height: '420px',
   color: '#fff',
@@ -380,38 +381,28 @@ const MainPage = ({onPageChange}) =>{
             </div>
 
         </div> */}
-        <div className="grid grid-cols-3 grid-flow-row gap-8 p-8
-         space-y-4">
-            <div className="card-container-1 border border-gray-400 h-[15vh] w-[20vw] rounded-lg cursor-pointer">
-                <div className="card-content flex justify-center items-center text-center h-full">
-                    <h1 className="font-bold text-white text-lg">Khám chuyên khoa</h1>
-                </div>
+        {/* <div className="grid grid-cols-3 grid-flow-row gap-8 p-8 space-y-4">
+        {[
+          { title: "Khám chuyên khoa", onClick: null },
+          { title: "Hồ sơ sức khỏe", onClick: null },
+          { title: "Lịch sử đặt khám", onClick: null },
+          { title: "Đặt lịch uống thuốc", onClick: null },
+          { title: "Chỉ số BMI, BMR", onClick: () => handlePageChange('bmi') },
+          { title: "Lịch sử tiêm chủng", onClick: null },
+          ].map((card, index) => (
+            <div
+              key={index}
+              className={`card-container-${index + 1} border border-gray-400 h-[15vh] w-[20vw] rounded-lg cursor-pointer`}
+              onClick={card.onClick}
+            >
+              <div className="card-content flex justify-center items-center text-center h-full">
+                <h1 className="font-bold text-white text-lg">{card.title}</h1>
+              </div>
             </div>
-            <div className="card-container-2 border border-gray-400 h-[15vh] w-[20vw] rounded-lg cursor-pointer">
-                <div className="card-content flex justify-center items-center text-center h-full">
-                    <h1 className="font-bold text-white text-lg">Hồ sơ sức khỏe</h1>
-                </div>
-            </div>
-            <div className="card-container-3 border border-gray-400 h-[15vh] w-[20vw] rounded-lg cursor-pointer">
-                <div className="card-content flex justify-center items-center text-center h-full">
-                    <h1 className="font-bold text-white text-lg">Lịch sử đặt khám</h1>
-                </div>
-            </div>
-            <div className="card-container-4 border border-gray-400 h-[15vh] w-[20vw] rounded-lg cursor-pointer">
-                <div className="card-content flex justify-center items-center text-center h-full">
-                    <h1 className="font-bold text-white text-lg">Đặt lịch uống thuốc</h1>
-                </div>
-            </div>
-            <div className="card-container-5 border border-gray-400 h-[15vh] w-[20vw] rounded-lg cursor-pointer" onClick={() => handlePageChange('bmi')}>
-                <div className="card-content flex justify-center items-center text-center h-full">
-                    <h1 className="font-bold text-white text-lg">Chỉ số BMI, BMR</h1>
-                </div>
-            </div>
-            <div className="card-container-6 border border-gray-400 h-[15vh] w-[20vw] rounded-lg cursor-pointer">
-                <div className="card-content flex justify-center items-center text-center h-full">
-                    <h1 className="font-bold text-white text-lg">Lịch sử tiêm chủng</h1>
-                </div>
-            </div>
+          ))}
+        </div> */}
+        <div className="w-full h-fit mt-4">
+          <InfiniteScrollingCarousel/>
         </div>
         <div className="divider flex items-center text-black justify-between">
             <h1 className="font-bold text-lg pl-8">Tin tức nổi bật</h1>

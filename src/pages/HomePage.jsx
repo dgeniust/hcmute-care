@@ -28,7 +28,8 @@ import HeaderNavbar from '../components/Header';
 import SideBar from '../components/Sidebar';
 import MainPage from '../components/MainPage';
 import BMIPage from './BMIPage';
-
+import Personal_Profile from '../pages/Personal_Profile';
+import MedicalRecord from '../components/Personal/MedicalRecord';
 const HomePage = () => {
   const [currentPage, setCurrentPage] = useState('main');
 
@@ -62,9 +63,11 @@ const HomePage = () => {
             flexDirection: 'row',
           }}
         >
-          <SideBar/>
+          <SideBar handleChangePage={handleChangePage}/>
           {currentPage === 'main' && <MainPage onPageChange={handleChangePage}/>}
           {currentPage === 'bmi' && <BMIPage/>}
+          {currentPage === 'personal-profile' && <Personal_Profile/>}
+          {currentPage === 'medical-records' && <MedicalRecord/>}
         </Layout>
       </div>
     </Layout>

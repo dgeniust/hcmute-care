@@ -1,10 +1,12 @@
 /* Đặt @import ở đầu file */
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+
 @import "tailwindcss"; /* Import Tailwind CSS */
 
 /* Cấu hình các thuộc tính mặc định */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif, Roboto Slab;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif, Roboto Slab, Fugaz One, Satisfy  ;
   line-height: 1.5;
   font-weight: 400;
 
@@ -63,4 +65,9 @@ body {
   /* background-image: var(--login-background); */
   background-color: black;
   font-family: 'Roboto Slab', sans-serif;
+}
+.personal-bg {
+  background-image: url('https://media.istockphoto.com/id/1407642855/vi/vec-to/vector-tr%E1%BB%ABu-t%C6%B0%E1%BB%A3ng-%C4%91%E1%BA%A7y-m%C3%A0u-s%E1%BA%AFc-ch%E1%BA%A3y-n%E1%BB%81n-y%E1%BA%BFu-t%E1%BB%91-thi%E1%BA%BFt-k%E1%BA%BF-%C4%91%E1%BB%83-tr%C3%ACnh-b%C3%A0y-m%E1%BA%ABu-trang-web.jpg?s=2048x2048&w=is&k=20&c=kPGXpO1i8MAXm9erUJTob9GFGhnGGxnYzgnQRqHXJSk=');
+  background-size: cover;
+  background-position: top;
 }
