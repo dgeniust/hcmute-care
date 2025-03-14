@@ -71,3 +71,25 @@ body {
   background-size: cover;
   background-position: top;
 }
+.bg-2-home {
+  background-image: url('https://img.freepik.com/free-vector/paper-style-white-monochrome-background_23-2149001607.jpg?t=st=1741877872~exp=1741881472~hmac=8d85f2df47e1299f8f8683626828101d5a15cb3cbae6242465bf772bd93cc7b7&w=996');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.button-gradient-home {
+  background: #8A2387;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #F27121, #E94057, #8A2387);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #F27121, #E94057, #8A2387); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+}
+
+.care-text {
+  background: #8A2387;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #F27121, #E94057, #8A2387);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #F27121, #E94057, #8A2387); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

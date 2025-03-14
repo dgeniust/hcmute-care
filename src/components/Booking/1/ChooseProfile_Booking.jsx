@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { Button, Modal, Tag } from 'antd';
 import { PlusOutlined, InfoCircleTwoTone, RightOutlined, BarcodeOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
 // import '../css/BookingContent.css';
 
-const ChooseProfile_Booking = ({ setStatus }) => {
+const ChooseProfile_Booking = forwardRef(({ setStatus,refs }, ref) => {
     
     const [modalOpen, setModalOpen] = useState(false); // Modal open/close state
     // Function to handle the modal state
@@ -21,6 +21,7 @@ const ChooseProfile_Booking = ({ setStatus }) => {
                     <div className='grid grid-flow-row grid-cols-3 gap-2 w-1/3'>
                         {/* Add a new profile button */}
                         <Button
+                            ref={refs.ref3}   
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -112,8 +113,9 @@ const ChooseProfile_Booking = ({ setStatus }) => {
                             }}
                             type="primary"
                             size="large"
+                            ref = {refs.ref4}
                         >
-                            <div className='flex flex-row justify-between w-full'>
+                            <div className='flex flex-row justify-between w-full' >
                                 <div className='space-x-1'>
                                     <InfoCircleTwoTone />
                                     <span className='font-bold text-sm tracking-normal'>NGUYỄN THÀNH ĐẠT</span>
@@ -176,5 +178,5 @@ const ChooseProfile_Booking = ({ setStatus }) => {
             </Modal>
         </div>
     )
-}
+});
 export default ChooseProfile_Booking;

@@ -1,11 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Divider, Radio, notification } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Button, Divider, Radio, notification, Tour } from 'antd';
 import {ArrowLeftOutlined, ForkOutlined, BulbTwoTone, CaretDownOutlined,RestOutlined} from '@ant-design/icons';
 import Specialty_Booking from './Specialty_Booking';
 import Date_Booking from './Date_Booking';
 import TimeADoctor_Booking from './TimeADoctor_Booking';
 import Timeline_Booking from './Timeline_Booking';
 const CureInfo_Booking = () => {
+    const ref1 = useRef(null);
+    const ref2 = useRef(null);
+    const [open, setOpen] = useState(false);
+    const tour_steps = [
+        {
+            title: 'Các bước đặt khám', 
+            description: 'Hoàn thành 4 bước sau để đặt phiếu khám bệnh',
+            target: () => ref1.current,
+        },
+        {
+            title: 'Ô chọn chuyên khoa, bác sĩ và ngày giờ',
+            description: 'Chọn các thông tin: chuyên khoa, bác sĩ và ngày giờ phù hợp với nhu cầu của bản thân',
+            target: () => ref2.current,
+        },
+    ]
+    useEffect(() => {
+        setOpen(true); // Mở tour khi component được mount
+    }, []);
     const [bookingList, setBookingList] = useState([]);
     const [specialty, setSpecialty] = useState('');
     const [price, setPrice] = useState('');
@@ -154,7 +172,7 @@ const CureInfo_Booking = () => {
                 !clickNext ? (
                     <div className='w-full h-full flex flex-row space-x-4 mt-4 justify-center items-center'>
                         <div className='flex flex-col w-1/4 h-fit'>
-                            <Timeline_Booking choosedSpecialty={choosedSpecialty} specialty={specialty} step={step} result={result} selectedValue={selectedValue} selectedTime={selectedTime} selectedDoctor={selectedDoctor}/>
+                            <Timeline_Booking choosedSpecialty={choosedSpecialty} specialty={specialty} step={step} result={result} selectedValue={selectedValue} selectedTime={selectedTime} selectedDoctor={selectedDoctor} ref={ref1}/>
                             {
                                 selectedTime && (
                                     <div className='w-full h-full p-4'>
@@ -191,7 +209,7 @@ const CureInfo_Booking = () => {
                             }
                         </div>
                         {step === 1 && (
-                            <Specialty_Booking setSpecialty = {setSpecialty} setPrice ={setPrice} setChoosedSpecialty = {setChoosedSpecialty} setStep = {setStep}/>
+                            <Specialty_Booking setSpecialty = {setSpecialty} setPrice ={setPrice} setChoosedSpecialty = {setChoosedSpecialty} setStep = {setStep} ref={ref2}/>
                         )}
                         {choosedSpecialty && step === 2 && ( 
                             <Date_Booking selectedValue={selectedValue} onSelectDate={onSelectDate}/>
@@ -262,6 +280,7 @@ const CureInfo_Booking = () => {
                 )
             }
             {contextHolder}
+            <Tour open={open} onClose={() => setOpen(false)} steps={tour_steps} />
         </div>
     );
 };

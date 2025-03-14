@@ -85,7 +85,7 @@ const MainPage = ({onPageChange}) =>{
               ))
             }
           </div> */}
-          <div className="hello-content relative w-[74vw] h-[60vh] max-w-full">
+          <div className="hello-content relative w-[74vw] h-[60vh] max-w-full mb-4">
           <Carousel
             autoplay
             autoplaySpeed={5000}
@@ -401,10 +401,17 @@ const MainPage = ({onPageChange}) =>{
             </div>
           ))}
         </div> */}
+        {/* <div className="w-full h-[460px] text-black p-8 flex flex-col items-center justify-center bg-2-home text-center space-y-2">
+          <h1 className="font-bold text-2xl w-full">HCMUTE <span className="care-text">CARE</span></h1>
+          <div className="w-full flex flex-col space-y-10 h-full mt-2 items-center">
+            <p>HCMUTE Care là ứng dụng đặt lịch khám bệnh và quản lý bệnh án thông minh, giúp bạn dễ dàng theo dõi sức khỏe của mình. Với HCMUTE Care, bạn có thể đặt lịch khám với các bác sĩ chuyên khoa, xem lại lịch sử khám bệnh và quản lý hồ sơ sức khỏe cá nhân ngay trên điện thoại. Ứng dụng này mang đến sự tiện lợi và tiết kiệm thời gian cho người dùng trong việc chăm sóc sức khỏe.</p>
+            <Button style={{padding:'25px',width:'200px', fontWeight:"bold", color: 'white', fontSize:'17px', borderRadius: '10px'}} className='button-gradient-home'>Đặt lịch khám ngay</Button>
+          </div>
+        </div> */}
         <div className="w-full h-fit mt-4">
           <InfiniteScrollingCarousel/>
         </div>
-        <div className="divider flex items-center text-black justify-between">
+        <div className="divider flex items-center text-black justify-between mt-8">
             <h1 className="font-bold text-lg pl-8">Tin tức nổi bật</h1>
             <p className="pr-16 hover:text-sky-600 cursor-pointer">Xem thêm <ArrowRightOutlined /></p>
         </div>

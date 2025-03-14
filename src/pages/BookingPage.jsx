@@ -56,7 +56,7 @@ const BookingPage = () => {
           }}
         >
           <SideBar/>
-          <BookingContent/>
+            <BookingContent/>
         </Layout>
       </div>
       {/* <Footer

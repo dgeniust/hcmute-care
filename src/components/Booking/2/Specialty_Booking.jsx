@@ -2,7 +2,7 @@ import React from 'react';
 import { Button} from 'antd';
 import {RightOutlined, InfoCircleTwoTone} from '@ant-design/icons';
 
-const Specialty_Booking = ({setSpecialty, setPrice, setChoosedSpecialty, setStep}) => {
+const Specialty_Booking = ({setSpecialty, setPrice, setChoosedSpecialty, setStep, ref}) => {
     const handleCureInfo = (name, price) => {
         setSpecialty(name);
         setPrice(price);
@@ -10,7 +10,7 @@ const Specialty_Booking = ({setSpecialty, setPrice, setChoosedSpecialty, setStep
         setStep(2)
     }
     return ( 
-        <div className='w-3/4 h-fit flex flex-col'>
+        <div className='w-3/4 h-fit flex flex-col' ref={ref}>
             <div className='flex w-full justify-center'>
                 <h1 className='text-black font-bold text-base'>Chọn chuyên khoa</h1>
             </div>
