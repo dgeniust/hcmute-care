@@ -29,12 +29,12 @@ const SideBar = ({handleChangePage}) => {
               icon: <AuditOutlined />
             },
             {
-              key: 'subnav3',
+              key: 'medical-history',
               label: 'Lịch sử đặt khám',
               icon: <ProfileOutlined/>
             },
             {
-              key: 'subnav4',
+              key: 'regulation-use',
               label: 'Quy định sử dụng',
               icon: <SnippetsOutlined />
             },

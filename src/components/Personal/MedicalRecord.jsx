@@ -3,15 +3,19 @@ import {Button, Modal} from 'antd';
 import { InfoCircleTwoTone, RightOutlined, BarcodeOutlined, PhoneOutlined } from '@ant-design/icons';
 import UserDetails from './UserDetails';
 const MedicalRecord = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalInfoOpen, setIsModalInfoOpen] = useState(false);
     const [modalContent, setModalContent] = useState(null);
-    const showModal = (userData) => {
+    const [modalButton, setmodalButton] = useState(false);
+    const handleModalButtonClose = () => {
+        setmodalButton(false);
+    }
+    const showButtonButtonModal = (userData) => {
         setModalContent(userData);
-        setIsModalOpen(true);
+        setmodalButton(true);
     };
 
-    const handleCancel = () => {
-        setIsModalOpen(false);
+    const handleInfoCancel = () => {
+        setIsModalInfoOpen(false);
         setModalContent(null);
     };
     const users = [
@@ -61,7 +65,7 @@ const MedicalRecord = () => {
                         }}
                         type="primary"
                         size="large"
-                        onClick={() => showModal(user)}
+                        onClick={() => showButtonButtonModal(user)}
                     >
                         <div className='flex flex-row justify-between w-full'>
                             <div className='space-x-1'>
@@ -85,8 +89,58 @@ const MedicalRecord = () => {
                     </Button>
                 ))}
             </div>
-            <Modal title="Thông tin người bệnh 👨‍🦰" open={isModalOpen} onCancel={handleCancel} footer={null}>
+            <Modal title="Thông tin người bệnh 👨‍🦰" open={isModalInfoOpen} onCancel={handleInfoCancel} footer={null}>
                 {modalContent && <UserDetails modalContent={modalContent} />}
+            </Modal>
+            <Modal
+                centered
+                open={modalButton}
+                onCancel={handleModalButtonClose}
+                footer={null}
+            >
+                <div className='text-center'>
+                    <h1 className='text-lg mb-4 font-bold'>
+                       CHỌN CHỨC NĂNG
+                    </h1>
+                </div>
+                <div className='flex flex-col gap-3'>
+                    <Button style={{ color: '#273c75', border: '1px solid #273c75' }}
+                    onClick={() => {
+                        setIsModalInfoOpen(true);
+                        setmodalButton(false);
+                    }}
+                    >
+                        THÔNG TIN HỒ SƠ
+                    </Button>
+                    <Button style={{ color: '#273c75', border: '1px solid #273c75' }}
+                    onClick={() => {
+                        setmodalButton(false);
+                    }}
+                    >
+                        XEM HỒ SƠ SỨC KHỎE
+                    </Button>
+                    <Button style={{ color: '#273c75', border: '1px solid #273c75' }}
+                    onClick={() => {
+                        setmodalButton(false);
+                    }}
+                    >
+                        XEM KẾT QUẢ CẬN LÂM SÀNG NGOẠI TRÚ
+                    </Button>
+                    <Button style={{ color: '#273c75', border: '1px solid #273c75' }}
+                    onClick={() => {
+                        setmodalButton(false);
+                    }}
+                    >
+                        XEM HÌNH ẢNH CHỤP
+                    </Button>
+                    <Button style={{ color: '#273c75', border: '1px solid #273c75' }}
+                    onClick={() => {
+                        setmodalButton(false);
+                    }}
+                    >
+                        XEM PHIẾU ĐĂNG KÝ KHÁM
+                    </Button>
+                </div>
             </Modal>
         </div>
     );

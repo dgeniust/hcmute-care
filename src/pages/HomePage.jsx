@@ -30,6 +30,8 @@ import MainPage from '../components/MainPage';
 import BMIPage from './BMIPage';
 import Personal_Profile from '../pages/Personal_Profile';
 import MedicalRecord from '../components/Personal/MedicalRecord';
+import MedicalHistory from '../components/Personal/MedicalHistory';
+import RegulationUse from '../components/Personal/RegulationUse';
 const HomePage = () => {
   const [currentPage, setCurrentPage] = useState('main');
 
@@ -68,6 +70,8 @@ const HomePage = () => {
           {currentPage === 'bmi' && <BMIPage/>}
           {currentPage === 'personal-profile' && <Personal_Profile/>}
           {currentPage === 'medical-records' && <MedicalRecord/>}
+          {currentPage === 'medical-history' && <MedicalHistory/>}
+          {currentPage === 'regulation-use' && <RegulationUse/>}
         </Layout>
       </div>
     </Layout>
