@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Collapse, Divider, Radio  } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Button, Tour, Divider, Radio  } from 'antd';
 import {HeartTwoTone, CreditCardTwoTone, RestOutlined, ForkOutlined } from '@ant-design/icons';
 
 const style = {
@@ -77,6 +77,24 @@ const VNPAY = () => (
 );
   
 const Payment_Booking = () => {
+    const [open, setOpen] = useState(false);
+    const ref1 = useRef(null);
+    const ref2 = useRef(null);
+    const tour_steps = [
+        {
+            title: 'Kiểm tra thông tin đặt khám',
+            description: 'Hãy xem lại thông tin đặt khám của bạn. Đảm bảo rằng tất cả chi tiết như chuyên khoa, ngày giờ, và bác sĩ đều chính xác trước khi tiếp tục.',
+            target: () => ref1.current,
+        },
+        {
+            title: 'Chọn phương thức thanh toán',
+            description: 'Chọn phương thức thanh toán mà bạn muốn sử dụng để hoàn tất quá trình đặt khám. Chúng tôi hỗ trợ nhiều phương thức thanh toán an toàn và tiện lợi.',
+            target: () => ref2.current,
+        },
+    ];
+    useEffect(() => {
+        setOpen(true); // Mở tour khi component được mount
+    }, []);
     const [valueBanking, setValueBanking] = useState(1);
 
     const onChange = (e) => {
@@ -89,7 +107,7 @@ const Payment_Booking = () => {
                     <p>Vui lòng kiểm tra thông tin đăng ký và chọn phương thức thanh toán.</p>
                     <p className='text-[#273c75] font-bold'>Sau khi thanh toán thành công, bạn vui lòng đợi nhận <span className='italic'>PHIẾU KHÁM BỆNH</span>, không đóng ứng dụng.</p>
                 </div>
-                <div className='flex flex-col'>
+                <div className='flex flex-col' ref={ref1}>
                     <div className='flex flex-row space-x-4 bg-white p-4'>
                         <HeartTwoTone twoToneColor="#eb2f96" />
                         <h1 className='text-[#273c75] font-bold text-base'>Chuyên khoa đã chọn (1)</h1>
@@ -114,7 +132,7 @@ const Payment_Booking = () => {
                     </div>
                 </div>
             </div>
-            <div className='space-y-4 bg-white p-4 rounded-lg'>
+            <div className='space-y-4 bg-white p-4 rounded-lg' ref={ref2}>
                 <div className='flex flex-row space-x-4 bg-white'>
                     <CreditCardTwoTone twoToneColor="#eb2f96"/>
                     <h1 className='text-[#273c75] font-bold text-base'>Phương thức thanh toán</h1>
@@ -151,6 +169,7 @@ const Payment_Booking = () => {
                     />
                 </div>
             </div>
+            <Tour open={open} onClose={() => setOpen(false)} steps={tour_steps} />
         </div>
     )
 }

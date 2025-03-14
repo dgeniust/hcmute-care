@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import { Button, message, Steps, theme, Tour  } from 'antd';
-import { LoadingOutlined, SnippetsOutlined, CreditCardOutlined, UserOutlined, ForkOutlined } from '@ant-design/icons';
+import { SnippetsOutlined, CreditCardOutlined, UserOutlined, ForkOutlined } from '@ant-design/icons';
 import CreateProfile_Booking from './Booking/1/CreateProfile_Booking';
 import CureInfo_Booking from './Booking/2/CureInfo_Booking';
 import ConfirmInfo_Booking from './Booking/3/ConfirmInfo_Booking';
@@ -45,31 +45,31 @@ const BookingContent = () => {
         },
       ];
     
-    const tour_steps = [
+      const tour_steps = [
         {
             title: 'Chào mừng đến với hệ thống đặt lịch khám bệnh',
             cover: (
                 <img src={logo} width={100} height={100}/>
-            ),  
-            // description: 'Put your files here.',
+            ),
+            description: 'Chào mừng bạn đến với hệ thống đặt lịch khám bệnh trực tuyến của chúng tôi. Hãy cùng khám phá các tính năng và cách đặt lịch khám một cách dễ dàng.',
             target: () => ref1.current,
         },
         {
             title: 'Các bước cần thực hiện khi đặt khám',
-            description: 'Thực hiện theo các bước sau để đặt được phiếu khám bệnh',
+            description: 'Để đặt phiếu khám bệnh, bạn cần thực hiện theo các bước sau: tạo hoặc chọn hồ sơ, chọn chuyên khoa và bác sĩ, chọn ngày giờ khám, xác nhận thông tin và thanh toán.',
             target: () => ref2.current,
         },
         {
             title: 'Tạo hồ sơ của bạn',
-            description: 'Bạn có thể thêm hồ sơ mới tại đây.',
-            target: () => ref3.current, // Mục tiêu của ChooseProfile_Booking
+            description: 'Nếu bạn chưa có hồ sơ, hãy tạo một hồ sơ mới tại đây. Hồ sơ này sẽ giúp bạn quản lý thông tin khám bệnh của mình một cách dễ dàng hơn.',
+            target: () => ref3.current,
         },
         {
             title: 'Chọn hồ sơ của bạn',
-            description: 'Bạn có thể chọn hồ sơ của bạn tại đây.',
-            target: () => ref4.current, // Mục tiêu của ChooseProfile_Booking
+            description: 'Nếu bạn đã có hồ sơ, hãy chọn hồ sơ của bạn từ danh sách. Bạn cũng có thể xem và chỉnh sửa thông tin hồ sơ tại đây.',
+            target: () => ref4.current,
         },
-    ]
+    ];
 
     const { token } = theme.useToken();
     const [current, setCurrent] = useState(0);

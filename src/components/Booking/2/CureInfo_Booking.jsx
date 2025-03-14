@@ -11,16 +11,16 @@ const CureInfo_Booking = () => {
     const [open, setOpen] = useState(false);
     const tour_steps = [
         {
-            title: 'Các bước đặt khám', 
-            description: 'Hoàn thành 4 bước sau để đặt phiếu khám bệnh',
+            title: 'Bắt đầu đặt khám',
+            description: 'Để đặt phiếu khám bệnh, bạn cần hoàn thành 4 bước sau: chọn chuyên khoa, chọn ngày giờ, xác nhận thông tin và thanh toán. Hãy làm theo hướng dẫn để hoàn tất quá trình.',
             target: () => ref1.current,
         },
         {
-            title: 'Ô chọn chuyên khoa, bác sĩ và ngày giờ',
-            description: 'Chọn các thông tin: chuyên khoa, bác sĩ và ngày giờ phù hợp với nhu cầu của bản thân',
+            title: 'Lựa chọn chuyên khoa và lịch khám',
+            description: 'Tại đây, bạn có thể chọn chuyên khoa, bác sĩ và ngày giờ khám phù hợp với nhu cầu của mình. Hãy chọn thông tin một cách cẩn thận để đảm bảo lịch khám được đặt chính xác.',
             target: () => ref2.current,
         },
-    ]
+    ];
     useEffect(() => {
         setOpen(true); // Mở tour khi component được mount
     }, []);

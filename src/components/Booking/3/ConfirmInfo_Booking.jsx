@@ -1,10 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Collapse, theme, notification } from 'antd';
+import React, { useState, useEffect,useRef} from 'react';
+import { Button, Collapse, theme, Tour } from 'antd';
 import {ArrowLeftOutlined, UserAddOutlined, CaretRightOutlined, RestOutlined, ForkOutlined } from '@ant-design/icons';
 
 const ConfirmInfo_Booking = () => {
     const { token } = theme.useToken();
-    
+    const [open, setOpen] = useState(false);
+    const ref1 = useRef(null);
+    const tour_steps = [
+        {
+            title: 'Kiểm tra thông tin đặt khám tại đây',
+            description: 'Hãy kiểm tra kỹ lưỡng thông tin đặt khám của bạn. Đảm bảo rằng chuyên khoa, bác sĩ, ngày giờ khám, và các thông tin khác đều chính xác trước khi chuyển sang bước tiếp theo.',
+            target: () => ref1.current,
+        },
+    ];
+    useEffect(() => {
+        setOpen(true); // Mở tour khi component được mount
+    }, []);
     const panelStyle = {
         marginBottom: 5,
         background: token.colorFillAlter,
@@ -55,7 +66,7 @@ const ConfirmInfo_Booking = () => {
                 <Button icon={<ArrowLeftOutlined />} style={{backgroundColor:'transparent', border: 'none', boxShadow: 'none'}}></Button>
                 <h1 className='text-black font-bold text-lg'>Thông tin đặt khám</h1>
             </div>
-            <div className='flex flex-col space-y-4'>
+            <div className='flex flex-col space-y-4'  ref={ref1}>
                 <p className='text-black'>Vui lòng kiểm tra thông tin đặt khám bên dưới. Hoặc "Thêm chuyên khoa" mới</p>
                 <div className='w-full max-h-[460px] h-fit flex flex-col border border-red-600 rounded-xl overflow-y-auto space-y-2'>
                     <Collapse
@@ -109,6 +120,7 @@ const ConfirmInfo_Booking = () => {
                 </div>
                 
             </div>
+            <Tour open={open} onClose={() => setOpen(false)} steps={tour_steps} />
         </div>
     )
 }
