@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import BMIPage from './pages/BMIPage';
 import BookingPage from './pages/BookingPage';
 import Book_Review from './components/Book_Review';
+import AdminDashboard from './pages/Admin/AdminDashboard';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/bmi" element={<BMIPage/>} />
           <Route path="/booking" element={<BookingPage/>} />
           <Route path="/book" element={<Book_Review/>}/>
+          <Route path="/admin" element={<AdminDashboard/>}/>
         </Routes>
       </div>
     </Router>

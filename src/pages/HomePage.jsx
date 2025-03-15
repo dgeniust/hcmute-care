@@ -21,8 +21,7 @@
 //            Phật phù hộ, không bao giờ BUG
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 import React, {useState} from 'react';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Breadcrumb, Layout, theme } from 'antd';
 import HeaderNavbar from '../components/Header';
 // const {Content, Footer } = Layout;
 import SideBar from '../components/Sidebar';
@@ -33,6 +32,8 @@ import MedicalRecord from '../components/Personal/MedicalRecord';
 import MedicalHistory from '../components/Personal/MedicalHistory';
 import RegulationUse from '../components/Personal/RegulationUse';
 import TermsService from '../components/Personal/TermsService';
+import ServiceList from '../components/ServiceList';
+import Notification_Event from '../components/Notification_Event';
 const HomePage = () => {
   const [currentPage, setCurrentPage] = useState('main');
 
@@ -74,6 +75,8 @@ const HomePage = () => {
           {currentPage === 'medical-history' && <MedicalHistory/>}
           {currentPage === 'regulation-use' && <RegulationUse/>}
           {currentPage === 'terms-service' && <TermsService/>}
+          {currentPage === 'service-list' && <ServiceList/>}
+          {currentPage === 'notification-event' && <Notification_Event/>}
         </Layout>
       </div>
     </Layout>

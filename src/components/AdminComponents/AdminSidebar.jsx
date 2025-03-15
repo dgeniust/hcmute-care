@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {Layout, Menu} from 'antd';
 import {
-    UserOutlined, LaptopOutlined, NotificationOutlined, UserSwitchOutlined, MessageOutlined, FileTextOutlined, SnippetsOutlined, SafetyCertificateOutlined, LogoutOutlined, AuditOutlined, ReconciliationOutlined, ProfileOutlined, ForkOutlined, PhoneOutlined, BellOutlined
+    UserOutlined, NotificationOutlined, UserSwitchOutlined, MessageOutlined, FileTextOutlined, SnippetsOutlined, SafetyCertificateOutlined, UsergroupAddOutlined, ApartmentOutlined, ReconciliationOutlined, TableOutlined, ForkOutlined, PhoneOutlined, BellOutlined, ShakeOutlined
 } from '@ant-design/icons';
 
 const {Sider} = Layout
-const SideBar = ({handleChangePage}) => { 
+const AdminSideBar = ({handleChangePage}) => { 
 
     const onHandleChangePage = (page) => {
       handleChangePage(page.key);
@@ -15,77 +15,57 @@ const SideBar = ({handleChangePage}) => {
       const menu_items2 = [
         {
           key: 'sub1',
-          label: 'Cá nhân',
+          label: 'Bảng điều khiển',
           icon: <UserOutlined />,
-          children: [
-            {
-              key: 'personal-profile',
-              label: 'Thông tin cá nhân',
-              icon: <UserSwitchOutlined />,
-            },
-            {
-              key: 'medical-records',
-              label: 'Hồ sơ sức khỏe',
-              icon: <AuditOutlined />
-            },
-            {
-              key: 'medical-history',
-              label: 'Lịch sử đặt khám',
-              icon: <ProfileOutlined/>
-            },
-            {
-              key: 'regulation-use',
-              label: 'Quy định sử dụng',
-              icon: <SnippetsOutlined />
-            },
-            {
-              key: 'subnav5',
-              label: 'Chính sách bảo mật',
-              icon: <SafetyCertificateOutlined />
-            },
-            {
-              key: 'subnav6',
-              label: 'Đăng xuất',
-              icon: <LogoutOutlined />
-            }
-          ]
         },
         {
           key: 'sub2',
-          label: 'Dịch vụ',
-          icon: <LaptopOutlined />,
+          label: 'Quản lý người dùng',
+          icon: <UsergroupAddOutlined />,
           children: [
             {
               key: 'subnav7',
-              label: 'Khám chuyên khoa',
+              label: 'Danh sách người dùng',
               icon: <UserSwitchOutlined />
             },
             {
               key: 'subnav8',
-              label: 'Khám theo ngày',
-              icon: <MessageOutlined />
+              label: 'Quản lý phiếu khám bệnh',
+              icon: <ShakeOutlined />
             },
-            {
-              key: 'subnav9',
-              label: 'Khám theo bác sĩ',
-              icon: <FileTextOutlined />
-            },
-            {
-              key: 'subnav10',
-              label: 'Lịch khám bệnh',
-              icon: <SnippetsOutlined />
-            },
-            {
-              key: 'subnav11',
-              label: 'Lịch sử Đặt khám',
-              icon: <SafetyCertificateOutlined />
-            }
           ]
         },
         {
           key: 'sub3',
-          label: 'Hỗ trợ',
-          icon: <MessageOutlined />,
+          label: 'Quản lý nhân sự',
+          icon: <ApartmentOutlined />,
+          children: [
+            {
+              key: 'subnav1',
+              label: 'Danh sách nhân sự',
+              icon: <UserSwitchOutlined />
+            },
+            {
+              key: 'subnav2',
+              label: 'Lịch trình làm việc',
+              icon: <TableOutlined />
+            },
+            {
+              key: 'subnav3',
+              label: 'Quản lý phòng ban',
+              icon: <FileTextOutlined />
+            },
+            {
+              key: 'subnav4',
+              label: 'Quản lý thiết bị',
+              icon: <SnippetsOutlined />
+            },
+            {
+              key: 'subnav5',
+              label: 'Điều phối nhân viên hỗ trợ khẩn cấp',
+              icon: <SafetyCertificateOutlined />
+            }
+          ]
         },
         {
           key: 'terms-service',
@@ -94,24 +74,35 @@ const SideBar = ({handleChangePage}) => {
         },
         {
           key: 'service-list',
-          label: 'Bảng giá dịch vụ kỹ thuật',
+          label: 'Bảng giá dịch vụ',
           icon: <ForkOutlined />,
         },
-        {
-          key: 'sub6',
-          label: 'Hướng dẫn khách hàng',
-          icon: <NotificationOutlined />,
-        },
+        
         {
           key: 'notification-event',
           label: 'Tin tức - Sự kiện',
           icon: <BellOutlined />,
         },
         {
+          key: 'sub7',
+          label: 'Quy định sử dụng',
+          icon: <SnippetsOutlined />,
+        },
+        {
           key: 'sub8',
+          label: 'Hỗ trợ',
+          icon: <MessageOutlined />,
+        },
+        {
+          key: 'sub9',
           label: 'Liên hệ',
           icon: <PhoneOutlined />,
-        }
+        },
+        {
+          key: 'sub6',
+          label: 'Đăng xuất',
+          icon: <NotificationOutlined />,
+        },
       ]
     return <Sider
         style={{
@@ -128,8 +119,9 @@ const SideBar = ({handleChangePage}) => {
             height={50}
             className="object-center" />
           </div>
-          <div>
+          <div className="flex flex-col items-center justify-center">
             <h1 className="text-black font-bold">Nguyễn Thành Đạt</h1>
+            <span className="text-red-600">ADMIN 🎟️</span>
           </div>
         </div>
         <Menu
@@ -145,4 +137,4 @@ const SideBar = ({handleChangePage}) => {
     </Sider>
 };
 
-export default SideBar;
+export default AdminSideBar;
