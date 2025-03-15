@@ -1,0 +1,5135 @@
+{
+    "Dich_vu_y_te": [
+        {
+            "Stt": 1,
+            "Ma_hieu": "ND64",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính bụng-tiểu khung thường quy",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1850000
+        },
+        {
+            "Stt": 2,
+            "Ma_hieu": "ND65",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính bụng-tiểu khung thường quy có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2150000
+        },
+        {
+            "Stt": 3,
+            "Ma_hieu": "ND66",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính xương chi không tiêm thuốc cản quang",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1150000
+        },
+        {
+            "Stt": 4,
+            "Ma_hieu": "ND67",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính xương chi có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1350000
+        },
+        {
+            "Stt": 5,
+            "Ma_hieu": "ND68",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính cột sống cổ không tiêm thuốc cản quang",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1150000
+        },
+        {
+            "Stt": 6,
+            "Ma_hieu": "ND69",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính cột sống cổ có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1350000
+        },
+        {
+            "Stt": 7,
+            "Ma_hieu": "ND70",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính cột sống ngực không tiêm thuốc cản quang",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1150000
+        },
+        {
+            "Stt": 8,
+            "Ma_hieu": "ND71",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính cột sống ngực có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1350000
+        },
+        {
+            "Stt": 9,
+            "Ma_hieu": "ND72",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính cột sống thắt lưng không tiêm thuốc cản quang",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1150000
+        },
+        {
+            "Stt": 10,
+            "Ma_hieu": "ND73",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính cột sống thắt lưng có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1350000
+        },
+        {
+            "Stt": 11,
+            "Ma_hieu": "ND77",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính tính điểm vôi hóa mạch vành",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1900000
+        },
+        {
+            "Stt": 12,
+            "Ma_hieu": "ND78",
+            "Ten_dich_vu": "Chụp CLVT hệ động mạch cảnh có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2400000
+        },
+        {
+            "Stt": 13,
+            "Ma_hieu": "ND80",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính động mạch chủ ngực có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2450000
+        },
+        {
+            "Stt": 14,
+            "Ma_hieu": "ND81",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính tầng trên ổ bụng có khảo sát mạch các tạng (mạc treo) (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2350000
+        },
+        {
+            "Stt": 15,
+            "Ma_hieu": "ND82",
+            "Ten_dich_vu": "Chụp CLVT mạch máu não + sọ não có thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2400000
+        },
+        {
+            "Stt": 16,
+            "Ma_hieu": "ND83",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính động mạch phổi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2800000
+        },
+        {
+            "Stt": 17,
+            "Ma_hieu": "ND85",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính động mạch vành, tim (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2550000
+        },
+        {
+            "Stt": 18,
+            "Ma_hieu": "ND88",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính lồng ngực không tiêm thuốc cản quang",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1850000
+        },
+        {
+            "Stt": 19,
+            "Ma_hieu": "ND89",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính lồng ngực có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2150000
+        },
+        {
+            "Stt": 20,
+            "Ma_hieu": "ND90",
+            "Ten_dich_vu": "Chụp CLVT hàm-mặt không tiêm thuốc cản quang (sọ + xoang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1900000
+        },
+        {
+            "Stt": 21,
+            "Ma_hieu": "ND91",
+            "Ten_dich_vu": "Chụp CLVT hàm-mặt có tiêm thuốc cản quang (sọ + xoang) (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2100000
+        },
+        {
+            "Stt": 22,
+            "Ma_hieu": "ND92",
+            "Ten_dich_vu": "Chụp CLVT sọ não không tiêm thuốc cản quang",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1150000
+        },
+        {
+            "Stt": 23,
+            "Ma_hieu": "ND93",
+            "Ten_dich_vu": "Chụp CLVT sọ não có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1350000
+        },
+        {
+            "Stt": 24,
+            "Ma_hieu": "ND94",
+            "Ten_dich_vu": "Chụp CT-Scan vùng cổ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1150000
+        },
+        {
+            "Stt": 25,
+            "Ma_hieu": "ND95",
+            "Ten_dich_vu": "Chụp CT-Scan vùng cổ có thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1350000
+        },
+        {
+            "Stt": 26,
+            "Ma_hieu": "ND96",
+            "Ten_dich_vu": "Chụp CLVT hàm-mặt không tiêm thuốc cản quang (xoang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1150000
+        },
+        {
+            "Stt": 28,
+            "Ma_hieu": "ND98",
+            "Ten_dich_vu": "Chụp CLVT tai-xương đá không tiêm thuốc",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1150000
+        },
+        {
+            "Stt": 29,
+            "Ma_hieu": "ND99",
+            "Ten_dich_vu": "Chụp CLVT tai-xương đá có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1350000
+        },
+        {
+            "Stt": 30,
+            "Ma_hieu": "NDA1",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính mạch máu chi dưới có tiêm thuốc cản quang (chưa bao gồm thuốc cản quang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2550000
+        },
+        {
+            "Stt": 31,
+            "Ma_hieu": "NDA3",
+            "Ten_dich_vu": "Chụp cắt lớp vi tính phổi liều thấp tầm soát u",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1150000
+        },
+        {
+            "Stt": 32,
+            "Ma_hieu": "MW01",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp vai không tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 33,
+            "Ma_hieu": "MW02",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp vai có tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 34,
+            "Ma_hieu": "MW03",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp khuỷu không tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 35,
+            "Ma_hieu": "MW04",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp khuỷu có tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 36,
+            "Ma_hieu": "MW05",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp cổ tay không tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 37,
+            "Ma_hieu": "MW06",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp cổ tay có tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 38,
+            "Ma_hieu": "MW07",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp gối không tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 39,
+            "Ma_hieu": "MW08",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp gối có tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 40,
+            "Ma_hieu": "MW09",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp cùng chậu (protocol viêm cột sống dính khớp) không tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 41,
+            "Ma_hieu": "MW10",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp cùng chậu (protocol viêm cột sống dính khớp) có tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 42,
+            "Ma_hieu": "MW11",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp háng không tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 43,
+            "Ma_hieu": "MW12",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp háng có tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 44,
+            "Ma_hieu": "MW13",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp gối không tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 45,
+            "Ma_hieu": "MW14",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp gối có tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 46,
+            "Ma_hieu": "MW15",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp cổ chân không tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 47,
+            "Ma_hieu": "MW16",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp cổ chân có tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 48,
+            "Ma_hieu": "MW17",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp bàn ngón chân không tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 49,
+            "Ma_hieu": "MW18",
+            "Ten_dich_vu": "Chụp cộng hưởng từ khớp bàn ngón chân có tiêm thuốc tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 51,
+            "Ma_hieu": "MW46",
+            "Ten_dich_vu": "Chụp cộng hưởng từ tầng bụng không tiêm chất tương phản (gồm: chụp cộng hưởng từ gan-mật, tụy, lách, thận, dạ dày-tá tràng...)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 52,
+            "Ma_hieu": "MW47",
+            "Ten_dich_vu": "Chụp cộng hưởng từ vùng chậu có tiêm chất tương phản từ (gồm: chụp cộng hưởng từ tử cung-phần phụ, tiền liệt tuyến, đại tràng chậu hông, trực tràng, các khối u vùng chậu…)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 53,
+            "Ma_hieu": "MW48",
+            "Ten_dich_vu": "Chụp cộng hưởng từ vùng chậu (gồm: chụp cộng hưởng từ tử cung-phần phụ, tiền liệt tuyến, đại tràng chậu hông, trực tràng, các khối u vùng chậu…)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 54,
+            "Ma_hieu": "MW49",
+            "Ten_dich_vu": "Chụp cộng hưởng từ cột sống cổ có tiêm tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 55,
+            "Ma_hieu": "MW50",
+            "Ten_dich_vu": "Chụp cộng hưởng từ cột sống cổ không tiêm tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 56,
+            "Ma_hieu": "MW51",
+            "Ten_dich_vu": "Chụp cộng hưởng từ cột sống ngực có tiêm tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 57,
+            "Ma_hieu": "MW52",
+            "Ten_dich_vu": "Chụp cộng hưởng từ cột sống ngực không tiêm tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 58,
+            "Ma_hieu": "MW53",
+            "Ten_dich_vu": "Chụp cộng hưởng từ cột sống thắt lưng - cùng có tiêm tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 59,
+            "Ma_hieu": "MW54",
+            "Ten_dich_vu": "Chụp cộng hưởng từ cột sống thắt lưng - cùng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 60,
+            "Ma_hieu": "MW55",
+            "Ten_dich_vu": "Chụp cộng hưởng từ vùng mặt – cổ có tiêm tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 61,
+            "Ma_hieu": "MW56",
+            "Ten_dich_vu": "Chụp cộng hưởng từ vùng mặt – cổ không tiêm tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 62,
+            "Ma_hieu": "MW68",
+            "Ten_dich_vu": "Chụp cộng hưởng từ tầng bụng có tiêm chất tương phản từ (gan-mật)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 64,
+            "Ma_hieu": "MW70",
+            "Ten_dich_vu": "Chụp cộng hưởng từ lồng ngực có tiêm thuốc tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 65,
+            "Ma_hieu": "MW71",
+            "Ten_dich_vu": "Chụp cộng hưởng từ lồng ngực không tiêm thuốc tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 66,
+            "Ma_hieu": "MW72",
+            "Ten_dich_vu": "Chụp cộng hưởng từ sọ não có tiêm chất tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 67,
+            "Ma_hieu": "MW73",
+            "Ten_dich_vu": "Chụp cộng hưởng từ sọ não không tiêm chất tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 68,
+            "Ma_hieu": "MW75",
+            "Ten_dich_vu": "Chụp cộng hưởng từ tuyến vú động học có tiêm tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3750000
+        },
+        {
+            "Stt": 69,
+            "Ma_hieu": "MW76",
+            "Ten_dich_vu": "Chụp cộng hưởng từ tuyến vú không tiêm thuốc tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 70,
+            "Ma_hieu": "MW77",
+            "Ten_dich_vu": "Chụp cộng hưởng từ xương và phần mềm chi có tiêm tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 71,
+            "Ma_hieu": "MW78",
+            "Ten_dich_vu": "Chụp cộng hưởng từ xương và phần mềm chi không tiêm tương phản từ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 72,
+            "Ma_hieu": "MW80",
+            "Ten_dich_vu": "Chụp cộng hưởng từ não-mạch não không tiêm chất tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 73,
+            "Ma_hieu": "MW81",
+            "Ten_dich_vu": "Chụp cộng hưởng từ não- mạch não có tiêm chất tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3750000
+        },
+        {
+            "Stt": 74,
+            "Ma_hieu": "MW82",
+            "Ten_dich_vu": "Chụp cộng hưởng từ hệ mạch cổ không tiêm chất tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 75,
+            "Ma_hieu": "MW83",
+            "Ten_dich_vu": "Chụp cộng hưởng từ xương và tủy xương",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 76,
+            "Ma_hieu": "MW84",
+            "Ten_dich_vu": "Chụp cộng hưởng từ xương và tủy xương có tiêm tương phản",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3350000
+        },
+        {
+            "Stt": 77,
+            "Ma_hieu": "KX01",
+            "Ten_dich_vu": "Đo mật độ xương bằng phương pháp DEXA (cột sống thắt lưng)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 220000
+        },
+        {
+            "Stt": 78,
+            "Ma_hieu": "KX10",
+            "Ten_dich_vu": "Đo mật độ xương bằng phương pháp DEXA (cổ xương đùi) và đo chiều dài trụ khớp háng (HAL) một bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 220000
+        },
+        {
+            "Stt": 79,
+            "Ma_hieu": "KX14",
+            "Ten_dich_vu": "Đo mật độ xương bằng phương pháp DEXA (CSTL + cổ xương đùi một bên)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 440000
+        },
+        {
+            "Stt": 80,
+            "Ma_hieu": "J197",
+            "Ten_dich_vu": "Đốt điện cuốn mũi dưới",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 600000
+        },
+        {
+            "Stt": 81,
+            "Ma_hieu": "J233",
+            "Ten_dich_vu": "Nội soi họng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 82,
+            "Ma_hieu": "J234",
+            "Ten_dich_vu": "Nội soi mũi xoang",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 83,
+            "Ma_hieu": "J235",
+            "Ten_dich_vu": "Nội soi tai",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 84,
+            "Ma_hieu": "J236",
+            "Ten_dich_vu": "Nội soi tai mũi họng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 270000
+        },
+        {
+            "Stt": 85,
+            "Ma_hieu": "L174",
+            "Ten_dich_vu": "Soi cổ tử cung",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 340000
+        },
+        {
+            "Stt": 86,
+            "Ma_hieu": "MB95",
+            "Ten_dich_vu": "Nội soi thực quản - Dạ dày - Tá tràng không sinh thiết",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 970000
+        },
+        {
+            "Stt": 87,
+            "Ma_hieu": "MBA1",
+            "Ten_dich_vu": "Nội soi đại trực tràng toàn bộ ống mềm không sinh thiết",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1000000
+        },
+        {
+            "Stt": 88,
+            "Ma_hieu": "MBB4",
+            "Ten_dich_vu": "Nội soi trực tràng ống mềm không sinh thiết (có thuốc)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 650000
+        },
+        {
+            "Stt": 89,
+            "Ma_hieu": "MBE0",
+            "Ten_dich_vu": "Nội soi thực quản - dạ dày - tá tràng ống mềm không sinh thiết (gây mê có thuốc)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2620000
+        },
+        {
+            "Stt": 90,
+            "Ma_hieu": "MBE1",
+            "Ten_dich_vu": "Nội soi đại trực tràng ống mềm không sinh thiết (gây mê có thuốc)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2950000
+        },
+        {
+            "Stt": 91,
+            "Ma_hieu": "MBE2",
+            "Ten_dich_vu": "Nội soi thực quản - dạ dày - tá tràng + đại trực tràng ống mềm không sinh thiết (gây mê có thuốc)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 4270000
+        },
+        {
+            "Stt": 92,
+            "Ma_hieu": "MC72",
+            "Ten_dich_vu": "Siêu âm Doppler tinh hoàn, mào tinh hoàn hai bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 93,
+            "Ma_hieu": "MC73",
+            "Ten_dich_vu": "Siêu âm ổ bụng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 165000
+        },
+        {
+            "Stt": 94,
+            "Ma_hieu": "MC76",
+            "Ten_dich_vu": "Siêu âm cơ phần mềm vùng cổ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 165000
+        },
+        {
+            "Stt": 96,
+            "Ma_hieu": "MC82",
+            "Ten_dich_vu": "Siêu âm Doppler mạch máu ổ bụng (động mạch chủ, mạc treo tràng trên, thân tạng…)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 97,
+            "Ma_hieu": "MC83",
+            "Ten_dich_vu": "Siêu âm Doppler màu động mạch cảnh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 98,
+            "Ma_hieu": "MC84",
+            "Ten_dich_vu": "Siêu âm Doppler mạch máu khác",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 99,
+            "Ma_hieu": "MC85",
+            "Ten_dich_vu": "Siêu âm Doppler động mạch thận",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 100,
+            "Ma_hieu": "MC86",
+            "Ten_dich_vu": "Siêu âm Doppler màu mạch máu chi dưới",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 101,
+            "Ma_hieu": "MC87",
+            "Ten_dich_vu": "Siêu âm Doppler mạch máu (tuyến giáp)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 102,
+            "Ma_hieu": "MC89",
+            "Ten_dich_vu": "Siêu âm phần mềm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 165000
+        },
+        {
+            "Stt": 103,
+            "Ma_hieu": "MC95",
+            "Ten_dich_vu": "Siêu âm Doppler tử cung, buồng trứng qua đường âm đạo",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 104,
+            "Ma_hieu": "MC96",
+            "Ten_dich_vu": "Siêu âm tử cung buồng trứng qua đường âm đạo",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 270000
+        },
+        {
+            "Stt": 105,
+            "Ma_hieu": "MCA4",
+            "Ten_dich_vu": "Siêu âm các tuyến nước bọt",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 165000
+        },
+        {
+            "Stt": 106,
+            "Ma_hieu": "MCA5",
+            "Ten_dich_vu": "Siêu âm tuyến giáp",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 165000
+        },
+        {
+            "Stt": 108,
+            "Ma_hieu": "MCA7",
+            "Ten_dich_vu": "Siêu âm tuyến vú hai bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 165000
+        },
+        {
+            "Stt": 109,
+            "Ma_hieu": "MCC1",
+            "Ten_dich_vu": "Siêu âm Doppler mạch máu (chi trên)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 110,
+            "Ma_hieu": "MCD0",
+            "Ten_dich_vu": "Siêu âm thai (thai, nhau thai, nước ối)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 220000
+        },
+        {
+            "Stt": 111,
+            "Ma_hieu": "MCD1",
+            "Ten_dich_vu": "Siêu âm Doppler thai nhi (thai, nhau thai, dây rốn, động mạch tử cung)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 450000
+        },
+        {
+            "Stt": 112,
+            "Ma_hieu": "MCD2",
+            "Ten_dich_vu": "Siêu âm thai nhi trong 3 tháng đầu (Siêu âm khảo sát hình thái học)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 525000
+        },
+        {
+            "Stt": 113,
+            "Ma_hieu": "MCD6",
+            "Ten_dich_vu": "Siêu âm 4D thai nhi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 450000
+        },
+        {
+            "Stt": 114,
+            "Ma_hieu": "MCD9",
+            "Ten_dich_vu": "Siêu âm khớp (gối, háng, khuỷu, cổ tay...)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 165000
+        },
+        {
+            "Stt": 115,
+            "Ma_hieu": "MCF3",
+            "Ten_dich_vu": "Siêu âm thai nhi trong 3 tháng giữa",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 525000
+        },
+        {
+            "Stt": 116,
+            "Ma_hieu": "MCF4",
+            "Ten_dich_vu": "Siêu âm thai nhi trong 3 tháng cuối",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 525000
+        },
+        {
+            "Stt": 117,
+            "Ma_hieu": "MCF5",
+            "Ten_dich_vu": "Siêu âm thai nhi trong 3 tháng đầu (Siêu âm khảo sát hình thái học) (song thai)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 600000
+        },
+        {
+            "Stt": 118,
+            "Ma_hieu": "MCF6",
+            "Ten_dich_vu": "Siêu âm thai nhi trong 3 tháng giữa (song thai)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 600000
+        },
+        {
+            "Stt": 119,
+            "Ma_hieu": "MCF7",
+            "Ten_dich_vu": "Siêu âm thai nhi trong 3 tháng cuối (song thai)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 600000
+        },
+        {
+            "Stt": 120,
+            "Ma_hieu": "MCF8",
+            "Ten_dich_vu": "Siêu âm Doppler thai nhi (thai, nhau thai, dây rốn, động mạch tử cung)(song thai)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 600000
+        },
+        {
+            "Stt": 121,
+            "Ma_hieu": "MD08",
+            "Ten_dich_vu": "Siêu âm Doppler tim",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 122,
+            "Ma_hieu": "MAA5",
+            "Ten_dich_vu": "Chụp X-quang bàn chân thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 123,
+            "Ma_hieu": "MAA6",
+            "Ten_dich_vu": "Chụp X-quang bàn chân thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 124,
+            "Ma_hieu": "MAA7",
+            "Ten_dich_vu": "Chụp X-quang bàn chân thẳng-nghiêng-chếch số hóa",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 160000
+        },
+        {
+            "Stt": 125,
+            "Ma_hieu": "MAB2",
+            "Ten_dich_vu": "Chụp X-quang bàn tay thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 126,
+            "Ma_hieu": "MAB3",
+            "Ten_dich_vu": "Chụp X-quang bàn tay thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 127,
+            "Ma_hieu": "MAB4",
+            "Ten_dich_vu": "Chụp X-quang Bàn tay thẳng-nghiêng-chếch",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 160000
+        },
+        {
+            "Stt": 128,
+            "Ma_hieu": "MAB7",
+            "Ten_dich_vu": "Chụp X-quang Blondeau và Hirtz",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 129,
+            "Ma_hieu": "MAC2",
+            "Ten_dich_vu": "Chụp X-quang Bộ cung sườn thẳng-nghiêng-chếch",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 160000
+        },
+        {
+            "Stt": 130,
+            "Ma_hieu": "MAC3",
+            "Ten_dich_vu": "Chụp Xquang bụng không chuẩn bị thẳng hoặc nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 131,
+            "Ma_hieu": "MAC7",
+            "Ten_dich_vu": "Chụp X-quang Cẳng chân thẳng và nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 132,
+            "Ma_hieu": "MAC8",
+            "Ten_dich_vu": "Chụp X-quang Cánh tay thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 133,
+            "Ma_hieu": "MAC9",
+            "Ten_dich_vu": "Chụp X-quang Cổ chân nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 134,
+            "Ma_hieu": "MAD1",
+            "Ten_dich_vu": "Chụp X-quang Cổ chân thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 135,
+            "Ma_hieu": "MAD3",
+            "Ten_dich_vu": "Chụp X-quang Cổ tay nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 136,
+            "Ma_hieu": "MAD5",
+            "Ten_dich_vu": "Chụp X-quang Cổ tay thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 137,
+            "Ma_hieu": "MAD6",
+            "Ten_dich_vu": "Chụp X-quang Cột sống cổ (cúi - ngữa)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 138,
+            "Ma_hieu": "MAD7",
+            "Ten_dich_vu": "Chụp X-quang Cột sống cổ thẳng và nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 139,
+            "Ma_hieu": "MAD8",
+            "Ten_dich_vu": "Chụp X-quang Cột sống cổ thẳng-nghiêng-chếch",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 220000
+        },
+        {
+            "Stt": 140,
+            "Ma_hieu": "MAE1",
+            "Ten_dich_vu": "Chụp X-quang Cột sống ngực nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 141,
+            "Ma_hieu": "MAE2",
+            "Ten_dich_vu": "Chụp X-quang Cột sống ngực thẳng số hóa",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 142,
+            "Ma_hieu": "MAE3",
+            "Ten_dich_vu": "Chụp X-quang Cột sống ngực thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 143,
+            "Ma_hieu": "MAE4",
+            "Ten_dich_vu": "Chụp X-quang Cột sống thắt lưng (cúi - ngữa)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 144,
+            "Ma_hieu": "MAE5",
+            "Ten_dich_vu": "Chụp X-quang Cột sống thắt lưng T-N-Cúi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 180000
+        },
+        {
+            "Stt": 145,
+            "Ma_hieu": "MAE6",
+            "Ten_dich_vu": "Chụp X-quang Cột sống thắt lưng-cùng nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 146,
+            "Ma_hieu": "MAE7",
+            "Ten_dich_vu": "Chụp X-quang Cột sống thắt lưng-cùng thẳng số hóa",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 147,
+            "Ma_hieu": "MAE8",
+            "Ten_dich_vu": "Chụp X-quang Cột sống thắt lưng-cùng T-N",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 148,
+            "Ma_hieu": "MAE9",
+            "Ten_dich_vu": "Chụp X-quang Cột sống thắt lưng-cùng T-N-C",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 230000
+        },
+        {
+            "Stt": 149,
+            "Ma_hieu": "MAF0",
+            "Ten_dich_vu": "Chụp X-quang Cung gò má",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 150,
+            "Ma_hieu": "MAF8",
+            "Ten_dich_vu": "Chụp X-quang HIRTZ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 151,
+            "Ma_hieu": "MAG2",
+            "Ten_dich_vu": "Chụp X-quang Khớp cùng-chậu thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 152,
+            "Ma_hieu": "MAG3",
+            "Ten_dich_vu": "Chụp X-quang Khớp gối 1 bên (T-N -tiếp tuyến)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 220000
+        },
+        {
+            "Stt": 153,
+            "Ma_hieu": "MAG5",
+            "Ten_dich_vu": "Chụp X-quang Khớp gối thẳng 2 bên (T-N-TT)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 370000
+        },
+        {
+            "Stt": 154,
+            "Ma_hieu": "MAG6",
+            "Ten_dich_vu": "Chụp X-quang Khớp gối thẳng-nghiêng 1 bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 155,
+            "Ma_hieu": "MAG7",
+            "Ten_dich_vu": "Chụp X-quang Khớp gối thẳng-nghiêng 2 bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 270000
+        },
+        {
+            "Stt": 156,
+            "Ma_hieu": "MAG8",
+            "Ten_dich_vu": "Chụp X-quang Khớp háng động (3 thế)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 160000
+        },
+        {
+            "Stt": 157,
+            "Ma_hieu": "MAG9",
+            "Ten_dich_vu": "Chụp X-quang Khớp háng thẳng - nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 170000
+        },
+        {
+            "Stt": 158,
+            "Ma_hieu": "MAH1",
+            "Ten_dich_vu": "Chụp X-quang Khớp khuỷu nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 159,
+            "Ma_hieu": "MAH2",
+            "Ten_dich_vu": "Chụp X-quang Khớp khuỷu thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 160,
+            "Ma_hieu": "MAH3",
+            "Ten_dich_vu": "Chụp X-quang Khớp khuỷu thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 161,
+            "Ma_hieu": "MAH6",
+            "Ten_dich_vu": "Chụp X-quang Khớp vai một bên (nghiêng & Lamy)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 162,
+            "Ma_hieu": "MAH7",
+            "Ten_dich_vu": "Chụp X-quang Khớp vai một bên (thẳng & Lamy)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 163,
+            "Ma_hieu": "MAH9",
+            "Ten_dich_vu": "Chụp X-quang Khớp vai thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 164,
+            "Ma_hieu": "MAI0",
+            "Ten_dich_vu": "Chụp X-quang Khớp vai thẳng và nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 165,
+            "Ma_hieu": "MAI1",
+            "Ten_dich_vu": "Chụp X-quang Khớp vai T-N Lamy",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 220000
+        },
+        {
+            "Stt": 166,
+            "Ma_hieu": "MAI2",
+            "Ten_dich_vu": "Chụp X-quang Khung chậu T + khớp háng N hai bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 220000
+        },
+        {
+            "Stt": 167,
+            "Ma_hieu": "MAI3",
+            "Ten_dich_vu": "Chụp X-quang Khung chậu T + khớp háng N một bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 160000
+        },
+        {
+            "Stt": 168,
+            "Ma_hieu": "MAI4",
+            "Ten_dich_vu": "Chụp X-quang Khung chậu thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 169,
+            "Ma_hieu": "MAJ5",
+            "Ten_dich_vu": "Chụp X-quang Ngón tay thẳng-nghiêng-chếch",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 160000
+        },
+        {
+            "Stt": 170,
+            "Ma_hieu": "MAJ6",
+            "Ten_dich_vu": "Chụp X-quang Ngực nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 171,
+            "Ma_hieu": "MAJ7",
+            "Ten_dich_vu": "Chụp X-quang Ngực thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 172,
+            "Ma_hieu": "MAJ9",
+            "Ten_dich_vu": "Chụp X-quang Phỗi đỉnh ưỡn (Apico)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 173,
+            "Ma_hieu": "MAK3",
+            "Ten_dich_vu": "Chụp X-quang Sọ nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 174,
+            "Ma_hieu": "MAK4",
+            "Ten_dich_vu": "Chụp X-quang Sọ thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 90000
+        },
+        {
+            "Stt": 175,
+            "Ma_hieu": "MAK5",
+            "Ten_dich_vu": "Chụp X-quang Sọ thẳng và nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 176,
+            "Ma_hieu": "MAL5",
+            "Ten_dich_vu": "Chụp X-quang Xương bả vai thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 177,
+            "Ma_hieu": "MAL6",
+            "Ten_dich_vu": "Chụp X-quang Xương cẳng tay thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 178,
+            "Ma_hieu": "MAL7",
+            "Ten_dich_vu": "Chụp X-quang Xương cùng-cụt nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 90000
+        },
+        {
+            "Stt": 179,
+            "Ma_hieu": "MAL8",
+            "Ten_dich_vu": "Chụp X-quang Xương cùng-cụt thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 90000
+        },
+        {
+            "Stt": 180,
+            "Ma_hieu": "MAL9",
+            "Ten_dich_vu": "Chụp X-quang Xương cùng-cụt thẳng và nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 181,
+            "Ma_hieu": "MAM0",
+            "Ten_dich_vu": "Chụp X-quang Xương đòn",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 182,
+            "Ma_hieu": "MAM1",
+            "Ten_dich_vu": "Chụp X-quang Xương đùi thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 183,
+            "Ma_hieu": "MAM2",
+            "Ten_dich_vu": "Chụp X-quang Xương gót nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 184,
+            "Ma_hieu": "MAM4",
+            "Ten_dich_vu": "Chụp X-quang Xương gót thẳng-nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 185,
+            "Ma_hieu": "MAM5",
+            "Ten_dich_vu": "Chụp X-quang Xương hàm dưới 1 bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 90000
+        },
+        {
+            "Stt": 186,
+            "Ma_hieu": "MAM6",
+            "Ten_dich_vu": "Chụp X-quang Xương hàm dưới 2 bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 187,
+            "Ma_hieu": "MAM7",
+            "Ten_dich_vu": "Chụp X-quang Xương mũi thẳng nghiêng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 188,
+            "Ma_hieu": "MAM8",
+            "Ten_dich_vu": "Chụp X-quang Xương mũi thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 90000
+        },
+        {
+            "Stt": 189,
+            "Ma_hieu": "MAP2",
+            "Ten_dich_vu": "Chụp X-quang cột sống cổ thẳng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 190,
+            "Ma_hieu": "MAP8",
+            "Ten_dich_vu": "Chụp X-quang khớp gối thẳng – nghiêng 1 bên (tư thế đứng)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 191,
+            "Ma_hieu": "MAP9",
+            "Ten_dich_vu": "Chụp X-quang khớp gối thẳng – nghiêng 2 bên (tư thế đứng)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 270000
+        },
+        {
+            "Stt": 192,
+            "Ma_hieu": "MAQ1",
+            "Ten_dich_vu": "Chụp X-quang khớp gối thẳng 1 bên (tư thế đứng)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 193,
+            "Ma_hieu": "DH01",
+            "Ten_dich_vu": "Ghi đĩa hình 01 CD ROM",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 194,
+            "Ma_hieu": "DH07",
+            "Ten_dich_vu": "Chứng nhận thương tích",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 120000
+        },
+        {
+            "Stt": 195,
+            "Ma_hieu": "DH29",
+            "Ten_dich_vu": "Tóm tắt bệnh án",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 120000
+        },
+        {
+            "Stt": 196,
+            "Ma_hieu": "DH30",
+            "Ten_dich_vu": "Tóm tắt bệnh án bằng tiếng anh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 220000
+        },
+        {
+            "Stt": 197,
+            "Ma_hieu": "DH34",
+            "Ten_dich_vu": "Xác nhận điều trị ngoại trú",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 60000
+        },
+        {
+            "Stt": 198,
+            "Ma_hieu": "DH35",
+            "Ten_dich_vu": "Xác nhận điều trị Ngoại Trú tiếng anh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 170000
+        },
+        {
+            "Stt": 199,
+            "Ma_hieu": "DH72",
+            "Ten_dich_vu": "Cấp giấy chứng nhận sức khỏe",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 50000
+        },
+        {
+            "Stt": 200,
+            "Ma_hieu": "DH73",
+            "Ten_dich_vu": "Trả kết quả CLS bằng tiếng anh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 201,
+            "Ma_hieu": "KH01",
+            "Ten_dich_vu": "Trả kết quả Khám chữa bệnh qua thư tín",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 30000
+        },
+        {
+            "Stt": 202,
+            "Ma_hieu": "KH02",
+            "Ten_dich_vu": "Phí lấy mẫu tại địa chỉ khách hàng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 203,
+            "Ma_hieu": "KH03",
+            "Ten_dich_vu": "Cấp lại hồ sơ khám/chữa bệnh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 204,
+            "Ma_hieu": "TTV1",
+            "Ten_dich_vu": "Phí cấp lại thẻ thành viên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 50000
+        },
+        {
+            "Stt": 205,
+            "Ma_hieu": "DB32",
+            "Ten_dich_vu": "HỘI CHẨN BÁC SĨ BỆNH VIỆN",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 206,
+            "Ma_hieu": "DG05",
+            "Ten_dich_vu": "Khám hô hấp",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 207,
+            "Ma_hieu": "DG06",
+            "Ten_dich_vu": "Khám da liễu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 208,
+            "Ma_hieu": "DG10",
+            "Ten_dich_vu": "Khám mắt",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 209,
+            "Ma_hieu": "DG13",
+            "Ten_dich_vu": "Khám nội tiết",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 210,
+            "Ma_hieu": "DG15",
+            "Ten_dich_vu": "Khám sản - phụ khoa",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 211,
+            "Ma_hieu": "DG16",
+            "Ten_dich_vu": "Khám răng hàm mặt",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 212,
+            "Ma_hieu": "DG19",
+            "Ten_dich_vu": "Khám tai mũi họng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 213,
+            "Ma_hieu": "DG20",
+            "Ten_dich_vu": "Khám thần kinh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 214,
+            "Ma_hieu": "DG21",
+            "Ten_dich_vu": "Khám tiêu hoá - gan mật",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 215,
+            "Ma_hieu": "DG22",
+            "Ten_dich_vu": "Khám tim mạch",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 216,
+            "Ma_hieu": "DG24",
+            "Ten_dich_vu": "Khám tuyến vú",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 217,
+            "Ma_hieu": "DG26",
+            "Ten_dich_vu": "Khám xương khớp",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 218,
+            "Ma_hieu": "DG27",
+            "Ten_dich_vu": "Khám dị ứng - miễn dịch lâm sàng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 250000
+        },
+        {
+            "Stt": 219,
+            "Ma_hieu": "DG29",
+            "Ten_dich_vu": "Khám lồng ngực",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 220,
+            "Ma_hieu": "DG35",
+            "Ten_dich_vu": "Khám tâm thần kinh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 250000
+        },
+        {
+            "Stt": 221,
+            "Ma_hieu": "DG39",
+            "Ten_dich_vu": "Khám các bệnh mạn tính không lây",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 222,
+            "Ma_hieu": "DG42",
+            "Ten_dich_vu": "Khám và tư vấn",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 223,
+            "Ma_hieu": "DG46",
+            "Ten_dich_vu": "Khám Nhi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 224,
+            "Ma_hieu": "DG56",
+            "Ten_dich_vu": "Khám sức khỏe (nội tổng quát, mắt, răng hàm mặt, tai mũi họng)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 225,
+            "Ma_hieu": "DG58",
+            "Ten_dich_vu": "Khám tư vấn tiêm ngừa",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 226,
+            "Ma_hieu": "DG59",
+            "Ten_dich_vu": "Tham vấn và trị liệu tâm lý (gói 30 phút)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 500000
+        },
+        {
+            "Stt": 227,
+            "Ma_hieu": "DG61",
+            "Ten_dich_vu": "Khám nội",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 228,
+            "Ma_hieu": "DG63",
+            "Ten_dich_vu": "Khám thai",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 229,
+            "Ma_hieu": "DG69",
+            "Ten_dich_vu": "Khám Ngoại",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 230,
+            "Ma_hieu": "DG81",
+            "Ten_dich_vu": "Khám chuyên gia",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 800000
+        },
+        {
+            "Stt": 231,
+            "Ma_hieu": "DG87",
+            "Ten_dich_vu": "Khám hội chẩn",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 232,
+            "Ma_hieu": "DG88",
+            "Ten_dich_vu": "Khám/tư vấn từ xa",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 233,
+            "Ma_hieu": "DG89",
+            "Ten_dich_vu": "Khám chấn thương - chỉnh hình",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 234,
+            "Ma_hieu": "KB1",
+            "Ten_dich_vu": "Khám cấp cứu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 250000
+        },
+        {
+            "Stt": 235,
+            "Ma_hieu": "YV50",
+            "Ten_dich_vu": "Khám xử trí cấp cứu (PK)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 236,
+            "Ma_hieu": "MF28",
+            "Ten_dich_vu": "Ghi điện não thường quy",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 450000
+        },
+        {
+            "Stt": 237,
+            "Ma_hieu": "MF95",
+            "Ten_dich_vu": "Ghi điện não giấc ngủ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 950000
+        },
+        {
+            "Stt": 238,
+            "Ma_hieu": "MF20",
+            "Ten_dich_vu": "Điện tim thường (ECG)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 60000
+        },
+        {
+            "Stt": 239,
+            "Ma_hieu": "MF32",
+            "Ten_dich_vu": "Holter điện tâm đồ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 600000
+        },
+        {
+            "Stt": 240,
+            "Ma_hieu": "MF52",
+            "Ten_dich_vu": "Điện tim thường tại giường",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 60000
+        },
+        {
+            "Stt": 241,
+            "Ma_hieu": "MF58",
+            "Ten_dich_vu": "Holter huyết áp",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 600000
+        },
+        {
+            "Stt": 242,
+            "Ma_hieu": "DH67",
+            "Ten_dich_vu": "Đo âm ốc tai OAE",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 243,
+            "Ma_hieu": "J323",
+            "Ten_dich_vu": "Đo thính lực đơn âm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 244,
+            "Ma_hieu": "J324",
+            "Ten_dich_vu": "Đo nhĩ lượng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 245,
+            "Ma_hieu": "J325",
+            "Ten_dich_vu": "Đo phản xạ cơ bàn đạp",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 246,
+            "Ma_hieu": "M206",
+            "Ten_dich_vu": "Soi đáy mắt trực tiếp",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 247,
+            "Ma_hieu": "MF26",
+            "Ten_dich_vu": "Đo Điện cơ (EMG)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 680000
+        },
+        {
+            "Stt": 248,
+            "Ma_hieu": "MF37",
+            "Ten_dich_vu": "Đo nhãn áp (Maclakov, Goldmann, Schiotz…)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 90000
+        },
+        {
+            "Stt": 249,
+            "Ma_hieu": "MF60",
+            "Ten_dich_vu": "Đo chỉ số ABI (chỉ số cổ chân/cánh tay)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 250,
+            "Ma_hieu": "YV31",
+            "Ten_dich_vu": "Đo sắc giác",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 251,
+            "Ma_hieu": "MF11",
+            "Ten_dich_vu": "Phế thân ký (TLC) có thuốc + Đo khả năng khuếch tán mao mạch (DLCO) + Đo sức cơ hô hấp (MIP/MEP/SNIP/RAW)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2065000
+        },
+        {
+            "Stt": 252,
+            "Ma_hieu": "MF12",
+            "Ten_dich_vu": "Phế thân ký (TLC) không thuốc + Đo khả năng khuếch tán mao mạch (DLCO) + Đo sức cơ hô hấp (MIP/MEP/SNIP/RAW)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1865000
+        },
+        {
+            "Stt": 253,
+            "Ma_hieu": "MF13",
+            "Ten_dich_vu": "Phế thân ký (TLC) có thuốc + Đo sức cơ hô hấp (MIP/MEP/SNIP/RAW)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1365000
+        },
+        {
+            "Stt": 254,
+            "Ma_hieu": "MF14",
+            "Ten_dich_vu": "Phế thân ký (TLC) không thuốc + Đo sức cơ hô hấp (MIP/MEP/SNIP/RAW)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1165000
+        },
+        {
+            "Stt": 255,
+            "Ma_hieu": "MF21",
+            "Ten_dich_vu": "Nghiệm pháp gắng sức điện tâm đồ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 900000
+        },
+        {
+            "Stt": 256,
+            "Ma_hieu": "MF23",
+            "Ten_dich_vu": "Hô hấp ký có thuốc",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 257,
+            "Ma_hieu": "MF24",
+            "Ten_dich_vu": "Hô hấp ký không thuốc",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 258,
+            "Ma_hieu": "MF25",
+            "Ten_dich_vu": "Đo đa ký giấc ngủ (PSG)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 4000000
+        },
+        {
+            "Stt": 259,
+            "Ma_hieu": "MF30",
+            "Ten_dich_vu": "Phế thân ký (TLC) không thuốc",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 500000
+        },
+        {
+            "Stt": 260,
+            "Ma_hieu": "MF31",
+            "Ten_dich_vu": "Phế thân ký (TLC) không thuốc + Đo khả năng khuếch tán mao mạch (DLCO)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1200000
+        },
+        {
+            "Stt": 261,
+            "Ma_hieu": "MF34",
+            "Ten_dich_vu": "Đo khả năng khuếch tán mao mạch (DLCO)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 800000
+        },
+        {
+            "Stt": 262,
+            "Ma_hieu": "MF61",
+            "Ten_dich_vu": "Đo NO trong khí thở ra (FENO) ở mũi và miệng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 450000
+        },
+        {
+            "Stt": 263,
+            "Ma_hieu": "MF63",
+            "Ten_dich_vu": "Đo NO trong khí thở ra (FENO)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 264,
+            "Ma_hieu": "MF64",
+            "Ten_dich_vu": "Phế thân ký (TLC) có thuốc",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 700000
+        },
+        {
+            "Stt": 265,
+            "Ma_hieu": "MF65",
+            "Ten_dich_vu": "Phế thân ký (TLC) có thuốc + Đo khả năng khuếch tán mao mạch (DLCO)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1400000
+        },
+        {
+            "Stt": 266,
+            "Ma_hieu": "MF66",
+            "Ten_dich_vu": "Đo gắng sức tim mạch - hô hấp (CPET)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1600000
+        },
+        {
+            "Stt": 267,
+            "Ma_hieu": "MF67",
+            "Ten_dich_vu": "Dao động xung ký (IOS) không thuốc",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 268,
+            "Ma_hieu": "MF68",
+            "Ten_dich_vu": "Dao động xung ký (IOS) có thuốc",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 269,
+            "Ma_hieu": "MF69",
+            "Ten_dich_vu": "Đo sức cơ hô hấp (MIP/MEP/SNIP/RAW)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 700000
+        },
+        {
+            "Stt": 270,
+            "Ma_hieu": "DB19",
+            "Ten_dich_vu": "PHUN KHÍ DUNG KÈM THUỐC",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 120000
+        },
+        {
+            "Stt": 271,
+            "Ma_hieu": "DB26",
+            "Ten_dich_vu": "THỞ OXY (mỗi giờ) (<2L/PHÚT)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 60000
+        },
+        {
+            "Stt": 272,
+            "Ma_hieu": "DC69",
+            "Ten_dich_vu": "THỞ OXY (GIỜ) (>3L/PHÚT)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 273,
+            "Ma_hieu": "DH05",
+            "Ten_dich_vu": "Phun khí dung (lần)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 50000
+        },
+        {
+            "Stt": 274,
+            "Ma_hieu": "DH52",
+            "Ten_dich_vu": "Monitor theo dõi tim thai 1 lần (60 phút)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 275,
+            "Ma_hieu": "DH53",
+            "Ten_dich_vu": "Monitor theo dõi tim thai liên tục 24 giờ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 500000
+        },
+        {
+            "Stt": 276,
+            "Ma_hieu": "DM67",
+            "Ten_dich_vu": "THỞ MASK KHÔNG XÂM LẤN",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 277,
+            "Ma_hieu": "DU01",
+            "Ten_dich_vu": "Test huyết thanh tự thân",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 278,
+            "Ma_hieu": "TK55",
+            "Ten_dich_vu": "Test lẩy da với các dị nguyên: Carrot (cà rốt)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 332000
+        },
+        {
+            "Stt": 279,
+            "Ma_hieu": "NDA5",
+            "Ten_dich_vu": "Bơm thuốc cản quang Omnipaque 300mg/100ml",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 460000
+        },
+        {
+            "Stt": 280,
+            "Ma_hieu": "NDA6",
+            "Ten_dich_vu": "Bơm thuốc cản quang Omnipaque 350mg/100ml",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 630000
+        },
+        {
+            "Stt": 281,
+            "Ma_hieu": "M128",
+            "Ten_dich_vu": "Lấy dị vật kết mạc",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 282,
+            "Ma_hieu": "M202",
+            "Ten_dich_vu": "Chích chắp, lẹo, nang lông mi, chích abces mi, kết mạc",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 283,
+            "Ma_hieu": "MN06",
+            "Ten_dich_vu": "Lấy sạn vôi kết mạc mắt",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 284,
+            "Ma_hieu": "E038",
+            "Ten_dich_vu": "Nội soi can thiệp - cắt polyp ống tiêu hóa < 1cm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1900000
+        },
+        {
+            "Stt": 285,
+            "Ma_hieu": "MB82",
+            "Ten_dich_vu": "Nội soi can thiệp - cắt polyp ống tiêu hóa (2 - 5 polyp)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2100000
+        },
+        {
+            "Stt": 286,
+            "Ma_hieu": "MB83",
+            "Ten_dich_vu": "Nội soi can thiệp - cắt polyp ống tiêu hóa (6-10 polyp)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2900000
+        },
+        {
+            "Stt": 287,
+            "Ma_hieu": "MBC0",
+            "Ten_dich_vu": "Sinh thiết qua nội soi tầm soát ung thư sớm và tổn thương tiền ung thư",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 288,
+            "Ma_hieu": "MBF9",
+            "Ten_dich_vu": "Nội soi can thiệp - cắt polyp ống tiêu hóa < 1cm (gây mê)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3100000
+        },
+        {
+            "Stt": 289,
+            "Ma_hieu": "MBG0",
+            "Ten_dich_vu": "Nội soi can thiệp - cắt polyp ống tiêu hóa (2 - 5 polyp) (gây mê)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3600000
+        },
+        {
+            "Stt": 290,
+            "Ma_hieu": "MBG1",
+            "Ten_dich_vu": "Nội soi can thiệp - cắt polyp ống tiêu hóa (6 - 10 polyp) (gây mê)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 4500000
+        },
+        {
+            "Stt": 291,
+            "Ma_hieu": "R082",
+            "Ten_dich_vu": "Lấy cao răng - cao răng ít",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 292,
+            "Ma_hieu": "R083",
+            "Ten_dich_vu": "Lấy cao răng - cao răng nhiều",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 293,
+            "Ma_hieu": "R105",
+            "Ten_dich_vu": "Chích áp xe lợi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 800000
+        },
+        {
+            "Stt": 294,
+            "Ma_hieu": "L091",
+            "Ten_dich_vu": "Điều trị tổn thương cổ tử cung bằng đốt điện, đốt nhiệt, đốt laser, áp lạnh...",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 550000
+        },
+        {
+            "Stt": 295,
+            "Ma_hieu": "L093",
+            "Ten_dich_vu": "Bóc nang tuyến Bartholin một bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 296,
+            "Ma_hieu": "L094",
+            "Ten_dich_vu": "Bóc nang tuyến Bartholin hai bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3500000
+        },
+        {
+            "Stt": 297,
+            "Ma_hieu": "L100",
+            "Ten_dich_vu": "Thủ thuật xoắn polip cổ tử cung, âm đạo (chân nhỏ)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 298,
+            "Ma_hieu": "L106",
+            "Ten_dich_vu": "Thủ thuật xoắn polip cổ tử cung, âm đạo",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 800000
+        },
+        {
+            "Stt": 299,
+            "Ma_hieu": "L117",
+            "Ten_dich_vu": "Cấy thuốc tránh thai (loại một nang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 4200000
+        },
+        {
+            "Stt": 300,
+            "Ma_hieu": "L118",
+            "Ten_dich_vu": "Đặt vòng tránh thai",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 500000
+        },
+        {
+            "Stt": 302,
+            "Ma_hieu": "L134",
+            "Ten_dich_vu": "Lấy vòng tránh thai có dây",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 303,
+            "Ma_hieu": "L135",
+            "Ten_dich_vu": "Làm lại thành âm đạo, tầng sinh môn",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 5000000
+        },
+        {
+            "Stt": 304,
+            "Ma_hieu": "L140",
+            "Ten_dich_vu": "Hút buồng tử cung do rong kinh, rong huyết (gây tê)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1000000
+        },
+        {
+            "Stt": 305,
+            "Ma_hieu": "L145",
+            "Ten_dich_vu": "Nạo sót thai, nạo sót rau sau sẩy, sau đẻ (gây tê)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1200000
+        },
+        {
+            "Stt": 306,
+            "Ma_hieu": "L150",
+            "Ten_dich_vu": "Nong buồng tử cung đặt dụng cụ chống dính",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2000000
+        },
+        {
+            "Stt": 307,
+            "Ma_hieu": "L171",
+            "Ten_dich_vu": "Chích abces vú",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1000000
+        },
+        {
+            "Stt": 308,
+            "Ma_hieu": "L172",
+            "Ten_dich_vu": "Sinh thiết cổ tử cung, âm hộ, âm đạo",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 309,
+            "Ma_hieu": "L176",
+            "Ten_dich_vu": "Thủ thuật LEEP (cắt cổ tử cung bằng vòng nhiệt điện)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2000000
+        },
+        {
+            "Stt": 310,
+            "Ma_hieu": "L182",
+            "Ten_dich_vu": "Chích abces tuyến Bartholin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 311,
+            "Ma_hieu": "L187",
+            "Ten_dich_vu": "Theo dõi nhịp tim thai và cơn co tử cung bằng monitor sản khoa",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 312,
+            "Ma_hieu": "L200",
+            "Ten_dich_vu": "Lấy dị vật âm đạo",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 250000
+        },
+        {
+            "Stt": 313,
+            "Ma_hieu": "L201",
+            "Ten_dich_vu": "Làm thuốc vết khâu tầng sinh môn nhiễm khuẩn",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 250000
+        },
+        {
+            "Stt": 314,
+            "Ma_hieu": "L296",
+            "Ten_dich_vu": "Tháo thuốc tránh thai (loại một nang)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 315,
+            "Ma_hieu": "J145",
+            "Ten_dich_vu": "Sinh thiết hốc mũi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 250000
+        },
+        {
+            "Stt": 316,
+            "Ma_hieu": "J201",
+            "Ten_dich_vu": "Phương pháp Proetz",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 317,
+            "Ma_hieu": "J206",
+            "Ten_dich_vu": "Lấy dị vật họng miệng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 318,
+            "Ma_hieu": "J211",
+            "Ten_dich_vu": "Lấy dị vật tai",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 319,
+            "Ma_hieu": "J281",
+            "Ten_dich_vu": "Nội soi mũi hoặc vòm hoặc họng có sinh thiết",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 513000
+        },
+        {
+            "Stt": 321,
+            "Ma_hieu": "J332",
+            "Ten_dich_vu": "Lấy ráy tai",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 120000
+        },
+        {
+            "Stt": 322,
+            "Ma_hieu": "J334",
+            "Ten_dich_vu": "Lấy dị vật mũi, họng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 324,
+            "Ma_hieu": "MF35",
+            "Ten_dich_vu": "Đo khúc xạ máy",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 65000
+        },
+        {
+            "Stt": 325,
+            "Ma_hieu": "D102",
+            "Ten_dich_vu": "Chọc hút kim nhỏ tuyến giáp",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 500000
+        },
+        {
+            "Stt": 326,
+            "Ma_hieu": "DB14",
+            "Ten_dich_vu": "TRUYỀN DỊCH",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 250000
+        },
+        {
+            "Stt": 326,
+            "Ma_hieu": "DB15",
+            "Ten_dich_vu": "Truyền thuốc Zoledronic Acid",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 327,
+            "Ma_hieu": "DH41",
+            "Ten_dich_vu": "Tiêm bắp thịt",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 80000
+        },
+        {
+            "Stt": 327,
+            "Ma_hieu": "DH42",
+            "Ten_dich_vu": "Tiêm tĩnh mạch",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 120000
+        },
+        {
+            "Stt": 328,
+            "Ma_hieu": "MC67",
+            "Ten_dich_vu": "Chọc FNA qua siêu âm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 500000
+        },
+        {
+            "Stt": 329,
+            "Ma_hieu": "Z133",
+            "Ten_dich_vu": "Thụt tháo phân",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 110000
+        },
+        {
+            "Stt": 330,
+            "Ma_hieu": "Z175",
+            "Ten_dich_vu": "Chọc hút tế bào phần mềm bằng kim nhỏ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 500000
+        },
+        {
+            "Stt": 331,
+            "Ma_hieu": "TI06",
+            "Ten_dich_vu": "Tiêm Engerix B (ngừa VGSV B) 10 mcg",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 332,
+            "Ma_hieu": "TI07",
+            "Ten_dich_vu": "Tiêm Engerix B (ngừa VGSV B) 20 mcg",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 195000
+        },
+        {
+            "Stt": 333,
+            "Ma_hieu": "TI09",
+            "Ten_dich_vu": "Tiêm Gardasil 4 (ngừa HPV)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1780000
+        },
+        {
+            "Stt": 333,
+            "Ma_hieu": "TI10",
+            "Ten_dich_vu": "Tiêm Vaccin GARDASIL 9 (ngừa HPV)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2930000
+        },
+        {
+            "Stt": 334,
+            "Ma_hieu": "TI13",
+            "Ten_dich_vu": "Tiêm MMR (ngừa sởi, quai bị, Rubella)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 250000
+        },
+        {
+            "Stt": 335,
+            "Ma_hieu": "TI18",
+            "Ten_dich_vu": "Uống Rotarix (ngừa tiêu chảy do Rotavirus)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 870000
+        },
+        {
+            "Stt": 336,
+            "Ma_hieu": "TI19",
+            "Ten_dich_vu": "Uống Rotateq (ngừa tiêu chảy cấp do Rotavirus)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 660000
+        },
+        {
+            "Stt": 337,
+            "Ma_hieu": "TI23",
+            "Ten_dich_vu": "Tiêm Typhim VI (ngừa thương hàn)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 190000
+        },
+        {
+            "Stt": 338,
+            "Ma_hieu": "TI25",
+            "Ten_dich_vu": "Tiêm Vaxigrip 0.25 ml (ngừa cúm)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 250000
+        },
+        {
+            "Stt": 339,
+            "Ma_hieu": "TI27",
+            "Ten_dich_vu": "Tiêm Vaccin VAXIGRIP TETRA 0.5 ml (ngừa bệnh Cúm)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 360000
+        },
+        {
+            "Stt": 340,
+            "Ma_hieu": "TI29",
+            "Ten_dich_vu": "Tiêm Euvax B 10 MCG /0,5 ML (ngừa VGSV B)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 110000
+        },
+        {
+            "Stt": 341,
+            "Ma_hieu": "TI30",
+            "Ten_dich_vu": "Tiêm Euvax B 20 MCG /1 ML (ngừa VGSV B)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 155000
+        },
+        {
+            "Stt": 342,
+            "Ma_hieu": "TI32",
+            "Ten_dich_vu": "Tiêm vaccine SYNFLORIX 0.5ml (ngừa bệnh do phế cầu)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 998000
+        },
+        {
+            "Stt": 343,
+            "Ma_hieu": "TI33",
+            "Ten_dich_vu": "Tiêm Varivax 0.5ml (ngừa thủy đậu)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 344,
+            "Ma_hieu": "TI36",
+            "Ten_dich_vu": "Tiêm bắp thịt (Vaccine uốn ván hấp phụ (VAT) 40IU/0.5ml)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 75000
+        },
+        {
+            "Stt": 345,
+            "Ma_hieu": "TI41",
+            "Ten_dich_vu": "Tiêm vaccine Hexaxim 0.5ml (ngừa bạch hầu, ho gà, uốn ván, viêm gan B, viêm màng não mủ hib và bại liệt)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1050000
+        },
+        {
+            "Stt": 346,
+            "Ma_hieu": "TI42",
+            "Ten_dich_vu": "Tiêm SAT (ngừa uốn ván)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 70000
+        },
+        {
+            "Stt": 347,
+            "Ma_hieu": "TI43",
+            "Ten_dich_vu": "Tiêm IMOJEV (Vaccine ngừa Viêm não Nhật Bản)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 715000
+        },
+        {
+            "Stt": 348,
+            "Ma_hieu": "TI46",
+            "Ten_dich_vu": "Tiêm Prevenar 13 (Vaccine ngừa bệnh do phế cầu)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1290000
+        },
+        {
+            "Stt": 349,
+            "Ma_hieu": "TI47",
+            "Ten_dich_vu": "Tiêm Vaccin GC Flu Quadriva lent Pre-filled Syringe (ngừa cúm)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 340000
+        },
+        {
+            "Stt": 350,
+            "Ma_hieu": "TI48",
+            "Ten_dich_vu": "Tiêm GENE-HBVAX 0.5 ml (ngừa VGSV B)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 110000
+        },
+        {
+            "Stt": 351,
+            "Ma_hieu": "TI49",
+            "Ten_dich_vu": "Tiêm GENE-HBVAX 1 ml (ngừa VGSV B)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 140000
+        },
+        {
+            "Stt": 352,
+            "Ma_hieu": "TI90",
+            "Ten_dich_vu": "Tiêm Menactra 0,5ml (ngừa Viêm màng não mô cầu ACYW)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1250000
+        },
+        {
+            "Stt": 353,
+            "Ma_hieu": "TI91",
+            "Ten_dich_vu": "Tiêm vaccine Boostrix (ngừa Bạch hầu, Uốn ván, Ho gà)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 730000
+        },
+        {
+            "Stt": 354,
+            "Ma_hieu": "TI92",
+            "Ten_dich_vu": "Tiêm Vaccin VA-MENGOC-BC (ngừa viêm màng não mô cầu type B&C)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 250000
+        },
+        {
+            "Stt": 355,
+            "Ma_hieu": "TI93",
+            "Ten_dich_vu": "Tiêm Vaccin INFLUVAC TETRA (ngừa bệnh Cúm)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 370000
+        },
+        {
+            "Stt": 356,
+            "Ma_hieu": "MBD2",
+            "Ten_dich_vu": "Kẹp cầm máu qua nội soi ống tiêu hóa",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 600000
+        },
+        {
+            "Stt": 357,
+            "Ma_hieu": "DB24",
+            "Ten_dich_vu": "Khâu vết thương",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 650000
+        },
+        {
+            "Stt": 358,
+            "Ma_hieu": "N300",
+            "Ten_dich_vu": "Cố định tạm thời người bệnh gãy xương",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 800000
+        },
+        {
+            "Stt": 359,
+            "Ma_hieu": "Z097",
+            "Ten_dich_vu": "Chọc dò dịch màng phổi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 480000
+        },
+        {
+            "Stt": 360,
+            "Ma_hieu": "Z165",
+            "Ten_dich_vu": "Cắt chỉ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 50000
+        },
+        {
+            "Stt": 361,
+            "Ma_hieu": "ZY01",
+            "Ten_dich_vu": "Chích rạch áp xe nhỏ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1000000
+        },
+        {
+            "Stt": 362,
+            "Ma_hieu": "ZY03",
+            "Ten_dich_vu": "Thay băng cắt chỉ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 180000
+        },
+        {
+            "Stt": 363,
+            "Ma_hieu": "ZY06",
+            "Ten_dich_vu": "Cắt lọc, lấy bỏ tổ chức hoại tử cho các nhiễm trùng phần mềm trên người bệnh đái tháo đường",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 4000000
+        },
+        {
+            "Stt": 364,
+            "Ma_hieu": "ZY07",
+            "Ten_dich_vu": "Chích rạch, dẫn lưu ổ áp xe trên người bệnh đái tháo đường",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2000000
+        },
+        {
+            "Stt": 365,
+            "Ma_hieu": "ZY08",
+            "Ten_dich_vu": "Tháo móng quặp trên người bệnh đái tháo đường",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1500000
+        },
+        {
+            "Stt": 366,
+            "Ma_hieu": "ZY09",
+            "Ten_dich_vu": "Gọt chai chân (gọt nốt chai) trên người bệnh đái tháo đường",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1500000
+        },
+        {
+            "Stt": 367,
+            "Ma_hieu": "ZY10",
+            "Ten_dich_vu": "Cắt móng chân, chăm sóc móng trên người bệnh đái tháo đường",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1000000
+        },
+        {
+            "Stt": 368,
+            "Ma_hieu": "ZY11",
+            "Ten_dich_vu": "Phẫu thuật cắt u máu nhỏ (đường kính < 5 cm)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 6000000
+        },
+        {
+            "Stt": 369,
+            "Ma_hieu": "ZY12",
+            "Ten_dich_vu": "Phẫu thuật cắt u máu nhỏ (đường kính 5-10 cm)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 8000000
+        },
+        {
+            "Stt": 370,
+            "Ma_hieu": "ZY13",
+            "Ten_dich_vu": "Phẫu thuật cắt u thành ngực",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 10000000
+        },
+        {
+            "Stt": 371,
+            "Ma_hieu": "ZY15",
+            "Ten_dich_vu": "Phẫu thuật thương tích phần mềm các cơ quan vận động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2000000
+        },
+        {
+            "Stt": 372,
+            "Ma_hieu": "ZY16",
+            "Ten_dich_vu": "Phẫu thuật điều trị hội chứng chèn ép thần kinh trụ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 9000000
+        },
+        {
+            "Stt": 373,
+            "Ma_hieu": "ZY17",
+            "Ten_dich_vu": "Phẫu thuật điều trị bệnh DE QUER VAIN và ngón tay cò súng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 7000000
+        },
+        {
+            "Stt": 374,
+            "Ma_hieu": "ZY18",
+            "Ten_dich_vu": "Thương tích bàn tay giản đơn",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1500000
+        },
+        {
+            "Stt": 375,
+            "Ma_hieu": "ZY19",
+            "Ten_dich_vu": "Rút đinh/tháo phương tiện kết hợp xương (chỉ rút đinh Kirschner)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 7000000
+        },
+        {
+            "Stt": 376,
+            "Ma_hieu": "ZY21",
+            "Ten_dich_vu": "Phẫu thuật vết thương phần mềm đơn giản/rách da đầu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2000000
+        },
+        {
+            "Stt": 377,
+            "Ma_hieu": "ZY22",
+            "Ten_dich_vu": "Phẫu thuật lấy bỏ u phần mềm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2500000
+        },
+        {
+            "Stt": 378,
+            "Ma_hieu": "ZY23",
+            "Ten_dich_vu": "Phẫu thuật lấy bỏ u phần mềm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 6500000
+        },
+        {
+            "Stt": 379,
+            "Ma_hieu": "ZY24",
+            "Ten_dich_vu": "Nắn, bó bột bong sụn tiếp khớp khuỷu, khớp cổ tay",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1500000
+        },
+        {
+            "Stt": 380,
+            "Ma_hieu": "ZY25",
+            "Ten_dich_vu": "Nắn, bó bột gãy cổ xương cánh tay",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2000000
+        },
+        {
+            "Stt": 381,
+            "Ma_hieu": "ZY26",
+            "Ten_dich_vu": "Nắn, bó bột gãy xương bàn, ngón tay",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1500000
+        },
+        {
+            "Stt": 382,
+            "Ma_hieu": "ZY27",
+            "Ten_dich_vu": "Bó bột ống trong gãy xương bánh chè",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2000000
+        },
+        {
+            "Stt": 383,
+            "Ma_hieu": "ZY28",
+            "Ten_dich_vu": "Nắn, bó bột gãy xương ngón chân",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1000000
+        },
+        {
+            "Stt": 384,
+            "Ma_hieu": "ZY29",
+            "Ten_dich_vu": "Nắn, bó bột gãy xương bàn chân",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1000000
+        },
+        {
+            "Stt": 385,
+            "Ma_hieu": "ZY30",
+            "Ten_dich_vu": "Nẹp bột các loại, không nắn",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1000000
+        },
+        {
+            "Stt": 386,
+            "Ma_hieu": "ZY31",
+            "Ten_dich_vu": "Cắt u mỡ, u bã đậu vùng hàm mặt đường kính trên 5 cm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 6000000
+        },
+        {
+            "Stt": 387,
+            "Ma_hieu": "ZY33",
+            "Ten_dich_vu": "Cắt u máu, u bạch huyết thành ngực đường kính dưới 5 cm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 8000000
+        },
+        {
+            "Stt": 388,
+            "Ma_hieu": "ZY35",
+            "Ten_dich_vu": "Cắt u vú lành tính",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 10000000
+        },
+        {
+            "Stt": 389,
+            "Ma_hieu": "ZY36",
+            "Ten_dich_vu": "Cắt u máu khu trú, đường kính dưới 5 cm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 6500000
+        },
+        {
+            "Stt": 390,
+            "Ma_hieu": "ZY38",
+            "Ten_dich_vu": "Cắt u lành phần mềm đường kính dưới 10cm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 8500000
+        },
+        {
+            "Stt": 391,
+            "Ma_hieu": "ZY40",
+            "Ten_dich_vu": "Cắt u nang bao hoạt dịch (cổ tay, khoeo chân, cổ chân)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 9000000
+        },
+        {
+            "Stt": 392,
+            "Ma_hieu": "ZY42",
+            "Ten_dich_vu": "Phẫu thuật phì đại tuyến vú nam",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 10000000
+        },
+        {
+            "Stt": 393,
+            "Ma_hieu": "ZY44",
+            "Ten_dich_vu": "Điều trị suy tĩnh mạch bằng Laser nội mạch",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 7000000
+        },
+        {
+            "Stt": 394,
+            "Ma_hieu": "ZY45",
+            "Ten_dich_vu": "Điều trị suy tĩnh mạch bằng năng lượng sóng tần số radio",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 10000000
+        },
+        {
+            "Stt": 395,
+            "Ma_hieu": "ZY46",
+            "Ten_dich_vu": "Gây xơ tĩnh mạch điều trị suy, giãn tĩnh mạch mãn tính",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 5000000
+        },
+        {
+            "Stt": 396,
+            "Ma_hieu": "ZY47",
+            "Ten_dich_vu": "Phẫu thuật KHX gãy chỏm đốt bàn và ngón tay",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 9000000
+        },
+        {
+            "Stt": 397,
+            "Ma_hieu": "ZY49",
+            "Ten_dich_vu": "Phẫu thuật KHX gãy thân đốt bàn và ngón tay",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 9000000
+        },
+        {
+            "Stt": 398,
+            "Ma_hieu": "ZY51",
+            "Ten_dich_vu": "Phẫu thuật điều trị hội chứng ống cổ tay (1 bên)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 7000000
+        },
+        {
+            "Stt": 399,
+            "Ma_hieu": "ZY52",
+            "Ten_dich_vu": "Phẫu thuật điều trị hội chứng ống cổ tay (2 bên)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 12000000
+        },
+        {
+            "Stt": 400,
+            "Ma_hieu": "ZY53",
+            "Ten_dich_vu": "Khâu phục hồi tổn thương gân duỗi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 8000000
+        },
+        {
+            "Stt": 401,
+            "Ma_hieu": "ZY54",
+            "Ten_dich_vu": "Phẫu thuật điều trị viêm bao hoạt dịch của gân gấp bàn ngón tay",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 4500000
+        },
+        {
+            "Stt": 402,
+            "Ma_hieu": "ZY55",
+            "Ten_dich_vu": "Phẫu thuật KHX gãy xương đốt bàn và đốt ngón chân",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 9000000
+        },
+        {
+            "Stt": 403,
+            "Ma_hieu": "ZY61",
+            "Ten_dich_vu": "Gói Kim đốt + máy đốt sóng cao tầng sử dụng cho Phẫu thuật lấy bỏ u phần mềm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 17500000
+        },
+        {
+            "Stt": 404,
+            "Ma_hieu": "ZY62",
+            "Ten_dich_vu": "Gói dụng cụ khâu cắt sử dụng cho Phẫu thuật thương tích phần mềm các cơ quan vận động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 5000000
+        },
+        {
+            "Stt": 405,
+            "Ma_hieu": "ZY63",
+            "Ten_dich_vu": "Mổ bóc nhân xơ vú",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 6000000
+        },
+        {
+            "Stt": 406,
+            "Ma_hieu": "ZY64",
+            "Ten_dich_vu": "Kim sinh thiết và máy hút VABB sử dụng cho: Mổ bóc nhân xơ vú",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 18000000
+        },
+        {
+            "Stt": 407,
+            "Ma_hieu": "ZY65",
+            "Ten_dich_vu": "Ống thông + máy Laser sử dụng cho: Điều trị suy tĩnh mạch bằng Laser nội mạch",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 17000000
+        },
+        {
+            "Stt": 408,
+            "Ma_hieu": "ZY66",
+            "Ten_dich_vu": "Cắt bỏ bao da quy đầu do dính hoặc dài",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2000000
+        },
+        {
+            "Stt": 409,
+            "Ma_hieu": "ZY67",
+            "Ten_dich_vu": "Cắt hẹp bao quy đầu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 3000000
+        },
+        {
+            "Stt": 410,
+            "Ma_hieu": "ZY68",
+            "Ten_dich_vu": "Gói Dụng cụ khâu cắt Stappler",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 5000000
+        },
+        {
+            "Stt": 411,
+            "Ma_hieu": "N",
+            "Ten_dich_vu": "Tiêm khớp 2 bên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 350000
+        },
+        {
+            "Stt": 412,
+            "Ma_hieu": "N333",
+            "Ten_dich_vu": "Tiêm khớp gối",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 413,
+            "Ma_hieu": "N334",
+            "Ten_dich_vu": "Tiêm khớp háng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 414,
+            "Ma_hieu": "N335",
+            "Ten_dich_vu": "Tiêm khớp cổ chân",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 415,
+            "Ma_hieu": "N336",
+            "Ten_dich_vu": "Tiêm khớp bàn ngón chân",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 416,
+            "Ma_hieu": "N337",
+            "Ten_dich_vu": "Tiêm khớp cổ tay",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 417,
+            "Ma_hieu": "N340",
+            "Ten_dich_vu": "Tiêm khớp khuỷu tay",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 418,
+            "Ma_hieu": "N341",
+            "Ten_dich_vu": "Tiêm khớp vai",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 419,
+            "Ma_hieu": "N342",
+            "Ten_dich_vu": "Tiêm khớp ức đòn",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 420,
+            "Ma_hieu": "N344",
+            "Ten_dich_vu": "Tiêm khớp đòn - cùng vai",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 421,
+            "Ma_hieu": "N471",
+            "Ten_dich_vu": "Hút dịch khớp",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 422,
+            "Ma_hieu": "N472",
+            "Ten_dich_vu": "Tiêm gân 1 vị trí",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 423,
+            "Ma_hieu": "N473",
+            "Ten_dich_vu": "Tiêm hội chứng đường hầm cổ tay",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 424,
+            "Ma_hieu": "N479",
+            "Ten_dich_vu": "Tiêm điểm bám gân mỏm trâm quay (mỏm trâm trụ)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 425,
+            "Ma_hieu": "N480",
+            "Ten_dich_vu": "Tiêm gân 2 vị trí",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 360000
+        },
+        {
+            "Stt": 426,
+            "Ma_hieu": "N482",
+            "Ten_dich_vu": "Tiêm gân trên gai (dưới gai, gân bao xoay khớp vai)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 427,
+            "Ma_hieu": "N483",
+            "Ten_dich_vu": "Tiêm khớp gối (2 vị trí)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 360000
+        },
+        {
+            "Stt": 428,
+            "Ma_hieu": "N485",
+            "Ten_dich_vu": "Tiêm khớp cổ tay (2 vị trí)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 360000
+        },
+        {
+            "Stt": 429,
+            "Ma_hieu": "N489",
+            "Ten_dich_vu": "Tiêm gân gấp ngón tay",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 430,
+            "Ma_hieu": "N890",
+            "Ten_dich_vu": "Tiêm gân nhị đầu khớp vai",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 431,
+            "Ma_hieu": "4940",
+            "Ten_dich_vu": "Mask khí dung",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 50000
+        },
+        {
+            "Stt": 432,
+            "Ma_hieu": "DH02",
+            "Ten_dich_vu": "Sao chụp 1 phim cỡ A (14x17)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 55000
+        },
+        {
+            "Stt": 433,
+            "Ma_hieu": "LKHH",
+            "Ten_dich_vu": "Lọc khuẩn phế dung kế",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 50000
+        },
+        {
+            "Stt": 434,
+            "Ma_hieu": "004",
+            "Ten_dich_vu": "Kềm sinh thiết đại tràng, sử dụng 1 lần (VDK-FB-23-200-O-O-B1)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 220000
+        },
+        {
+            "Stt": 435,
+            "Ma_hieu": "CLIP",
+            "Ten_dich_vu": "Clip cầm máu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 750000
+        },
+        {
+            "Stt": 436,
+            "Ma_hieu": "TP01",
+            "Ten_dich_vu": "Xét nghiệm mẫu bệnh phẩm sinh thiết nhuộm Hemtoxylin-Eosin (1 xét nghiệm)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 500000
+        },
+        {
+            "Stt": 437,
+            "Ma_hieu": "TP09",
+            "Ten_dich_vu": "Xét nghiệm mẫu bệnh phẩm mổ ung thư tuyến giáp (Xét nghiệm và chẩn đoán mô bệnh học bằng phương pháp nhuộm Hemtoxylin Eosin)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1400000
+        },
+        {
+            "Stt": 438,
+            "Ma_hieu": "TP11",
+            "Ten_dich_vu": "Xét nghiệm mẫu bệnh phẩm mô ung thư gan, phổi, nơi khác (Xét nghiệm và chẩn đoán mô bệnh học bằng phương pháp nhuộm Hemtoxylin Eosin)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1400000
+        },
+        {
+            "Stt": 439,
+            "Ma_hieu": "TP16",
+            "Ten_dich_vu": "Xét nghiệm mẫu bệnh phẩm tế bào: FNA, rửa phế quản… (Xét nghiệm chẩn đoán tế bào học bong bằng phương pháp nhuộm Papanicolaou)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 400000
+        },
+        {
+            "Stt": 440,
+            "Ma_hieu": "TP18",
+            "Ten_dich_vu": "Xét nghiệm mẫu bệnh phẩm tế bào cổ tử cung (phương pháp nhúng dịch: Liqui-prep,...) ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 450000
+        },
+        {
+            "Stt": 441,
+            "Ma_hieu": "TP19",
+            "Ten_dich_vu": "PAP-s mear (Xét nghiệm chẩn đoán tế bào học bong bằng phương pháp nhuộm Papanicolaou)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 442,
+            "Ma_hieu": "TP20",
+            "Ten_dich_vu": "Xét nghiệm mẫu bệnh phẩm dịch cơ thể: màng phổi, màng tim, màng bụng…(gồm 2 phương pháp) (Xét nghiệm chẩn đoán tế bào học bong bằng phương pháp nhuộm Papanicolaou)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 750000
+        },
+        {
+            "Stt": 443,
+            "Ma_hieu": "TP34",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn (Marker) chưa bao gồm kháng thể 2 và hóa chất bộc lộ kháng nguyên",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 444,
+            "Ma_hieu": "TP43",
+            "Ten_dich_vu": "Xét nghiệm ThinPrep Pap",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 550000
+        },
+        {
+            "Stt": 445,
+            "Ma_hieu": "TPE1",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn (kháng thể Chromogranin)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 446,
+            "Ma_hieu": "TPE2",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn (kháng thể Synaptophysin)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 447,
+            "Ma_hieu": "TPE3",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn (kháng thể CK)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 448,
+            "Ma_hieu": "TPE4",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn (kháng thể CD56)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 449,
+            "Ma_hieu": "TPE5",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn, kháng thể CD3",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 450,
+            "Ma_hieu": "TPE6",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn, kháng thể ER",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 451,
+            "Ma_hieu": "TPE7",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn, kháng thể PR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 452,
+            "Ma_hieu": "TPE8",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn, kháng thể KI67",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 453,
+            "Ma_hieu": "TPE9",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn, kháng thể Her2",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 454,
+            "Ma_hieu": "TPF1",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn, kháng thể CD20",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 455,
+            "Ma_hieu": "TPF2",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn, kháng thể P63",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 456,
+            "Ma_hieu": "TPG6",
+            "Ten_dich_vu": "Xét nghiệm và chẩn đoán hóa mô miễn dịch cho một dấu ấn, kháng thể P16",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 850000
+        },
+        {
+            "Stt": 457,
+            "Ma_hieu": "GB01",
+            "Ten_dich_vu": "Điện di Hemoglobin (Hb electrophoresis)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 340000
+        },
+        {
+            "Stt": 458,
+            "Ma_hieu": "GE59",
+            "Ten_dich_vu": "Định lượng yếu tố VII",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 570000
+        },
+        {
+            "Stt": 459,
+            "Ma_hieu": "MI01",
+            "Ten_dich_vu": "Tổng phân tích tế bào máu ngoại vi (bằng máy đếm laser)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 102000
+        },
+        {
+            "Stt": 460,
+            "Ma_hieu": "MI02",
+            "Ten_dich_vu": "TS-TC",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 44000
+        },
+        {
+            "Stt": 461,
+            "Ma_hieu": "MI03",
+            "Ten_dich_vu": "Máu lắng (bằng máy tự động)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 40000
+        },
+        {
+            "Stt": 462,
+            "Ma_hieu": "MI04",
+            "Ten_dich_vu": "Tìm ký sinh trùng sốt rét trong máu (bằng phương pháp thủ công)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 110000
+        },
+        {
+            "Stt": 463,
+            "Ma_hieu": "MI08",
+            "Ten_dich_vu": "Thời gian prothrombin (PT: Prothrombin Time), (Các tên khác: TQ; Tỷ lệ Prothrombin) bằng máy tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 88000
+        },
+        {
+            "Stt": 464,
+            "Ma_hieu": "MI12",
+            "Ten_dich_vu": "Định lượng Fibrinogen (Tên khác: Định lượng yếu tố I), phương pháp Clauss- phương pháp trực tiếp, bằng máy tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 122000
+        },
+        {
+            "Stt": 465,
+            "Ma_hieu": "MI13",
+            "Ten_dich_vu": "Thời gian thromboplastin một phần hoạt hóa (APTT: Activated Partial Thromboplastin Time), (Tên khác: TCK) bằng máy tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 90000
+        },
+        {
+            "Stt": 466,
+            "Ma_hieu": "MI24",
+            "Ten_dich_vu": "Thời gian thrombin (TT: Thrombin Time) bằng máy tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 101000
+        },
+        {
+            "Stt": 467,
+            "Ma_hieu": "MI29",
+            "Ten_dich_vu": "Xét nghiệm hồng cầu lưới (bằng máy đếm laser)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 110000
+        },
+        {
+            "Stt": 468,
+            "Ma_hieu": "MI30",
+            "Ten_dich_vu": "Tế bào dịch màng (phổi, bụng, tim, khớp…) có đếm số lượng tế bào",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 135000
+        },
+        {
+            "Stt": 469,
+            "Ma_hieu": "MI33",
+            "Ten_dich_vu": "Xét nghiệm số lượng và độ tập trung tiểu cầu (bằng phương pháp thủ công)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 56000
+        },
+        {
+            "Stt": 470,
+            "Ma_hieu": "MI42",
+            "Ten_dich_vu": "Huyết đồ (bằng máy đếm laser)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 177000
+        },
+        {
+            "Stt": 471,
+            "Ma_hieu": "MI43",
+            "Ten_dich_vu": "Dàn tiêu bản máu ngoại vi (Phết máu ngoại vi)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 85000
+        },
+        {
+            "Stt": 472,
+            "Ma_hieu": "MI45",
+            "Ten_dich_vu": "Định lượng D-Dimer",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 458000
+        },
+        {
+            "Stt": 473,
+            "Ma_hieu": "MI53",
+            "Ten_dich_vu": "Định nhóm máu hệ ABO trên phiến đá, Rh(D)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 119000
+        },
+        {
+            "Stt": 474,
+            "Ma_hieu": "MI62",
+            "Ten_dich_vu": "Plasmodium (Ký sinh trùng sốt rét) Ag test nhanh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 253000
+        },
+        {
+            "Stt": 475,
+            "Ma_hieu": "GY01",
+            "Ten_dich_vu": "PinkCare (Xét nghiệm tầm soát nguy cơ ung thư di truyền cho nữ giới)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2750000
+        },
+        {
+            "Stt": 476,
+            "Ma_hieu": "GY02",
+            "Ten_dich_vu": "MenCare (Xét nghiệm tầm soát nguy cơ ung thư di truyền cho nam giới)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2750000
+        },
+        {
+            "Stt": 477,
+            "Ma_hieu": "GY03",
+            "Ten_dich_vu": "oncoSure (Xét nghiệm tầm soát nguy cơ ung thư di truyền)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 7150000
+        },
+        {
+            "Stt": 478,
+            "Ma_hieu": "GY04",
+            "Ten_dich_vu": "oncoSure Plus (Xét nghiệm tầm soát nguy cơ ung thư di truyền)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 11000000
+        },
+        {
+            "Stt": 479,
+            "Ma_hieu": "GY05",
+            "Ten_dich_vu": "GenCare Premium",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 16500000
+        },
+        {
+            "Stt": 480,
+            "Ma_hieu": "GY06",
+            "Ten_dich_vu": "GenLDL",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2100000
+        },
+        {
+            "Stt": 481,
+            "Ma_hieu": "TR03",
+            "Ten_dich_vu": "HTCĐ. Paragonimus sp (sán lá phổi)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 482,
+            "Ma_hieu": "TR04",
+            "Ten_dich_vu": "HTCĐ. Toxocara canis (giun đũa chó)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 483,
+            "Ma_hieu": "TR05",
+            "Ten_dich_vu": "HTCĐ. Strongyloides (giun lươn)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 484,
+            "Ma_hieu": "TR06",
+            "Ten_dich_vu": "Gnarthostoma (Giun đầu gai) Ab miễn dịch bán tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 485,
+            "Ma_hieu": "TR09",
+            "Ten_dich_vu": "Angiostrogylus cantonensis (Giun tròn chuột) Ab miễn dịch bán tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 486,
+            "Ma_hieu": "TR10",
+            "Ten_dich_vu": "Cysticercus cellulosae (Sán lợn) Ab miễn dịch bán tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 487,
+            "Ma_hieu": "YV13",
+            "Ten_dich_vu": "Đơn bào đường ruột soi tươi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 488,
+            "Ma_hieu": "YV14",
+            "Ten_dich_vu": "Trứng giun, sán soi tươi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 489,
+            "Ma_hieu": "YV15",
+            "Ten_dich_vu": "Strongyloides stercoralis (Giun lươn) ấu trùng soi tươi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 490,
+            "Ma_hieu": "YV16",
+            "Ten_dich_vu": "Demodex soi tươi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 491,
+            "Ma_hieu": "YV17",
+            "Ten_dich_vu": "Demodex nhuộm soi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 94000
+        },
+        {
+            "Stt": 492,
+            "Ma_hieu": "YV18",
+            "Ten_dich_vu": "Sarcoptes scabies hominis (Ghẻ) soi tươi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 493,
+            "Ma_hieu": "YV19",
+            "Ten_dich_vu": "Sarcoptes scabies hominis (Ghẻ) nhuộm soi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 94000
+        },
+        {
+            "Stt": 494,
+            "Ma_hieu": "GA07",
+            "Ten_dich_vu": "Chẩn đoán thương hàn bằng kỹ thuật Widal",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 120000
+        },
+        {
+            "Stt": 495,
+            "Ma_hieu": "GA44",
+            "Ten_dich_vu": "ICA (Islet cell Autoantibody)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 480000
+        },
+        {
+            "Stt": 496,
+            "Ma_hieu": "GA67",
+            "Ten_dich_vu": "Anti-GAD",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 420000
+        },
+        {
+            "Stt": 497,
+            "Ma_hieu": "GA68",
+            "Ten_dich_vu": "Peptide C (C-peptide) /blood",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 498,
+            "Ma_hieu": "GA77",
+            "Ten_dich_vu": "Định lượng Aldosteron (máu)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 521000
+        },
+        {
+            "Stt": 499,
+            "Ma_hieu": "GAE5",
+            "Ten_dich_vu": "Định lượng SCC (Squamous cell carcinoma antigen)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 355000
+        },
+        {
+            "Stt": 500,
+            "Ma_hieu": "GAO2",
+            "Ten_dich_vu": "Mumps virus IgG (Quai bị)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 501,
+            "Ma_hieu": "GB09",
+            "Ten_dich_vu": "HSV 1+2 IgM miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 502,
+            "Ma_hieu": "GB10",
+            "Ten_dich_vu": "HSV 1+2 IgG miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 503,
+            "Ma_hieu": "GB29",
+            "Ten_dich_vu": "Renin (Angiotensin I)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 615000
+        },
+        {
+            "Stt": 504,
+            "Ma_hieu": "GC32",
+            "Ten_dich_vu": "IGF 1 (Insulin like Growth Factor I)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 505,
+            "Ma_hieu": "GC37",
+            "Ten_dich_vu": "ANA 8 Profile",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1400000
+        },
+        {
+            "Stt": 507,
+            "Ma_hieu": "GD23",
+            "Ten_dich_vu": "ANCA Screen",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 270000
+        },
+        {
+            "Stt": 508,
+            "Ma_hieu": "GD49",
+            "Ten_dich_vu": "Định lượng antiCardiolipin IgG bằng phương pháp ELISA/miễn dịch hóa phát quang/ điện hóa phát quang",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 215000
+        },
+        {
+            "Stt": 509,
+            "Ma_hieu": "GD50",
+            "Ten_dich_vu": "Định lượng antiCardiolipin IgM bằng phương pháp ELISA/miễn dịch hóa phát quang điện hóa phát quang",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 215000
+        },
+        {
+            "Stt": 510,
+            "Ma_hieu": "GD53",
+            "Ten_dich_vu": "Định lượng Calcitonin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 190000
+        },
+        {
+            "Stt": 511,
+            "Ma_hieu": "GE03",
+            "Ten_dich_vu": "Anti HAV - IgG (ARC)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 180000
+        },
+        {
+            "Stt": 512,
+            "Ma_hieu": "GE33",
+            "Ten_dich_vu": "Định lượng BNP (B- Type Natriuretic Peptide)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 650000
+        },
+        {
+            "Stt": 513,
+            "Ma_hieu": "GE63",
+            "Ten_dich_vu": "Trichinella Spiralis IgG",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 105000
+        },
+        {
+            "Stt": 514,
+            "Ma_hieu": "GEA5",
+            "Ten_dich_vu": "Tìm giun chỉ trong máu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 92000
+        },
+        {
+            "Stt": 515,
+            "Ma_hieu": "GEB3",
+            "Ten_dich_vu": "HP-Ag /Stool (EIA)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 450000
+        },
+        {
+            "Stt": 516,
+            "Ma_hieu": "GEG8",
+            "Ten_dich_vu": "Measles-IgM (sởi)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 517,
+            "Ma_hieu": "GEG9",
+            "Ten_dich_vu": "Measles-IgG (sởi)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 518,
+            "Ma_hieu": "GGH2",
+            "Ten_dich_vu": "Triple test",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 430000
+        },
+        {
+            "Stt": 519,
+            "Ma_hieu": "GGJ6",
+            "Ten_dich_vu": "Định lượng Catecholamin /máu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 805000
+        },
+        {
+            "Stt": 520,
+            "Ma_hieu": "GGJ7",
+            "Ten_dich_vu": "Catecholamine/ NT24h",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 845000
+        },
+        {
+            "Stt": 521,
+            "Ma_hieu": "GGK2",
+            "Ten_dich_vu": "TPHA định lượng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 110000
+        },
+        {
+            "Stt": 522,
+            "Ma_hieu": "GGL5",
+            "Ten_dich_vu": "VDRL định lượng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 120000
+        },
+        {
+            "Stt": 523,
+            "Ma_hieu": "GGN2",
+            "Ten_dich_vu": "Chlamydia trachomatis IgG",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 524,
+            "Ma_hieu": "GGN3",
+            "Ten_dich_vu": "Chlamydia trachomatis IgM",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 525,
+            "Ma_hieu": "GGN4",
+            "Ten_dich_vu": "Chlamydia trachomatis - Neisseria gonorrhoeae DNA (dịch/NT)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 370000
+        },
+        {
+            "Stt": 526,
+            "Ma_hieu": "GGN7",
+            "Ten_dich_vu": "Varicella Zoster virus (IgG)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 527,
+            "Ma_hieu": "GGT8",
+            "Ten_dich_vu": "IGRA (Interferon-Gamma Release Assay)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2250000
+        },
+        {
+            "Stt": 528,
+            "Ma_hieu": "MJ02",
+            "Ten_dich_vu": "HBsAg miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 118000
+        },
+        {
+            "Stt": 529,
+            "Ma_hieu": "MJ03",
+            "Ten_dich_vu": "HBsAb định lượng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 155000
+        },
+        {
+            "Stt": 530,
+            "Ma_hieu": "MJ04",
+            "Ten_dich_vu": "HBeAg miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 154000
+        },
+        {
+            "Stt": 531,
+            "Ma_hieu": "MJ05",
+            "Ten_dich_vu": "HBeAb miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 120000
+        },
+        {
+            "Stt": 532,
+            "Ma_hieu": "MJ06",
+            "Ten_dich_vu": "HBc total miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 180000
+        },
+        {
+            "Stt": 533,
+            "Ma_hieu": "MJ07",
+            "Ten_dich_vu": "HCV Ab miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 170000
+        },
+        {
+            "Stt": 534,
+            "Ma_hieu": "MJ31",
+            "Ten_dich_vu": "HIV Ab miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 137000
+        },
+        {
+            "Stt": 535,
+            "Ma_hieu": "MJ32",
+            "Ten_dich_vu": "Test HIV khẳng định",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 341000
+        },
+        {
+            "Stt": 536,
+            "Ma_hieu": "MJ36",
+            "Ten_dich_vu": "RPR định tính",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 55000
+        },
+        {
+            "Stt": 537,
+            "Ma_hieu": "MJ37",
+            "Ten_dich_vu": "Treponema pallidum TPHA định tính",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 132000
+        },
+        {
+            "Stt": 538,
+            "Ma_hieu": "MJ39",
+            "Ten_dich_vu": "Định lượng Ferritin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 159000
+        },
+        {
+            "Stt": 539,
+            "Ma_hieu": "MJ40",
+            "Ten_dich_vu": "Định lượng HbA1c",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 198000
+        },
+        {
+            "Stt": 540,
+            "Ma_hieu": "MJ44",
+            "Ten_dich_vu": "Định lượng Homocystein",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 180000
+        },
+        {
+            "Stt": 541,
+            "Ma_hieu": "MJ45",
+            "Ten_dich_vu": "Định lượng TSH (Thyroid Stimulating hormone)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 542,
+            "Ma_hieu": "MJ46",
+            "Ten_dich_vu": "Định lượng FT4 (Free Thyroxine)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 543,
+            "Ma_hieu": "MJ47",
+            "Ten_dich_vu": "Định lượng FT3 (Free Triiodothyronine)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 544,
+            "Ma_hieu": "MJ48",
+            "Ten_dich_vu": "Định lượng AFP (Alpha Fetoproteine)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 180000
+        },
+        {
+            "Stt": 545,
+            "Ma_hieu": "MJ50",
+            "Ten_dich_vu": "Định lượng CEA (Carcino Embryonic Antigen)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 180000
+        },
+        {
+            "Stt": 546,
+            "Ma_hieu": "MJ51",
+            "Ten_dich_vu": "Định lượng CA 15 - 3 (Cancer Antigen 15 - 3)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 235000
+        },
+        {
+            "Stt": 547,
+            "Ma_hieu": "MJ52",
+            "Ten_dich_vu": "Định lượng CA 125 (cancer antigen 125)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 235000
+        },
+        {
+            "Stt": 548,
+            "Ma_hieu": "MJ53",
+            "Ten_dich_vu": "Định lượng bhCG (Beta human Chorionic Gonadotropins)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 190000
+        },
+        {
+            "Stt": 549,
+            "Ma_hieu": "MJ54",
+            "Ten_dich_vu": "Định lượng Prolactin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 177000
+        },
+        {
+            "Stt": 550,
+            "Ma_hieu": "MJ55",
+            "Ten_dich_vu": "Định lượng Testosterol",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 126000
+        },
+        {
+            "Stt": 551,
+            "Ma_hieu": "MJ56",
+            "Ten_dich_vu": "Định lượng FSH (Follicular Stimulating Hormone)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 153000
+        },
+        {
+            "Stt": 552,
+            "Ma_hieu": "MJ57",
+            "Ten_dich_vu": "Định lượng LH (Luteinizing Hormone)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 180000
+        },
+        {
+            "Stt": 553,
+            "Ma_hieu": "MJ58",
+            "Ten_dich_vu": "Định lượng Estradiol",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 136000
+        },
+        {
+            "Stt": 554,
+            "Ma_hieu": "MJ59",
+            "Ten_dich_vu": "Định lượng Progesteron",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 156000
+        },
+        {
+            "Stt": 554,
+            "Ma_hieu": "MJ60",
+            "Ten_dich_vu": "Free Testosterone (SHBG+ Testosterone)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 260000
+        },
+        {
+            "Stt": 555,
+            "Ma_hieu": "MJ63",
+            "Ten_dich_vu": "Định lượng CA 19 - 9 (Carbohydrate Antigen 19 - 9)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 194000
+        },
+        {
+            "Stt": 556,
+            "Ma_hieu": "MJ64",
+            "Ten_dich_vu": "HBc IgM miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 181000
+        },
+        {
+            "Stt": 557,
+            "Ma_hieu": "MJ65",
+            "Ten_dich_vu": "HAV IgM miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 194000
+        },
+        {
+            "Stt": 558,
+            "Ma_hieu": "MJ66",
+            "Ten_dich_vu": "HAV total miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 176000
+        },
+        {
+            "Stt": 560,
+            "Ma_hieu": "MJ75",
+            "Ten_dich_vu": "Định lượng Cortisol (sáng 7-9h)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 561,
+            "Ma_hieu": "MJ77",
+            "Ten_dich_vu": "Định lượng Cortisol /niệu 24h",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 132000
+        },
+        {
+            "Stt": 562,
+            "Ma_hieu": "MJ79",
+            "Ten_dich_vu": "Dengue virus IgG test nhanh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 563,
+            "Ma_hieu": "MJ80",
+            "Ten_dich_vu": "Dengue virus IgM test nhanh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 564,
+            "Ma_hieu": "MJ82",
+            "Ten_dich_vu": "Rubella virus IgG miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 175000
+        },
+        {
+            "Stt": 565,
+            "Ma_hieu": "MJ83",
+            "Ten_dich_vu": "Rubella virus IgM miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 175000
+        },
+        {
+            "Stt": 566,
+            "Ma_hieu": "MJ86",
+            "Ten_dich_vu": "Insuline (Random)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 144000
+        },
+        {
+            "Stt": 567,
+            "Ma_hieu": "MJ87",
+            "Ten_dich_vu": "Định lượng TRAb (TSH Receptor Antibodies)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 580000
+        },
+        {
+            "Stt": 568,
+            "Ma_hieu": "MJ89",
+            "Ten_dich_vu": "Định lượng ACTH (Adrenocorticotropic hormone)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 225000
+        },
+        {
+            "Stt": 569,
+            "Ma_hieu": "MJ90",
+            "Ten_dich_vu": "Định lượng PSA toàn phần (Total prostate-Specific Antigen)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 190000
+        },
+        {
+            "Stt": 570,
+            "Ma_hieu": "MJ91",
+            "Ten_dich_vu": "Định lượng PSA tự do (Free prostate-Specific Antigen)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 190000
+        },
+        {
+            "Stt": 571,
+            "Ma_hieu": "MJ94",
+            "Ten_dich_vu": "Định lượng Cyfra 21-1",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 175000
+        },
+        {
+            "Stt": 572,
+            "Ma_hieu": "MJ96",
+            "Ten_dich_vu": "Định lượng proBNP (NT-proBNP)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 498000
+        },
+        {
+            "Stt": 573,
+            "Ma_hieu": "MJ99",
+            "Ten_dich_vu": "HBsAg định lượng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 628000
+        },
+        {
+            "Stt": 574,
+            "Ma_hieu": "MJA0",
+            "Ten_dich_vu": "Dengue virus NS1Ag test nhanh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 180000
+        },
+        {
+            "Stt": 575,
+            "Ma_hieu": "MJA1",
+            "Ten_dich_vu": "RIDA qLine Allergy Panel 1 VIET",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 900000
+        },
+        {
+            "Stt": 576,
+            "Ma_hieu": "MJA2",
+            "Ten_dich_vu": "RIDA qLine Allergy Panel 4",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 900000
+        },
+        {
+            "Stt": 577,
+            "Ma_hieu": "MJA3",
+            "Ten_dich_vu": "Định lượng CA 72-4 (Cancer Antigen 72-4)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 310000
+        },
+        {
+            "Stt": 578,
+            "Ma_hieu": "MJA4",
+            "Ten_dich_vu": "Định lượng Anti CCP",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 369000
+        },
+        {
+            "Stt": 579,
+            "Ma_hieu": "MJA5",
+            "Ten_dich_vu": "Định lượng IgE (Immunoglobuline E)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 225000
+        },
+        {
+            "Stt": 580,
+            "Ma_hieu": "MJA6",
+            "Ten_dich_vu": "Định lượng Anti-TPO (Anti-thyroid Peroxidase anti bodies)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 275000
+        },
+        {
+            "Stt": 581,
+            "Ma_hieu": "MJA8",
+            "Ten_dich_vu": "RIDA qLine Allergy Panel 1 VIET và Panel 4",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1800000
+        },
+        {
+            "Stt": 582,
+            "Ma_hieu": "MJB0",
+            "Ten_dich_vu": "CMV IgG miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 270000
+        },
+        {
+            "Stt": 583,
+            "Ma_hieu": "MJB1",
+            "Ten_dich_vu": "CMV IgM miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 584,
+            "Ma_hieu": "MJB2",
+            "Ten_dich_vu": "EBV IgG miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 242000
+        },
+        {
+            "Stt": 585,
+            "Ma_hieu": "MJB3",
+            "Ten_dich_vu": "EBV IgM miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 242000
+        },
+        {
+            "Stt": 586,
+            "Ma_hieu": "MJB4",
+            "Ten_dich_vu": "Vitamin B12",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 150000
+        },
+        {
+            "Stt": 587,
+            "Ma_hieu": "MJB5",
+            "Ten_dich_vu": "Định lượng 25OH Vitamin D",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 430000
+        },
+        {
+            "Stt": 588,
+            "Ma_hieu": "MJB8",
+            "Ten_dich_vu": "Định lượng PTH (Parathyroid Hormon)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 280000
+        },
+        {
+            "Stt": 589,
+            "Ma_hieu": "MJC2",
+            "Ten_dich_vu": "Định lượng T4 (Thyroxine) [Máu]",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 125000
+        },
+        {
+            "Stt": 590,
+            "Ma_hieu": "MJC5",
+            "Ten_dich_vu": "H.Pylori (phát hiện IgG và yếu tố CIM - xác định H.P ở trạng thái đang hoạt động )",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 237000
+        },
+        {
+            "Stt": 591,
+            "Ma_hieu": "MJC6",
+            "Ten_dich_vu": "Định lượng HE4",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 480000
+        },
+        {
+            "Stt": 592,
+            "Ma_hieu": "MJC8",
+            "Ten_dich_vu": "Định lượng GH (Growth Hormone)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 385000
+        },
+        {
+            "Stt": 593,
+            "Ma_hieu": "MJC9",
+            "Ten_dich_vu": "Định lượng T3 (Tri iodothyronine)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 254000
+        },
+        {
+            "Stt": 594,
+            "Ma_hieu": "MJD5",
+            "Ten_dich_vu": "Định lượng Pepsinogen II",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 611000
+        },
+        {
+            "Stt": 595,
+            "Ma_hieu": "MJD6",
+            "Ten_dich_vu": "Định lượng ProGRP (Pro Gastrin Releasing Peptide)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 504000
+        },
+        {
+            "Stt": 596,
+            "Ma_hieu": "MJD7",
+            "Ten_dich_vu": "Định lượng Anti-Tg (Antibody- Thyroglobulin)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 270000
+        },
+        {
+            "Stt": 597,
+            "Ma_hieu": "MJD8",
+            "Ten_dich_vu": "Định lượng PIVKA (AFP, AFP-L3 và PIVKA-II) (Proteins Induced by Vitamin K Antagonism or Absence)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1500000
+        },
+        {
+            "Stt": 598,
+            "Ma_hieu": "MJE0",
+            "Ten_dich_vu": "Định lượng Tg (Thyroglobulin)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 270000
+        },
+        {
+            "Stt": 599,
+            "Ma_hieu": "MJE1",
+            "Ten_dich_vu": "Định lượng kháng thể kháng nhân (ANA) bằng máy tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 295000
+        },
+        {
+            "Stt": 600,
+            "Ma_hieu": "MJE2",
+            "Ten_dich_vu": "Kháng thể kháng dsDNA (anti-dsDNA) bằng kỹ thuật ELISA",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 601,
+            "Ma_hieu": "MJE4",
+            "Ten_dich_vu": "Kháng thể kháng Sm (anti Sm) bằng kỹ thuật ELISA",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 430000
+        },
+        {
+            "Stt": 602,
+            "Ma_hieu": "MJE8",
+            "Ten_dich_vu": "Double test (PAPPA, Free Beta hCG (FBC))",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 563000
+        },
+        {
+            "Stt": 603,
+            "Ma_hieu": "MJF1",
+            "Ten_dich_vu": "Định lượng Pro-calcitonin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 396000
+        },
+        {
+            "Stt": 604,
+            "Ma_hieu": "MJF4",
+            "Ten_dich_vu": "Định lượng Cortisol (bất kỳ)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 131000
+        },
+        {
+            "Stt": 605,
+            "Ma_hieu": "MJF5",
+            "Ten_dich_vu": "Toxoplasma IgM miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 225000
+        },
+        {
+            "Stt": 606,
+            "Ma_hieu": "MJF6",
+            "Ten_dich_vu": "Toxoplasma IgG miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 175000
+        },
+        {
+            "Stt": 607,
+            "Ma_hieu": "MJG1",
+            "Ten_dich_vu": "Định lượng Troponin I hs",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 171000
+        },
+        {
+            "Stt": 608,
+            "Ma_hieu": "MJG2",
+            "Ten_dich_vu": "HEV IgM miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 333000
+        },
+        {
+            "Stt": 609,
+            "Ma_hieu": "MJG3",
+            "Ten_dich_vu": "HEV IgG miễn dịch tự động",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 333000
+        },
+        {
+            "Stt": 610,
+            "Ma_hieu": "MJG6",
+            "Ten_dich_vu": "Định lượng PIVKA II (Proteins Induced by Vitamin K Antagonism or Absence)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 800000
+        },
+        {
+            "Stt": 611,
+            "Ma_hieu": "MJG7",
+            "Ten_dich_vu": "Định lượng AMH (Anti- Mullerian Hormone)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 839000
+        },
+        {
+            "Stt": 612,
+            "Ma_hieu": "MJG8",
+            "Ten_dich_vu": "Helicobacter pylori Ab test nhanh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 115000
+        },
+        {
+            "Stt": 613,
+            "Ma_hieu": "MJJ8",
+            "Ten_dich_vu": "Metanephrine/ máu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 510000
+        },
+        {
+            "Stt": 614,
+            "Ma_hieu": "MJM3",
+            "Ten_dich_vu": "Normetanephrine/ máu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 510000
+        },
+        {
+            "Stt": 615,
+            "Ma_hieu": "MZ02",
+            "Ten_dich_vu": "Hồng cầu trong phân test nhanh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 616,
+            "Ma_hieu": "GE13",
+            "Ten_dich_vu": "Định tính Amphetamin (test nhanh)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 88000
+        },
+        {
+            "Stt": 617,
+            "Ma_hieu": "MK01",
+            "Ten_dich_vu": "Tổng phân tích nước tiểu (Bằng máy tự động)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 44000
+        },
+        {
+            "Stt": 618,
+            "Ma_hieu": "MK12",
+            "Ten_dich_vu": "Cặn Addis",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 55000
+        },
+        {
+            "Stt": 620,
+            "Ma_hieu": "MK29",
+            "Ten_dich_vu": "Xét nghiệm tế bào cặn nước tiểu (bằng phương pháp thủ công)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 88000
+        },
+        {
+            "Stt": 621,
+            "Ma_hieu": "MK36",
+            "Ten_dich_vu": "Định lượng Protein (niệu 24h)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 622,
+            "Ma_hieu": "MK37",
+            "Ten_dich_vu": "Tỉ lệ Albumin/ creatinin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 63000
+        },
+        {
+            "Stt": 623,
+            "Ma_hieu": "MK39",
+            "Ten_dich_vu": "Đo hoạt độ Amylase /niệu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 52000
+        },
+        {
+            "Stt": 624,
+            "Ma_hieu": "MK40",
+            "Ten_dich_vu": "Định lượng Canxi /niệu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 625,
+            "Ma_hieu": "MK41",
+            "Ten_dich_vu": "Định lượng Canxi /niệu 24h",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 626,
+            "Ma_hieu": "MK44",
+            "Ten_dich_vu": "Định lượng Creatinin /niệu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 627,
+            "Ma_hieu": "MK45",
+            "Ten_dich_vu": "Định lượng Creatinin /niệu 24h",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 628,
+            "Ma_hieu": "MK46",
+            "Ten_dich_vu": "Ion đồ (Na+, K+, CL-, Ca) /niệu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 104000
+        },
+        {
+            "Stt": 629,
+            "Ma_hieu": "MK49",
+            "Ten_dich_vu": "Micro Albumin/ NT",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 64000
+        },
+        {
+            "Stt": 630,
+            "Ma_hieu": "MK56",
+            "Ten_dich_vu": "Định lượng Ure /niệu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 631,
+            "Ma_hieu": "MK58",
+            "Ten_dich_vu": "Định lượng Axit Uric /niệu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 38000
+        },
+        {
+            "Stt": 632,
+            "Ma_hieu": "MK59",
+            "Ten_dich_vu": "Định lượng Axit Uric /niệu 24h",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 38000
+        },
+        {
+            "Stt": 633,
+            "Ma_hieu": "MK60",
+            "Ten_dich_vu": "Định tính Opiate (test nhanh) [niệu]",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 130000
+        },
+        {
+            "Stt": 634,
+            "Ma_hieu": "MK62",
+            "Ten_dich_vu": "Opiate/ Morphin định tính (nước tiểu) (test nhanh)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 91000
+        },
+        {
+            "Stt": 636,
+            "Ma_hieu": "MK70",
+            "Ten_dich_vu": "Định tính Marijunana (THC) (test nhanh) (niệu)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 84000
+        },
+        {
+            "Stt": 637,
+            "Ma_hieu": "MK90",
+            "Ten_dich_vu": "Panel gây nghiện (5 test)/nt (Methamphetamine, Marijuana, Ecstasy, Morphine, Cocain)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 215000
+        },
+        {
+            "Stt": 638,
+            "Ma_hieu": "GA09",
+            "Ten_dich_vu": "Định lượng Apo A1 (Apolipoprotein A1)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 92000
+        },
+        {
+            "Stt": 639,
+            "Ma_hieu": "GA10",
+            "Ten_dich_vu": "Định lượng Apo B (Apolipoprotein B)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 92000
+        },
+        {
+            "Stt": 640,
+            "Ma_hieu": "GD52",
+            "Ten_dich_vu": "Đo nồng độ chì (Pb) máu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 641,
+            "Ma_hieu": "GD84",
+            "Ten_dich_vu": "Heroin, Morphin /máu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 642,
+            "Ma_hieu": "GE32",
+            "Ten_dich_vu": "VLDL Cholesterol",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 35000
+        },
+        {
+            "Stt": 643,
+            "Ma_hieu": "GGM4",
+            "Ten_dich_vu": "PR3 (c-ANCA)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 700000
+        },
+        {
+            "Stt": 644,
+            "Ma_hieu": "GGM5",
+            "Ten_dich_vu": "Anti MPO (p-ANCA)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 645,
+            "Ma_hieu": "MH01",
+            "Ten_dich_vu": "Định lượng Glucose",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 646,
+            "Ma_hieu": "MH02",
+            "Ten_dich_vu": "Định lượng Protein toàn phần",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 647,
+            "Ma_hieu": "MH03",
+            "Ten_dich_vu": "Định lượng Albumin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 648,
+            "Ma_hieu": "MH04",
+            "Ten_dich_vu": "Định lượng Ure",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 649,
+            "Ma_hieu": "MH05",
+            "Ten_dich_vu": "Định lượng Creatinin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 650,
+            "Ma_hieu": "MH06",
+            "Ten_dich_vu": "Định lượng Acid Uric",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 38000
+        },
+        {
+            "Stt": 651,
+            "Ma_hieu": "MH08",
+            "Ten_dich_vu": "Định lượng Cholesterol toàn phần",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 38000
+        },
+        {
+            "Stt": 652,
+            "Ma_hieu": "MH09",
+            "Ten_dich_vu": "Định lượng HDL-C (High density lipoprotein Cholesterol)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 41000
+        },
+        {
+            "Stt": 653,
+            "Ma_hieu": "MH10",
+            "Ten_dich_vu": "Định lượng LDL-C (Low density lipoprotein Cholesterol)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 41000
+        },
+        {
+            "Stt": 654,
+            "Ma_hieu": "MH11",
+            "Ten_dich_vu": "Định lượng Triglycerid",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 38000
+        },
+        {
+            "Stt": 655,
+            "Ma_hieu": "MH13",
+            "Ten_dich_vu": "Định lượng Bilirubin toàn phần",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 656,
+            "Ma_hieu": "MH14",
+            "Ten_dich_vu": "Định lượng Bilirubin gián tiếp",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 657,
+            "Ma_hieu": "MH15",
+            "Ten_dich_vu": "Định lượng Bilirubin trực tiếp",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 658,
+            "Ma_hieu": "MH16",
+            "Ten_dich_vu": "Đo hoạt độ Amylase",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 57000
+        },
+        {
+            "Stt": 659,
+            "Ma_hieu": "MH17",
+            "Ten_dich_vu": "Đo hoạt độ AST (GOT)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 38000
+        },
+        {
+            "Stt": 660,
+            "Ma_hieu": "MH18",
+            "Ten_dich_vu": "Đo hoạt độ ALT (GPT)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 38000
+        },
+        {
+            "Stt": 661,
+            "Ma_hieu": "MH19",
+            "Ten_dich_vu": "Đo hoạt độ ALP (Alkalin Phosphatase)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 38000
+        },
+        {
+            "Stt": 662,
+            "Ma_hieu": "MH20",
+            "Ten_dich_vu": "Đo hoạt độ GGT (Gama Glutamyl Transferase)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 38000
+        },
+        {
+            "Stt": 663,
+            "Ma_hieu": "MH21",
+            "Ten_dich_vu": "Ion đồ (Na+, K+, Cl-, Ca)/máu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 104000
+        },
+        {
+            "Stt": 664,
+            "Ma_hieu": "MH25",
+            "Ten_dich_vu": "Định lượng Calci toàn phần",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 665,
+            "Ma_hieu": "MH26",
+            "Ten_dich_vu": "Định lượng Glucose sau ăn 2 giờ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 666,
+            "Ma_hieu": "MH27",
+            "Ten_dich_vu": "Streptococcus pyogenes ASO",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 60000
+        },
+        {
+            "Stt": 667,
+            "Ma_hieu": "MH28",
+            "Ten_dich_vu": "Định lượng RF (Reumatoid Factor)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 66000
+        },
+        {
+            "Stt": 668,
+            "Ma_hieu": "MH29",
+            "Ten_dich_vu": "Định lượng IgA (Immunoglobuline A)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 85000
+        },
+        {
+            "Stt": 669,
+            "Ma_hieu": "MH30",
+            "Ten_dich_vu": "Định lượng Mg",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 44000
+        },
+        {
+            "Stt": 670,
+            "Ma_hieu": "MH31",
+            "Ten_dich_vu": "Định lượng sắt huyết thanh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 60000
+        },
+        {
+            "Stt": 671,
+            "Ma_hieu": "MH44",
+            "Ten_dich_vu": "Định lượng Phospho",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 32000
+        },
+        {
+            "Stt": 672,
+            "Ma_hieu": "MH45",
+            "Ten_dich_vu": "Đo hoạt độ LDH ( Lactat dehydrogenase)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 35000
+        },
+        {
+            "Stt": 673,
+            "Ma_hieu": "MH46",
+            "Ten_dich_vu": "Định lượng Amoniac ( NH3)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 82000
+        },
+        {
+            "Stt": 674,
+            "Ma_hieu": "MH47",
+            "Ten_dich_vu": "Định lượng Calci ion hóa",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 47000
+        },
+        {
+            "Stt": 675,
+            "Ma_hieu": "MH49",
+            "Ten_dich_vu": "Định lượng IgM (Immunoglobuline M)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 85000
+        },
+        {
+            "Stt": 676,
+            "Ma_hieu": "MH50",
+            "Ten_dich_vu": "Đo hoạt độ CK (Creatine kinase)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 88000
+        },
+        {
+            "Stt": 677,
+            "Ma_hieu": "MH51",
+            "Ten_dich_vu": "Đo hoạt độ CK-MB (Isozym MB of Creatine kinase)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 88000
+        },
+        {
+            "Stt": 678,
+            "Ma_hieu": "MH52",
+            "Ten_dich_vu": "Định lượng IgG (Immunoglobuline G)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 85000
+        },
+        {
+            "Stt": 679,
+            "Ma_hieu": "MH58",
+            "Ten_dich_vu": "Đo hoạt độ Amylase (dịch)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 52000
+        },
+        {
+            "Stt": 680,
+            "Ma_hieu": "MH72",
+            "Ten_dich_vu": "Định lượng Transferin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 93000
+        },
+        {
+            "Stt": 681,
+            "Ma_hieu": "MH82",
+            "Ten_dich_vu": "Định lượng Globulin [Máu]",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 48000
+        },
+        {
+            "Stt": 683,
+            "Ma_hieu": "MH95",
+            "Ten_dich_vu": "Điện giải đồ (Na, K, Cl) máu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 94000
+        },
+        {
+            "Stt": 684,
+            "Ma_hieu": "MH98",
+            "Ten_dich_vu": "Đo hoạt độ Lipase",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 99000
+        },
+        {
+            "Stt": 685,
+            "Ma_hieu": "MHA6",
+            "Ten_dich_vu": "Định lượng bổ thể C3",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 140000
+        },
+        {
+            "Stt": 686,
+            "Ma_hieu": "MHA7",
+            "Ten_dich_vu": "Định lượng bổ thể C4",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 140000
+        },
+        {
+            "Stt": 687,
+            "Ma_hieu": "MHA9",
+            "Ten_dich_vu": "ADA (Adenosine Deaminase) /máu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 205000
+        },
+        {
+            "Stt": 688,
+            "Ma_hieu": "MHB1",
+            "Ten_dich_vu": "Định lượng Haptoglobin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 460000
+        },
+        {
+            "Stt": 689,
+            "Ma_hieu": "MHB4",
+            "Ten_dich_vu": "Nghiệm pháp dung nạp glucose đường uống (75g glucose) 3 mẫu",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 690,
+            "Ma_hieu": "MHB6",
+            "Ten_dich_vu": "Định lượng Ethanol (cồn) (máu)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 77000
+        },
+        {
+            "Stt": 691,
+            "Ma_hieu": "MHB8",
+            "Ten_dich_vu": "Nghiệm pháp dung nạp glucose đường uống 2 mẫu không định lượng Insulin",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 200000
+        },
+        {
+            "Stt": 692,
+            "Ma_hieu": "MHC1",
+            "Ten_dich_vu": "Xét nghiệm tế bào trong nước dịch chẩn đoán tế bào học (não tủy, màng tim, màng phổi, màng bụng, dịch khớp, rửa phế quản…) có đếm số lượng tế bào",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 135000
+        },
+        {
+            "Stt": 693,
+            "Ma_hieu": "MI58",
+            "Ten_dich_vu": "Điện di protein huyết thanh",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 474000
+        },
+        {
+            "Stt": 694,
+            "Ma_hieu": "TN11",
+            "Ten_dich_vu": "Xét nghiệm đường máu mao mạch tại giường",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 44000
+        },
+        {
+            "Stt": 696,
+            "Ma_hieu": "XSH",
+            "Ten_dich_vu": "ASO (Anti Streptolysin O)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 60000
+        },
+        {
+            "Stt": 697,
+            "Ma_hieu": "XSH1",
+            "Ten_dich_vu": "Định lượng CRP (C-Reactive Protein)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 55000
+        },
+        {
+            "Stt": 698,
+            "Ma_hieu": "GB77",
+            "Ten_dich_vu": "PCR / BK, TB (Tuberculosis)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 308000
+        },
+        {
+            "Stt": 699,
+            "Ma_hieu": "MQ15",
+            "Ten_dich_vu": "HBV genotype Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1564000
+        },
+        {
+            "Stt": 700,
+            "Ma_hieu": "MQ16",
+            "Ten_dich_vu": "Mycobacterium tuberculosis Real-time PCR /đàm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 539000
+        },
+        {
+            "Stt": 701,
+            "Ma_hieu": "MQ18",
+            "Ten_dich_vu": "Mycobacterium tuberculosis Real-time PCR /dịch",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 540000
+        },
+        {
+            "Stt": 702,
+            "Ma_hieu": "MQ25",
+            "Ten_dich_vu": "HCV genotype Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1564000
+        },
+        {
+            "Stt": 703,
+            "Ma_hieu": "MQ31",
+            "Ten_dich_vu": "HBV đo tải lượng Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1000000
+        },
+        {
+            "Stt": 704,
+            "Ma_hieu": "MQ32",
+            "Ten_dich_vu": "HCV đo tải lượng Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 950000
+        },
+        {
+            "Stt": 705,
+            "Ma_hieu": "MQ34",
+            "Ten_dich_vu": "HPV genotype Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 970000
+        },
+        {
+            "Stt": 706,
+            "Ma_hieu": "MQ36",
+            "Ten_dich_vu": "HCV RNA CobasTaqman",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 2100000
+        },
+        {
+            "Stt": 707,
+            "Ma_hieu": "MQ38",
+            "Ten_dich_vu": "Chlamydia Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1650000
+        },
+        {
+            "Stt": 708,
+            "Ma_hieu": "MQ43",
+            "Ten_dich_vu": "CMV Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1542000
+        },
+        {
+            "Stt": 709,
+            "Ma_hieu": "MQ91",
+            "Ten_dich_vu": "HCV PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 950000
+        },
+        {
+            "Stt": 710,
+            "Ma_hieu": "MQ92",
+            "Ten_dich_vu": "HSV Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 810000
+        },
+        {
+            "Stt": 711,
+            "Ma_hieu": "MQ93",
+            "Ten_dich_vu": "EBV Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 810000
+        },
+        {
+            "Stt": 712,
+            "Ma_hieu": "MQ94",
+            "Ten_dich_vu": "HPV Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 950000
+        },
+        {
+            "Stt": 713,
+            "Ma_hieu": "MQ95",
+            "Ten_dich_vu": "Rubella virus Real-time PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 950000
+        },
+        {
+            "Stt": 714,
+            "Ma_hieu": "MQ96",
+            "Ten_dich_vu": "Vi nấm PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 950000
+        },
+        {
+            "Stt": 715,
+            "Ma_hieu": "MQ99",
+            "Ten_dich_vu": "HBV DNA Cobas Taqman (định lượng)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1450000
+        },
+        {
+            "Stt": 716,
+            "Ma_hieu": "MZ09",
+            "Ten_dich_vu": "Test thở C13 tìm Helicobacterpylori",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 870000
+        },
+        {
+            "Stt": 716,
+            "Ma_hieu": "TO57",
+            "Ten_dich_vu": "Xác định kiểu gen HLA-B*5801 bằng kĩ thuật realtime PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1750000
+        },
+        {
+            "Stt": 717,
+            "Ma_hieu": "TO58",
+            "Ten_dich_vu": "Xác định alen HLA-B*27 trong viêm cột sống dinh khớp bằng Realtime PCR",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 1300000
+        },
+        {
+            "Stt": 718,
+            "Ma_hieu": "YV97",
+            "Ten_dich_vu": "Xét nghiệm SARS-CoV-2 (xét nghiệm RT-PCR) (mẫu đơn)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 800000
+        },
+        {
+            "Stt": 719,
+            "Ma_hieu": "YV98",
+            "Ten_dich_vu": "Xét nghiệm SARS-CoV-2 (XN nhanh kháng nguyên)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 100000
+        },
+        {
+            "Stt": 720,
+            "Ma_hieu": "GG10",
+            "Ten_dich_vu": "Cấy phân (Stool Culture)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 320000
+        },
+        {
+            "Stt": 721,
+            "Ma_hieu": "GG11",
+            "Ten_dich_vu": "Cấy vi trùng & kháng sinh đồ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 300000
+        },
+        {
+            "Stt": 722,
+            "Ma_hieu": "GGO4",
+            "Ten_dich_vu": "Cấy đàm định lượng + kháng sinh đồ",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 355000
+        },
+        {
+            "Stt": 723,
+            "Ma_hieu": "MI34",
+            "Ten_dich_vu": "Vi nấm soi tươi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 105000
+        },
+        {
+            "Stt": 725,
+            "Ma_hieu": "MZ01",
+            "Ten_dich_vu": "Soi trực tiếp tìm HC, BC, KST trong phân",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 94000
+        },
+        {
+            "Stt": 726,
+            "Ma_hieu": "MZ04",
+            "Ten_dich_vu": "Soi + Nhuộm (dịch) (huyết trắng)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 94000
+        },
+        {
+            "Stt": 727,
+            "Ma_hieu": "NZ13",
+            "Ten_dich_vu": "Soi tìm vi trùng (đàm)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 728,
+            "Ma_hieu": "NZ16",
+            "Ten_dich_vu": "Soi tìm vi trùng (dịch phế quản)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 729,
+            "Ma_hieu": "NZ17",
+            "Ten_dich_vu": "Soi tìm vi trùng (dịch mật)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 730,
+            "Ma_hieu": "NZ23",
+            "Ten_dich_vu": "Soi tìm vi trùng (dịch âm đạo)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 731,
+            "Ma_hieu": "NZ75",
+            "Ten_dich_vu": "Vi khuẩn nhuộm soi (nhuộm Gram) đàm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 74000
+        },
+        {
+            "Stt": 732,
+            "Ma_hieu": "NZ91",
+            "Ten_dich_vu": "Vi khuẩn nhuộm soi (nhuộm Gram) dịch màng bụng",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 74000
+        },
+        {
+            "Stt": 733,
+            "Ma_hieu": "NZ93",
+            "Ten_dich_vu": "Vi khuẩn nhuộm soi (nhuộm Gram) dịch đầu catheter",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 74000
+        },
+        {
+            "Stt": 734,
+            "Ma_hieu": "NZA0",
+            "Ten_dich_vu": "XN tìm BK đàm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 88000
+        },
+        {
+            "Stt": 735,
+            "Ma_hieu": "NZA3",
+            "Ten_dich_vu": "XN tìm BK dịch màng phổi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 736,
+            "Ma_hieu": "NZA7",
+            "Ten_dich_vu": "XN tìm BK dịch khác",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 737,
+            "Ma_hieu": "NZA8",
+            "Ten_dich_vu": "XN tìm BK lần 1",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 738,
+            "Ma_hieu": "NZA9",
+            "Ten_dich_vu": "XN tìm BK lần 2",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 739,
+            "Ma_hieu": "NZB0",
+            "Ten_dich_vu": "XN tìm BK lần 3",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 79000
+        },
+        {
+            "Stt": 740,
+            "Ma_hieu": "NZE1",
+            "Ten_dich_vu": "Nuôi cấy định danh vi khuẩn bằng phương pháp máy tự động (nước tiểu)",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 340000
+        },
+        {
+            "Stt": 741,
+            "Ma_hieu": "YV11",
+            "Ten_dich_vu": "Neisseria gonorrhoeae nhuộm soi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 94000
+        },
+        {
+            "Stt": 742,
+            "Ma_hieu": "YV12",
+            "Ten_dich_vu": "Mycobacterium leprae nhuộm soi",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 94000
+        },
+        {
+            "Stt": 743,
+            "Ma_hieu": "YV21",
+            "Ten_dich_vu": "Vi nấm soi nhuộm",
+            "Don_vi_tinh": "Lần",
+            "Muc_thu": 120000
+        }
+    ]
+}
