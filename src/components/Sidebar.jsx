@@ -88,7 +88,7 @@ const SideBar = ({handleChangePage}) => {
           icon: <MessageOutlined />,
         },
         {
-          key: 'sub4',
+          key: 'terms-service',
           label: 'Điều khoản dịch vụ',
           icon: <ReconciliationOutlined />,
         },

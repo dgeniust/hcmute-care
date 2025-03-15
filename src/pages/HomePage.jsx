@@ -32,6 +32,7 @@ import Personal_Profile from '../pages/Personal_Profile';
 import MedicalRecord from '../components/Personal/MedicalRecord';
 import MedicalHistory from '../components/Personal/MedicalHistory';
 import RegulationUse from '../components/Personal/RegulationUse';
+import TermsService from '../components/Personal/TermsService';
 const HomePage = () => {
   const [currentPage, setCurrentPage] = useState('main');
 
@@ -72,6 +73,7 @@ const HomePage = () => {
           {currentPage === 'medical-records' && <MedicalRecord/>}
           {currentPage === 'medical-history' && <MedicalHistory/>}
           {currentPage === 'regulation-use' && <RegulationUse/>}
+          {currentPage === 'terms-service' && <TermsService/>}
         </Layout>
       </div>
     </Layout>
