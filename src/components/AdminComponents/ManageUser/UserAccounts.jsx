@@ -65,6 +65,216 @@ const UserAccounts = () => {
           ward: "Phường 12",
           specificAddress: "789 Đường J, Quận 10, TP.HCM"
         },
+        {
+            id: 11,
+            fullName: "Phạm Thị K",
+            dob: "1998-03-22",
+            email: "phamthik@example.com",
+            phone: "0971234567",
+            gender: "Nữ",
+            nation: "Việt Nam",
+            career: "Kế toán",
+            country: "Việt Nam",
+            district: "Quận 5",
+            ward: "Phường 9",
+            specificAddress: "10 Đường C, Quận 5, TP.HCM"
+        },
+        {
+            id: 12,
+            fullName: "Hoàng Văn L",
+            dob: "1985-11-05",
+            email: "hoangvanl@example.com",
+            phone: "0962345678",
+            gender: "Nam",
+            nation: "Việt Nam",
+            career: "Bác sĩ",
+            country: "Việt Nam",
+            district: "Quận 7",
+            ward: "Phường Tân Phong",
+            specificAddress: "25 Đường D, Quận 7, TP.HCM"
+        },
+        {
+            id: 13,
+            fullName: "Trương Thị M",
+            dob: "2000-07-18",
+            email: "truongthim@example.com",
+            phone: "0943456789",
+            gender: "Nữ",
+            nation: "Việt Nam",
+            career: "Thiết kế đồ họa",
+            country: "Việt Nam",
+            district: "Quận Bình Thạnh",
+            ward: "Phường 25",
+            specificAddress: "50 Đường E, Quận Bình Thạnh, TP.HCM"
+        },
+        {
+            id: 14,
+            fullName: "Đỗ Văn N",
+            dob: "1992-04-30",
+            email: "dovann@example.com",
+            phone: "0934567890",
+            gender: "Nam",
+            nation: "Việt Nam",
+            career: "Giám đốc kinh doanh",
+            country: "Việt Nam",
+            district: "Quận 2",
+            ward: "Phường Thảo Điền",
+            specificAddress: "75 Đường F, Quận 2, TP.HCM"
+        },
+        {
+            id: 15,
+            fullName: "Lý Thị O",
+            dob: "1988-09-25",
+            email: "lythio@example.com",
+            phone: "0925678901",
+            gender: "Nữ",
+            nation: "Việt Nam",
+            career: "Nhà báo",
+            country: "Việt Nam",
+            district: "Quận 9",
+            ward: "Phường Phước Long A",
+            specificAddress: "100 Đường G, Quận 9, TP.HCM"
+        },
+        {
+            id: 16,
+            fullName: "Võ Văn P",
+            dob: "2003-01-12",
+            email: "vovanp@example.com",
+            phone: "0916789012",
+            gender: "Nam",
+            nation: "Việt Nam",
+            career: "Sinh viên",
+            country: "Việt Nam",
+            district: "Quận Thủ Đức",
+            ward: "Phường Linh Chiểu",
+            specificAddress: "125 Đường H, Quận Thủ Đức, TP.HCM"
+        },
+        {
+            id: 17,
+            fullName: "Cao Thị Q",
+            dob: "1997-06-08",
+            email: "caothiq@example.com",
+            phone: "0987890123",
+            gender: "Nữ",
+            nation: "Việt Nam",
+            career: "Dược sĩ",
+            country: "Việt Nam",
+            district: "Quận 6",
+            ward: "Phường 10",
+            specificAddress: "150 Đường I, Quận 6, TP.HCM"
+        },
+        {
+            id: 18,
+            fullName: "Bùi Văn R",
+            dob: "1982-12-30",
+            email: "buivanr@example.com",
+            phone: "0978901234",
+            gender: "Nam",
+            nation: "Việt Nam",
+            career: "Kỹ sư xây dựng",
+            country: "Việt Nam",
+            district: "Quận 8",
+            ward: "Phường 15",
+            specificAddress: "175 Đường K, Quận 8, TP.HCM"
+        },
+        {
+            id: 19,
+            fullName: "Ngô Thị S",
+            dob: "1995-08-20",
+            email: "ngothis@example.com",
+            phone: "0969012345",
+            gender: "Nữ",
+            nation: "Việt Nam",
+            career: "Giáo viên",
+            country: "Việt Nam",
+            district: "Quận 4",
+            ward: "Phường 18",
+            specificAddress: "200 Đường L, Quận 4, TP.HCM"
+        },
+        {
+            id: 20,
+            fullName: "Đặng Văn T",
+            dob: "2001-02-14",
+            email: "dangvant@example.com",
+            phone: "0950123456",
+            gender: "Nam",
+            nation: "Việt Nam",
+            career: "Lập trình viên",
+            country: "Việt Nam",
+            district: "Quận 11",
+            ward: "Phường 16",
+            specificAddress: "225 Đường M, Quận 11, TP.HCM"
+        },
+        {
+            id: 21,
+            fullName: "Hà Thị U",
+            dob: "1987-07-03",
+            email: "hathiu@example.com",
+            phone: "0941234567",
+            gender: "Nữ",
+            nation: "Việt Nam",
+            career: "Luật sư",
+            country: "Việt Nam",
+            district: "Quận 3",
+            ward: "Phường Võ Thị Sáu",
+            specificAddress: "250 Đường N, Quận 3, TP.HCM"
+        },
+        {
+            id: 22,
+            fullName: "Lâm Văn V",
+            dob: "1999-10-28",
+            email: "lamvanv@example.com",
+            phone: "0932345678",
+            gender: "Nam",
+            nation: "Việt Nam",
+            career: "Nhân viên marketing",
+            country: "Việt Nam",
+            district: "Quận 12",
+            ward: "Phường Tân Chánh Hiệp",
+            specificAddress: "275 Đường O, Quận 12, TP.HCM"
+        },
+        {
+            id: 23,
+            fullName: "Phan Thị X",
+            dob: "1984-05-22",
+            email: "phanthix@example.com",
+            phone: "0923456789",
+            gender: "Nữ",
+            nation: "Việt Nam",
+            career: "Chuyên viên nhân sự",
+            country: "Việt Nam",
+            district: "Quận Tân Bình",
+            ward: "Phường 1",
+            specificAddress: "300 Đường P, Quận Tân Bình, TP.HCM"
+        },
+        {
+            id: 24,
+            fullName: "Trần Văn Y",
+            dob: "2004-03-15",
+            email: "tranvany@example.com",
+            phone: "0914567890",
+            gender: "Nam",
+            nation: "Việt Nam",
+            career: "Sinh viên",
+            country: "Việt Nam",
+            district: "Quận Gò Vấp",
+            ward: "Phường 3",
+            specificAddress: "325 Đường Q, Quận Gò Vấp, TP.HCM"
+    },
+    {
+        id: 25,
+        fullName: "Huỳnh Thị Z",
+        dob: "1980-11-09",
+        email: "huynhthiz@example.com",
+        phone: "0985678901",
+        gender: "Nữ",
+        nation: "Việt Nam",
+        career: "Quản lý khách sạn",
+        country: "Việt Nam",
+        district: "Quận Phú Nhuận",
+        ward: "Phường 5",
+        specificAddress: "350 Đường R, Quận Phú Nhuận, TP.HCM"
+    }
     ];
     
     const headers = [
@@ -76,6 +286,19 @@ const UserAccounts = () => {
         'Địa chỉ',
         <MenuFoldOutlined />
     ];
+    
+    //Search 
+    const [searchService, setSearchService] = useState('');
+    const [filteredUsers, setFilteredUsers] = useState(users);
+    // Hàm xử lý tìm kiếm
+    const handleSearch = (value) => {
+        setSearchService(value);
+        const filtered = users.filter((user) =>
+            user.fullName && user.fullName.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredUsers(filtered);
+        setCurrentPage(1); // Reset về trang 1 khi tìm kiếm
+    };
 
     // Paginations
     const [currentPage, setCurrentPage] = useState(1);
@@ -83,7 +306,7 @@ const UserAccounts = () => {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -145,8 +368,6 @@ const UserAccounts = () => {
             style: panelStyle,
         }));
     };
-    //Search 
-    const [searchService, setSearchService] = useState('');
     return (
         <>
             <Search
@@ -155,7 +376,7 @@ const UserAccounts = () => {
                 width: '100%',
             }}
             value={searchService}
-            onChange={(e) => setSearchService(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             size="large"
             />
             <table className="w-full divide-y divide-gray-200 mb-4">
@@ -172,11 +393,7 @@ const UserAccounts = () => {
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                {currentItems
-                .filter((user) =>
-                    user.fullName && user.fullName.toLowerCase().includes(searchService.toLowerCase())
-                    )
-                .map((user) => (
+                {currentItems.map((user) => (
                     <tr key={user.id}>
                     <td className="p-3 whitespace-nowrap">{user.id}</td>
                     <td className="p-3 whitespace-nowrap">{user.fullName}</td>

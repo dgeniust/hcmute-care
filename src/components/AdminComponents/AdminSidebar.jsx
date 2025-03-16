@@ -29,7 +29,7 @@ const AdminSideBar = ({handleChangePage}) => {
               icon: <UserSwitchOutlined />
             },
             {
-              key: 'subnav8',
+              key: 'manage-numbers',
               label: 'Quản lý phiếu khám bệnh',
               icon: <ShakeOutlined />
             },

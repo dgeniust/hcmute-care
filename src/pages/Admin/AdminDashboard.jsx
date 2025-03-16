@@ -3,6 +3,7 @@ import { Layout, theme } from 'antd';
 import AdminSideBar from '../../components/AdminComponents/AdminSidebar';
 import AdminHomePage from '../../components/AdminComponents/AdminHomePage';
 import ManageUser from '../../components/AdminComponents/ManageUser/ManageUser';
+import ManageNumber_Orders from '../../components/AdminComponents/ManageUser/ManageNumber_Orders';
 const AdminDashboard = () => {
     const [currentPage, setCurrentPage] = useState('main');
 
@@ -31,6 +32,7 @@ const AdminDashboard = () => {
           <AdminSideBar handleChangePage={handleChangePage}/>
           {currentPage === 'main' && <AdminHomePage />}
           {currentPage === 'manage-users' && <ManageUser/>}
+          {currentPage === 'manage-numbers' && <ManageNumber_Orders/>}
         </Layout>
       </div>
     </Layout>
