@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { Layout, theme } from 'antd';
 import AdminSideBar from '../../components/AdminComponents/AdminSidebar';
 import AdminHomePage from '../../components/AdminComponents/AdminHomePage';
+import ManageUser from '../../components/AdminComponents/ManageUser/ManageUser';
 const AdminDashboard = () => {
     const [currentPage, setCurrentPage] = useState('main');
 
@@ -28,7 +29,8 @@ const AdminDashboard = () => {
           }}
         >
           <AdminSideBar handleChangePage={handleChangePage}/>
-          <AdminHomePage/>
+          {currentPage === 'main' && <AdminHomePage />}
+          {currentPage === 'manage-users' && <ManageUser/>}
         </Layout>
       </div>
     </Layout>

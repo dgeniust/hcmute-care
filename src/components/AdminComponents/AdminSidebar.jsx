@@ -14,7 +14,7 @@ const AdminSideBar = ({handleChangePage}) => {
     
       const menu_items2 = [
         {
-          key: 'sub1',
+          key: 'main',
           label: 'Bảng điều khiển',
           icon: <UserOutlined />,
         },
@@ -24,7 +24,7 @@ const AdminSideBar = ({handleChangePage}) => {
           icon: <UsergroupAddOutlined />,
           children: [
             {
-              key: 'subnav7',
+              key: 'manage-users',
               label: 'Danh sách người dùng',
               icon: <UserSwitchOutlined />
             },
