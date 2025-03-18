@@ -4,8 +4,9 @@ import AdminSideBar from '../../components/AdminComponents/AdminSidebar';
 import AdminHomePage from '../../components/AdminComponents/AdminHomePage';
 import ManageUser from '../../components/AdminComponents/ManageUser/ManageUser';
 import ManageNumber_Orders from '../../components/AdminComponents/ManageUser/ManageNumber_Orders';
+import ManageRoom from '../../components/AdminComponents/ManageEmployee/ManageRoom';
 const AdminDashboard = () => {
-    const [currentPage, setCurrentPage] = useState('main');
+    const [currentPage, setCurrentPage] = useState('manage-rooms');
 
   const handleChangePage = (page) => {
     setCurrentPage(page);
@@ -33,6 +34,7 @@ const AdminDashboard = () => {
           {currentPage === 'main' && <AdminHomePage />}
           {currentPage === 'manage-users' && <ManageUser/>}
           {currentPage === 'manage-numbers' && <ManageNumber_Orders/>}
+          {currentPage === 'manage-rooms' && <ManageRoom/>}
         </Layout>
       </div>
     </Layout>

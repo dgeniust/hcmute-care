@@ -51,7 +51,7 @@ const AdminSideBar = ({handleChangePage}) => {
               icon: <TableOutlined />
             },
             {
-              key: 'subnav3',
+              key: 'manage-rooms',
               label: 'Quản lý phòng ban',
               icon: <FileTextOutlined />
             },

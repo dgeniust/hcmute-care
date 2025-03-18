@@ -408,7 +408,7 @@ const MainPage = ({onPageChange}) =>{
             <Button style={{padding:'25px',width:'200px', fontWeight:"bold", color: 'white', fontSize:'17px', borderRadius: '10px'}} className='button-gradient-home'>Đặt lịch khám ngay</Button>
           </div>
         </div> */}
-        <div className="w-full h-fit mt-4">
+        <div className="w-full h-fit mt-4 border border-black">
           <InfiniteScrollingCarousel/>
         </div>
         <div className="divider flex items-center text-black justify-between mt-8">
