@@ -1,12 +1,13 @@
 /* Đặt @import ở đầu file */
 
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 @import "tailwindcss"; /* Import Tailwind CSS */
 
 /* Cấu hình các thuộc tính mặc định */
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif, Roboto Slab, Fugaz One, Satisfy  ;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif, Roboto Slab, Fugaz One, Satisfy, Pacifico
+  ;
   line-height: 1.5;
   font-weight: 400;
 
@@ -92,4 +93,7 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+.text-info-body {
+  font-family: 'Pacifico';
 }
