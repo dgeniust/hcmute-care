@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Carousel  } from 'antd';
+import DragCards from '../components/HomePage/DragCard'
 import {
     ArrowRightOutlined
 } from '@ant-design/icons';
 import '../css/mainpage.css'
 import InfiniteScrollingCarousel from "./InfiniteScrollingCarousel";
 import BodyContent from "./HomePage/BodyContent";
+import GeneratePictureOnMouse from "./HomePage/GeneratePictureOnMouse";
 const contentStyle = {
   height: '420px',
   color: '#fff',
@@ -18,8 +20,8 @@ const MainPage = ({onPageChange}) =>{
     onPageChange(page);
   }
     return <div className="w-full h-full">
-          <div className="hello-content w-[74vw] h-fit max-w-screen mb-8">
-          <Carousel
+          <div className="hello-content w-full h-fit max-w-screen mb-8 rounded-xl shadow-lg">
+          {/* <Carousel
             autoplay
             autoplaySpeed={5000}
             arrows 
@@ -36,7 +38,8 @@ const MainPage = ({onPageChange}) =>{
             <div className="carousel-4">
               <h3 style={contentStyle}></h3>
             </div>
-          </Carousel>
+          </Carousel> */}
+          <GeneratePictureOnMouse/>
           </div>
         {/* <div className="grid grid-cols-3 grid-flow-row gap-8 p-8 space-y-4">
         {[
@@ -58,11 +61,14 @@ const MainPage = ({onPageChange}) =>{
             </div>
           ))}
         </div> */}
-        <div className="w-full h-full min-h-screen flex items-center justify-center">
+        <div className="w-full h-full min-h-screen flex items-center justify-center shadow-lg">
           <BodyContent/>
         </div>
-        <div className="w-full h-fit mt-4 border border-black">
+        <div className="w-full h-fit mt-4 shadow-lg">
           <InfiniteScrollingCarousel/>
+        </div>
+        <div className="w-full h-fit mt-4">
+          <DragCards/>
         </div>
         <div className="divider flex items-center text-black justify-between mt-8">
             <h1 className="font-bold text-lg pl-8">Tin tức nổi bật</h1>

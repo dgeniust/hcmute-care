@@ -267,8 +267,12 @@ export const infoBodyDataBack = [
     ],
   },
   {
-    x: 200,
-    y: 370,
+    //Lap Dell Vostro
+    // x: 200,
+    // y: 370,
+    //Màn VS
+    x: 220,
+    y : 470,
     placement: "top",
     label: "external oblique",
     name: "Cơ ngoại chéo",
@@ -306,8 +310,13 @@ export const infoBodyDataBack = [
     
   },
   {
-    x: 350,
-    y: 310,
+    //Lap Dell Vostro
+    // x: 350,
+    // y: 310,
+
+    //Màn VS
+    x: 450,
+    y: 380,
     placement: "right",
     label: "latissimus dorsi",
     name: "Cơ xô",
@@ -344,8 +353,12 @@ export const infoBodyDataBack = [
     ],
   },
   {
-    x: 360,
-    y: 450,
+    //Lap Dell Vostro
+    // x: 360,
+    // y: 450,
+    //Màn VS
+    x: 450,
+    y: 580,
     placement: "top",
     label: "serratus anterior",
     name: "Cơ mông",

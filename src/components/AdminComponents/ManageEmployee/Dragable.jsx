@@ -38,7 +38,7 @@ const Board = () => {
         </div>
         <div>
             <Divider orientation="left"><p className='font-bold text-xl py-4' solid>PHÒNG SỬ DỤNG</p></Divider>
-            <div className="grid grid-flow-row grid-cols-5 gap-4">
+            <div className="grid grid-flow-row grid-cols-4 gap-4">
             {ROOMS
             .filter((room) => room.disabled === false)
             .map((room,index) => (
@@ -60,7 +60,7 @@ const Board = () => {
 
         <div>
             <Divider orientation="left"><p className='font-bold text-xl py-4' solid>PHÒNG TRỐNG</p></Divider>
-            <div className="grid grid-flow-row grid-cols-5 gap-4">
+            <div className="grid grid-flow-row grid-cols-4 gap-4">
             {ROOMS.filter((room) => room.disabled === true).map((room,index) => (
                 <div key={index}>
                 <Column

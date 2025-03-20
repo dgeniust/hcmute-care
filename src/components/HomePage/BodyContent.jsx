@@ -127,8 +127,12 @@ const BodyContent = () => {
                             <img
                                 ref={imageRef}
                                 src="https://ik.imagekit.io/dgeniust/back%20final.png?updatedAt=1742350763365"
-                                width='450px'
-                                height='450px'
+                                //Laptop Dell Vostro
+                                // width='450px'
+                                // height='450px'
+                                //Màn VS
+                                width='600px'
+                                height='600px'
                                 alt="Body"
                                 draggable='false'
                             />

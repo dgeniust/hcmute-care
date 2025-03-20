@@ -79,7 +79,7 @@ const AdminSideBar = ({handleChangePage}) => {
         },
         
         {
-          key: 'notification-event',
+          key: 'manage-posts',
           label: 'Tin tức - Sự kiện',
           icon: <BellOutlined />,
         },

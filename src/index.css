@@ -31,7 +31,15 @@
   min-width: 320px;
   min-height: 100vh;
 } */
+/* Thêm vào file CSS của bạn */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
 
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 #root {
   height: 100vh;
   background: radial-gradient(#5a47ce, #232323 80%);
