@@ -41,7 +41,7 @@ const AdminSideBar = ({handleChangePage}) => {
           icon: <ApartmentOutlined />,
           children: [
             {
-              key: 'subnav1',
+              key: 'manage-employee',
               label: 'Danh sách nhân sự',
               icon: <UserSwitchOutlined />
             },

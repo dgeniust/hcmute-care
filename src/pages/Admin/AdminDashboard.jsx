@@ -4,10 +4,11 @@ import AdminSideBar from '../../components/AdminComponents/AdminSidebar';
 import AdminHomePage from '../../components/AdminComponents/AdminHomePage';
 import ManageUser from '../../components/AdminComponents/ManageUser/ManageUser';
 import ManageNumber_Orders from '../../components/AdminComponents/ManageUser/ManageNumber_Orders';
-import ManageRoom from '../../components/AdminComponents/ManageEmployee/ManageRoom';
+import ManageRoom from './ManageEmployees/ManageRoom';
+import ManageEmployee from './ManageEmployees/ManageEmployee';
 import ManagePost from '../../components/AdminComponents/MangePostEvent/ManagePost';
 const AdminDashboard = () => {
-    const [currentPage, setCurrentPage] = useState('manage-posts');
+    const [currentPage, setCurrentPage] = useState('manage-employee');
 
   const handleChangePage = (page) => {
     setCurrentPage(page);
@@ -37,6 +38,7 @@ const AdminDashboard = () => {
           {currentPage === 'manage-numbers' && <ManageNumber_Orders/>}
           {currentPage === 'manage-rooms' && <ManageRoom/>}
           {currentPage === 'manage-posts' && <ManagePost/>}
+          {currentPage === 'manage-employee' && <ManageEmployee/>}
         </Layout>
       </div>
     </Layout>

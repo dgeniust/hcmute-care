@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
+import LoaderIllustration from "./LoaderIllustration";
+//test 
+// const initialCards = [
+//   { id: 1, src : 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400692/hospital/fcg6u2mpbywde9oyb6il.jpg' },
+//   { id: 2, src : 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400691/hospital/mtkaasoyqwx0v3aewfwn.jpg'  },
+//   { id: 3, src : 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400693/hospital/mbqfvv5vttlwjxgclomb.jpg'  },
+//   { id: 4, src : 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400692/hospital/nil2r59dgwzxzbb5fiym.jpg'  },
+//   { id: 5, src : 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400692/hospital/renmnrky9mcl7eh6wl0z.jpg'  },
+// ];
 
-const initialCards = [
-  { id: 1, src : 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400692/hospital/fcg6u2mpbywde9oyb6il.jpg' },
-  { id: 2, src : 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400691/hospital/mtkaasoyqwx0v3aewfwn.jpg'  },
-  { id: 3, src : 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400693/hospital/mbqfvv5vttlwjxgclomb.jpg'  },
-  { id: 4, src : 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400692/hospital/nil2r59dgwzxzbb5fiym.jpg'  },
-  { id: 5, src : 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400692/hospital/renmnrky9mcl7eh6wl0z.jpg'  },
-];
-
-const SwipeCards = () => {
-  const [cards, setCards] = useState(initialCards);
+const SwipeCards = ({setStorageImg, storageImg}) => {
+  const [cards, setCards] = useState(storageImg);
   const [isResetting, setIsResetting] = useState(false);
 
   const handleRemoveCard = (id, direction) => {
@@ -23,11 +24,11 @@ const SwipeCards = () => {
       
       // Delay reset to allow animation to complete
       setTimeout(() => {
-        setCards(initialCards);
+        setCards(storageImg);
         setIsResetting(false);
-      }, 1500);
+      }, 1000);
     }
-  }, [cards.length, isResetting]);
+  }, [cards.length, isResetting, storageImg]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full p-4">
@@ -35,7 +36,7 @@ const SwipeCards = () => {
       <div className="relative w-72 h-96 mb-4">
         {cards.map((card, index) => (
           <Card 
-            key={card.id}
+            key={index}
             {...card}
             index={index}
             total={cards.length}
@@ -46,8 +47,18 @@ const SwipeCards = () => {
         {cards.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white">
             <div className="text-center">
-              <p className="text-gray-500 mb-2">Deck complete!</p>
-              <p className="text-gray-400 text-sm">Resetting...</p>
+              {/* <div class="flex-col gap-4 w-full flex items-center justify-center">
+                <div
+                  class="w-20 h-20 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-blue-400 rounded-full"
+                >
+                  <div
+                    class="w-16 h-16 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-red-400 rounded-full"
+                  ></div>
+                </div>
+              </div> */}
+              <LoaderIllustration/>
+
+
             </div>
           </div>
         )}

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const PreviewText = () => { 
+const PreviewText = ({textData, headerData}) => { 
 
     const [colorBG, setColorBG] = useState('bg-white')
     const [colorText, setColorText] = useState('')
@@ -28,7 +28,8 @@ const PreviewText = () => {
                     </div>
                 </div>
                 <div class="w-full h-fit max-h-76 absolute px-4 py-2 overflow-x-hidden overflow-y-auto">
-                    <p></p>
+                    <h1 className='font-bold text-base'>{headerData}</h1>
+                    <p>{textData}</p>
                 </div>
             </div>
         </>
