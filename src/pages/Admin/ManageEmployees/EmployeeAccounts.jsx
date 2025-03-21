@@ -121,67 +121,6 @@ const EmployeeAccounts = () => {
     const [filteredJob, setFilteredJob] = useState(undefined);
     const [filteredStatus, setFilteredStatus] = useState(undefined);
 
-
-    // // Hàm xử lý tìm kiếm = tên
-    // const handleSearch = (value) => {
-    //     setSearchService(value);
-    //     const filtered = users.filter((user) =>
-    //         user.fullName && user.fullName.toLowerCase().includes(value.toLowerCase())
-    //     );
-    //     setFilteredUsers(filtered);
-    //     setCurrentPage(1); // Reset về trang 1 khi tìm kiếm
-    // };
-
-    // // Handle Tìm kiếm = vai trò
-    // const handleJobChange = (value, job) => {
-    //     // Fixed the filter function - was missing a return statement
-    //     setFilteredJob(job?.label || undefined);
-    //     const filtered = users.filter((user) => {
-    //         return user.career && user.career.includes(job.label);
-    //     });
-        
-    //     console.log("Filtered users:", filtered);
-    //     setFilteredUsers(filtered);
-    //     setCurrentPage(1); // Reset to page 1 when searching
-    // };
-    // // Handle Tìm kiếm = học vị
-    // const handleEduChange = (value, edu) => {
-    //     console.log(edu.label)
-    //     setFilteredEdu(edu?.label || undefined);
-    //     // Fixed the filter function - was missing a return statement
-    //     const filtered = users.filter((user) => {
-    //         return user.education && user.education.includes(edu.label);
-    //     });
-        
-    //     console.log("Filtered users:", filtered);
-    //     setFilteredUsers(filtered);
-    //     setCurrentPage(1); // Reset to page 1 when searching
-    // };
-    // const handleStatusChange = (value) => {
-    //     let stt = '';
-    //     if(value === 'working'){
-    //         stt = 'working';
-    //     }
-    //     else if(value === 'absent'){
-    //         stt = 'absent';
-    //     }
-    //     setFilteredStatus(stt);
-    //     const filtered = users.filter((user) => {
-    //         return user.status && user.status.includes(stt);
-    //     });
-        
-    //     console.log("Filtered users:", filtered);
-    //     setFilteredUsers(filtered);
-    //     setCurrentPage(1); // Reset to page 1 when searching
-    // }
-    // const handleResetSearch = () => {
-    //     setFilteredEdu(undefined);
-    //     setFilteredJob(undefined);
-    //     setFilteredStatus(undefined);
-    //     setSearchService('');
-    //     setFilteredUsers(users);
-    //     setCurrentPage(1);
-    // }
     const handleSearch = (value) => {
         setSearchService(value);
         filterUsers();
@@ -245,7 +184,18 @@ const EmployeeAccounts = () => {
         setCurrentPage(page);
     };
 
-    
+    //Save Data User 
+    const [dataUser, setDataUser] = useState(null);
+    //Drawer
+    const [open, setOpen] = useState(false);
+    const showDrawerUser = (data) => {
+        setOpen(true);
+        setDataUser(data);
+    };
+    const onClose = () => {
+        setOpen(false);
+        setDataUser(null);
+    };
     return (
         <div className='flex flex-col space-y-4'>
             <div className='flex flex-row justify-between items-center w-full'>
@@ -467,7 +417,14 @@ const EmployeeAccounts = () => {
                     }
                     <td className="p-3 whitespace-nowrap cursor-pointer space-x-2" onClick={() =>{
                         showDrawerUser(user)
-                        }}><Button style={{borderRadius: '8px'}}>Profile</Button><MoreOutlined /></td>
+                        }}><Button style={{borderRadius: '8px'}}
+                        onClick={() =>{
+                            showDrawerUser(user)
+                            }}>
+                                Profile
+                        </Button>
+                        <MoreOutlined />
+                    </td>
                     </tr>
                 ))}
                 </tbody>
@@ -479,6 +436,88 @@ const EmployeeAccounts = () => {
             total={users.length} // Use users.length for total items
             pageSize={itemsPerPage}
             onChange={handlePageChange} />
+            <Drawer
+                title={'Thông tin cá nhân'}
+                placement="right"
+                size='large'
+                onClose={onClose}
+                open={open}
+            >
+                <div className="w-full h-full ">
+                    <div className='w-full border border-black h-[150px] personal-bg relative'>
+                        <Divider orientation="left" plain style={{ position: 'absolute', bottom: 0, width: '100%' }}>
+                            <div className='w-[150px] h-[150px] rounded-full bg-white absolute border border-black top-1/2 left-1/6 transform -translate-x-1/2 -translate-y-1/3'>
+                                <img src={`${dataUser && dataUser.gender === 'Nam' ? 'https://api.dicebear.com/9.x/miniavs/svg?seed=Jameson' : 'https://api.dicebear.com/9.x/miniavs/svg?seed=Ryan'}`} alt="" srcset="" 
+                                className="object-center w-full h-full rounded-full" />
+                                <div className='text-black font-bold text-xl mt-4 text-center w-full'>
+                                    <h1>{dataUser ? dataUser.fullName : ""}</h1>
+                                </div>
+                            </div>
+                        </Divider>
+                    </div>
+                    <div className="w-full h-fit mt-[140px] px-8 py-4 rounded-lg shadow-lg">
+                        {dataUser && ( // Conditional rendering
+                            <div className="flex flex-col space-y-4">
+                                <div className="grid grid-flow-row grid-cols-2">
+                                    <div className="grid grid-flow-row grid-cols-[100px_200px]">
+                                        <p>Họ và tên: </p>
+                                        <p>{dataUser.fullName}</p>
+                                    </div>
+
+                                    <div className="grid grid-flow-row grid-cols-[100px_200px]">
+                                        <p>Giới tính : </p>
+                                        <p>{dataUser.gender}</p>
+                                    </div>
+                                </div>
+                                <div className="grid grid-flow-row grid-cols-[100px_300px]">
+                                    <p>Địa chỉ: </p>
+                                    <p>{dataUser.specificAddress}</p>
+                                </div>
+                                <div className="grid grid-flow-row grid-cols-[100px_200px]">
+                                    <p>Email: </p>
+                                    <p>{dataUser.email}</p>
+                                </div>
+                                <div className="grid grid-flow-row grid-cols-2">
+                                    <div className="grid grid-flow-row grid-cols-[100px_200px]">
+                                        <p>Số điện thoại: </p>
+                                        <p>{dataUser.phone}</p>
+                                    </div>
+                                    <div className="grid grid-flow-row grid-cols-[100px_200px]">
+                                        <p>Quốc gia: </p>
+                                        <p>{dataUser.country}</p>
+                                    </div>
+                                </div>
+                                <div className="grid grid-flow-row grid-cols-2">
+                                    <div className="grid grid-flow-row grid-cols-[100px_200px]">
+                                        <p>Quốc tịch: </p>
+                                        <p>{dataUser.nation}</p>
+                                    </div>
+                                    <div className="grid grid-flow-row grid-cols-[100px_200px]">
+                                        <p>Nghề nghiệp: </p>
+                                        <p>{dataUser.career}</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        )}
+                    </div>
+                    {
+                        dataUser && Array.isArray(dataUser.medicalRecords) && dataUser.medicalRecords.length > 0 && (
+                            <div className="w-full h-fit mt-4 p-4 rounded-lg shadow-lg">
+                                <h1 className="font-bold text-base p-4">Hồ sơ bệnh án</h1>
+                                <Collapse
+                                bordered={false}
+                                expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+                                style={{
+                                    background: token.colorBgContainer,
+                                }}
+                                items={dataUser && dataUser.medicalRecords ? getItems(dataUser.medicalRecords, panelStyle) : []}
+                                />
+                            </div>
+                        )
+                    }
+                </div>
+            </Drawer>
         </div>
     )
 }
