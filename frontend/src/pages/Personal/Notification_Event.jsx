@@ -1,7 +1,6 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import { DatePicker } from 'antd';
-import NotificationContent from './Notification_Events/NotificationContent';
+import NotificationContent from '../../components/Notification_Events/NotificationContent';
 const Notification_Event = () => {
     const onChange = (key) => {
         console.log(key);

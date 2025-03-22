@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Button, Modal} from 'antd';
 import { InfoCircleTwoTone, RightOutlined, BarcodeOutlined, PhoneOutlined } from '@ant-design/icons';
-import UserDetails from './UserDetails';
+import UserDetails from '../../components/Personal/UserDetails';
 const MedicalRecord = () => {
     const [isModalInfoOpen, setIsModalInfoOpen] = useState(false);
     const [modalContent, setModalContent] = useState(null);

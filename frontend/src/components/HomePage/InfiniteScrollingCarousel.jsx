@@ -1,4 +1,4 @@
-import '../css/infinitescrolling.css'
+import '../../css/infinitescrolling.css'
 const InfiniteScrollingCarousel = () => {
 
     return (

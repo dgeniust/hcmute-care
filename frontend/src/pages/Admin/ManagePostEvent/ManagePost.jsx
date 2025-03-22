@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import EmojiPickerInput from './EmojiPickerInput';
-import SwipeCards from './SwipeCard';
-import PreviewText from './PreviewText';
-import TwitterPost from './TwitterPost';
+import EmojiPickerInput from '../../../components/AdminComponents/MangePostEvent/EmojiPickerInput';
+import SwipeCards from '../../../components/AdminComponents/MangePostEvent/SwipeCard';
+import PreviewText from '../../../components/AdminComponents/MangePostEvent/PreviewText';
+import TwitterPost from '../../../components/AdminComponents/MangePostEvent/TwitterPost';
 const ManagePost = () => {
     const [textData, setTextData] = useState('');
     const [headerData, setHeaderData] = useState('');

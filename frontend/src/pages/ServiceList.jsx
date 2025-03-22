@@ -7,7 +7,7 @@ const ServiceList = () => {
     const [searchService, setSearchService] = useState('');
 
     useEffect(() => {
-        axios.get('https://raw.githubusercontent.com/dgeniust/hcmute-care/refs/heads/main/src/components/Personal/Data_Personal/service_health.json')
+        axios.get('https://raw.githubusercontent.com/dgeniust/hcmute-care/refs/heads/main/frontend/src/components/Personal/Data_Personal/service_health.json')
             .then(response => {
             setData(response.data.Dich_vu_y_te); // Đảm bảo API trả về một mảng
             })

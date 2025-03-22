@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import { Layout, theme } from 'antd';
 import AdminSideBar from '../../components/AdminComponents/AdminSidebar';
-import AdminHomePage from '../../components/AdminComponents/AdminHomePage';
-import ManageUser from '../../components/AdminComponents/ManageUser/ManageUser';
-import ManageNumber_Orders from '../../components/AdminComponents/ManageUser/ManageNumber_Orders';
+import AdminHomePage from './AdminHomepage/AdminHomePage';
+import ManageUser from './ManageUser/ManageUser';
+import ManageNumber_Orders from './ManageUser/ManageNumber_Orders';
 import ManageRoom from './ManageEmployees/ManageRoom';
 import ManageEmployee from './ManageEmployees/ManageEmployee';
-import ManagePost from '../../components/AdminComponents/MangePostEvent/ManagePost';
+import ManagePost from './ManagePostEvent/ManagePost';
 const AdminDashboard = () => {
     const [currentPage, setCurrentPage] = useState('manage-employee');
 

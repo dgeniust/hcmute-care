@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import regulation from './Data_Personal/regulationData';
+import regulation from '../../components/Personal/Data_Personal/regulationData';
 const RegulationUse = () => {
     const onChange = (key) => {
         console.log(key);

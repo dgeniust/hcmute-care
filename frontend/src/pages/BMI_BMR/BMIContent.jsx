@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Radio, DatePicker, InputNumber, Button, message, notification, Skeleton, Collapse  } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import BMIWeight from './bodies';
-import '../css/bmicontent.css'
+import BMIWeight from '../../components/bodies';
+import '../../css/BMIContent.css';
 const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 const style = {
     display: 'flex',
@@ -124,7 +124,7 @@ const BMIContent = () => {
     ];
 
     return (
-        <div className='flex flex-col items-center w-full h-fit gap-4'>
+        <div className='flex flex-col items-center w-full h-fit gap-4 bg-white'>
             <h1 className='text-xl mt-4 text-[#273c75] font-bold'>CÔNG CỤ TÍNH BMI</h1>
             <div className='divider w-[100px] h-[5px] bg-gray-400 mb-4 mt-2'></div>
             <div className='w-fit h-fit border border-blue-600 flex flex-col items-center rounded-3xl mb-8'>

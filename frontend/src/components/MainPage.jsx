@@ -5,7 +5,7 @@ import {
     ArrowRightOutlined
 } from '@ant-design/icons';
 import '../css/mainpage.css'
-import InfiniteScrollingCarousel from "./InfiniteScrollingCarousel";
+import InfiniteScrollingCarousel from "./HomePage/InfiniteScrollingCarousel";
 import BodyContent from "./HomePage/BodyContent";
 import GeneratePictureOnMouse from "./HomePage/GeneratePictureOnMouse";
 const contentStyle = {

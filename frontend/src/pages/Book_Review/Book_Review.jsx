@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
-import { Experience } from "./Sliding Book/Experience";
-import { UI } from "./Sliding Book/UI";
+import { Experience } from "../../components/Sliding Book/Experience";
+import { UI } from "../../components/Sliding Book/UI";
 import { Loader } from "@react-three/drei";
 
 const Book_Review = () => {

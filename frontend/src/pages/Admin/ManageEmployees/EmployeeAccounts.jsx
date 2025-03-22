@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {Pagination, Drawer, Divider, Collapse,theme, Button, Input, Tag, Select} from 'antd';
-import Icon, {MenuFoldOutlined, MoreOutlined, CaretRightOutlined, ReloadOutlined } from '@ant-design/icons';
+import {Pagination, Drawer, Divider, Button, Input, Tag, Select} from 'antd';
+import {MoreOutlined, ReloadOutlined } from '@ant-design/icons';
 import MedalProfessor, {Medal2, Medal3, Medal4, Medal5, College} from './SVGEmployee'
 const { Search } = Input;
 const EmployeeAccounts = () => {
@@ -501,21 +501,6 @@ const EmployeeAccounts = () => {
                             </div>
                         )}
                     </div>
-                    {
-                        dataUser && Array.isArray(dataUser.medicalRecords) && dataUser.medicalRecords.length > 0 && (
-                            <div className="w-full h-fit mt-4 p-4 rounded-lg shadow-lg">
-                                <h1 className="font-bold text-base p-4">Hồ sơ bệnh án</h1>
-                                <Collapse
-                                bordered={false}
-                                expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
-                                style={{
-                                    background: token.colorBgContainer,
-                                }}
-                                items={dataUser && dataUser.medicalRecords ? getItems(dataUser.medicalRecords, panelStyle) : []}
-                                />
-                            </div>
-                        )
-                    }
                 </div>
             </Drawer>
         </div>

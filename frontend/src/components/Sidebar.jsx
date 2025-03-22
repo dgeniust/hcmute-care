@@ -111,6 +111,11 @@ const SideBar = ({handleChangePage}) => {
           key: 'sub8',
           label: 'Liên hệ',
           icon: <PhoneOutlined />,
+        },
+        {
+          key: 'bmi',
+          label: 'Tính BMI, BMR',
+          icon: <PhoneOutlined />,
         }
       ]
     return <Sider

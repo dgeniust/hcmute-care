@@ -1,9 +1,9 @@
 import React from "react";
 import {Tag, DatePicker  } from 'antd';
-import {RiseOutlined, TeamOutlined, FallOutlined} from '@ant-design/icons';
+import {RiseOutlined} from '@ant-design/icons';
 import dayjs from 'dayjs';
-import ChartNumber_Orders from "./ChartNumber_Orders";
-import NumberOrders from "./NumberOrders";
+import ChartNumber_Orders from "../../../components/AdminComponents/ManageUser/ChartNumber_Orders";
+import NumberOrders from "../../../components/AdminComponents/ManageUser/NumberOrders";
 const ManageNumber_Orders = () => {
     const today = dayjs()
     const dateFormat = 'DD/MM/YYYY';

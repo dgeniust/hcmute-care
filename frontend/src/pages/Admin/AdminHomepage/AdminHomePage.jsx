@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {Tag, Select, DatePicker  } from 'antd';
 import {RiseOutlined, TeamOutlined, FallOutlined, RightOutlined} from '@ant-design/icons';
-import LineChart from "./LineChart";
-import DonutChart from "./DonutChart";
-import TransactionTable from "./TransactionTable";
-import HorizontalChart from "./HorizontalChart";
+import LineChart from "../../../components/AdminComponents/AdminHomepage/LineChart";
+import DonutChart from "../../../components/AdminComponents/AdminHomepage/DonutChart";
+import TransactionTable from "../../../components/AdminComponents/AdminHomepage/TransactionTable";
+import HorizontalChart from "../../../components/AdminComponents/AdminHomepage/HorizontalChart";
 import dayjs from 'dayjs';
 const AdminHomePage = () => {
     const dateFormat = 'DD/MM/YYYY';

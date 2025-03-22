@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import termsOfService from './Data_Personal/termsOfService';
+import termsOfService from '../../components/Personal/Data_Personal/termsOfService';
 const TermsService = () => {
     const onChange = (key) => {
         console.log(key);

@@ -1,13 +1,13 @@
 import React, {useEffect, useState, useRef} from 'react';
 import { Button, message, Steps, theme, Tour  } from 'antd';
 import { SnippetsOutlined, CreditCardOutlined, UserOutlined, ForkOutlined } from '@ant-design/icons';
-import CreateProfile_Booking from './Booking/1/CreateProfile_Booking';
-import CureInfo_Booking from './Booking/2/CureInfo_Booking';
-import ConfirmInfo_Booking from './Booking/3/ConfirmInfo_Booking';
-import Payment_Booking from './Booking/4/Payment_Booking';
-import ConfirmBill_Booking from './Booking/5/ConfirmBill_Booking';
-import '../css/BookingContent.css';
-import logo from '../assets/Logo_2.png'
+import CreateProfile_Booking from '../../components/Booking/1/CreateProfile_Booking';
+import CureInfo_Booking from '../../components/Booking/2/CureInfo_Booking';
+import ConfirmInfo_Booking from '../../components/Booking/3/ConfirmInfo_Booking';
+import Payment_Booking from '../../components/Booking/4/Payment_Booking';
+import ConfirmBill_Booking from '../../components/Booking/5/ConfirmBill_Booking';
+import '../../css/bookingcontent.css';
+import logo from '../../assets/Logo_2.png';
 const BookingContent = () => {
     
     const ref1 = useRef(null);

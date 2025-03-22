@@ -26,14 +26,14 @@ import HeaderNavbar from '../components/Header';
 // const {Content, Footer } = Layout;
 import SideBar from '../components/Sidebar';
 import MainPage from '../components/MainPage';
-import BMIPage from './BMIPage';
+import BMIContent from './BMI_BMR/BMIContent';
 import Personal_Profile from '../pages/Personal_Profile';
-import MedicalRecord from '../components/Personal/MedicalRecord';
-import MedicalHistory from '../components/Personal/MedicalHistory';
-import RegulationUse from '../components/Personal/RegulationUse';
-import TermsService from '../components/Personal/TermsService';
-import ServiceList from '../components/ServiceList';
-import Notification_Event from '../components/Notification_Event';
+import MedicalRecord from './Personal/MedicalRecord';
+import MedicalHistory from './Personal/MedicalHistory';
+import RegulationUse from './Personal/RegulationUse';
+import TermsService from './Personal/TermsService';
+import ServiceList from './ServiceList';
+import Notification_Event from './Personal/Notification_Event';
 const HomePage = () => {
   const [currentPage, setCurrentPage] = useState('main');
 
@@ -69,7 +69,7 @@ const HomePage = () => {
         >
           <SideBar handleChangePage={handleChangePage}/>
           {currentPage === 'main' && <MainPage onPageChange={handleChangePage}/>}
-          {currentPage === 'bmi' && <BMIPage/>}
+          {currentPage === 'bmi' && <BMIContent/>}
           {currentPage === 'personal-profile' && <Personal_Profile/>}
           {currentPage === 'medical-records' && <MedicalRecord/>}
           {currentPage === 'medical-history' && <MedicalHistory/>}

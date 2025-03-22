@@ -2,7 +2,7 @@ import React from "react";
 import {Tag, DatePicker  } from 'antd';
 import {RiseOutlined, TeamOutlined, FallOutlined} from '@ant-design/icons';
 import dayjs from 'dayjs';
-import UserAccounts from './UserAccounts';
+import UserAccounts from '../../../components/AdminComponents/ManageUser/UserAccounts';
 const ManageUser = () => {
     const today = dayjs()
     const dateFormat = 'DD/MM/YYYY';

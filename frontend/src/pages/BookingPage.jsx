@@ -25,7 +25,7 @@ import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import HeaderNavbar from '../components/Header';
 // const {Content, Footer } = Layout;
 import SideBar from '../components/Sidebar';
-import BookingContent from '../components/BookingContent';
+import BookingContent from './Booking/BookingContent';
 const BookingPage = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -55,7 +55,7 @@ const BookingPage = () => {
             flexDirection: 'row',
           }}
         >
-          <SideBar/>
+            <SideBar/>
             <BookingContent/>
         </Layout>
       </div>

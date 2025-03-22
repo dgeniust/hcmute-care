@@ -2,10 +2,10 @@ import React from 'react';
 import { Tabs } from 'antd';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
-import MH_1 from './MedicalHistory-Children/MH_1';
-import MH_2 from './MedicalHistory-Children/MH_2';
-import MH_3 from './MedicalHistory-Children/MH_3';
-import MH_4 from './MedicalHistory-Children/MH_4';
+import MH_1 from '../../components/Personal/MedicalHistory-Children/MH_1';
+import MH_2 from '../../components/Personal/MedicalHistory-Children/MH_2';
+import MH_3 from '../../components/Personal/MedicalHistory-Children/MH_3';
+import MH_4 from '../../components/Personal/MedicalHistory-Children/MH_4';
 const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY-MM-DD';
 const MedicalHistory = () => {
