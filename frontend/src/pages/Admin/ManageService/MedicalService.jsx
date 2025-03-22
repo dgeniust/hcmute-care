@@ -102,7 +102,7 @@ const MedicalService = () => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                 {currentItems.map((data) => (
-                    <tr key={data.id}>
+                    <tr key={data.stt}>
                     <td className="p-3 whitespace-nowrap">{data.Stt}</td>
                     <td className="p-3 whitespace-nowrap">{data.Ma_hieu}</td>
                     <td className="p-3 max-w-1/2 break-words">{data.Ten_dich_vu}</td>

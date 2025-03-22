@@ -2,6 +2,7 @@ import React from 'react';
 import {DatePicker, Tabs  } from 'antd';
 import dayjs from 'dayjs';
 import MedicalService from './MedicalService';
+import VaccineService from './VaccineService';
 const ManageService = () => {
     const today = dayjs()
     const dateFormat = 'DD/MM/YYYY';
@@ -15,7 +16,7 @@ const ManageService = () => {
         {
           key: '2',
           label: 'Dịch vụ tiêm phòng',
-          children: 'Content of Tab Pane 2',
+          children: <VaccineService/>,
         },
         {
           key: '3',

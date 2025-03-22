@@ -9,7 +9,7 @@ import ManageEmployee from './ManageEmployees/ManageEmployee';
 import ManagePost from './ManagePostEvent/ManagePost';
 import ManageService from './ManageService/ManageService';
 const AdminDashboard = () => {
-    const [currentPage, setCurrentPage] = useState('manage-employee');
+    const [currentPage, setCurrentPage] = useState('manage-service');
 
   const handleChangePage = (page) => {
     setCurrentPage(page);
