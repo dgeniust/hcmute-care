@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { Input, Pagination, Skeleton } from 'antd';
 const { Search } = Input;
-const MedicalService = () => {
+const VaccineService = () => {
     const [datas, setDatas] = useState([]);
     const [searchService, setSearchService] = useState('');
     const [loadingSke, setLoadingSke] = useState(false);
@@ -74,9 +74,9 @@ const MedicalService = () => {
     // };
     return (
         <div className='w-full h-full p-8 text-black flex flex-col items-center justify-center text-start space-y-8'>
-            <h1 className='font-bold text-xl'>Bảng giá dịch vụ</h1>
+            <h1 className='font-bold text-xl'>Bảng giá Vaccine</h1>
             <Search
-            placeholder="Tìm kiếm dịch vụ "
+            placeholder="Tìm kiếm vaccine "
             style={{
                 width: '100%',
             }}
@@ -126,4 +126,4 @@ const MedicalService = () => {
         </div>
     )
 }
-export default MedicalService;
+export default VaccineService;
