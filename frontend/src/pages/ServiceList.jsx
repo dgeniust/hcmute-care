@@ -15,6 +15,13 @@ const ServiceList = () => {
             console.log('error: '+ error);
             });
     }, []);
+    const headers = [
+        'STT',
+        'Mã hiệu',
+        'Tên dịch vụ',
+        'Đơn vị tính',
+        'Mức thu',
+    ];
     return (
         <div className='w-full h-full p-8 text-black flex flex-col items-center justify-center text-start space-y-8'>
             <h1 className='font-bold text-xl'>Bảng giá dịch vụ</h1>

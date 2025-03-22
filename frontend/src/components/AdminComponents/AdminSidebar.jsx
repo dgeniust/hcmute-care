@@ -73,7 +73,7 @@ const AdminSideBar = ({handleChangePage}) => {
           icon: <ReconciliationOutlined />,
         },
         {
-          key: 'service-list',
+          key: 'manage-service',
           label: 'Bảng giá dịch vụ',
           icon: <ForkOutlined />,
         },

@@ -1,0 +1,472 @@
+{ "bang_gia_tiem_chung":
+[
+    {
+        "STT": 1,
+        "Phòng bệnh": "Uốn ván",
+        "Tên vắc xin": "Vắc xin uốn ván hấp phụ (TT)",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 149000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 2,
+        "Phòng bệnh": "Lao",
+        "Tên vắc xin": "BCG (lọ 1ml)",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 155000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 3,
+        "Phòng bệnh": "Tả",
+        "Tên vắc xin": "Morcvax",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 165000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 4,
+        "Phòng bệnh": "Viêm não Nhật Bản",
+        "Tên vắc xin": "Jevax 1ml",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 198000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có *"
+    },
+    {
+        "STT": 5,
+        "Phòng bệnh": "Viêm gan B trẻ em",
+        "Tên vắc xin": "Gene Hbvax 0.5ml",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 199000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 6,
+        "Phòng bệnh": "Bạch hầu – Uốn ván",
+        "Tên vắc xin": "Uốn ván, bạch hầu hấp phụ (Td) - Liều",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 205000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 7,
+        "Phòng bệnh": "Viêm gan B người lớn",
+        "Tên vắc xin": "Gene Hbvax 1ml",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 220000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 8,
+        "Phòng bệnh": "Bạch hầu – Uốn ván",
+        "Tên vắc xin": "Uốn ván, bạch hầu hấp phụ (Td) – Lọ 0.5ml",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 240000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 9,
+        "Phòng bệnh": "Uốn ván",
+        "Tên vắc xin": "Huyết thanh uốn ván (SAT)",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 245000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 10,
+        "Phòng bệnh": "Viêm gan A",
+        "Tên vắc xin": "Havax 0.5ml",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 255000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 11,
+        "Phòng bệnh": "Sởi",
+        "Tên vắc xin": "MVVac (Liều 0.5ml)",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 265000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 12,
+        "Phòng bệnh": "Thương hàn",
+        "Tên vắc xin": "Typhoid VI",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 265000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 13,
+        "Phòng bệnh": "Viêm gan B trẻ em",
+        "Tên vắc xin": "Heberbiovac 0.5ml",
+        "Nước sản xuất": "Cu Ba",
+        "Giá bán lẻ/liều (VNĐ)": 270000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có *"
+    },
+    {
+        "STT": 14,
+        "Phòng bệnh": "Viêm gan B người lớn",
+        "Tên vắc xin": "Heberbiovac 1ml",
+        "Nước sản xuất": "Cu ba",
+        "Giá bán lẻ/liều (VNĐ)": 295000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có *"
+    },
+    {
+        "STT": 15,
+        "Phòng bệnh": "Cúm",
+        "Tên vắc xin": "Ivacflu-S",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 315000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 16,
+        "Phòng bệnh": "Dại",
+        "Tên vắc xin": "Abhayrab 0.5ml (TTD)",
+        "Nước sản xuất": "Ấn Độ",
+        "Giá bán lẻ/liều (VNĐ)": 345000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 17,
+        "Phòng bệnh": "Cúm",
+        "Tên vắc xin": "GC Flu Quadrivalent",
+        "Nước sản xuất": "Hàn Quốc",
+        "Giá bán lẻ/liều (VNĐ)": 350000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 18,
+        "Phòng bệnh": "Cúm",
+        "Tên vắc xin": "Influvac Tetra 0.5ml",
+        "Nước sản xuất": "Hà Lan",
+        "Giá bán lẻ/liều (VNĐ)": 356000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 19,
+        "Phòng bệnh": "Cúm",
+        "Tên vắc xin": "Vaxigrip Tetra 0.5ml",
+        "Nước sản xuất": "Pháp",
+        "Giá bán lẻ/liều (VNĐ)": 356000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 20,
+        "Phòng bệnh": "Dại",
+        "Tên vắc xin": "Verorab 0.5ml (TTD)",
+        "Nước sản xuất": "Pháp",
+        "Giá bán lẻ/liều (VNĐ)": 370000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 21,
+        "Phòng bệnh": "Các bệnh do Hib",
+        "Tên vắc xin": "Quimi-Hib",
+        "Nước sản xuất": "Cu Ba",
+        "Giá bán lẻ/liều (VNĐ)": 385000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 22,
+        "Phòng bệnh": "Viêm màng não do não mô cầu nhóm B,C",
+        "Tên vắc xin": "VA-Mengoc-BC",
+        "Nước sản xuất": "Cu Ba",
+        "Giá bán lẻ/liều (VNĐ)": 385000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 23,
+        "Phòng bệnh": "Thương hàn",
+        "Tên vắc xin": "Typhim VI",
+        "Nước sản xuất": "Pháp",
+        "Giá bán lẻ/liều (VNĐ)": 390000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 24,
+        "Phòng bệnh": "Sởi",
+        "Tên vắc xin": "MVVac (Lọ 5ml)",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 396000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 25,
+        "Phòng bệnh": "Viêm não Nhật Bản",
+        "Tên vắc xin": "Jeev 3mcg/0.5ml",
+        "Nước sản xuất": "Ấn Độ",
+        "Giá bán lẻ/liều (VNĐ)": 399000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có *"
+    },
+    {
+        "STT": 26,
+        "Phòng bệnh": "Dại",
+        "Tên vắc xin": "Abhayrab 0.5ml (TB)",
+        "Nước sản xuất": "Ấn Độ",
+        "Giá bán lẻ/liều (VNĐ)": 415000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 27,
+        "Phòng bệnh": "Sởi – Quai bị – Rubella",
+        "Tên vắc xin": "MMR II (3 in 1)",
+        "Nước sản xuất": "Mỹ",
+        "Giá bán lẻ/liều (VNĐ)": 445000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có *"
+    },
+    {
+        "STT": 28,
+        "Phòng bệnh": "Tiêu chảy cấp do Rota virus",
+        "Tên vắc xin": "Rotavin",
+        "Nước sản xuất": "Việt Nam",
+        "Giá bán lẻ/liều (VNĐ)": 490000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 29,
+        "Phòng bệnh": "Dại",
+        "Tên vắc xin": "Verorab 0.5ml (TB)",
+        "Nước sản xuất": "Pháp",
+        "Giá bán lẻ/liều (VNĐ)": 495000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 30,
+        "Phòng bệnh": "Sởi – Quai bị – Rubella",
+        "Tên vắc xin": "Priorix",
+        "Nước sản xuất": "Bỉ",
+        "Giá bán lẻ/liều (VNĐ)": 495000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có *"
+    },
+    {
+        "STT": 31,
+        "Phòng bệnh": "Bạch hầu – Ho gà – Uốn ván – Bại liệt",
+        "Tên vắc xin": "Tetraxim",
+        "Nước sản xuất": "Pháp",
+        "Giá bán lẻ/liều (VNĐ)": 645000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 32,
+        "Phòng bệnh": "Sốt vàng",
+        "Tên vắc xin": "Stamaril",
+        "Nước sản xuất": "Pháp",
+        "Giá bán lẻ/liều (VNĐ)": 650000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 33,
+        "Phòng bệnh": "Viêm gan A",
+        "Tên vắc xin": "Avaxim 80U",
+        "Nước sản xuất": "Pháp",
+        "Giá bán lẻ/liều (VNĐ)": 660000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 34,
+        "Phòng bệnh": "Tiêu chảy cấp do Rota virus",
+        "Tên vắc xin": "Rotateq",
+        "Nước sản xuất": "Mỹ",
+        "Giá bán lẻ/liều (VNĐ)": 665000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 35,
+        "Phòng bệnh": "Viêm gan A + B",
+        "Tên vắc xin": "Twinrix",
+        "Nước sản xuất": "Bỉ",
+        "Giá bán lẻ/liều (VNĐ)": 690000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 36,
+        "Phòng bệnh": "Bạch hầu – Uốn ván – Ho gà",
+        "Tên vắc xin": "Adacel",
+        "Nước sản xuất": "Canada",
+        "Giá bán lẻ/liều (VNĐ)": 775000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 37,
+        "Phòng bệnh": "Bạch hầu – Uốn ván – Ho gà",
+        "Tên vắc xin": "Boostrix",
+        "Nước sản xuất": "Bỉ",
+        "Giá bán lẻ/liều (VNĐ)": 795000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 38,
+        "Phòng bệnh": "Tiêu chảy cấp do Rota virus",
+        "Tên vắc xin": "Rotarix",
+        "Nước sản xuất": "Bỉ",
+        "Giá bán lẻ/liều (VNĐ)": 825000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 39,
+        "Phòng bệnh": "Viêm não Nhật Bản",
+        "Tên vắc xin": "Imojev",
+        "Nước sản xuất": "Thái Lan",
+        "Giá bán lẻ/liều (VNĐ)": 875000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 40,
+        "Phòng bệnh": "Bạch hầu, ho gà, uốn ván, bại liệt, viêm màng não mủ, viêm phổi do Hib, viêm gan B",
+        "Tên vắc xin": "Infanrix Hexa (6in1)",
+        "Nước sản xuất": "Bỉ",
+        "Giá bán lẻ/liều (VNĐ)": 1015000,
+        "Giá ưu đãi/liều (VNĐ)": 996000,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 41,
+        "Phòng bệnh": "Các bệnh do phế cầu",
+        "Tên vắc xin": "Synflorix",
+        "Nước sản xuất": "Bỉ",
+        "Giá bán lẻ/liều (VNĐ)": 1045000,
+        "Giá ưu đãi/liều (VNĐ)": 1024000,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 42,
+        "Phòng bệnh": "Bạch hầu, ho gà, uốn ván, bại liệt, viêm màng não mủ, viêm phổi do Hib, viêm gan B",
+        "Tên vắc xin": "Hexaxim (6in1)",
+        "Nước sản xuất": "Pháp",
+        "Giá bán lẻ/liều (VNĐ)": 1048000,
+        "Giá ưu đãi/liều (VNĐ)": 996000,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 43,
+        "Phòng bệnh": "Thủy đậu",
+        "Tên vắc xin": "Varilrix",
+        "Nước sản xuất": "Bỉ",
+        "Giá bán lẻ/liều (VNĐ)": 1085000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 44,
+        "Phòng bệnh": "Thủy đậu",
+        "Tên vắc xin": "Varivax",
+        "Nước sản xuất": "Mỹ",
+        "Giá bán lẻ/liều (VNĐ)": 1085000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 45,
+        "Phòng bệnh": "Các bệnh do phế cầu",
+        "Tên vắc xin": "Prevenar 13",
+        "Nước sản xuất": "Bỉ",
+        "Giá bán lẻ/liều (VNĐ)": 1290000,
+        "Giá ưu đãi/liều (VNĐ)": 1190000,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 46,
+        "Phòng bệnh": "Viêm màng não do não mô cầu nhóm A, C, Y, W-135",
+        "Tên vắc xin": "Menactra",
+        "Nước sản xuất": "Mỹ",
+        "Giá bán lẻ/liều (VNĐ)": 1370000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 47,
+        "Phòng bệnh": "Sốt xuất huyết",
+        "Tên vắc xin": "Qdenga",
+        "Nước sản xuất": "Đức",
+        "Giá bán lẻ/liều (VNĐ)": 1390000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 48,
+        "Phòng bệnh": "Các bệnh do phế cầu",
+        "Tên vắc xin": "Pneumovax 23",
+        "Nước sản xuất": "Mỹ",
+        "Giá bán lẻ/liều (VNĐ)": 1450000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 49,
+        "Phòng bệnh": "Viêm màng não do não mô cầu nhóm B",
+        "Tên vắc xin": "Bexsero",
+        "Nước sản xuất": "Ý",
+        "Giá bán lẻ/liều (VNĐ)": 1750000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 50,
+        "Phòng bệnh": "Ung thư cổ tử cung, ung thư hầu họng, sùi mào gà... do HPV (4 chủng)",
+        "Tên vắc xin": "Gardasil 0.5ml",
+        "Nước sản xuất": "Mỹ",
+        "Giá bán lẻ/liều (VNĐ)": 1790000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 51,
+        "Phòng bệnh": "Ung thư cổ tử cung, ung thư hầu họng, sùi mào gà... do HPV (9 chủng)",
+        "Tên vắc xin": "Gardasil 9 0.5ml",
+        "Nước sản xuất": "Mỹ",
+        "Giá bán lẻ/liều (VNĐ)": 2950000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    },
+    {
+        "STT": 52,
+        "Phòng bệnh": "Zona thần kinh (giời leo)",
+        "Tên vắc xin": "Shingrix",
+        "Nước sản xuất": "Bỉ",
+        "Giá bán lẻ/liều (VNĐ)": 3890000,
+        "Giá ưu đãi/liều (VNĐ)": 0,
+        "Tình trạng": "Có"
+    }
+]
+}

@@ -7,6 +7,7 @@ import ManageNumber_Orders from './ManageUser/ManageNumber_Orders';
 import ManageRoom from './ManageEmployees/ManageRoom';
 import ManageEmployee from './ManageEmployees/ManageEmployee';
 import ManagePost from './ManagePostEvent/ManagePost';
+import ManageService from './ManageService/ManageService';
 const AdminDashboard = () => {
     const [currentPage, setCurrentPage] = useState('manage-employee');
 
@@ -39,6 +40,7 @@ const AdminDashboard = () => {
           {currentPage === 'manage-rooms' && <ManageRoom/>}
           {currentPage === 'manage-posts' && <ManagePost/>}
           {currentPage === 'manage-employee' && <ManageEmployee/>}
+          {currentPage === 'manage-service' && <ManageService/>}
         </Layout>
       </div>
     </Layout>

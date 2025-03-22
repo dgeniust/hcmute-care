@@ -1,0 +1,418 @@
+{
+    "bang_gia_goi_tiem_chung": [
+        {
+            "Ten_Goi": "Gói tiêm chủng cho trẻ sơ sinh đến 12 tháng tuổi",
+            "Gia_Goi": "17.368.350đ (Tiết kiệm 1.668.700đ so với giá ban đầu)",
+            "Vaccine": [
+                {
+                    "Ten_Vac_Xin": "Hexaxim",
+                    "Ten_Benh_Phong_Ngua": "Bạch hầu, Uốn ván, Bại liệt, Ho gà, Hib, Viêm gan B",
+                    "So_Mui": 3,
+                    "Nuoc_San_Xuat": "Pháp"
+                },
+                {
+                    "Ten_Vac_Xin": "Rotarix",
+                    "Ten_Benh_Phong_Ngua": "Tiêu chảy do Rota virus",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Synflorix",
+                    "Ten_Benh_Phong_Ngua": "Bệnh do Phế cầu (Viêm phổi, Tai giữa, Màng não)",
+                    "So_Mui": 4,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Vaxigrip Tetra",
+                    "Ten_Benh_Phong_Ngua": "Cúm mùa",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Pháp"
+                },
+                {
+                    "Ten_Vac_Xin": "Priorix",
+                    "Ten_Benh_Phong_Ngua": "Sởi, Quai bị, Rubella",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Imojev",
+                    "Ten_Benh_Phong_Ngua": "Viêm não Nhật Bản",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Thái Lan"
+                },
+                {
+                    "Ten_Vac_Xin": "Menactra",
+                    "Ten_Benh_Phong_Ngua": "Viêm màng não Meningococcal ACYW",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Varilrix",
+                    "Ten_Benh_Phong_Ngua": "Thủy đậu",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Twinrix",
+                    "Ten_Benh_Phong_Ngua": "Viêm gan A và B",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Bỉ"
+                }
+            ]
+        },
+        {
+            "Ten_Goi": "Gói tiêm chủng cho trẻ sơ sinh đến 24 tháng tuổi",
+            "Gia_Goi": "20.950.650đ (Tiết kiệm 2.022.500đ so với giá ban đầu)",
+            "Vaccine": [
+                {
+                    "Ten_Vac_Xin": "Infanrix Hexa",
+                    "Ten_Benh_Phong_Ngua": "Bạch hầu, Bại liệt, Ho gà, Uốn ván, Hib, Viêm gan B",
+                    "So_Mui": 4,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Rotarix",
+                    "Ten_Benh_Phong_Ngua": "Tiêu chảy do Rota virus",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Synflorix",
+                    "Ten_Benh_Phong_Ngua": "Bệnh do Phế cầu (Viêm phổi, Tai giữa, Màng não)",
+                    "So_Mui": 4,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Influvac Tetra",
+                    "Ten_Benh_Phong_Ngua": "Cúm mùa",
+                    "So_Mui": 3,
+                    "Nuoc_San_Xuat": "Hà Lan"
+                },
+                {
+                    "Ten_Vac_Xin": "Priorix",
+                    "Ten_Benh_Phong_Ngua": "Sởi, Quai bị, Rubella",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Imojev",
+                    "Ten_Benh_Phong_Ngua": "Viêm não Nhật Bản",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Thái Lan"
+                },
+                {
+                    "Ten_Vac_Xin": "Menactra",
+                    "Ten_Benh_Phong_Ngua": "Viêm màng não Meningococcal ACYW",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Varilrix",
+                    "Ten_Benh_Phong_Ngua": "Thủy đậu",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Twinrix",
+                    "Ten_Benh_Phong_Ngua": "Viêm gan A và B",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Typhim VI",
+                    "Ten_Benh_Phong_Ngua": "Thương hàn",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Pháp"
+                },
+                {
+                    "Ten_Vac_Xin": "Morcvax",
+                    "Ten_Benh_Phong_Ngua": "Tả",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Việt Nam"
+                }
+            ]
+        },
+        {
+            "Ten_Goi": "Gói tiêm chủng dành cho trẻ em từ 3 đến 9 tuổi",
+            "Gia_Goi": "10.230.150đ (Tiết kiệm 974.300đ so với giá ban đầu)",
+            "Vaccine": [
+                {
+                    "Ten_Vac_Xin": "Tetraxim",
+                    "Ten_Benh_Phong_Ngua": "Bạch hầu, Uốn ván, Ho gà, Bại liệt",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Pháp"
+                },
+                {
+                    "Ten_Vac_Xin": "Synflorix",
+                    "Ten_Benh_Phong_Ngua": "Bệnh do Phế cầu (Viêm phổi, Tai giữa, Màng não)",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Vaxigrip Tetra",
+                    "Ten_Benh_Phong_Ngua": "Cúm mùa",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Pháp"
+                },
+                {
+                    "Ten_Vac_Xin": "Imojev",
+                    "Ten_Benh_Phong_Ngua": "Viêm não Nhật Bản",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Thái Lan"
+                },
+                {
+                    "Ten_Vac_Xin": "Menactra",
+                    "Ten_Benh_Phong_Ngua": "Viêm màng não Meningococcal ACYW",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Varivax",
+                    "Ten_Benh_Phong_Ngua": "Thủy đậu",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Priorix",
+                    "Ten_Benh_Phong_Ngua": "Sởi, Quai bị, Rubella",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Typhim VI",
+                    "Ten_Benh_Phong_Ngua": "Thương hàn",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Pháp"
+                },
+                {
+                    "Ten_Vac_Xin": "Twinrix",
+                    "Ten_Benh_Phong_Ngua": "Viêm gan A và B",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                }
+            ]
+        },
+        {
+            "Ten_Goi": "Gói tiêm chủng dành cho thanh thiếu niên từ 9 đến 18 tuổi",
+            "Gia_Goi": "18.981.900đ (Tiết kiệm 1.807.800đ so với giá ban đầu)",
+            "Vaccine": [
+                {
+                    "Ten_Vac_Xin": "Gardasil 9",
+                    "Ten_Benh_Phong_Ngua": "Ung thư cổ tử cung do virus HPV",
+                    "So_Mui": 3,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Synflorix",
+                    "Ten_Benh_Phong_Ngua": "Bệnh do Phế cầu (Viêm phổi, Tai giữa, Màng não)",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Adacel",
+                    "Ten_Benh_Phong_Ngua": "Bạch hầu, Ho gà, Uốn ván",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Canada"
+                },
+                {
+                    "Ten_Vac_Xin": "Vaxigrip Tetra",
+                    "Ten_Benh_Phong_Ngua": "Cúm mùa",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Pháp"
+                },
+                {
+                    "Ten_Vac_Xin": "Imojev",
+                    "Ten_Benh_Phong_Ngua": "Viêm não Nhật Bản",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Thái Lan"
+                },
+                {
+                    "Ten_Vac_Xin": "Menactra",
+                    "Ten_Benh_Phong_Ngua": "Viêm màng não Meningococcal ACYW",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Varivax",
+                    "Ten_Benh_Phong_Ngua": "Thủy đậu",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Priorix",
+                    "Ten_Benh_Phong_Ngua": "Sởi, Quai bị, Rubella",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Twinrix",
+                    "Ten_Benh_Phong_Ngua": "Viêm gan A và B",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                }
+            ]
+        },
+        {
+            "Ten_Goi": "Gói tiêm chủng tiền hôn nhân bảo vệ toàn diện",
+            "Gia_Goi": "17.023.650đ (Tiết kiệm 1.621.300đ so với giá ban đầu)",
+            "Vaccine": [
+                {
+                    "Ten_Vac_Xin": "Gardasil 9",
+                    "Ten_Benh_Phong_Ngua": "Ung thư cổ tử cung do virus HPV",
+                    "So_Mui": 3,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Varilrix",
+                    "Ten_Benh_Phong_Ngua": "Thủy đậu",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Priorix",
+                    "Ten_Benh_Phong_Ngua": "Sởi, Quai bị, Rubella",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Boostrix",
+                    "Ten_Benh_Phong_Ngua": "Bạch hầu, Ho gà, Uốn ván",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Twinrix",
+                    "Ten_Benh_Phong_Ngua": "Viêm gan A và B",
+                    "So_Mui": 3,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Prevenar 13",
+                    "Ten_Benh_Phong_Ngua": "Bệnh do Phế cầu (Viêm phổi, Tai giữa, Màng não)",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Influvac Tetra",
+                    "Ten_Benh_Phong_Ngua": "Cúm mùa",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Hà Lan"
+                }
+            ]
+        },
+        {
+            "Ten_Goi": "Gói tiêm chủng dành cho người có bệnh mãn tính",
+            "Gia_Goi": "4.502.400đ (Tiết kiệm 428.800đ so với giá ban đầu)",
+            "Vaccine": [
+                {
+                    "Ten_Vac_Xin": "Prevenar 13",
+                    "Ten_Benh_Phong_Ngua": "Bệnh do Phế cầu (Viêm phổi, Tai giữa, Màng não)",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Boostrix",
+                    "Ten_Benh_Phong_Ngua": "Bạch hầu, Ho gà, Uốn ván",
+                    "So_Mui": 3,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Influvac Tetra",
+                    "Ten_Benh_Phong_Ngua": "Cúm mùa",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Hà Lan"
+                },
+                {
+                    "Ten_Vac_Xin": "Morvax",
+                    "Ten_Benh_Phong_Ngua": "Tả",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Việt Nam"
+                }
+            ]
+        },
+        {
+            "Ten_Goi": "Gói tiêm chủng cho người trưởng thành",
+            "Gia_Goi": "7.820.400đ (Tiết kiệm 744.800đ so với giá ban đầu)",
+            "Vaccine": [
+                {
+                    "Ten_Vac_Xin": "Varivax",
+                    "Ten_Benh_Phong_Ngua": "Thủy đậu",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "MMR II",
+                    "Ten_Benh_Phong_Ngua": "Sởi, Quai bị, Rubella",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Adacel",
+                    "Ten_Benh_Phong_Ngua": "Bạch hầu, Ho gà, Uốn ván",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Canada"
+                },
+                {
+                    "Ten_Vac_Xin": "Prevenar 13",
+                    "Ten_Benh_Phong_Ngua": "Bệnh do Phế cầu (Viêm phổi, Tai giữa, Màng não)",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Menactra",
+                    "Ten_Benh_Phong_Ngua": "Viêm màng não Meningococcal ACYW",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Imojev",
+                    "Ten_Benh_Phong_Ngua": "Viêm não Nhật Bản",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Thái Lan"
+                },
+                {
+                    "Ten_Vac_Xin": "Influvac Tetra",
+                    "Ten_Benh_Phong_Ngua": "Cúm mùa",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Hà Lan"
+                }
+            ]
+        },
+        {
+            "Ten_Goi": "Gói tiêm chủng toàn diện cho phụ nữ trước khi có thai",
+            "Gia_Goi": "5.699.400đ (Tiết kiệm 542.800đ so với giá ban đầu)",
+            "Vaccine": [
+                {
+                    "Ten_Vac_Xin": "Varivax",
+                    "Ten_Benh_Phong_Ngua": "Thủy đậu",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Mỹ"
+                },
+                {
+                    "Ten_Vac_Xin": "Priorix",
+                    "Ten_Benh_Phong_Ngua": "Sởi, Quai bị, Rubella",
+                    "So_Mui": 2,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Adacel",
+                    "Ten_Benh_Phong_Ngua": "Bạch hầu, Ho gà, Uốn ván",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Canada"
+                },
+                {
+                    "Ten_Vac_Xin": "Prevenar 13",
+                    "Ten_Benh_Phong_Ngua": "Bệnh do Phế cầu (Viêm phổi, Tai giữa, Màng não)",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Bỉ"
+                },
+                {
+                    "Ten_Vac_Xin": "Vaxigrip Tetra",
+                    "Ten_Benh_Phong_Ngua": "Cúm mùa",
+                    "So_Mui": 1,
+                    "Nuoc_San_Xuat": "Pháp"
+                }
+            ]
+        }
+    ]
+}

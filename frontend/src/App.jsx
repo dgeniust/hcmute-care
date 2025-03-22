@@ -17,7 +17,7 @@ function App() {
     <Router>
       <div>
         <Routes>
-          <Route path="/" element={<Navigate to="/booking" />} />
+          <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<Signup/>} />
           <Route path="/verifyOTP" element={<VerifyOTP/>} />
