@@ -1,0 +1,65 @@
+services:
+  backend-service:
+    container_name: backend-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: backend-app-image
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL= ${SPRING_DB_URL}
+      - SPRING_DATASOURCE_USERNAME= ${SPRING_DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD= ${SPRING_DB_PASSWORD}
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - ute-care-network
+
+  db:
+    image: mysql:8.4.4
+    container_name: mysql-container-1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASS}
+      MYSQL_DATABASE: ${MYSQL_DB_NAME}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+    networks:
+      - ute-care-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7.4
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - ute-care-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+networks:
+  ute-care-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  redis-data:
