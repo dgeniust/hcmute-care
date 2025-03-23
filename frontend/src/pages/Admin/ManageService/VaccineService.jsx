@@ -23,7 +23,9 @@ const VaccineService = () => {
             });
         console.log(datas);
     }, []);
-    const [filteredService, setFilteredService] = useState(datas);
+    const [filteredVaccine, setFilteredVaccine] = useState(datas);
+    const [filteredManufacturer, setFilteredManufacturer] = useState(undefined);
+    const [filteredStatus, setFilteredStatus] = useState(undefined);
     const headers = [
         'STT',
         'Vaccine',
@@ -54,7 +56,7 @@ const VaccineService = () => {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredService.slice(indexOfFirstItem, indexOfLastItem);
+    const currentItems = filteredVaccine.slice(indexOfFirstItem, indexOfLastItem);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -69,23 +71,34 @@ const VaccineService = () => {
     const filtered = () => {
         let filter = datas.filter((data) => {
             const searchMatch = !searchService || (data.vaccine && data.vaccine.toLowerCase().includes(searchService.toLowerCase()));
-            return searchMatch;
+            const manufacturerMatch = !filteredManufacturer || (data.manufacturer && data.manufacturer.includes(filteredManufacturer));
+            const statusMatch = !filteredStatus || (data.status && data.status.includes(filteredStatus));
+            return searchMatch && manufacturerMatch && statusMatch;
         })
-        setFilteredService(filter);
+        setFilteredVaccine(filter);
         setCurrentPage(1);
     }
 
-    const handleManufacturerChange = (value) => {
-
+    const handleManufacturerChange = (value, country) => {
+        setFilteredManufacturer(country?.label || undefined);
+        filtered();
+    }
+    const handleStatusChange = (value, status) => {
+        setFilteredStatus(status?.label || undefined);
+        filtered();
     }
     const handleResetSearch = () => {
-        
+        setSearchService('');
+        setFilteredManufacturer(undefined);
+        setFilteredStatus(undefined);
+        setFilteredVaccine(datas);
+        setCurrentPage(1);
     }
     useEffect(() => {
         showSkeleton();
-        setFilteredService(datas);
+        setFilteredVaccine(datas);
         filtered();
-    }, [searchService, datas]);
+    }, [searchService, filteredManufacturer, filteredStatus, datas]);
     return (
         <div className='w-full h-full p-8 text-black flex flex-col items-center justify-center text-start space-y-4'>
             <h1 className='font-bold text-xl'>Bảng giá Vaccine</h1>
@@ -93,10 +106,28 @@ const VaccineService = () => {
                 <div className='flex flex-row gap-4 w-full'>
                     <Select
                     style={{ width: 170 }}
-                    // value={value}
+                    value={filteredManufacturer || "Chọn nhà sản xuất"}
                     placeholder="Chọn nước sản xuất"
                     onChange={handleManufacturerChange}
                     options={manufacturerOptions}
+                    />
+                    <Select
+                    style={{ width: 170 }}
+                    value={filteredStatus || "Chọn tình trạng"}
+                    placeholder="Chọn tình trạng"
+                    onChange={handleStatusChange}
+                    options={
+                        [
+                            {
+                                value: 'yes',
+                                label: 'Có',
+                            },
+                            {
+                                value: 'no',
+                                label: 'Không',
+                            }
+                        ]
+                    }
                     />
                     <Button icon={<ReloadOutlined />} onClick={handleResetSearch}></Button>
                 </div>
