@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class JwtServiceImpl implements JwtService {
-
     @Value("${jwt.expiryHour}")
     private Long expiryHour;
 

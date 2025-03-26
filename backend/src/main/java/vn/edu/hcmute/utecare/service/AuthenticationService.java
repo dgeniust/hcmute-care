@@ -17,11 +17,13 @@ public interface AuthenticationService {
 
     VerifyOtpResponse verifyOtpForRegistration(VerifyOtpRequest request);
 
-    TokenResponse registerSetPassword(SetPasswordRequest request);
+    TokenResponse registerSetPassword(String verificationToken, SetPasswordRequest request);
 
     SendOtpResponse sendOtpForForgotPassword(SendOtpRequest request);
 
     VerifyOtpResponse verifyOtpForForgotPassword(VerifyOtpRequest request);
 
-    TokenResponse resetForgotPassword(SetPasswordRequest request);
+    TokenResponse resetForgotPassword(String verificationToken, SetPasswordRequest request);
+
+    void logout(String accessToken);
 }

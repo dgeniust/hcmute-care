@@ -2,12 +2,12 @@ package vn.edu.hcmute.utecare.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.VerifyOtpRequest;
 import vn.edu.hcmute.utecare.dto.response.SendOtpResponse;
 import vn.edu.hcmute.utecare.exception.TooManyOtpRequestsException;
 import vn.edu.hcmute.utecare.service.OtpService;
+import vn.edu.hcmute.utecare.service.RedisService;
 import vn.edu.hcmute.utecare.util.OtpType;
 
 import java.util.concurrent.TimeUnit;
@@ -16,31 +16,26 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 @Slf4j
 public class OtpServiceImpl implements OtpService {
-    private final StringRedisTemplate redisTemplate;
+    private final RedisService redisService;
     private static final int OTP_EXPIRY_SECONDS = 300;
     private static final int LIMIT_EXPIRY_SECONDS = 3600;
-    private static final int MAX_ATTEMPTS = 5;
+    private static final int MAX_ATTEMPTS = 3;
 
     @Override
     public SendOtpResponse generateAndSendOtp(String phoneNumber, OtpType otpType) {
         if (!canSendOtp(phoneNumber)) {
-            long remainingSeconds = redisTemplate.getExpire("otp:limit:" + phoneNumber, TimeUnit.SECONDS);
-            if (remainingSeconds < 0) {
-                remainingSeconds = (long) LIMIT_EXPIRY_SECONDS;
-            }
+            Long remainingSeconds = redisService.get("otp:limit:" + phoneNumber) != null
+                    ? redisService.expire("otp:limit:" + phoneNumber, 0) ? 0L : (long) LIMIT_EXPIRY_SECONDS
+                    : (long) LIMIT_EXPIRY_SECONDS;
             String message = String.format("Too many OTP requests. Please wait %d seconds.", remainingSeconds);
             throw new TooManyOtpRequestsException(message);
         }
 
         String otp = String.format("%06d", new java.security.SecureRandom().nextInt(999999));
-        String otpKey = String.format("otp:%s:%s", otpType.name().toLowerCase(), phoneNumber); // Sử dụng OtpType trong key
-        try {
-            redisTemplate.opsForValue().set(otpKey, otp, OTP_EXPIRY_SECONDS, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            log.error("Failed to store OTP in Redis for {}: {}", phoneNumber, e.getMessage());
-            throw new RuntimeException("Unable to generate OTP due to server error");
-        }
-        // Gửi OTP qua SMS (giả lập, thay bằng API thực tế)
+        String otpKey = String.format("otp:%s:%s", otpType.name().toLowerCase(), phoneNumber);
+        redisService.set(otpKey, otp, OTP_EXPIRY_SECONDS);
+
+        // Gửi OTP qua SMS (giả lập)
         log.info("Sending OTP {} to {} for purpose {}", otp, phoneNumber, otpType);
 
         return SendOtpResponse.builder()
@@ -51,10 +46,10 @@ public class OtpServiceImpl implements OtpService {
 
     @Override
     public boolean verifyOtp(VerifyOtpRequest request, OtpType otpType) {
-        String otpKey = String.format("otp:%s:%s", otpType.name().toLowerCase(), request.getPhone()); // Sử dụng OtpType trong key
-        String storedOtp = redisTemplate.opsForValue().get(otpKey);
+        String otpKey = String.format("otp:%s:%s", otpType.name().toLowerCase(), request.getPhone());
+        String storedOtp = (String) redisService.get(otpKey);
         if (storedOtp != null && storedOtp.equals(request.getOtp())) {
-            redisTemplate.delete(otpKey);
+            redisService.delete(otpKey);
             return true;
         }
         return false;
@@ -62,7 +57,7 @@ public class OtpServiceImpl implements OtpService {
 
     private boolean canSendOtp(String phoneNumber) {
         String limitKey = "otp:limit:" + phoneNumber;
-        String count = redisTemplate.opsForValue().get(limitKey);
+        String count = (String) redisService.get(limitKey);
         int attempts = count != null ? Integer.parseInt(count) : 0;
 
         if (attempts >= MAX_ATTEMPTS) {
@@ -70,9 +65,9 @@ public class OtpServiceImpl implements OtpService {
         }
 
         if (attempts == 0) {
-            redisTemplate.opsForValue().set(limitKey, "1", LIMIT_EXPIRY_SECONDS, TimeUnit.SECONDS);
+            redisService.set(limitKey, "1", LIMIT_EXPIRY_SECONDS);
         } else {
-            redisTemplate.opsForValue().increment(limitKey);
+            redisService.increment(limitKey);
         }
         return true;
     }
