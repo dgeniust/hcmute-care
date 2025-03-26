@@ -3,6 +3,7 @@ package vn.edu.hcmute.utecare.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,10 +21,12 @@ import vn.edu.hcmute.utecare.dto.response.SendOtpResponse;
 import vn.edu.hcmute.utecare.dto.response.TokenResponse;
 import vn.edu.hcmute.utecare.dto.response.VerifyOtpResponse;
 import vn.edu.hcmute.utecare.model.Account;
+import vn.edu.hcmute.utecare.model.Customer;
 import vn.edu.hcmute.utecare.repository.AccountRepository;
 import vn.edu.hcmute.utecare.service.AuthenticationService;
 import vn.edu.hcmute.utecare.service.JwtService;
 import vn.edu.hcmute.utecare.service.OtpService;
+import vn.edu.hcmute.utecare.service.RedisService;
 import vn.edu.hcmute.utecare.util.OtpType;
 import vn.edu.hcmute.utecare.util.TokenType;
 import vn.edu.hcmute.utecare.util.UserStatus;
@@ -38,6 +41,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final OtpService otpService;
     private final PasswordEncoder passwordEncoder;
+    private final RedisService redisService;
+
+    @Value("${jwt.expiryHour}")
+    private Long expiryHour;
+
+    @Value("${jwt.expiryDay}")
+    private Long expiryDay;
 
     @Override
     public TokenResponse signIn(SignInRequest request) {
@@ -55,7 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AccessDeniedException(e.getMessage());
         }
 
-        Account account = accountRepository.findByPhone(request.getPhone()).orElseThrow(() -> new AccessDeniedException("Account not found"));
+        Account account = accountRepository.findByUser_Phone(request.getPhone()).orElseThrow(() -> new AccessDeniedException("Account not found"));
 
 
         if (account.getStatus() != UserStatus.ACTIVE) {
@@ -65,6 +75,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String accessToken = jwtService.generateAccessToken(account);
         String refreshToken = jwtService.generateRefreshToken(account);
 
+        storeTokensInRedis(account, accessToken, refreshToken);
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -77,7 +88,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         log.info("Get new access token");
 
         String phone = jwtService.extractUsername(refreshToken, TokenType.REFRESH_TOKEN);
-        Account account = accountRepository.findByPhone(phone).orElseThrow(() -> new AccessDeniedException("Account not found"));
+        Account account = accountRepository.findByUser_Phone(phone).orElseThrow(() -> new AccessDeniedException("Account not found"));
+
+        String storedRefreshToken = (String) redisService.get("refresh:" + account.getUser().getPhone());
+        if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
+            throw new AccessDeniedException("Invalid or revoked refresh token");
+        }
 
         if (!jwtService.isValid(refreshToken, TokenType.REFRESH_TOKEN, account)) {
             throw new AccessDeniedException("Invalid refresh token");
@@ -99,7 +115,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new IllegalArgumentException("Invalid phone number format");
         }
 
-        if (accountRepository.findByPhone(phoneNumber).isPresent()) {
+        if (accountRepository.findByUser_Phone(phoneNumber).isPresent()) {
             throw new IllegalArgumentException("Phone number already registered");
         }
 
@@ -119,16 +135,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
     @Override
     @Transactional
-    public TokenResponse registerSetPassword(SetPasswordRequest request) {
+    public TokenResponse registerSetPassword(String verificationToken, SetPasswordRequest request) {
         String phone = "";
         try {
-            phone = jwtService.extractUsername(request.getVerificationToken(), TokenType.VERIFICATION_TOKEN);
+            phone = jwtService.extractUsername(verificationToken, TokenType.VERIFICATION_TOKEN);
         } catch (Exception e) {
             throw new AccessDeniedException("Invalid verification token");
         }
 
 
-        if (jwtService.isTokenExpired(request.getVerificationToken(), TokenType.VERIFICATION_TOKEN)) {
+        if (jwtService.isTokenExpired(verificationToken, TokenType.VERIFICATION_TOKEN)) {
             throw new AccessDeniedException("Expired verification token");
         }
 
@@ -141,18 +157,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new IllegalArgumentException("Password must be at least 8 characters long and contain letters and numbers");
         }
 
-        if (accountRepository.findByPhone(phone).isPresent()) {
+        if (accountRepository.findByUser_Phone(phone).isPresent()) {
             throw new IllegalArgumentException("Phone number already registered");
         }
 
+        Customer customer = new Customer();
+        customer.setPhone(phone);
+
         Account account = new Account();
-        account.setPhone(phone);
+        account.setUser(customer);
         account.setPassword(passwordEncoder.encode(request.getPassword()));
         account.setStatus(UserStatus.ACTIVE);
         accountRepository.save(account);
 
         String accessToken = jwtService.generateAccessToken(account);
         String refreshToken = jwtService.generateRefreshToken(account);
+
+        storeTokensInRedis(account, accessToken, refreshToken);
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -167,7 +188,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new IllegalArgumentException("Invalid phone number format");
         }
 
-        Account account = accountRepository.findByPhone(phoneNumber)
+        Account account = accountRepository.findByUser_Phone(phoneNumber)
                 .orElseThrow(() -> new IllegalArgumentException("Phone number not registered"));
 
         if (account.getStatus() != UserStatus.ACTIVE) {
@@ -184,9 +205,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new IllegalArgumentException("Invalid phone number format");
         }
 
-        Account account = accountRepository.findByPhone(phoneNumber)
-                .orElseThrow(() -> new IllegalArgumentException("Phone number not registered"));
-
         if (otpService.verifyOtp(request, OtpType.FORGOT_PASSWORD)) {
             String verificationToken = jwtService.generateVerificationToken(request.getPhone());
             return VerifyOtpResponse.builder()
@@ -199,15 +217,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional
-    public TokenResponse resetForgotPassword(SetPasswordRequest request) {
+    public TokenResponse resetForgotPassword(String verificationToken, SetPasswordRequest request) {
         String phone;
         try {
-            phone = jwtService.extractUsername(request.getVerificationToken(), TokenType.VERIFICATION_TOKEN);
+            phone = jwtService.extractUsername(verificationToken, TokenType.VERIFICATION_TOKEN);
         } catch (Exception e) {
             throw new AccessDeniedException("Invalid verification token");
         }
 
-        if (jwtService.isTokenExpired(request.getVerificationToken(), TokenType.VERIFICATION_TOKEN)) {
+        if (jwtService.isTokenExpired(verificationToken, TokenType.VERIFICATION_TOKEN)) {
             throw new AccessDeniedException("Expired verification token");
         }
 
@@ -219,7 +237,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new IllegalArgumentException("Password must be at least 8 characters long and contain letters and numbers");
         }
 
-        Account account = accountRepository.findByPhone(phone)
+        Account account = accountRepository.findByUser_Phone(phone)
                 .orElseThrow(() -> new IllegalArgumentException("Phone number not registered"));
 
         account.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -227,10 +245,46 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         String accessToken = jwtService.generateAccessToken(account);
         String refreshToken = jwtService.generateRefreshToken(account);
+
+        storeTokensInRedis(account, accessToken, refreshToken);
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .userId(account.getId())
                 .build();
+    }
+
+    @Override
+    public void logout(String accessToken) {
+        log.info("User logout request");
+
+        String phone;
+        try {
+            phone = jwtService.extractUsername(accessToken, TokenType.ACCESS_TOKEN);
+        } catch (Exception e) {
+            log.warn("Invalid access token provided for logout: {}", e.getMessage());
+            throw new AccessDeniedException("Invalid access token");
+        }
+
+        // Kiểm tra token trong Redis (tùy chọn)
+        String storedAccessToken = (String) redisService.get("access:" + phone);
+        if (storedAccessToken == null || !storedAccessToken.equals(accessToken)) {
+            log.warn("Access token not found or mismatched for phone: {}", phone);
+            throw new AccessDeniedException("Invalid or expired access token");
+        }
+
+        // Xóa token khỏi Redis
+        redisService.delete("access:" + phone);
+        redisService.delete("refresh:" + phone);
+
+        log.info("User with phone {} logged out successfully", phone);
+    }
+
+    private void storeTokensInRedis(Account account, String accessToken, String refreshToken) {
+        long accessTokenTTL = expiryHour * 3600;
+        long refreshTokenTTL = expiryDay * 24 * 3600;
+
+        redisService.set("access:" + account.getUser().getPhone(), accessToken, accessTokenTTL);
+        redisService.set("refresh:" + account.getUser().getPhone(), refreshToken, refreshTokenTTL);
     }
 }

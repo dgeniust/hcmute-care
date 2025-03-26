@@ -1,6 +1,5 @@
 package vn.edu.hcmute.utecare.configuration;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.jsonwebtoken.MalformedJwtException;
@@ -22,11 +21,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.access.AccessDeniedException;
 import vn.edu.hcmute.utecare.exception.ErrorResponse;
 import vn.edu.hcmute.utecare.service.JwtService;
+import vn.edu.hcmute.utecare.service.RedisService;
 import vn.edu.hcmute.utecare.util.TokenType;
 
 import java.io.IOException;
 import java.util.Date;
-
 
 @Component
 @Slf4j
@@ -34,6 +33,7 @@ import java.util.Date;
 public class PreFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final RedisService redisService; // Thêm RedisService
     private static final String AUTHORIZATION = "Authorization";
 
     @Override
@@ -51,6 +51,13 @@ public class PreFilter extends OncePerRequestFilter {
                 if (jwtService.isTokenExpired(token, TokenType.ACCESS_TOKEN)) {
                     throw new AccessDeniedException("Token has expired");
                 }
+
+                // Kiểm tra token trong Redis
+                String storedToken = (String) redisService.get("access:" + username);
+                if (storedToken == null || !storedToken.equals(token)) {
+                    throw new AccessDeniedException("Token has been revoked or is invalid");
+                }
+
             } catch (MalformedJwtException e) {
                 log.error("Malformed JWT token: {}", e.getMessage());
                 response.setStatus(HttpServletResponse.SC_OK);

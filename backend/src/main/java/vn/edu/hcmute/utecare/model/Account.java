@@ -21,7 +21,7 @@ import java.util.Collections;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account extends User implements UserDetails {
+public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,6 +39,11 @@ public class Account extends User implements UserDetails {
     @Builder.Default
     private UserStatus status = UserStatus.INACTIVE;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
@@ -51,7 +56,7 @@ public class Account extends User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return super.getPhone();
+        return this.user.getPhone();
     }
 
     @Override

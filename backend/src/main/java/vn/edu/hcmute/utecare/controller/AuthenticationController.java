@@ -68,12 +68,14 @@ public class AuthenticationController {
 
     @PostMapping("/register/set-password")
     @Operation(summary = "Set password for registration", description = "Set password for a new account using verification token")
-    public ResponseData<TokenResponse> registerSetPassword(@RequestBody @Valid SetPasswordRequest request) {
-        log.info("Set password request for registration with token: {}", request.getVerificationToken());
+    public ResponseData<TokenResponse> registerSetPassword(
+            @RequestHeader("X-Verification-Token") String verificationToken,
+            @RequestBody @Valid SetPasswordRequest request) {
+        log.info("Set password request for registration with token: {}", verificationToken);
         return ResponseData.<TokenResponse>builder()
                 .status(HttpStatus.CREATED.value())
                 .message("Account registered successfully")
-                .data(authenticationService.registerSetPassword(request))
+                .data(authenticationService.registerSetPassword(verificationToken, request))
                 .build();
     }
 
@@ -101,12 +103,25 @@ public class AuthenticationController {
 
     @PostMapping("/forgot-password/reset")
     @Operation(summary = "Reset forgotten password", description = "Reset password using verification token")
-    public ResponseData<TokenResponse> resetForgotPassword(@RequestBody @Valid SetPasswordRequest request) {
-        log.info("Reset password request with token: {}", request.getVerificationToken());
+    public ResponseData<TokenResponse> resetForgotPassword(
+            @RequestHeader("X-Verification-Token") String verificationToken,
+            @RequestBody @Valid SetPasswordRequest request) {
+        log.info("Reset password request with token: {}", verificationToken);
         return ResponseData.<TokenResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("Password reset successfully")
-                .data(authenticationService.resetForgotPassword(request))
+                .data(authenticationService.resetForgotPassword(verificationToken, request))
+                .build();
+    }
+
+    @PostMapping("/logout")
+    @Operation(summary = "Logout", description = "Invalidate access token")
+    public ResponseData<Void> logout(@RequestHeader("Authorization") String accessToken) {
+        log.info("Logout request received");
+        authenticationService.logout(accessToken);
+        return ResponseData.<Void>builder()
+                .status(HttpStatus.OK.value())
+                .message("Logout successful")
                 .build();
     }
 }
