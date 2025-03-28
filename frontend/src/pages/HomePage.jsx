@@ -26,7 +26,6 @@ import HeaderNavbar from '../components/Header';
 // const {Content, Footer } = Layout;
 import SideBar from '../components/Sidebar';
 import MainPage from '../components/MainPage';
-import BMIContent from './BMI_BMR/BMIContent';
 import Personal_Profile from '../pages/Personal_Profile';
 import MedicalRecord from './Personal/MedicalRecord';
 import MedicalHistory from './Personal/MedicalHistory';
@@ -34,6 +33,7 @@ import RegulationUse from './Personal/RegulationUse';
 import TermsService from './Personal/TermsService';
 import ServiceList from './ServiceList';
 import Notification_Event from './Personal/Notification_Event';
+import CalculateContent from './BMI_BMR/CalculateContent';
 const HomePage = () => {
   const [currentPage, setCurrentPage] = useState('main');
 
@@ -69,7 +69,7 @@ const HomePage = () => {
         >
           <SideBar handleChangePage={handleChangePage}/>
           {currentPage === 'main' && <MainPage onPageChange={handleChangePage}/>}
-          {currentPage === 'bmi' && <BMIContent/>}
+          {currentPage === 'calculate' && <CalculateContent/>}
           {currentPage === 'personal-profile' && <Personal_Profile/>}
           {currentPage === 'medical-records' && <MedicalRecord/>}
           {currentPage === 'medical-history' && <MedicalHistory/>}

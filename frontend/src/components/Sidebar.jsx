@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {Layout, Menu} from 'antd';
 import {
-    UserOutlined, LaptopOutlined, NotificationOutlined, UserSwitchOutlined, MessageOutlined, FileTextOutlined, SnippetsOutlined, SafetyCertificateOutlined, LogoutOutlined, AuditOutlined, ReconciliationOutlined, ProfileOutlined, ForkOutlined, PhoneOutlined, BellOutlined
+    UserOutlined, LaptopOutlined, NotificationOutlined, UserSwitchOutlined, MessageOutlined, FileTextOutlined, SnippetsOutlined, SafetyCertificateOutlined, LogoutOutlined, AuditOutlined, ReconciliationOutlined, ProfileOutlined, ForkOutlined, PhoneOutlined, BellOutlined, BuildOutlined
 } from '@ant-design/icons';
 
 const {Sider} = Layout
@@ -113,9 +113,9 @@ const SideBar = ({handleChangePage}) => {
           icon: <PhoneOutlined />,
         },
         {
-          key: 'bmi',
+          key: 'calculate',
           label: 'Tính BMI, BMR',
-          icon: <PhoneOutlined />,
+          icon: <BuildOutlined />,
         }
       ]
     return <Sider
