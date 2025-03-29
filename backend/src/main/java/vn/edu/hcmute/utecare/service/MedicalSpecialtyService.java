@@ -1,6 +1,7 @@
 package vn.edu.hcmute.utecare.service;
 
 import vn.edu.hcmute.utecare.dto.request.MedicalSpecialtyRequest;
+import vn.edu.hcmute.utecare.dto.response.DoctorResponse;
 import vn.edu.hcmute.utecare.dto.response.MedicalSpecialtyResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 
@@ -14,4 +15,10 @@ public interface MedicalSpecialtyService {
     void deleteMedicalSpecialty(Integer id);
 
     PageResponse<MedicalSpecialtyResponse> getAllMedicalSpecialties(int page, int size, String sort, String direction);
+
+    PageResponse<MedicalSpecialtyResponse> searchMedicalSpecialties(String keyword, int page, int size, String sort, String direction);
+
+    PageResponse<DoctorResponse> getDoctorsByMedicalSpecialtyId(Integer id, int page, int size, String sort, String direction);
+
+    PageResponse<DoctorResponse> searchDoctorsByMedicalSpecialtyId(Integer id, String keyword, int page, int size, String sort, String direction);
 }

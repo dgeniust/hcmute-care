@@ -1,16 +1,22 @@
 package vn.edu.hcmute.utecare.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import vn.edu.hcmute.utecare.util.Gender;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User implements Serializable {
     @Id
@@ -32,13 +38,10 @@ public abstract class User implements Serializable {
 
     @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE)
-    private Date birthday;
+    private LocalDate dob;
 
     @Column(name = "nation")
     private String nation;
-
-    @Column(name = "career")
-    private String career;
 
     @Column(name = "address")
     private String address;

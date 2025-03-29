@@ -3,6 +3,7 @@ package vn.edu.hcmute.utecare.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -24,8 +25,7 @@ public class Encounter {
     private String diagnosis;
 
     @Column(name = "visit_date")
-    @Temporal(TemporalType.DATE)
-    private Date visitDate;
+    private LocalDate visitDate;
 
     @Column(name = "notes")
     private String notes;

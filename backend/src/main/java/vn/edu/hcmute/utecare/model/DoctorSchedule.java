@@ -3,6 +3,7 @@ package vn.edu.hcmute.utecare.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -26,8 +27,7 @@ public class DoctorSchedule {
     private TimeSlot timeSlot;
 
     @Column(name = "date")
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "max_slots")
     private Integer maxSlots;

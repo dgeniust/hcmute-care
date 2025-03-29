@@ -23,6 +23,7 @@ import vn.edu.hcmute.utecare.service.AuthenticationService;
 import vn.edu.hcmute.utecare.service.JwtService;
 import vn.edu.hcmute.utecare.service.OtpService;
 import vn.edu.hcmute.utecare.service.RedisService;
+import vn.edu.hcmute.utecare.util.AccountStatus;
 import vn.edu.hcmute.utecare.util.OtpType;
 import vn.edu.hcmute.utecare.util.TokenType;
 import vn.edu.hcmute.utecare.util.UserStatus;
@@ -63,7 +64,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Account account = accountRepository.findByUser_Phone(request.getPhone()).orElseThrow(() -> new AccessDeniedException("Account not found"));
 
 
-        if (account.getStatus() != UserStatus.ACTIVE) {
+        if (account.getStatus() != AccountStatus.ACTIVE) {
             throw new AccessDeniedException("Account is not active");
         }
 
@@ -161,7 +162,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Account account = new Account();
         account.setUser(customer);
         account.setPassword(passwordEncoder.encode(request.getPassword()));
-        account.setStatus(UserStatus.ACTIVE);
+        account.setStatus(AccountStatus.ACTIVE);
         accountRepository.save(account);
 
         String accessToken = jwtService.generateAccessToken(account);
@@ -184,7 +185,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Account account = accountRepository.findByUser_Phone(phoneNumber)
                 .orElseThrow(() -> new IllegalArgumentException("Phone number not registered"));
 
-        if (account.getStatus() != UserStatus.ACTIVE) {
+        if (account.getStatus() != AccountStatus.ACTIVE) {
             throw new AccessDeniedException("Account is not active");
         }
 

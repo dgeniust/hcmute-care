@@ -4,13 +4,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import vn.edu.hcmute.utecare.util.AdminRole;
 
 @Entity
 @Table(name = "tbl_admin")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Admin extends User {

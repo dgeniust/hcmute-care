@@ -2,13 +2,14 @@ package vn.edu.hcmute.utecare.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import vn.edu.hcmute.utecare.util.Membership;
 
 @Entity
 @Table(name = "tbl_doctor")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Doctor extends User {
