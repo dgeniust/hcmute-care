@@ -10,9 +10,13 @@ public interface JwtService {
 
     String generateVerificationToken(String phone);
 
+    String generateResetToken(UserDetails user);
+
     String extractUsername(String token, TokenType type);
 
     boolean isValid(String token, TokenType type, UserDetails userDetails);
 
     boolean isTokenExpired(String token, TokenType type);
+
+    long getRemainingTime(String token, TokenType type);
 }

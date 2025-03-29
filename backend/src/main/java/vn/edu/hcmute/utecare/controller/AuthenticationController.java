@@ -2,6 +2,7 @@ package vn.edu.hcmute.utecare.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -116,9 +117,9 @@ public class AuthenticationController {
 
     @PostMapping("/logout")
     @Operation(summary = "Logout", description = "Invalidate access token")
-    public ResponseData<Void> logout(@RequestHeader("Authorization") String accessToken) {
+    public ResponseData<Void> logout(@RequestBody @Valid LogoutRequest request) {
         log.info("Logout request received");
-        authenticationService.logout(accessToken);
+        authenticationService.logout(request);
         return ResponseData.<Void>builder()
                 .status(HttpStatus.OK.value())
                 .message("Logout successful")

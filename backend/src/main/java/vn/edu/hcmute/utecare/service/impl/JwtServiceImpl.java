@@ -16,7 +16,6 @@ import vn.edu.hcmute.utecare.service.JwtService;
 import vn.edu.hcmute.utecare.util.TokenType;
 
 import javax.crypto.SecretKey;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,43 +26,54 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class JwtServiceImpl implements JwtService {
-    @Value("${jwt.expiryHour}")
-    private Long expiryHour;
-
-    @Value("${jwt.expiryDay}")
-    private Long expiryDay;
-
-    @Value("${jwt.accessKey}")
+    @Value("${jwt.accessToken.secretKey}")
     private String accessKey;
 
-    @Value("${jwt.refreshKey}")
+    @Value("${jwt.refreshToken.secretKey}")
     private String refreshKey;
 
-    @Value("${jwt.verificationKey}")
+    @Value("${jwt.verificationToken.secretKey}")
     private String verificationKey;
 
-    @Value("${jwt.resetKey}")
+    @Value("${jwt.resetToken.secretKey}")
     private String resetKey;
+
+    @Value("${jwt.accessToken.expiry}")
+    private long accessTokenExpiry;
+
+    @Value("${jwt.refreshToken.expiry}")
+    private long refreshTokenExpiry;
+
+    @Value("${jwt.verificationToken.expiry}")
+    private long verificationTokenExpiry;
+
+    @Value("${jwt.resetToken.expiry}")
+    private long resetTokenExpiry;
 
     @Override
     public String generateAccessToken(UserDetails user) {
         if (user == null) throw new IllegalArgumentException("UserDetails cannot be null");
         Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", getRoles(user));;
-
-        return generateToken(claims, user);
+        claims.put("roles", getRoles(user));
+        return generateToken(claims, user.getUsername(), TokenType.ACCESS_TOKEN);
     }
 
     @Override
     public String generateRefreshToken(UserDetails user) {
         if (user == null) throw new IllegalArgumentException("UserDetails cannot be null");
-        return generateRefreshToken(new HashMap<>(), user);
+        return generateToken(new HashMap<>(), user.getUsername(), TokenType.REFRESH_TOKEN);
     }
 
     @Override
     public String generateVerificationToken(String phone) {
         if (phone == null || phone.isBlank()) throw new IllegalArgumentException("Phone cannot be null or empty");
-        return generateVerificationToken(new HashMap<>(), phone);
+        return generateToken(new HashMap<>(), phone, TokenType.VERIFICATION_TOKEN);
+    }
+
+    @Override
+    public String generateResetToken(UserDetails user) {
+        if (user == null) throw new IllegalArgumentException("UserDetails cannot be null");
+        return generateToken(new HashMap<>(), user.getUsername(), TokenType.RESET_TOKEN);
     }
 
     @Override
@@ -97,36 +107,36 @@ public class JwtServiceImpl implements JwtService {
         }
     }
 
-    private String generateToken(Map<String, Object> claims, UserDetails user){
-        return Jwts.builder()
-                .claims(claims)
-                .subject(user.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * expiryHour))
-                .signWith(getKey(TokenType.ACCESS_TOKEN), Jwts.SIG.HS256)
-                .compact();
+    @Override
+    public long getRemainingTime(String token, TokenType type) {
+        try {
+            Date expirationDate = extractExpiration(token, type);
+            long currentTimeMillis = System.currentTimeMillis();
+            long expirationTimeMillis = expirationDate.getTime();
+
+            long remainingTimeMillis = expirationTimeMillis - currentTimeMillis;
+            if (remainingTimeMillis <= 0) {
+                return 0;
+            }
+
+            return remainingTimeMillis / 1000;
+        } catch (ExpiredJwtException e) {
+            return 0;
+        } catch (Exception e) {
+            throw new InvalidDataException("Invalid token");
+        }
     }
 
-    private String generateRefreshToken(Map<String, Object> claims, UserDetails user){
+    private String generateToken(Map<String, Object> claims, String subject, TokenType type) {
+        long expiryInMillis = getExpiry(type);
         return Jwts.builder()
                 .claims(claims)
-                .subject(user.getUsername())
+                .subject(subject)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * expiryDay))
-                .signWith(getKey(TokenType.REFRESH_TOKEN), Jwts.SIG.HS256)
+                .expiration(new Date(System.currentTimeMillis() + expiryInMillis))
+                .signWith(getKey(type), Jwts.SIG.HS256)
                 .compact();
     }
-
-    private String generateVerificationToken(Map<String, Object> claims, String phone){
-        return Jwts.builder()
-                .claims(claims)
-                .subject(phone)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 1800 ))
-                .signWith(getKey(TokenType.VERIFICATION_TOKEN), Jwts.SIG.HS256)
-                .compact();
-    }
-
 
     private <T> T extractClaim(String token, TokenType type, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token, type);
@@ -155,6 +165,15 @@ public class JwtServiceImpl implements JwtService {
         }
     }
 
+    private long getExpiry(TokenType type) {
+        return switch (type) {
+            case ACCESS_TOKEN -> accessTokenExpiry;
+            case REFRESH_TOKEN -> refreshTokenExpiry;
+            case VERIFICATION_TOKEN -> verificationTokenExpiry;
+            case RESET_TOKEN -> resetTokenExpiry;
+            default -> throw new InvalidDataException("Invalid token type");
+        };
+    }
 
 
     private Date extractExpiration(String token, TokenType type){

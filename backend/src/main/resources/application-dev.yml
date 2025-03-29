@@ -3,13 +3,9 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: ${SPRING_DB_URL}
-    username: ${SPRING_DB_USERNAME}
-    password: ${SPRING_DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      initialization-fail-timeout: 60000
-      connection-timeout: 30000
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3308}/utecare_db
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:root}
   jpa:
     hibernate:
       ddl-auto: create
@@ -19,26 +15,34 @@ spring:
         format_sql: true
   data:
     redis:
-      host: localhost
-      port: 6379
-
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      password: ${SPRING_DATA_REDIS_PASSWORD:password}
+      database: ${SPRING_DATA_REDIS_DATABASE:0}
 
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     enabled: true
+
 openapi:
   service:
     api-docs: backend-service
-    server: http://localhost:${server.port}
+    server: ${BACKEND_HOST:http://localhost:${server.port}}
     title: Backend service
     version: 1.0.0
 
 jwt:
-  expiryHour: 1
-  expiryDay: 14
-  accessKey: bNg5ITJ8MjZGOlrQPLTOikaJI1WZqnhwrI3eypbGjyQ=
-  refreshKey: 9k1jJAWAKQCnCEz1pwcPNegbHoLugf9hgEnn6sz5pFc=
-  verificationKey: s+E3RRAIKn1Kcb5iWDsKtcV7r6g0omm7wHgdVkIyGtgA
-  resetKey: FsWyO8iaNYbbs0sPDeSjWpJtL45yVIkmFIcnqC2VUmmB
+  accessToken:
+    secretKey: ${JWT_ACCESS_TOKEN_SECRET_KEY:bNg5ITJ8MjZGOlrQPLTOikaJI1WZqnhwrI3eypbGjyQ=}
+    expiry: 3600000  # 1h
+  refreshToken:
+    secretKey: ${JWT_REFRESH_TOKEN_SECRET_KEY:9k1jJAWAKQCnCEz1pwcPNegbHoLugf9hgEnn6sz5pFc=}
+    expiry: 1209600000  # 14d
+  verificationToken:
+    secretKey: ${JWT_VERIFICATION_TOKEN_SECRET_KEY:s+E3RRAIKn1Kcb5iWDsKtcV7r6g0omm7wHgdVkIyGtgA}
+    expiry: 1800000  # 30m
+  resetToken:
+    secretKey: ${JWT_RESET_TOKEN_SECRET_KEY:FsWyO8iaNYbbs0sPDeSjWpJtL45yVIkmFIcnqC2VUmmB}
+    expiry: 3600000  # 1h

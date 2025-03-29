@@ -33,8 +33,9 @@ import java.util.Date;
 public class PreFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final RedisService redisService; // Thêm RedisService
+    private final RedisService redisService;
     private static final String AUTHORIZATION = "Authorization";
+    private static final String AT_BLACKLIST_PREFIX = "bl_at:";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -48,14 +49,16 @@ public class PreFilter extends OncePerRequestFilter {
             try {
                 username = jwtService.extractUsername(token, TokenType.ACCESS_TOKEN);
                 log.info("username: {}", username);
+
+                // Kiểm tra token hết hạn
                 if (jwtService.isTokenExpired(token, TokenType.ACCESS_TOKEN)) {
                     throw new AccessDeniedException("Token has expired");
                 }
 
-                // Kiểm tra token trong Redis
-                String storedToken = (String) redisService.get("access:" + username);
-                if (storedToken == null || !storedToken.equals(token)) {
-                    throw new AccessDeniedException("Token has been revoked or is invalid");
+                // Kiểm tra token trong blacklist
+                String blacklistedToken = (String) redisService.get(AT_BLACKLIST_PREFIX + username);
+                if (blacklistedToken != null && blacklistedToken.equals(token)) {
+                    throw new AccessDeniedException("Token has been revoked");
                 }
 
             } catch (MalformedJwtException e) {

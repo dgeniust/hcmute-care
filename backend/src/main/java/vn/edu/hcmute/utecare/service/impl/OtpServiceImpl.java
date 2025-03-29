@@ -17,23 +17,24 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class OtpServiceImpl implements OtpService {
     private final RedisService redisService;
-    private static final int OTP_EXPIRY_SECONDS = 300;
-    private static final int LIMIT_EXPIRY_SECONDS = 3600;
+    private static final int OTP_EXPIRY_SECONDS = 300; // 5 phút
+    private static final int LIMIT_EXPIRY_SECONDS = 3600; // 1 giờ
     private static final int MAX_ATTEMPTS = 3;
 
     @Override
     public SendOtpResponse generateAndSendOtp(String phoneNumber, OtpType otpType) {
         if (!canSendOtp(phoneNumber)) {
-            Long remainingSeconds = redisService.get("otp:limit:" + phoneNumber) != null
-                    ? redisService.expire("otp:limit:" + phoneNumber, 0) ? 0L : (long) LIMIT_EXPIRY_SECONDS
-                    : (long) LIMIT_EXPIRY_SECONDS;
+            Long remainingSeconds = redisService.getExpire("otp:limit:" + phoneNumber, TimeUnit.SECONDS);
+            if (remainingSeconds == null || remainingSeconds <= 0) {
+                remainingSeconds = (long) LIMIT_EXPIRY_SECONDS;
+            }
             String message = String.format("Too many OTP requests. Please wait %d seconds.", remainingSeconds);
             throw new TooManyOtpRequestsException(message);
         }
 
         String otp = String.format("%06d", new java.security.SecureRandom().nextInt(999999));
         String otpKey = String.format("otp:%s:%s", otpType.name().toLowerCase(), phoneNumber);
-        redisService.set(otpKey, otp, OTP_EXPIRY_SECONDS);
+        redisService.set(otpKey, otp, OTP_EXPIRY_SECONDS, TimeUnit.SECONDS);
 
         // Gửi OTP qua SMS (giả lập)
         log.info("Sending OTP {} to {} for purpose {}", otp, phoneNumber, otpType);
@@ -47,12 +48,17 @@ public class OtpServiceImpl implements OtpService {
     @Override
     public boolean verifyOtp(VerifyOtpRequest request, OtpType otpType) {
         String otpKey = String.format("otp:%s:%s", otpType.name().toLowerCase(), request.getPhone());
-        String storedOtp = (String) redisService.get(otpKey);
-        if (storedOtp != null && storedOtp.equals(request.getOtp())) {
-            redisService.delete(otpKey);
-            return true;
+        try {
+            String storedOtp = (String) redisService.get(otpKey);
+            if (storedOtp != null && storedOtp.equals(request.getOtp())) {
+                redisService.delete(otpKey);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            log.error("Error verifying OTP for phone {}: {}", request.getPhone(), e.getMessage());
+            return false;
         }
-        return false;
     }
 
     private boolean canSendOtp(String phoneNumber) {
@@ -65,7 +71,7 @@ public class OtpServiceImpl implements OtpService {
         }
 
         if (attempts == 0) {
-            redisService.set(limitKey, "1", LIMIT_EXPIRY_SECONDS);
+            redisService.set(limitKey, "1", LIMIT_EXPIRY_SECONDS, TimeUnit.SECONDS);
         } else {
             redisService.increment(limitKey);
         }

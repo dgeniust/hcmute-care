@@ -1,9 +1,6 @@
 package vn.edu.hcmute.utecare.service;
 
-import vn.edu.hcmute.utecare.dto.request.SendOtpRequest;
-import vn.edu.hcmute.utecare.dto.request.SetPasswordRequest;
-import vn.edu.hcmute.utecare.dto.request.SignInRequest;
-import vn.edu.hcmute.utecare.dto.request.VerifyOtpRequest;
+import vn.edu.hcmute.utecare.dto.request.*;
 import vn.edu.hcmute.utecare.dto.response.SendOtpResponse;
 import vn.edu.hcmute.utecare.dto.response.TokenResponse;
 import vn.edu.hcmute.utecare.dto.response.VerifyOtpResponse;
@@ -25,5 +22,5 @@ public interface AuthenticationService {
 
     TokenResponse resetForgotPassword(String verificationToken, SetPasswordRequest request);
 
-    void logout(String accessToken);
+    void logout(LogoutRequest request);
 }
