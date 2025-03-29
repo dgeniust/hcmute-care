@@ -2,11 +2,10 @@ package vn.edu.hcmute.utecare.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import vn.edu.hcmute.utecare.util.AccountStatus;
 import vn.edu.hcmute.utecare.util.Role;
 import vn.edu.hcmute.utecare.util.UserStatus;
 
@@ -37,9 +36,9 @@ public class Account implements UserDetails {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    private UserStatus status = UserStatus.INACTIVE;
+    private AccountStatus status = AccountStatus.INACTIVE;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

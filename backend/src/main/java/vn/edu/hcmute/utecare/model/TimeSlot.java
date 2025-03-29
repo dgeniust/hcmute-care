@@ -3,6 +3,8 @@ package vn.edu.hcmute.utecare.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -19,10 +21,8 @@ public class TimeSlot {
     private Integer id;
 
     @Column(name = "start_time")
-    @Temporal(TemporalType.DATE)
-    private Date startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "end_time")
-    @Temporal(TemporalType.DATE)
-    private Date endTime;
+    private LocalDateTime endTime;
 }

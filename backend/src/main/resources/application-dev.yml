@@ -8,7 +8,7 @@ spring:
     password: ${DATABASE_PASSWORD:root}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
@@ -17,8 +17,6 @@ spring:
     redis:
       host: ${SPRING_DATA_REDIS_HOST:localhost}
       port: ${SPRING_DATA_REDIS_PORT:6379}
-      password: ${SPRING_DATA_REDIS_PASSWORD:password}
-      database: ${SPRING_DATA_REDIS_DATABASE:0}
 
 springdoc:
   api-docs:
