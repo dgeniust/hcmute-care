@@ -39,7 +39,7 @@ public class Account implements UserDetails {
     @Builder.Default
     private UserStatus status = UserStatus.INACTIVE;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

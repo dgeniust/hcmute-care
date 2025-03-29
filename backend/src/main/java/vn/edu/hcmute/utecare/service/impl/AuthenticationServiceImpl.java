@@ -3,7 +3,6 @@ package vn.edu.hcmute.utecare.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vn.edu.hcmute.utecare.dto.request.SendOtpRequest;
-import vn.edu.hcmute.utecare.dto.request.SetPasswordRequest;
-import vn.edu.hcmute.utecare.dto.request.SignInRequest;
-import vn.edu.hcmute.utecare.dto.request.VerifyOtpRequest;
+import vn.edu.hcmute.utecare.dto.request.*;
 import vn.edu.hcmute.utecare.dto.response.SendOtpResponse;
 import vn.edu.hcmute.utecare.dto.response.TokenResponse;
 import vn.edu.hcmute.utecare.dto.response.VerifyOtpResponse;
@@ -31,6 +27,8 @@ import vn.edu.hcmute.utecare.util.OtpType;
 import vn.edu.hcmute.utecare.util.TokenType;
 import vn.edu.hcmute.utecare.util.UserStatus;
 
+import java.util.concurrent.TimeUnit;
+
 
 @Service
 @RequiredArgsConstructor
@@ -43,11 +41,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final RedisService redisService;
 
-    @Value("${jwt.expiryHour}")
-    private Long expiryHour;
-
-    @Value("${jwt.expiryDay}")
-    private Long expiryDay;
+    private static final String AT_BLACKLIST_PREFIX = "bl_at:";
+    private static final String RT_BLACKLIST_PREFIX = "bl_rt:";
 
     @Override
     public TokenResponse signIn(SignInRequest request) {
@@ -75,7 +70,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String accessToken = jwtService.generateAccessToken(account);
         String refreshToken = jwtService.generateRefreshToken(account);
 
-        storeTokensInRedis(account, accessToken, refreshToken);
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -173,7 +167,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String accessToken = jwtService.generateAccessToken(account);
         String refreshToken = jwtService.generateRefreshToken(account);
 
-        storeTokensInRedis(account, accessToken, refreshToken);
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -204,9 +197,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (phoneNumber == null) {
             throw new IllegalArgumentException("Invalid phone number format");
         }
-
+        Account account = accountRepository.findByUser_Phone(phoneNumber)
+                .orElseThrow(() -> new IllegalArgumentException("Phone number not registered"));
         if (otpService.verifyOtp(request, OtpType.FORGOT_PASSWORD)) {
-            String verificationToken = jwtService.generateVerificationToken(request.getPhone());
+            String verificationToken = jwtService.generateResetToken(account);
             return VerifyOtpResponse.builder()
                     .phone(request.getPhone())
                     .verificationToken(verificationToken)
@@ -220,12 +214,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public TokenResponse resetForgotPassword(String verificationToken, SetPasswordRequest request) {
         String phone;
         try {
-            phone = jwtService.extractUsername(verificationToken, TokenType.VERIFICATION_TOKEN);
+            phone = jwtService.extractUsername(verificationToken, TokenType.RESET_TOKEN);
         } catch (Exception e) {
             throw new AccessDeniedException("Invalid verification token");
         }
 
-        if (jwtService.isTokenExpired(verificationToken, TokenType.VERIFICATION_TOKEN)) {
+        if (jwtService.isTokenExpired(verificationToken, TokenType.RESET_TOKEN)) {
             throw new AccessDeniedException("Expired verification token");
         }
 
@@ -246,7 +240,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String accessToken = jwtService.generateAccessToken(account);
         String refreshToken = jwtService.generateRefreshToken(account);
 
-        storeTokensInRedis(account, accessToken, refreshToken);
         return TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -255,36 +248,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void logout(String accessToken) {
+    public void logout(LogoutRequest request) {
         log.info("User logout request");
 
         String phone;
         try {
-            phone = jwtService.extractUsername(accessToken, TokenType.ACCESS_TOKEN);
+            phone = jwtService.extractUsername(request.getAccessToken(), TokenType.ACCESS_TOKEN);
         } catch (Exception e) {
             log.warn("Invalid access token provided for logout: {}", e.getMessage());
             throw new AccessDeniedException("Invalid access token");
         }
-
-        // Kiểm tra token trong Redis (tùy chọn)
-        String storedAccessToken = (String) redisService.get("access:" + phone);
-        if (storedAccessToken == null || !storedAccessToken.equals(accessToken)) {
-            log.warn("Access token not found or mismatched for phone: {}", phone);
-            throw new AccessDeniedException("Invalid or expired access token");
+        long remainingATTime = jwtService.getRemainingTime(request.getAccessToken(), TokenType.ACCESS_TOKEN);
+        if (remainingATTime > 0) {
+            redisService.set(AT_BLACKLIST_PREFIX + phone, request.getAccessToken(), remainingATTime, TimeUnit.SECONDS);
+            log.info("Stored Access Token in blacklist for phone {} with TTL {} seconds", phone, remainingATTime);
+        } else {
+            log.info("Access Token for phone {} has already expired, not stored in blacklist", phone);
         }
 
-        // Xóa token khỏi Redis
-        redisService.delete("access:" + phone);
-        redisService.delete("refresh:" + phone);
-
-        log.info("User with phone {} logged out successfully", phone);
-    }
-
-    private void storeTokensInRedis(Account account, String accessToken, String refreshToken) {
-        long accessTokenTTL = expiryHour * 3600;
-        long refreshTokenTTL = expiryDay * 24 * 3600;
-
-        redisService.set("access:" + account.getUser().getPhone(), accessToken, accessTokenTTL);
-        redisService.set("refresh:" + account.getUser().getPhone(), refreshToken, refreshTokenTTL);
+        long remainingRTTime = jwtService.getRemainingTime(request.getRefreshToken(), TokenType.REFRESH_TOKEN);
+        if (remainingRTTime > 0) {
+            redisService.set(RT_BLACKLIST_PREFIX + phone, request.getRefreshToken(), remainingRTTime, TimeUnit.SECONDS);
+            log.info("Stored Refresh Token in blacklist for phone {} with TTL {} seconds", phone, remainingRTTime);
+        } else {
+            log.info("Refresh Token for phone {} has already expired, not stored in blacklist", phone);
+        }
     }
 }

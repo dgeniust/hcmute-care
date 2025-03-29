@@ -14,7 +14,7 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "phone", unique = true)
@@ -33,4 +33,13 @@ public abstract class User implements Serializable {
     @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE)
     private Date birthday;
+
+    @Column(name = "nation")
+    private String nation;
+
+    @Column(name = "career")
+    private String career;
+
+    @Column(name = "address")
+    private String address;
 }
