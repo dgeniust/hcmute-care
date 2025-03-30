@@ -53,7 +53,7 @@ const InfoChildren = ({ infoBodyData, label }) => {
                       background: token.colorBgContainer,
                   }}
                   defaultActiveKey={['0']}
-                  expandIconPosition="right"  
+                  expandIconPosition="end"  
                   />
               </div>
               <div className="w-full h-full flex flex-row space-x-2">
@@ -66,7 +66,7 @@ const InfoChildren = ({ infoBodyData, label }) => {
                           background: token.colorBgContainer,
                       }}
                       defaultActiveKey={['0']}
-                      expandIconPosition="right"  
+                      expandIconPosition="end"  
                       />
                   </div>
                   <div className="w-1/2 h-full text-center items-center flex flex-col space-y-2 p-2">

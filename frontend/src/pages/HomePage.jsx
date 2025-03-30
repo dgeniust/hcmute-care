@@ -20,26 +20,41 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //            Phật phù hộ, không bao giờ BUG
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import React, {useState} from 'react';
+import React from 'react';
 import { Breadcrumb, Layout, theme } from 'antd';
 import HeaderNavbar from '../components/Header';
-// const {Content, Footer } = Layout;
 import SideBar from '../components/Sidebar';
-import MainPage from '../components/MainPage';
-import Personal_Profile from '../pages/Personal_Profile';
-import MedicalRecord from './Personal/MedicalRecord';
-import MedicalHistory from './Personal/MedicalHistory';
-import RegulationUse from './Personal/RegulationUse';
-import TermsService from './Personal/TermsService';
-import ServiceList from './ServiceList';
-import Notification_Event from './Personal/Notification_Event';
-import CalculateContent from './BMI_BMR/CalculateContent';
-const HomePage = () => {
-  const [currentPage, setCurrentPage] = useState('main');
+import { Outlet, useLocation, Link } from "react-router-dom";
 
-  const handleChangePage = (page) => {
-    setCurrentPage(page);
-  }
+const HomePage = () => {
+  const location = useLocation();
+
+  const path = location.pathname.split('/').filter((path) => path);
+
+  const breadcrumbMap = {
+    "": "TRANG CHỦ",
+    "calculate": "TÍNH TOÁN BMI, BMR. TDEE",
+    "personal-profile": "HỒ SƠ CÁ NHÂN",
+    "medical-records": "HỒ SƠ Y TẾ",
+    "medical-history": "LỊCH SỬ KHÁM BỆNH",
+    "regulation-use": "QUY ĐỊNH SỬ DỤNG",
+    "terms-service": "ĐIỀU KHOẢN DỊCH VỤ",
+    "service-list": "DANH SÁCH DỊCH VỤ",
+    "notification-event": "THÔNG BÁO & SỰ KIỆN",
+    "booking": "KHÁM THEO CHUYÊN KHOA",
+  };
+
+  const breadcumbItems = [
+    {
+      title: <Link to="/">TRANG CHỦ</Link>,
+    },
+    {
+      ...path.map((item, index) => ({
+        title: <Link to={`/${path.slice(0, index + 1).join("/")}`}>{breadcrumbMap[item] || item}</Link>,
+      })),
+    }
+  ]
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -55,9 +70,8 @@ const HomePage = () => {
           style={{
             margin: '16px 0',
           }}
-        >
-          <Breadcrumb.Item>TRANG CHỦ</Breadcrumb.Item>
-        </Breadcrumb>
+          items={breadcumbItems}
+        />
         <Layout
           style={{
             background: colorBgContainer,
@@ -67,16 +81,8 @@ const HomePage = () => {
             flexDirection: 'row',
           }}
         >
-          <SideBar handleChangePage={handleChangePage}/>
-          {currentPage === 'main' && <MainPage onPageChange={handleChangePage}/>}
-          {currentPage === 'calculate' && <CalculateContent/>}
-          {currentPage === 'personal-profile' && <Personal_Profile/>}
-          {currentPage === 'medical-records' && <MedicalRecord/>}
-          {currentPage === 'medical-history' && <MedicalHistory/>}
-          {currentPage === 'regulation-use' && <RegulationUse/>}
-          {currentPage === 'terms-service' && <TermsService/>}
-          {currentPage === 'service-list' && <ServiceList/>}
-          {currentPage === 'notification-event' && <Notification_Event/>}
+          <SideBar/>
+            <Outlet />
         </Layout>
       </div>
     </Layout>
