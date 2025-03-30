@@ -1,20 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import {Layout, Menu} from 'antd';
 import {
     UserOutlined, NotificationOutlined, UserSwitchOutlined, MessageOutlined, FileTextOutlined, SnippetsOutlined, SafetyCertificateOutlined, UsergroupAddOutlined, ApartmentOutlined, ReconciliationOutlined, TableOutlined, ForkOutlined, PhoneOutlined, BellOutlined, ShakeOutlined
 } from '@ant-design/icons';
-
+import { useNavigate } from "react-router-dom";
 const {Sider} = Layout
-const AdminSideBar = ({handleChangePage}) => { 
-
-    const onHandleChangePage = (page) => {
-      handleChangePage(page.key);
-      console.log('click123', page.key);
-    }
+const AdminSideBar = () => { 
+    const navigate = useNavigate();
     
       const menu_items2 = [
         {
-          key: 'main',
+          key: '',
           label: 'Bảng điều khiển',
           icon: <UserOutlined />,
         },
@@ -46,7 +42,7 @@ const AdminSideBar = ({handleChangePage}) => {
               icon: <UserSwitchOutlined />
             },
             {
-              key: 'subnav2',
+              key: 'manage-schedule',
               label: 'Lịch trình làm việc',
               icon: <TableOutlined />
             },
@@ -56,12 +52,12 @@ const AdminSideBar = ({handleChangePage}) => {
               icon: <FileTextOutlined />
             },
             {
-              key: 'subnav4',
+              key: 'manage-items',
               label: 'Quản lý thiết bị',
               icon: <SnippetsOutlined />
             },
             {
-              key: 'subnav5',
+              key: 'manage-support',
               label: 'Điều phối nhân viên hỗ trợ khẩn cấp',
               icon: <SafetyCertificateOutlined />
             }
@@ -84,22 +80,22 @@ const AdminSideBar = ({handleChangePage}) => {
           icon: <BellOutlined />,
         },
         {
-          key: 'sub7',
+          key: 'regulation-use',
           label: 'Quy định sử dụng',
           icon: <SnippetsOutlined />,
         },
         {
-          key: 'sub8',
+          key: 'manage-chat',
           label: 'Hỗ trợ',
           icon: <MessageOutlined />,
         },
         {
-          key: 'sub9',
+          key: 'manage-contact',
           label: 'Liên hệ',
           icon: <PhoneOutlined />,
         },
         {
-          key: 'sub6',
+          key: 'logout',
           label: 'Đăng xuất',
           icon: <NotificationOutlined />,
         },
@@ -132,7 +128,7 @@ const AdminSideBar = ({handleChangePage}) => {
             height: '100%',
             }}
             items={menu_items2}
-            onClick={onHandleChangePage}
+            onClick={(e) => navigate(`/admin/${e.key}`)}
         />
     </Sider>
 };

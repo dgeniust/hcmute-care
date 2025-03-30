@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Carousel  } from 'antd';
+import React from "react";
 import DragCards from '../components/HomePage/DragCard'
 import {
     ArrowRightOutlined
@@ -14,11 +13,7 @@ const contentStyle = {
   lineHeight: '420px',
   textAlign: 'center',
 };
-const MainPage = ({onPageChange}) =>{
-
-  const handlePageChange = (page) => {
-    onPageChange(page);
-  }
+const MainPage = () =>{
     return <div className="w-full h-full">
           <div className="hello-content w-full h-fit max-w-screen mb-8 rounded-xl shadow-lg">
           {/* <Carousel
