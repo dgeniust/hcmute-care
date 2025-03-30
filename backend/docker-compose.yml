@@ -25,8 +25,6 @@ services:
   mysql:
     image: mysql:8.0
     container_name: mysql
-    cap_add:
-      - SYS_NICE
     restart: always
     environment:
       MYSQL_DATABASE: utecare_db
@@ -45,7 +43,7 @@ services:
       retries: 3
 
   redis:
-    image: redis:7.0
+    image: redis:7.4
     container_name: redis
     restart: always
     ports:

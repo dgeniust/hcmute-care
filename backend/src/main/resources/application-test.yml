@@ -10,6 +10,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  data:
+    redis:
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+
 springdoc:
   api-docs:
     enabled: true
