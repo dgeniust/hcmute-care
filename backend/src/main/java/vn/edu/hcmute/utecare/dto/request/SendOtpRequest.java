@@ -1,7 +1,7 @@
 package vn.edu.hcmute.utecare.dto.request;
 
 import lombok.Getter;
-import vn.edu.hcmute.utecare.util.PhoneNumber;
+import vn.edu.hcmute.utecare.util.validator.PhoneNumber;
 
 @Getter
 public class SendOtpRequest {

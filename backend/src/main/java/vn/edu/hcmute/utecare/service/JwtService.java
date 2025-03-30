@@ -1,7 +1,7 @@
 package vn.edu.hcmute.utecare.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import vn.edu.hcmute.utecare.util.TokenType;
+import vn.edu.hcmute.utecare.util.enumeration.TokenType;
 
 public interface JwtService {
     String generateAccessToken(UserDetails user);

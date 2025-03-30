@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import vn.edu.hcmute.utecare.util.AdminRole;
+import vn.edu.hcmute.utecare.util.enumeration.AdminRole;
 
 @Entity
 @Table(name = "tbl_admin")

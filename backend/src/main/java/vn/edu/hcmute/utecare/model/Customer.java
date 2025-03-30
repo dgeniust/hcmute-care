@@ -3,7 +3,7 @@ package vn.edu.hcmute.utecare.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import vn.edu.hcmute.utecare.util.Membership;
+import vn.edu.hcmute.utecare.util.enumeration.Membership;
 
 @Entity
 @Table(name = "tbl_customer")

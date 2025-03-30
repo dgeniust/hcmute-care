@@ -7,6 +7,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.redis.RedisSystemException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,27 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, WebRequest request) {
+        String errorMessage = String.format("Invalid value '%s' for parameter '%s'. Expected format: %s",
+                e.getValue(), e.getName(), LocalDate.class.equals(e.getRequiredType()) ? "yyyy-MM-dd (e.g., 2025-03-30)" : e.getRequiredType() != null ? e.getRequiredType().getSimpleName() : "unknown");
+        log.warn("Parameter binding error: {}", errorMessage);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Invalid Parameter", errorMessage, request);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleHttpMessageNotReadableException(HttpMessageNotReadableException e, WebRequest request) {
+        String errorMessage = "Invalid input data";
+        if (e.getCause() != null && e.getCause().getMessage().contains("LocalDate")) {
+            errorMessage = "Invalid date format. Expected format: yyyy-MM-dd (e.g., 2025-03-30)";
+        } else {
+            errorMessage = e.getMostSpecificCause().getMessage();
+        }
+        log.warn("JSON parsing error: {}", errorMessage);
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Invalid Request Body", errorMessage, request);
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

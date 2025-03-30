@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.AccountStatusUpdateRequest;
 import vn.edu.hcmute.utecare.dto.response.AccountResponse;
@@ -15,9 +14,9 @@ import vn.edu.hcmute.utecare.mapper.AccountMapper;
 import vn.edu.hcmute.utecare.model.Account;
 import vn.edu.hcmute.utecare.repository.AccountRepository;
 import vn.edu.hcmute.utecare.service.AccountService;
-import vn.edu.hcmute.utecare.util.AccountStatus;
+import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
-import vn.edu.hcmute.utecare.util.Role;
+import vn.edu.hcmute.utecare.util.enumeration.Role;
 
 @Service
 @RequiredArgsConstructor

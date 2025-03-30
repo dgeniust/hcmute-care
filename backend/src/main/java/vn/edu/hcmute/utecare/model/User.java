@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import vn.edu.hcmute.utecare.util.Gender;
+import vn.edu.hcmute.utecare.util.enumeration.Gender;
 
 import java.io.Serializable;
 import java.time.LocalDate;

@@ -5,14 +5,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.DoctorCreationRequest;
 import vn.edu.hcmute.utecare.dto.request.DoctorRequest;
 import vn.edu.hcmute.utecare.dto.response.DoctorResponse;
+import vn.edu.hcmute.utecare.dto.response.DoctorScheduleResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.DoctorService;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/v1/doctors")
@@ -96,6 +100,23 @@ public class DoctorController {
                 .status(HttpStatus.OK.value())
                 .message("Doctors search completed successfully")
                 .data(doctorService.searchDoctors(keyword, page, size, sort, direction))
+                .build();
+    }
+
+    @GetMapping("/{id}/schedule/availability")
+    @Operation(summary = "Get doctor schedule availability", description = "Retrieve available schedules for a doctor")
+    public ResponseData<PageResponse<DoctorScheduleResponse>> getDoctorScheduleAvailability(
+            @PathVariable("id") Long id,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction) {
+        log.info("Get schedule availability request for doctor id: {}, date: {}", id, date);
+        return ResponseData.<PageResponse<DoctorScheduleResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Doctor schedule availability retrieved successfully")
+                .data(doctorService.getDoctorAvailability(id, date, page, size, sort, direction))
                 .build();
     }
 }

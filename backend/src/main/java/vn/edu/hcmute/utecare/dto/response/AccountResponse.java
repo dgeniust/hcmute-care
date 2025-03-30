@@ -3,8 +3,6 @@ package vn.edu.hcmute.utecare.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import vn.edu.hcmute.utecare.util.AccountStatus;
-import vn.edu.hcmute.utecare.util.Role;
 
 @Getter
 @Setter

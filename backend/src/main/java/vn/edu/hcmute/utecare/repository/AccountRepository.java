@@ -3,13 +3,13 @@ package vn.edu.hcmute.utecare.repository;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import vn.edu.hcmute.utecare.model.Account;
-import vn.edu.hcmute.utecare.model.User;
-import vn.edu.hcmute.utecare.util.AccountStatus;
-import vn.edu.hcmute.utecare.util.Role;
+import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
+import vn.edu.hcmute.utecare.util.enumeration.Role;
 
 import java.util.Optional;
 
@@ -19,6 +19,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findByUser_Id(Long userId);
 
+    @EntityGraph(attributePaths = {"user"})
     @Query("SELECT a FROM Account a JOIN a.user u WHERE " +
             "(:keyword IS NULL OR " +
             "   LOWER(u.phone) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +

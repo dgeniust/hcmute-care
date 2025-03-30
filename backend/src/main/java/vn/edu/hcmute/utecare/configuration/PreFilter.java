@@ -22,7 +22,7 @@ import org.springframework.security.access.AccessDeniedException;
 import vn.edu.hcmute.utecare.exception.ErrorResponse;
 import vn.edu.hcmute.utecare.service.JwtService;
 import vn.edu.hcmute.utecare.service.RedisService;
-import vn.edu.hcmute.utecare.util.TokenType;
+import vn.edu.hcmute.utecare.util.enumeration.TokenType;
 
 import java.io.IOException;
 import java.util.Date;

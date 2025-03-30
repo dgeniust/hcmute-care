@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.exception.InvalidDataException;
 import vn.edu.hcmute.utecare.service.JwtService;
-import vn.edu.hcmute.utecare.util.TokenType;
+import vn.edu.hcmute.utecare.util.enumeration.TokenType;
 
 import javax.crypto.SecretKey;
 import java.util.Date;

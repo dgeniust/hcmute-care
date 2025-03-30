@@ -19,9 +19,9 @@ import vn.edu.hcmute.utecare.model.Nurse;
 import vn.edu.hcmute.utecare.repository.AccountRepository;
 import vn.edu.hcmute.utecare.repository.NurseRepository;
 import vn.edu.hcmute.utecare.service.NurseService;
-import vn.edu.hcmute.utecare.util.AccountStatus;
+import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
-import vn.edu.hcmute.utecare.util.Role;
+import vn.edu.hcmute.utecare.util.enumeration.Role;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class NurseServiceImpl implements NurseService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public NurseResponse createNurse(NurseCreationRequest request) {
         log.info("Creating nurse with request: {}", request);
 
@@ -69,7 +69,7 @@ public class NurseServiceImpl implements NurseService {
         Nurse nurse = nurseRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Nurse not found with ID: " + id));
 
-        if (nurseRepository.existsByPhone(request.getPhone())) {
+        if (!nurse.getPhone().equals(request.getPhone()) && nurseRepository.existsByPhone(request.getPhone())) {
             throw new IllegalArgumentException("Phone number already exists");
         }
 

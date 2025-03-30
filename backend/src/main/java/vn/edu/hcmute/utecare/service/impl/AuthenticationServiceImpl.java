@@ -23,10 +23,9 @@ import vn.edu.hcmute.utecare.service.AuthenticationService;
 import vn.edu.hcmute.utecare.service.JwtService;
 import vn.edu.hcmute.utecare.service.OtpService;
 import vn.edu.hcmute.utecare.service.RedisService;
-import vn.edu.hcmute.utecare.util.AccountStatus;
-import vn.edu.hcmute.utecare.util.OtpType;
-import vn.edu.hcmute.utecare.util.TokenType;
-import vn.edu.hcmute.utecare.util.UserStatus;
+import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
+import vn.edu.hcmute.utecare.util.enumeration.OtpType;
+import vn.edu.hcmute.utecare.util.enumeration.TokenType;
 
 import java.util.concurrent.TimeUnit;
 

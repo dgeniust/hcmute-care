@@ -2,7 +2,7 @@ package vn.edu.hcmute.utecare.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import vn.edu.hcmute.utecare.util.PrescriptionStatus;
+import vn.edu.hcmute.utecare.util.enumeration.PrescriptionStatus;
 
 import java.util.Date;
 import java.util.HashSet;

@@ -2,8 +2,8 @@ package vn.edu.hcmute.utecare.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import vn.edu.hcmute.utecare.util.AccountStatus;
-import vn.edu.hcmute.utecare.util.EnumValue;
+import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
+import vn.edu.hcmute.utecare.util.validator.EnumValue;
 
 @Getter
 public class AccountStatusUpdateRequest {
