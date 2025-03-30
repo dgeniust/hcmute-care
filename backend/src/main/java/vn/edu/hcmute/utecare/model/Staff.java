@@ -3,7 +3,7 @@ package vn.edu.hcmute.utecare.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import vn.edu.hcmute.utecare.util.StaffRole;
+import vn.edu.hcmute.utecare.util.enumeration.StaffRole;
 
 @Entity
 @Table(name = "tbl_staff")

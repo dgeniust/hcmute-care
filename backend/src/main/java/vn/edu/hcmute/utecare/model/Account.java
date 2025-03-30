@@ -5,9 +5,9 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import vn.edu.hcmute.utecare.util.AccountStatus;
-import vn.edu.hcmute.utecare.util.Role;
-import vn.edu.hcmute.utecare.util.UserStatus;
+import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
+import vn.edu.hcmute.utecare.util.enumeration.Role;
+import vn.edu.hcmute.utecare.util.enumeration.UserStatus;
 
 import java.util.Collection;
 import java.util.Collections;

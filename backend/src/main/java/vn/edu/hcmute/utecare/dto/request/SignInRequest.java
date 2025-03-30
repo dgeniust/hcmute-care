@@ -2,9 +2,9 @@ package vn.edu.hcmute.utecare.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import vn.edu.hcmute.utecare.util.EnumValue;
-import vn.edu.hcmute.utecare.util.PhoneNumber;
-import vn.edu.hcmute.utecare.util.Platform;
+import vn.edu.hcmute.utecare.util.validator.EnumValue;
+import vn.edu.hcmute.utecare.util.validator.PhoneNumber;
+import vn.edu.hcmute.utecare.util.enumeration.Platform;
 
 @Getter
 public class SignInRequest {

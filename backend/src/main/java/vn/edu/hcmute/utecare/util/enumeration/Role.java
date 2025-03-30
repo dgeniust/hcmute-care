@@ -1,4 +1,4 @@
-package vn.edu.hcmute.utecare.util;
+package vn.edu.hcmute.utecare.util.enumeration;
 
 public enum Role {
     CUSTOMER,

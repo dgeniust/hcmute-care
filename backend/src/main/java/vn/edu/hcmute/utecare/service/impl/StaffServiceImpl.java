@@ -19,9 +19,9 @@ import vn.edu.hcmute.utecare.model.Staff;
 import vn.edu.hcmute.utecare.repository.AccountRepository;
 import vn.edu.hcmute.utecare.repository.StaffRepository;
 import vn.edu.hcmute.utecare.service.StaffService;
-import vn.edu.hcmute.utecare.util.AccountStatus;
+import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
-import vn.edu.hcmute.utecare.util.Role;
+import vn.edu.hcmute.utecare.util.enumeration.Role;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class StaffServiceImpl implements StaffService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional
+    @Transactional(rollbackOn = Exception.class)
     public StaffResponse createStaff(StaffCreationRequest request) {
         log.info("Creating staff with request: {}", request);
 
@@ -70,7 +70,7 @@ public class StaffServiceImpl implements StaffService {
         Staff staff = staffRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Staff not found with ID: " + id));
 
-        if (staffRepository.existsByPhone(request.getPhone())) {
+        if (!staff.getPhone().equals(request.getPhone()) && staffRepository.existsByPhone(request.getPhone())) {
             throw new IllegalArgumentException("Phone number already exists");
         }
 

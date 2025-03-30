@@ -8,7 +8,7 @@ import vn.edu.hcmute.utecare.dto.response.SendOtpResponse;
 import vn.edu.hcmute.utecare.exception.TooManyOtpRequestsException;
 import vn.edu.hcmute.utecare.service.OtpService;
 import vn.edu.hcmute.utecare.service.RedisService;
-import vn.edu.hcmute.utecare.util.OtpType;
+import vn.edu.hcmute.utecare.util.enumeration.OtpType;
 
 import java.util.concurrent.TimeUnit;
 

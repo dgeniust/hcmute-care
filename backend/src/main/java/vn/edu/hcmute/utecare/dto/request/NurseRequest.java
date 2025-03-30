@@ -1,11 +1,10 @@
 package vn.edu.hcmute.utecare.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
-import vn.edu.hcmute.utecare.util.EnumValue;
-import vn.edu.hcmute.utecare.util.Gender;
+import vn.edu.hcmute.utecare.util.validator.EnumValue;
+import vn.edu.hcmute.utecare.util.enumeration.Gender;
 
 import java.time.LocalDate;
 
@@ -26,7 +25,6 @@ public class NurseRequest {
 
     @NotNull(message = "dateOfBirth must not be null")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonFormat(pattern = "MM/dd/yyyy")
     private LocalDate dob;
 
     @NotEmpty(message = "nation must not be null")

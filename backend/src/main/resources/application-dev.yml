@@ -26,9 +26,9 @@ springdoc:
 
 openapi:
   service:
-    api-docs: backend-service
+    api-docs: utecare-backend-service
     server: ${BACKEND_HOST:http://localhost:${server.port}}
-    title: Backend service
+    title: UTECare backend service
     version: 1.0.0
 
 jwt:

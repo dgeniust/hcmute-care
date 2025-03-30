@@ -2,7 +2,7 @@ package vn.edu.hcmute.utecare.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import vn.edu.hcmute.utecare.util.Gender;
+import vn.edu.hcmute.utecare.util.enumeration.Gender;
 
 import java.util.Date;
 

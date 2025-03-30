@@ -1,4 +1,4 @@
-package vn.edu.hcmute.utecare.util;
+package vn.edu.hcmute.utecare.util.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
