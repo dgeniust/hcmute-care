@@ -48,11 +48,9 @@ const HomePage = () => {
     {
       title: <Link to="/">TRANG CHỦ</Link>,
     },
-    {
-      ...path.map((item, index) => ({
-        title: <Link to={`/${path.slice(0, index + 1).join("/")}`}>{breadcrumbMap[item] || item}</Link>,
-      })),
-    }
+    ...path.map((item, index) => ({
+      title: <Link to={`/${path.slice(0, index + 1).join("/")}`}>{breadcrumbMap[item] || item}</Link>,
+    })),
   ]
 
   const {
