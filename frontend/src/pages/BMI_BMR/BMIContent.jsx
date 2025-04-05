@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {Radio, DatePicker, InputNumber, Button, message, notification, Skeleton , Select } from 'antd';
+import {Radio, DatePicker, InputNumber, Button, message, notification, Skeleton , Select, Divider } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import BMIWeight from '../../components/bodies';
 import '../../css/BMIContent.css';
+import PlanListCalo from './PlanListCalo'
 import BMISVG, {BMRSVG, TDEESVG} from './SVGCalculate';
 const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 const style = {
@@ -141,7 +142,7 @@ const BMIContent = () => {
       // Update state
       setBMI(bmi.toFixed(2));
       setBMR(bmrResult.toFixed(2));
-      setTDEE(tdeeResult.toFixed(2));
+      setTDEE(Math.round(tdeeResult));
 
       // Simulate loading and show notification
       setLoading(true);
@@ -218,7 +219,7 @@ const BMIContent = () => {
             
             <Skeleton loading={loading} active>
             {
-              resultCal ? (<div className='w-full h-fit flex flex-col items-center mb-8'>
+              resultCal ? (<div className='w-full h-fit flex flex-col items-center mb-8 space-y-2'>
                 <div className="flex items-center justify-center flex-col space-y-8 mb-8">
                     <div className='flex flex-row justify-between items-center w-full h-fit space-x-2'>
                     <div
@@ -292,7 +293,10 @@ const BMIContent = () => {
                     <div className="w-[210px]">30+</div>
                   </div>
                 </div>
-                
+                <div className='w-fit h-fit flex items-center justify-center mt-8 p-4 bg-blue-100 rounded-xl'>
+                  <h1 className='font-bold text-lg'>GIỮ CÂN<span className='text-xl font-bold text-sky-800'> {tdee} </span>CALO/NGÀY</h1>
+                </div>
+                <PlanListCalo tdee= {tdee}/>
               </div>) : null
             }
             </Skeleton>

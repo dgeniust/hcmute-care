@@ -27,6 +27,7 @@ const ManagePost = () => {
                     <PreviewText textData={textData} headerData={headerData}/>
                 </div>
                 <div className=' border rounded-xl min-h-[380px] p-2 h-full'>
+                    <h1 className='w-full font-bold text-xl text-center my-2'>Xem trước bài post</h1>
                     <TwitterPost textData={textData} storageImg={storageImg} headerData={headerData}/>
                 </div>
             </div>
