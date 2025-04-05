@@ -27,6 +27,10 @@ import ManagePost from './pages/Admin/ManagePostEvent/ManagePost';
 import ManageRoom from './pages/Admin/ManageEmployees/ManageRoom';
 import ManageNumber_Orders from './pages/Admin/ManageUser/ManageNumber_Orders';
 import AdminHomePage from './pages/Admin/AdminHomepage/AdminHomePage';
+import DoctorDashboard from './pages/Doctor/DoctorDashboard';
+import DoctorHomePage from './pages/Doctor/DoctorHomepage/DoctorHomepage';
+import DoctorManageRecords from './pages/Doctor/DoctorManageRecords/DoctorManageRecords';
+import PatientRecords from './components/DoctorComponents/PatientRecords/PatientRecords';
 function App() {
 
   return (
@@ -64,6 +68,14 @@ function App() {
             <Route path="/admin/manage-service" element={<ManageService />} />
             <Route path="/admin/manage-employee" element={<ManageEmployee />} />
             <Route path="/admin/manage-numbers" element={<ManageNumber_Orders />} />
+          </Route>
+
+          {/* DOCTOR ROUTES */}
+          <Route path="/doctor" element={<DoctorDashboard />} >
+            <Route index element={<DoctorHomePage />} />
+            <Route path="/doctor/records" element={<DoctorManageRecords />} />
+            <Route path="/doctor/patient" element={<PatientRecords />} />
+            {/*<Route path="/doctor/manage-posts" element={<ManagePost />} /> */}
           </Route>
 
           {/* ANOTHER ROUTES */}

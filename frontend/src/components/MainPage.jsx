@@ -7,12 +7,7 @@ import '../css/mainpage.css'
 import InfiniteScrollingCarousel from "./HomePage/InfiniteScrollingCarousel";
 import BodyContent from "./HomePage/BodyContent";
 import GeneratePictureOnMouse from "./HomePage/GeneratePictureOnMouse";
-const contentStyle = {
-  height: '420px',
-  color: '#fff',
-  lineHeight: '420px',
-  textAlign: 'center',
-};
+
 const MainPage = () =>{
     return <div className="w-full h-full">
           <div className="hello-content w-full h-fit max-w-screen mb-8 rounded-xl shadow-lg">
