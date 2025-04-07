@@ -26,6 +26,10 @@ public class DoctorSchedule {
     @JoinColumn(name = "time_slot_id", referencedColumnName = "id")
     private TimeSlot timeSlot;
 
+    @ManyToOne
+    @JoinColumn(name = "room_detail_id", referencedColumnName = "id")
+    private RoomDetail roomDetail;
+
     @Column(name = "date")
     private LocalDate date;
 

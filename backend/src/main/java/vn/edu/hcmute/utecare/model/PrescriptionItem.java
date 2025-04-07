@@ -18,14 +18,14 @@ public class PrescriptionItem {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "strength")
-    private String strength;
-
     @Column(name = "dosage")
     private String dosage;
 
     @Column(name = "quantity")
     private Integer quantity;
+
+    @Column(name = "unit")
+    private String unit;
 
     @ManyToOne
     @JoinColumn(name = "medicine_id", referencedColumnName = "id")

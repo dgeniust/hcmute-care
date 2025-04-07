@@ -4,26 +4,23 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "tbl_medicine")
+@Table(name = "tbl_room_detail")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Medicine {
+public class RoomDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "price")
-    private Double price;
+    @Column(name = "building")
+    private String building;
 
-    @Column(name = "medicine_usage")
-    private String medicineUsage;
-
-    @Column(name = "strength")
-    private String strength;
+    @Column(name = "floor")
+    private Integer floor;
 }

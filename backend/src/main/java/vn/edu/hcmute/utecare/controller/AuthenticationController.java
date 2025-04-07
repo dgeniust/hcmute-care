@@ -34,9 +34,11 @@ public class AuthenticationController {
                 .build();
     }
 
+
+    //sửa lại
     @PostMapping("/refresh-token")
     @Operation(summary = "Refresh access token", description = "Generate a new access token using refresh token")
-    public ResponseData<TokenResponse> refreshToken(@RequestBody String refreshToken) {
+    public ResponseData<TokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshToken) {
         log.info("Refresh token request received");
         return ResponseData.<TokenResponse>builder()
                 .status(HttpStatus.OK.value())
