@@ -78,18 +78,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public TokenResponse refreshToken(String refreshToken) {
+    public TokenResponse refreshToken(RefreshTokenRequest request) {
         log.info("Get new access token");
 
-        String phone = jwtService.extractUsername(refreshToken, TokenType.REFRESH_TOKEN);
+        String phone = jwtService.extractUsername(request.getRefreshToken(), TokenType.REFRESH_TOKEN);
         Account account = accountRepository.findByUser_Phone(phone).orElseThrow(() -> new AccessDeniedException("Account not found"));
 
         String storedRefreshToken = (String) redisService.get("refresh:" + account.getUser().getPhone());
-        if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
+        if (storedRefreshToken == null || !storedRefreshToken.equals(request.getRefreshToken())) {
             throw new AccessDeniedException("Invalid or revoked refresh token");
         }
 
-        if (!jwtService.isValid(refreshToken, TokenType.REFRESH_TOKEN, account)) {
+        if (!jwtService.isValid(request.getRefreshToken(), TokenType.REFRESH_TOKEN, account)) {
             throw new AccessDeniedException("Invalid refresh token");
         }
 
@@ -97,7 +97,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return TokenResponse.builder()
                 .accessToken(newAccessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(request.getRefreshToken())
                 .userId(account.getId())
                 .build();
     }
@@ -127,6 +127,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         throw new AccessDeniedException("Invalid or expired OTP");
     }
+
     @Override
     @Transactional
     public TokenResponse registerSetPassword(String verificationToken, SetPasswordRequest request) {

@@ -1,5 +1,6 @@
 package vn.edu.hcmute.utecare.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -7,12 +8,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import vn.edu.hcmute.utecare.util.validator.EnumValue;
 import vn.edu.hcmute.utecare.util.enumeration.Gender;
 import vn.edu.hcmute.utecare.util.enumeration.Membership;
+import vn.edu.hcmute.utecare.util.validator.PhoneNumber;
 
 import java.time.LocalDate;
 
 @Getter
 public class CustomerRequest {
-    @NotEmpty(message = "phone must not be null")
+    @NotBlank(message = "phone must not be null")
+    @PhoneNumber(message = "phone invalid format")
     private String phone;
 
     @NotEmpty(message = "fullName must not be null")

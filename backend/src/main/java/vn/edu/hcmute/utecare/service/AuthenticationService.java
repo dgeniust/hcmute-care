@@ -8,7 +8,7 @@ import vn.edu.hcmute.utecare.dto.response.VerifyOtpResponse;
 public interface AuthenticationService {
     TokenResponse signIn(SignInRequest request);
 
-    TokenResponse refreshToken(String refreshToken);
+    TokenResponse refreshToken(RefreshTokenRequest refreshToken);
 
     SendOtpResponse sendOtpForRegistration(SendOtpRequest request);
 
