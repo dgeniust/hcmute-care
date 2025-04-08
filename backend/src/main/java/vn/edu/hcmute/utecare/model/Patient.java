@@ -34,4 +34,7 @@ public class Patient {
 
     @Column(name = "phone")
     private String phone;
+
+    @Column(name = "career")
+    private String career;
 }

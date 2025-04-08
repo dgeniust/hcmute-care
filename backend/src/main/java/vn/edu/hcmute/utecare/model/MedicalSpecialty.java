@@ -3,6 +3,7 @@ package vn.edu.hcmute.utecare.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
@@ -17,11 +18,11 @@ public class MedicalSpecialty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name", columnDefinition = "TEXT")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "price")
-    private Double price;
+    @Column(name = "price", precision = 10, scale = 2)
+    private BigDecimal price;
 
     @Column(name =  "note")
     private String note;

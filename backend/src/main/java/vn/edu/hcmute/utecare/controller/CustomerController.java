@@ -13,6 +13,7 @@ import vn.edu.hcmute.utecare.dto.response.CustomerResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.CustomerService;
+import vn.edu.hcmute.utecare.util.enumeration.Membership;
 
 @RestController
 @RequestMapping("/api/v1/customers")
@@ -87,7 +88,7 @@ public class CustomerController {
     @Operation(summary = "Search customers", description = "Search customers by keyword and membership with pagination")
     public ResponseData<PageResponse<CustomerResponse>> searchCustomers(
             @RequestParam String keyword,
-            @RequestParam(required = false) String membership,
+            @RequestParam(required = false) Membership membership,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sort,

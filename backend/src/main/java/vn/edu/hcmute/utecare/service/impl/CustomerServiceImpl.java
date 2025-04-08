@@ -112,13 +112,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public PageResponse<CustomerResponse> searchCustomers(String keyword, String membership, int page, int size, String sort, String direction) {
+    public PageResponse<CustomerResponse> searchCustomers(String keyword, Membership membership, int page, int size, String sort, String direction) {
         log.info("Searching customers with keyword: {}, page={}, size={}, sort={}, direction={}", keyword, page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-
-        Membership membershipEnum = membership != null ? Membership.valueOf(membership.toUpperCase()) : null;
-
-        Page<Customer> customerPage = customerRepository.searchCustomers(keyword, membershipEnum, pageable);
+        Page<Customer> customerPage = customerRepository.searchCustomers(keyword, membership, pageable);
         return PageResponse.<CustomerResponse>builder()
                 .currentPage(page)
                 .pageSize(size)

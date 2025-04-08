@@ -5,6 +5,7 @@ import vn.edu.hcmute.utecare.dto.request.CustomerCreationRequest;
 import vn.edu.hcmute.utecare.dto.request.CustomerRequest;
 import vn.edu.hcmute.utecare.dto.response.CustomerResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
+import vn.edu.hcmute.utecare.util.enumeration.Membership;
 
 public interface CustomerService {
 
@@ -18,5 +19,5 @@ public interface CustomerService {
 
     PageResponse<CustomerResponse> getAllCustomers(int page, int size, String sort, String direction);
 
-    PageResponse<CustomerResponse> searchCustomers(String keyword, String membership, int page, int size, String sort, String direction);
+    PageResponse<CustomerResponse> searchCustomers(String keyword, Membership membership, int page, int size, String sort, String direction);
 }

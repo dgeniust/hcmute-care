@@ -18,6 +18,5 @@ public class CustomerResponse {
     private LocalDate dob;
     private String nation;
     private String address;
-    private String career;
     private String membership;
 }

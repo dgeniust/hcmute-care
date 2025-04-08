@@ -13,8 +13,7 @@ import vn.edu.hcmute.utecare.util.enumeration.Membership;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer extends User {
-    @Column(name = "career")
-    private String career;
+
 
     @Enumerated(EnumType.STRING)
     @Builder.Default
