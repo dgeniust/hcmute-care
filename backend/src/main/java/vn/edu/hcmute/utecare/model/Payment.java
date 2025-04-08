@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 import vn.edu.hcmute.utecare.util.enumeration.PaymentMethod;
 import vn.edu.hcmute.utecare.util.enumeration.PaymentStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,8 +24,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "amount")
-    private Double amount;
+    @Column(name = "amount", precision = 10, scale = 2)
+    private BigDecimal amount;
 
     @Column(name = "payment_method")
     @Enumerated(EnumType.STRING)

@@ -13,7 +13,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
 
     @Query("SELECT c FROM Customer c WHERE " +
-            "c.membership = :membership AND " +
+            "c.membership IS NULL OR c.membership = :membership AND " +
             "(:keyword IS NULL OR :keyword = '' OR " +
             "LOWER(c.fullName) LIKE LOWER('%' || :keyword || '%') OR " +
             "LOWER(c.email) LIKE LOWER('%' || :keyword || '%') OR " +

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import vn.edu.hcmute.utecare.util.enumeration.PrescriptionStatus;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,9 +21,8 @@ public class Prescription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "issue_date")
-    @Temporal(TemporalType.DATE)
-    private Date issueDate;
+    @Column(name = "issue_date", nullable = false)
+    private LocalDateTime issueDate;
 
     @Column(name = "status")
     private PrescriptionStatus status;

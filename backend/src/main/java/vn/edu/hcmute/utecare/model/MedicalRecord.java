@@ -17,11 +17,11 @@ public class MedicalRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
 
-    @Column(name = "barcode")
+    @Column(name = "barcode", unique = true)
     private String barcode;
 
     @OneToMany(mappedBy = "medicalRecord")

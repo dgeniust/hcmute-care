@@ -35,8 +35,7 @@ public class Account implements UserDetails {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private AccountStatus status = AccountStatus.INACTIVE;
+    private AccountStatus status;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -75,6 +74,6 @@ public class Account implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserStatus.ACTIVE.equals(status);
+        return status.equals(AccountStatus.ACTIVE);
     }
 }

@@ -37,8 +37,6 @@ public class CustomerRequest {
     @NotEmpty(message = "address must not be null")
     private String address;
 
-    private String career;
-
     @NotNull(message = "membership must not be null")
     @EnumValue(name = "membership", enumClass = Membership.class)
     private String membership;

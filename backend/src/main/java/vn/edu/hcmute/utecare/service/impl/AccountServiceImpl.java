@@ -63,11 +63,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     //@PreAuthorize("hasRole('ADMIN')")
-    public PageResponse<AccountResponse> searchAccounts(String keyword, String accountRole, String accountStatus, int page, int size, String sort, String direction) {
+    public PageResponse<AccountResponse> searchAccounts(String keyword, Role role, AccountStatus status, int page, int size, String sort, String direction) {
         log.info("Searching accounts with keyword: {}", keyword);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-        AccountStatus status = accountStatus != null ? AccountStatus.valueOf(accountStatus.toUpperCase()) : null;
-        Role role = accountRole != null ? Role.valueOf(accountRole.toUpperCase()) : null;
         Page<Account> accountPage = accountRepository.searchAccounts(keyword, role, status, pageable);
 
         return PageResponse.<AccountResponse>builder()

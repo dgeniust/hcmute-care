@@ -12,6 +12,8 @@ import vn.edu.hcmute.utecare.dto.response.AccountResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.AccountService;
+import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
+import vn.edu.hcmute.utecare.util.enumeration.Role;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
@@ -65,8 +67,8 @@ public class AccountController {
     @Operation(summary = "Search accounts", description = "Search accounts by keyword and/or status with pagination")
     public ResponseData<PageResponse<AccountResponse>> searchAccounts(
             @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) String role,
-            @RequestParam(required = false) String status,
+            @RequestParam(required = false) Role role,
+            @RequestParam(required = false) AccountStatus status,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sort,
