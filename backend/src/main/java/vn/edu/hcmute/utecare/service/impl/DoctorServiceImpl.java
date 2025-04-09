@@ -43,31 +43,32 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public DoctorResponse createDoctor(DoctorCreationRequest request){
+    public DoctorResponse createDoctor(DoctorRequest request){
         log.info("Creating doctor with request: {}", request);
 
-        if (doctorRepository.existsByPhone(request.getDoctorRequest().getPhone())) {
+        if (doctorRepository.existsByPhone(request.getPhone())) {
             throw new IllegalArgumentException("Phone number already exists");
         }
 
-        Doctor doctor = DoctorMapper.INSTANCE.toEntity(request.getDoctorRequest());
+        Doctor doctor = DoctorMapper.INSTANCE.toEntity(request);
 
-        if (request.getDoctorRequest().getMedicalSpecialtyId() != null) {
-            MedicalSpecialty specialty = medicalSpecialtyRepository.findById(request.getDoctorRequest().getMedicalSpecialtyId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Medical specialty not found with ID: " + request.getDoctorRequest().getMedicalSpecialtyId()));
+        if (request.getMedicalSpecialtyId() != null) {
+            MedicalSpecialty specialty = medicalSpecialtyRepository.findById(request.getMedicalSpecialtyId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Medical specialty not found with ID: " + request.getMedicalSpecialtyId()));
             doctor.setMedicalSpecialty(specialty);
         }
 
-        Doctor savedDoctor = doctorRepository.saveAndFlush(doctor);
 
-        Account account = AccountMapper.INSTANCE.toEntity(request.getAccountRequest());
-        account.setPassword(passwordEncoder.encode(request.getAccountRequest().getPassword()));
-        account.setUser(doctor);
-        account.setRole(Role.DOCTOR);
-        account.setStatus(AccountStatus.ACTIVE);
+        Account account = Account.builder()
+                .password(passwordEncoder.encode(request.getPhone()))
+                .user(doctor)
+                .role(Role.DOCTOR)
+                .status(AccountStatus.ACTIVE)
+                .build();
+        doctor.setAccount(account);
 
-        accountRepository.save(account);
-
+        Doctor savedDoctor = doctorRepository.save(doctor);
+        log.info("Saved doctor: {}", savedDoctor);
         return DoctorMapper.INSTANCE.toResponse(savedDoctor);
     }
 

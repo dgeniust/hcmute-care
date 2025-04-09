@@ -7,12 +7,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vn.edu.hcmute.utecare.dto.request.CustomerCreationRequest;
 import vn.edu.hcmute.utecare.dto.request.CustomerRequest;
 import vn.edu.hcmute.utecare.dto.response.CustomerResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
-import vn.edu.hcmute.utecare.mapper.AccountMapper;
 import vn.edu.hcmute.utecare.mapper.CustomerMapper;
 import vn.edu.hcmute.utecare.model.Account;
 import vn.edu.hcmute.utecare.model.Customer;
@@ -35,23 +33,25 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public CustomerResponse createCustomer(CustomerCreationRequest request) {
+    public CustomerResponse createCustomer(CustomerRequest request) {
         log.info("Creating customer with request: {}", request);
 
-        if (customerRepository.existsByPhone(request.getCustomerRequest().getPhone())) {
+        if (customerRepository.existsByPhone(request.getPhone())) {
             throw new IllegalArgumentException("Phone number already exists");
         }
 
-        Customer customer = CustomerMapper.INSTANCE.toEntity(request.getCustomerRequest());
-        Customer savedCustomer = customerRepository.saveAndFlush(customer);
+        Customer customer = CustomerMapper.INSTANCE.toEntity(request);
 
-        Account account = AccountMapper.INSTANCE.toEntity(request.getAccountRequest());
-        account.setPassword(passwordEncoder.encode(request.getAccountRequest().getPassword()));
-        account.setUser(savedCustomer);
-        account.setRole(Role.CUSTOMER);
-        account.setStatus(AccountStatus.ACTIVE);
+        Account account = Account.builder()
+                .password(passwordEncoder.encode(request.getPhone()))
+                .user(customer)
+                .role(Role.CUSTOMER)
+                .status(AccountStatus.ACTIVE)
+                .build();
 
-        accountRepository.save(account);
+        customer.setAccount(account);
+
+        Customer savedCustomer = customerRepository.save(customer);
 
         log.info("Customer created successfully with ID: {}", savedCustomer.getId());
         return CustomerMapper.INSTANCE.toResponse(savedCustomer);

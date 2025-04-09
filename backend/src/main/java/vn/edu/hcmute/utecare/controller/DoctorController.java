@@ -39,7 +39,7 @@ public class DoctorController {
 
     @PostMapping
     @Operation(summary = "Create a new doctor", description = "Create a new doctor with provided details and associated account")
-    public ResponseData<DoctorResponse> createDoctor(@RequestBody @Valid DoctorCreationRequest request) {
+    public ResponseData<DoctorResponse> createDoctor(@RequestBody @Valid DoctorRequest request) {
         log.info("Create doctor request: {}", request);
         return ResponseData.<DoctorResponse>builder()
                 .status(HttpStatus.CREATED.value())

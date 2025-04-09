@@ -6,7 +6,7 @@ import vn.edu.hcmute.utecare.dto.response.NurseResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 
 public interface NurseService {
-    NurseResponse createNurse(NurseCreationRequest request);
+    NurseResponse createNurse(NurseRequest request);
     NurseResponse getNurseById(Long id);
     NurseResponse updateNurse(Long id, NurseRequest request);
     void deleteNurse(Long id);

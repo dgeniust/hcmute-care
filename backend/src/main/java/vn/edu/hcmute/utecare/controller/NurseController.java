@@ -35,7 +35,7 @@ public class NurseController {
 
     @PostMapping
     @Operation(summary = "Create a new nurse", description = "Create a new nurse with provided details and associated account")
-    public ResponseData<NurseResponse> createNurse(@RequestBody @Valid NurseCreationRequest request) {
+    public ResponseData<NurseResponse> createNurse(@RequestBody @Valid NurseRequest request) {
         log.info("Create nurse request: {}", request);
         return ResponseData.<NurseResponse>builder()
                 .status(HttpStatus.CREATED.value())

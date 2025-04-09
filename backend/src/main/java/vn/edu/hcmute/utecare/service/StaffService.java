@@ -6,7 +6,7 @@ import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.StaffResponse;
 
 public interface StaffService {
-    StaffResponse createStaff(StaffCreationRequest request);
+    StaffResponse createStaff(StaffRequest request);
     StaffResponse getStaffById(Long id);
     StaffResponse updateStaff(Long id, StaffRequest request);
     void deleteStaff(Long id);

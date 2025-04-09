@@ -46,4 +46,7 @@ public abstract class User implements Serializable {
 
     @Column(name = "address")
     private String address;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Account account;
 }

@@ -10,7 +10,7 @@ import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import java.time.LocalDate;
 
 public interface DoctorService {
-    DoctorResponse createDoctor(DoctorCreationRequest request);
+    DoctorResponse createDoctor(DoctorRequest request);
 
     DoctorResponse getDoctorById(Long id);
 
