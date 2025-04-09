@@ -33,24 +33,25 @@ public class NurseServiceImpl implements NurseService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public NurseResponse createNurse(NurseCreationRequest request) {
+    public NurseResponse createNurse(NurseRequest request) {
         log.info("Creating nurse with request: {}", request);
 
-        if (nurseRepository.existsByPhone(request.getNurseRequest().getPhone())) {
+        if (nurseRepository.existsByPhone(request.getPhone())) {
             throw new IllegalArgumentException("Phone number already exists");
         }
 
-        Nurse nurse = NurseMapper.INSTANCE.toEntity(request.getNurseRequest());
-        Nurse savedNurse = nurseRepository.saveAndFlush(nurse);
+        Nurse nurse = NurseMapper.INSTANCE.toEntity(request);
 
-        Account account = AccountMapper.INSTANCE.toEntity(request.getAccountRequest());
-        account.setPassword(passwordEncoder.encode(request.getAccountRequest().getPassword()));
-        account.setUser(nurse);
-        account.setRole(Role.NURSE);
-        account.setStatus(AccountStatus.ACTIVE);
+        Account account = Account.builder()
+                .password(passwordEncoder.encode(request.getPhone()))
+                .user(nurse)
+                .role(Role.NURSE)
+                .status(AccountStatus.ACTIVE)
+                .build();
+        nurse.setAccount(account);
 
-        accountRepository.save(account);
-
+        Nurse savedNurse = nurseRepository.save(nurse);
+        log.info("Saved nurse: {}", savedNurse);
         return NurseMapper.INSTANCE.toResponse(savedNurse);
     }
 

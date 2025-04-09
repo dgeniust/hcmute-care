@@ -33,25 +33,27 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public StaffResponse createStaff(StaffCreationRequest request) {
+    public StaffResponse createStaff(StaffRequest request) {
         log.info("Creating staff with request: {}", request);
 
-        if (staffRepository.existsByPhone(request.getStaffRequest().getPhone())) {
+        if (staffRepository.existsByPhone(request.getPhone())) {
             throw new IllegalArgumentException("Phone number already exists");
         }
 
-        Staff staff = StaffMapper.INSTANCE.toEntity(request.getStaffRequest());
-        Staff savedStaff = staffRepository.saveAndFlush(staff);
+        Staff staff = StaffMapper.INSTANCE.toEntity(request);
 
-        Account account = AccountMapper.INSTANCE.toEntity(request.getAccountRequest());
-        account.setPassword(passwordEncoder.encode(request.getAccountRequest().getPassword()));
-        account.setUser(staff);
-        account.setRole(Role.STAFF);
-        account.setStatus(AccountStatus.ACTIVE);
+        Account account = Account.builder()
+                .password(passwordEncoder.encode(request.getPhone()))
+                .user(staff)
+                .role(Role.STAFF)
+                .status(AccountStatus.ACTIVE)
+                .build();
 
-        accountRepository.save(account);
+        staff.setAccount(account);
 
-        log.info("Staff created successfully with ID: {}", savedStaff.getId());
+        Staff savedStaff = staffRepository.save(staff);
+
+        log.info("Saved staff: {}", savedStaff);
         return StaffMapper.INSTANCE.toResponse(savedStaff);
     }
 

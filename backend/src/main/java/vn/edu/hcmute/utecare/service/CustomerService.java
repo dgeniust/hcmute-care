@@ -1,7 +1,6 @@
 package vn.edu.hcmute.utecare.service;
 
-import org.springframework.data.domain.Pageable;
-import vn.edu.hcmute.utecare.dto.request.CustomerCreationRequest;
+import vn.edu.hcmute.utecare.dto.request.CreateCustomerRequest;
 import vn.edu.hcmute.utecare.dto.request.CustomerRequest;
 import vn.edu.hcmute.utecare.dto.response.CustomerResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
@@ -9,7 +8,7 @@ import vn.edu.hcmute.utecare.util.enumeration.Membership;
 
 public interface CustomerService {
 
-    CustomerResponse createCustomer(CustomerCreationRequest request);
+    CustomerResponse createCustomer(CustomerRequest request);
 
     CustomerResponse getCustomerById(Long id);
 

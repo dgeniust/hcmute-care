@@ -35,7 +35,7 @@ public class StaffController {
 
     @PostMapping
     @Operation(summary = "Create a new staff", description = "Create a new staff member with provided details and associated account")
-    public ResponseData<StaffResponse> createStaff(@RequestBody @Valid StaffCreationRequest request) {
+    public ResponseData<StaffResponse> createStaff(@RequestBody @Valid StaffRequest request) {
         log.info("Create staff request: {}", request);
         return ResponseData.<StaffResponse>builder()
                 .status(HttpStatus.CREATED.value())

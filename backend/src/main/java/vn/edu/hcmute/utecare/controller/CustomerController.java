@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import vn.edu.hcmute.utecare.dto.request.CustomerCreationRequest;
+import vn.edu.hcmute.utecare.dto.request.CreateCustomerRequest;
 import vn.edu.hcmute.utecare.dto.request.CustomerRequest;
 import vn.edu.hcmute.utecare.dto.response.CustomerResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
@@ -36,7 +36,7 @@ public class CustomerController {
 
     @PostMapping
     @Operation(summary = "Create a new customer", description = "Create a new customer with provided details and associated account")
-    public ResponseData<CustomerResponse> createCustomer(@RequestBody @Valid CustomerCreationRequest request) {
+    public ResponseData<CustomerResponse> createCustomer(@RequestBody @Valid CustomerRequest request) {
         log.info("Create customer request: {}", request);
         return ResponseData.<CustomerResponse>builder()
                 .status(HttpStatus.CREATED.value())
