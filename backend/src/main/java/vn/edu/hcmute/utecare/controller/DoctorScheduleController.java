@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.DoctorScheduleRequest;
 import vn.edu.hcmute.utecare.dto.response.DoctorScheduleResponse;
+import vn.edu.hcmute.utecare.dto.response.DoctorScheduleSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.DoctorScheduleService;
@@ -37,9 +38,9 @@ public class DoctorScheduleController {
 
     @PostMapping
     @Operation(summary = "Create a new doctor schedule", description = "Create a new doctor schedule with provided details")
-    public ResponseData<DoctorScheduleResponse> createDoctorSchedule(@RequestBody @Valid DoctorScheduleRequest request) {
+    public ResponseData<DoctorScheduleSummaryResponse> createDoctorSchedule(@RequestBody @Valid DoctorScheduleRequest request) {
         log.info("Create doctor schedule request: {}", request);
-        return ResponseData.<DoctorScheduleResponse>builder()
+        return ResponseData.<DoctorScheduleSummaryResponse>builder()
                 .status(HttpStatus.CREATED.value())
                 .message("Doctor schedule created successfully")
                 .data(doctorScheduleService.createDoctorSchedule(request))
@@ -48,11 +49,11 @@ public class DoctorScheduleController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a doctor schedule", description = "Update an existing doctor schedule by its ID")
-    public ResponseData<DoctorScheduleResponse> updateDoctorSchedule(
+    public ResponseData<DoctorScheduleSummaryResponse> updateDoctorSchedule(
             @PathVariable("id") Long id,
             @RequestBody @Valid DoctorScheduleRequest request) {
         log.info("Update doctor schedule request for id: {}", id);
-        return ResponseData.<DoctorScheduleResponse>builder()
+        return ResponseData.<DoctorScheduleSummaryResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctor schedule updated successfully")
                 .data(doctorScheduleService.updateDoctorSchedule(id, request))
@@ -72,13 +73,13 @@ public class DoctorScheduleController {
 
     @GetMapping
     @Operation(summary = "Get all doctor schedules", description = "Retrieve a paginated list of all doctor schedules")
-    public ResponseData<PageResponse<DoctorScheduleResponse>> getAllDoctorSchedules(
+    public ResponseData<PageResponse<DoctorScheduleSummaryResponse>> getAllDoctorSchedules(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sort,
             @RequestParam(defaultValue = "asc") String direction) {
         log.info("Get all doctor schedules request: page={}, size={}, sort={}, direction={}", page, size, sort, direction);
-        return ResponseData.<PageResponse<DoctorScheduleResponse>>builder()
+        return ResponseData.<PageResponse<DoctorScheduleSummaryResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctor schedules retrieved successfully")
                 .data(doctorScheduleService.getAllDoctorSchedules(page, size, sort, direction))
@@ -87,7 +88,7 @@ public class DoctorScheduleController {
 
     @GetMapping("/search")
     @Operation(summary = "Search doctor schedules", description = "Search doctor schedules by doctor ID, date, and time slot with pagination")
-    public ResponseData<PageResponse<DoctorScheduleResponse>> searchDoctorSchedules(
+    public ResponseData<PageResponse<DoctorScheduleSummaryResponse>> searchDoctorSchedules(
             @RequestParam(required = false) Long doctorId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @RequestParam(required = false) Integer timeSlotId,
@@ -96,7 +97,7 @@ public class DoctorScheduleController {
             @RequestParam(defaultValue = "id") String sort,
             @RequestParam(defaultValue = "asc") String direction) {
         log.info("Search doctor schedules request with doctorId: {}, date: {}, timeSlotId: {}", doctorId, date, timeSlotId);
-        return ResponseData.<PageResponse<DoctorScheduleResponse>>builder()
+        return ResponseData.<PageResponse<DoctorScheduleSummaryResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctor schedules search completed successfully")
                 .data(doctorScheduleService.searchDoctorSchedules(doctorId, date, timeSlotId, page, size, sort, direction))

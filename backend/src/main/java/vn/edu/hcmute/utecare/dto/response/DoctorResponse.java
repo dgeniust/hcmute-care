@@ -3,7 +3,9 @@ package vn.edu.hcmute.utecare.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import vn.edu.hcmute.utecare.util.enumeration.Gender;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -18,9 +20,9 @@ public class DoctorResponse {
 
     private String email;
 
-    private String gender;
+    private Gender gender;
 
-    private Date dob;
+    private LocalDate dob;
 
     private String nation;
 
