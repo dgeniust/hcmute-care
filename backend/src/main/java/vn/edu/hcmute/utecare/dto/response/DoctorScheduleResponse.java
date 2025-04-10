@@ -16,6 +16,8 @@ public class DoctorScheduleResponse {
 
     private TimeSlotResponse timeSlot;
 
+    private RoomDetailResponse roomDetail;
+
     private LocalDate date;
 
     private Integer maxSlots;

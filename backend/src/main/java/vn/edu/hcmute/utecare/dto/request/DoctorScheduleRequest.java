@@ -13,16 +13,23 @@ import java.time.LocalDate;
 @Getter
 @ValidSlots
 public class DoctorScheduleRequest {
-    @NotNull
+    @NotNull(message = "doctorId must not be null")
     private Long doctorId;
-    @NotNull
+
+    @NotNull(message = "roomId must not be null")
+    private Integer roomId;
+
+    @NotNull(message = "timeSlotId must not be null")
     private Integer timeSlotId;
+
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @FutureOrPresent
     private LocalDate date;
+
     @Min(value = 1, message = "maxSlots must be greater than 0")
     private Integer maxSlots;
+
     @Min(value = 0, message = "bookedSlots must be greater than or equal to 0")
     private Integer bookedSlots;
 }

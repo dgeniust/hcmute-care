@@ -8,14 +8,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.DoctorScheduleRequest;
 import vn.edu.hcmute.utecare.dto.response.DoctorScheduleResponse;
+import vn.edu.hcmute.utecare.dto.response.DoctorScheduleSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.DoctorScheduleMapper;
 import vn.edu.hcmute.utecare.model.Doctor;
 import vn.edu.hcmute.utecare.model.DoctorSchedule;
+import vn.edu.hcmute.utecare.model.RoomDetail;
 import vn.edu.hcmute.utecare.model.TimeSlot;
 import vn.edu.hcmute.utecare.repository.DoctorRepository;
 import vn.edu.hcmute.utecare.repository.DoctorScheduleRepository;
+import vn.edu.hcmute.utecare.repository.RoomDetailRepository;
 import vn.edu.hcmute.utecare.repository.TimeSlotRepository;
 import vn.edu.hcmute.utecare.service.DoctorScheduleService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
@@ -30,10 +33,11 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     private final DoctorScheduleRepository doctorScheduleRepository;
     private final DoctorRepository doctorRepository;
     private final TimeSlotRepository timeSlotRepository;
+    private final RoomDetailRepository roomDetailRepository;
 
     @Transactional(rollbackOn = Exception.class)
     @Override
-    public DoctorScheduleResponse createDoctorSchedule(DoctorScheduleRequest request) {
+    public DoctorScheduleSummaryResponse createDoctorSchedule(DoctorScheduleRequest request) {
         log.info("Creating doctor schedule with request: {}", request);
 
         if (doctorScheduleRepository.existsByDoctor_IdAndDateAndTimeSlot_Id(
@@ -45,6 +49,10 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with ID: " + request.getDoctorId()));
         TimeSlot timeSlot = timeSlotRepository.findById(request.getTimeSlotId())
                 .orElseThrow(() -> new ResourceNotFoundException("TimeSlot not found with ID: " + request.getTimeSlotId()));
+        RoomDetail roomDetail = roomDetailRepository.findById(request.getRoomId())
+                .orElseThrow(() -> new ResourceNotFoundException("RoomDetail not found with ID: " + request.getRoomId()));
+
+
 
         if (request.getDate().isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Schedule date cannot be in the past");
@@ -53,8 +61,9 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
         DoctorSchedule doctorSchedule = DoctorScheduleMapper.INSTANCE.toEntity(request);
         doctorSchedule.setDoctor(doctor);
         doctorSchedule.setTimeSlot(timeSlot);
+        doctorSchedule.setRoomDetail(roomDetail);
 
-        return DoctorScheduleMapper.INSTANCE.toResponse(doctorScheduleRepository.save(doctorSchedule));
+        return DoctorScheduleMapper.INSTANCE.toSummaryResponse(doctorScheduleRepository.save(doctorSchedule));
     }
 
     @Override
@@ -67,7 +76,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 
     @Transactional
     @Override
-    public DoctorScheduleResponse updateDoctorSchedule(Long id, DoctorScheduleRequest request) {
+    public DoctorScheduleSummaryResponse updateDoctorSchedule(Long id, DoctorScheduleRequest request) {
         log.info("Updating doctor schedule with id: {} and request: {}", id, request);
         DoctorSchedule doctorSchedule = doctorScheduleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor schedule not found with ID: " + id));
@@ -94,7 +103,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
         doctorSchedule.setDoctor(doctor);
         doctorSchedule.setTimeSlot(timeSlot);
 
-        return DoctorScheduleMapper.INSTANCE.toResponse(doctorScheduleRepository.save(doctorSchedule));
+        return DoctorScheduleMapper.INSTANCE.toSummaryResponse(doctorScheduleRepository.save(doctorSchedule));
     }
 
     @Transactional
@@ -107,33 +116,33 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
     }
 
     @Override
-    public PageResponse<DoctorScheduleResponse> getAllDoctorSchedules(int page, int size, String sort, String direction) {
+    public PageResponse<DoctorScheduleSummaryResponse> getAllDoctorSchedules(int page, int size, String sort, String direction) {
         log.info("Fetching all doctor schedules with pagination: page={}, size={}, sort={}, direction={}", page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<DoctorSchedule> schedulePage = doctorScheduleRepository.findAll(pageable);
-        return PageResponse.<DoctorScheduleResponse>builder()
+        return PageResponse.<DoctorScheduleSummaryResponse>builder()
                 .currentPage(page)
                 .pageSize(size)
                 .totalPages(schedulePage.getTotalPages())
                 .totalElements(schedulePage.getTotalElements())
-                .content(schedulePage.getContent().stream().map(DoctorScheduleMapper.INSTANCE::toResponse).toList())
+                .content(schedulePage.getContent().stream().map(DoctorScheduleMapper.INSTANCE::toSummaryResponse).toList())
                 .build();
     }
 
     @Override
-    public PageResponse<DoctorScheduleResponse> searchDoctorSchedules(Long doctorId, LocalDate date, Integer timeSlotId, int page, int size, String sort, String direction) {
+    public PageResponse<DoctorScheduleSummaryResponse> searchDoctorSchedules(Long doctorId, LocalDate date, Integer timeSlotId, int page, int size, String sort, String direction) {
         log.info("Searching doctor schedules with doctorId: {}, date: {}, timeSlotId: {}, page={}, size={}, sort={}, direction={}",
                 doctorId, date, timeSlotId, page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<DoctorSchedule> schedulePage = doctorScheduleRepository.searchDoctorSchedules(doctorId, date, timeSlotId, pageable);
-        return PageResponse.<DoctorScheduleResponse>builder()
+        return PageResponse.<DoctorScheduleSummaryResponse>builder()
                 .currentPage(page)
                 .pageSize(size)
                 .totalPages(schedulePage.getTotalPages())
                 .totalElements(schedulePage.getTotalElements())
-                .content(schedulePage.getContent().stream().map(DoctorScheduleMapper.INSTANCE::toResponse).toList())
+                .content(schedulePage.getContent().stream().map(DoctorScheduleMapper.INSTANCE::toSummaryResponse).toList())
                 .build();
     }
 }
