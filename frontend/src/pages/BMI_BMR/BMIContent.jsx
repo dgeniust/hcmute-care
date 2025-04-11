@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import {Radio, DatePicker, InputNumber, Button, message, notification, Skeleton , Select, Divider } from 'antd';
+import {Radio, DatePicker, InputNumber, Button, message, notification, Skeleton , Select } from 'antd';
 import { CheckCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import BMIWeight from '../../components/bodies';
 import '../../css/BMIContent.css';
 import PlanListCalo from './PlanListCalo'
 import BMISVG, {BMRSVG, TDEESVG} from './SVGCalculate';
+import GenerateMeal from './GenerateMeal';
 const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
 const style = {
     display: 'flex',
@@ -151,7 +152,7 @@ const BMIContent = () => {
         openNotification(true);
       }, 2000);
     }
-    
+
     const resultCal = bmi !== undefined && loading == false 
     
     return (
@@ -208,9 +209,8 @@ const BMIContent = () => {
                           />
                       </div>
                   </div>
-                  
-                  <div className='w-[50%] flex items-center justify-center'>
-                      <Button htmlType='submit' style={{width: '100%', height: '40px', color: 'white', backgroundColor: '#273c75', fontWeight: 'bold', fontSize: '15px'}}>
+                  <div className='w-full flex items-center justify-center'>
+                      <Button htmlType='submit' style={{width: '50%', height: '35px', color: 'white', backgroundColor: '#273c75', fontWeight: 'bold', fontSize: '15px'}}>
                       Xem kết quả
                       </Button>
                   </div>
@@ -308,7 +308,9 @@ const BMIContent = () => {
                 <p>Kết quả tính BMI trên giúp đánh giá tình trạng thừa cân, béo phì theo tiêu chuẩn của WHO áp dụng cho người Châu Á từ 18 tuổi trở lên, được Bộ Y tế công bố.  <span><a href="https://thuvienphapluat.vn/van-ban/The-thao-Y-te/Quyet-dinh-2892-QD-BYT-2022-tai-lieu-Huong-dan-chan-doan-va-dieu-tri-benh-beo-phi-533849.aspx">1</a>)</span></p>
               </div>
             </div>
-
+            <div className='w-full h-fit'>
+              <GenerateMeal tdee= {tdee} />
+            </div>
 
             {contextHolder}
             {contextNotificationHolder}
