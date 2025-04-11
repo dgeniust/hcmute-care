@@ -28,11 +28,8 @@ create table tbl_patient
     email         varchar(255)                     null,
     name          varchar(255)                     null,
     nation        varchar(255)                     null,
-    patient_code  varchar(255)                     null,
     phone         varchar(255)                     null,
-    gender        enum ('FEMALE', 'MALE', 'OTHER') null,
-    constraint UK11yco2m136xgirg2ql4xuytm7
-        unique (patient_code)
+    gender        enum ('FEMALE', 'MALE', 'OTHER') null
 );
 
 create table tbl_prescription
@@ -153,9 +150,7 @@ create table tbl_doctor_schedule
     constraint FKs20axpfsoqt7q2rnmuedqepfd
         foreign key (room_detail_id) references tbl_room_detail (id),
     constraint FKtljixsf3pq4w2ml1y0ndpq66q
-        foreign key (doctor_id) references tbl_doctor (id),
-    constraint chk_doctor_schedule_slots
-        check (`booked_slots` <= `max_slots`)
+        foreign key (doctor_id) references tbl_doctor (id)
 );
 
 create table tbl_medical_record
@@ -183,6 +178,8 @@ create table tbl_appointment
         primary key,
     medical_record_id  bigint                                      null,
     status             enum ('CANCELLED', 'COMPLETE', 'CONFIRMED') null,
+    constraint UKu7moaa0eab8ih8k6yu8sy28l
+        unique (medical_record_id),
     constraint FKdy5brsoiwlcvr5cosj4c4y8pm
         foreign key (medical_record_id) references tbl_medical_record (id),
     constraint FKogy0vgymnmgjy4m12oj9wnoky
@@ -241,6 +238,30 @@ create table tbl_staff
     staff_role enum ('SECURITY', 'SERVICE', 'SUPPORT') null,
     constraint FK18simt6qg1vlckulx8cdidtu4
         foreign key (id) references tbl_user (id)
+);
+
+create table tbl_post
+(
+    date_of_create date         null,
+    id             bigint auto_increment
+        primary key,
+    staff_id       bigint       null,
+    content        varchar(255) null,
+    header         varchar(255) null,
+    constraint FK9l2o8xiak0puo5rexdrssnwkc
+        foreign key (staff_id) references tbl_staff (id)
+);
+
+create table tbl_post_image
+(
+    date_of_create date         null,
+    id             bigint auto_increment
+        primary key,
+    post_id        bigint       null,
+    content        varchar(255) null,
+    header         varchar(255) null,
+    constraint FKgu0k1ycm57rgt76r10atw8f8i
+        foreign key (post_id) references tbl_post (id)
 );
 
 ALTER TABLE tbl_doctor_schedule
