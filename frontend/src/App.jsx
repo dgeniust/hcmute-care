@@ -31,6 +31,7 @@ import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorHomePage from './pages/Doctor/DoctorHomepage/DoctorHomepage';
 import DoctorManageRecords from './pages/Doctor/DoctorManageRecords/DoctorManageRecords';
 import PatientRecords from './components/DoctorComponents/PatientRecords/PatientRecords';
+import DoctorSchedule from './pages/Doctor/DoctorSchedule/DoctorSchedule';
 function App() {
 
   return (
@@ -75,6 +76,7 @@ function App() {
             <Route index element={<DoctorHomePage />} />
             <Route path="/doctor/records" element={<DoctorManageRecords />} />
             <Route path="/doctor/patient" element={<PatientRecords />} />
+            <Route path="/doctor/schedule" element={<DoctorSchedule />} />
             {/*<Route path="/doctor/manage-posts" element={<ManagePost />} /> */}
           </Route>
 
