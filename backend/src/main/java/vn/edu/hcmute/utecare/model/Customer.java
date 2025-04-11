@@ -5,6 +5,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import vn.edu.hcmute.utecare.util.enumeration.Membership;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "tbl_customer")
 @Getter
@@ -13,9 +16,11 @@ import vn.edu.hcmute.utecare.util.enumeration.Membership;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer extends User {
-
-
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Membership membership = Membership.NORMAL;
+
+    @OneToMany(mappedBy = "customer")
+    @Builder.Default
+    private Set<MedicalRecord> medicalRecords = new HashSet<>();
 }

@@ -24,23 +24,15 @@ create table tbl_patient
         primary key,
     address       varchar(255)                     null,
     career        varchar(255)                     null,
+    cccd          varchar(255)                     null,
+    email         varchar(255)                     null,
     name          varchar(255)                     null,
+    nation        varchar(255)                     null,
+    patient_code  varchar(255)                     null,
     phone         varchar(255)                     null,
-    gender        enum ('FEMALE', 'MALE', 'OTHER') null
-);
-
-create table tbl_medical_record
-(
-    id         bigint auto_increment
-        primary key,
-    patient_id bigint       null,
-    barcode    varchar(255) null,
-    constraint UKcx3k5wt1byr2g6t5cy5s5f22a
-        unique (patient_id),
-    constraint UKqwpmlp4vp2f6hqocqqlw2t5ii
-        unique (barcode),
-    constraint FKpk0p6aqwal3p1jaf6m6d5ea4m
-        foreign key (patient_id) references tbl_patient (id)
+    gender        enum ('FEMALE', 'MALE', 'OTHER') null,
+    constraint UK11yco2m136xgirg2ql4xuytm7
+        unique (patient_code)
 );
 
 create table tbl_prescription
@@ -50,24 +42,6 @@ create table tbl_prescription
         primary key,
     issue_date datetime(6) not null,
     check (`status` between 0 and 2)
-);
-
-create table tbl_encounter
-(
-    visit_date        date         null,
-    id                bigint auto_increment
-        primary key,
-    medical_record_id bigint       null,
-    prescription_id   bigint       null,
-    diagnosis         varchar(255) null,
-    notes             varchar(255) null,
-    treatment         varchar(255) null,
-    constraint UKg5xc51vh9u0hp05d2xsyfv11c
-        unique (prescription_id),
-    constraint FKa0003p6u2xrrtdrc3nptvln9c
-        foreign key (medical_record_id) references tbl_medical_record (id),
-    constraint FKi7846mug4bgj14veaq167r17c
-        foreign key (prescription_id) references tbl_prescription (id)
 );
 
 create table tbl_prescription_item
@@ -122,9 +96,9 @@ create table tbl_account
 (
     id       bigint auto_increment
         primary key,
-    user_id  bigint      null,
-    password varchar(255)not null,
-    role     enum ('ADMIN', 'CUSTOMER', 'DOCTOR', 'NURSE', 'STAFF')                    not null,
+    user_id  bigint                                                                                                                                  null,
+    password varchar(255)                                                                                                                            not null,
+    role     enum ('ADMIN', 'CUSTOMER', 'DOCTOR', 'NURSE', 'STAFF')                                                                                  not null,
     status   enum ('ACTIVE', 'BLOCKED', 'DELETED', 'INACTIVE', 'PENDING_ACTIVATION', 'PENDING_BLOCKING', 'PENDING_DELETION', 'PENDING_VERIFICATION') null,
     constraint UKmfb3yc9ce1liugyq0kgqxxwnm
         unique (user_id),
@@ -144,7 +118,7 @@ create table tbl_admin
 
 create table tbl_customer
 (
-    id         bigint     not null
+    id         bigint                                                             not null
         primary key,
     membership enum ('BRONZE', 'DIAMOND', 'GOLD', 'NORMAL', 'PLATINUM', 'SILVER') null,
     constraint FKjxw20l0ap83d36ntskkmkafiu
@@ -179,21 +153,58 @@ create table tbl_doctor_schedule
     constraint FKs20axpfsoqt7q2rnmuedqepfd
         foreign key (room_detail_id) references tbl_room_detail (id),
     constraint FKtljixsf3pq4w2ml1y0ndpq66q
-        foreign key (doctor_id) references tbl_doctor (id)
+        foreign key (doctor_id) references tbl_doctor (id),
+    constraint chk_doctor_schedule_slots
+        check (`booked_slots` <= `max_slots`)
+);
+
+create table tbl_medical_record
+(
+    customer_id bigint       null,
+    id          bigint auto_increment
+        primary key,
+    patient_id  bigint       null,
+    barcode     varchar(255) null,
+    constraint UKcx3k5wt1byr2g6t5cy5s5f22a
+        unique (patient_id),
+    constraint UKqwpmlp4vp2f6hqocqqlw2t5ii
+        unique (barcode),
+    constraint FKlkv1eiawbgbc6qj85gflu2l1d
+        foreign key (customer_id) references tbl_customer (id),
+    constraint FKpk0p6aqwal3p1jaf6m6d5ea4m
+        foreign key (patient_id) references tbl_patient (id)
 );
 
 create table tbl_appointment
 (
-    waiting_number     int        null,
-    doctor_schedule_id bigint     null,
+    waiting_number     int                                         null,
+    doctor_schedule_id bigint                                      null,
     id                 bigint auto_increment
         primary key,
-    medical_record_id  bigint     null,
+    medical_record_id  bigint                                      null,
     status             enum ('CANCELLED', 'COMPLETE', 'CONFIRMED') null,
     constraint FKdy5brsoiwlcvr5cosj4c4y8pm
         foreign key (medical_record_id) references tbl_medical_record (id),
     constraint FKogy0vgymnmgjy4m12oj9wnoky
         foreign key (doctor_schedule_id) references tbl_doctor_schedule (id)
+);
+
+create table tbl_encounter
+(
+    visit_date        date         null,
+    id                bigint auto_increment
+        primary key,
+    medical_record_id bigint       null,
+    prescription_id   bigint       null,
+    diagnosis         varchar(255) null,
+    notes             varchar(255) null,
+    treatment         varchar(255) null,
+    constraint UKg5xc51vh9u0hp05d2xsyfv11c
+        unique (prescription_id),
+    constraint FKa0003p6u2xrrtdrc3nptvln9c
+        foreign key (medical_record_id) references tbl_medical_record (id),
+    constraint FKi7846mug4bgj14veaq167r17c
+        foreign key (prescription_id) references tbl_prescription (id)
 );
 
 create table tbl_nurse
@@ -225,7 +236,7 @@ create table tbl_payment
 
 create table tbl_staff
 (
-    id         bigint not null
+    id         bigint                                  not null
         primary key,
     staff_role enum ('SECURITY', 'SERVICE', 'SUPPORT') null,
     constraint FK18simt6qg1vlckulx8cdidtu4
@@ -1275,3 +1286,47 @@ INSERT INTO tbl_doctor_schedule (doctor_id, date, time_slot_id, room_detail_id, 
 (2001, '2024-05-22', 7, 273, 4, 3),  -- BS 2001, Chiều T4, Khung giờ 7, Phòng CLSG05 (Siêu âm 2), Max 4, Đặt 3
 (2002, '2024-05-22', 1, 275, 5, 2),  -- BS 2002, Sáng T4, Khung giờ 1, Phòng CLSG07 (X-Quang 1), Max 5, Đặt 2
 (2002, '2024-05-22', 2, 275, 5, 1);  -- BS 2002, Sáng T4, Khung giờ 2, Phòng CLSG07 (X-Quang 1), Max 5, Đặt 1
+
+INSERT INTO tbl_patient (id, name, date_of_birth, gender, address, phone, cccd, email, nation, career) VALUES
+(1, 'Nguyễn Thị Mai', '1995-08-12', 'FEMALE', '12 Phố Huế, Quận Hai Bà Trưng, Hà Nội', '0901112233', '001195001234', 'ntmai.95@example.com', 'Việt Nam', 'Kế toán'),
+(2, 'Trần Văn Nam', '1988-04-25', 'MALE', '45 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh', '0912223344', '079088005678', 'namtran.dev@email.com', 'Việt Nam', 'Lập trình viên'),
+(3, 'Lê Thị Hoa', '2005-11-01', 'FEMALE', '78 Đường Hùng Vương, Quận Ninh Kiều, Cần Thơ', '0923334455', '092205009876', 'hoa.lethi.2005@domain.vn', 'Việt Nam', 'Học sinh'),
+(4, 'Phạm Minh Tuấn', '1976-02-18', 'MALE', '101 Đường Trần Phú, Quận 5, TP. Hồ Chí Minh', '0934445566', '079076001122', 'tuanpham.ceo@company.com', 'Việt Nam', 'Giám đốc kinh doanh'),
+(5, 'Hoàng Thị Thu', '1999-07-07', 'FEMALE', '24 Ngõ Trung Yên, Quận Cầu Giấy, Hà Nội', '0945556677', '001199003344', 'thu.hoang.99@student.edu.vn', 'Việt Nam', 'Sinh viên'),
+(6, 'Vũ Đức Bình', '1965-12-30', 'MALE', '56 Đường Lê Lợi, Quận Hải Châu, Đà Nẵng', '0956667788', '049065005566', 'binhvu.engineer@factory.com', 'Việt Nam', 'Kỹ sư cơ khí'),
+(7, 'Đặng Lan Anh', '2012-09-15', 'FEMALE', '33 Đường 3/2, Quận 10, TP. Hồ Chí Minh', '0967778899', '079212007788', NULL, 'Việt Nam', 'Học sinh Tiểu học'),
+(8, 'Bùi Thế Vinh', '1980-06-05', 'MALE', '88 Phố Bà Triệu, Quận Hoàn Kiếm, Hà Nội', '0978889900', '001080009900', 'vinh.bui.arch@design.vn', 'Việt Nam', 'Kiến trúc sư'),
+(9, 'Đỗ Thùy Linh', '1992-01-20', 'FEMALE', '19 Đường Điện Biên Phủ, Quận Bình Thạnh, TP. Hồ Chí Minh', '0989990011', '079192001212', 'linhdo.mkt@agency.com', 'Việt Nam', 'Nhân viên Marketing'),
+(10, 'Ngô Gia Huy', '2003-03-10', 'MALE', '67 Đường CMT8, Quận 3, TP. Hồ Chí Minh', '0990001122', '079203003434', 'huyngo.2k3@university.edu.vn', 'Việt Nam', 'Sinh viên'),
+(11, 'Phan Thị Kim Chi', '1958-10-08', 'FEMALE', '42 Đường Nguyễn Văn Linh, Quận 7, TP. Hồ Chí Minh', '0311112233', '079058005656', 'kimchi.phan58@email.net', 'Việt Nam', 'Nội trợ'),
+(12, 'Lý Thành Long', '1991-11-19', 'MALE', '99 Đường Giải Phóng, Quận Hoàng Mai, Hà Nội', '0322223344', '001091007878', 'longly.music@studio.com', 'Việt Nam', 'Nhạc sĩ'),
+(13, 'Châu Mỹ Duyên', '1985-07-29', 'FEMALE', '11 Đường Tôn Đức Thắng, Quận Đống Đa, Hà Nội', '0333334455', '001185009090', 'duyen.chau.gv@school.edu.vn', 'Việt Nam', 'Giáo viên'),
+(14, 'Dương Minh Khang', '2019-05-02', 'MALE', '222 Đường Quang Trung, Quận Gò Vấp, TP. Hồ Chí Minh', '0344445566', NULL, NULL, 'Việt Nam', 'Trẻ em'),
+(15, 'Huỳnh Bảo Trân', '1998-08-22', 'FEMALE', '31 Đường Bạch Đằng, Quận Tân Bình, TP. Hồ Chí Minh', '0355556677', '079198002468', 'tranhuynh.designer@art.com', 'Việt Nam', 'Nhân viên thiết kế'),
+(16, 'Mai Tiến Dũng', '1972-09-14', 'MALE', '75 Phố Xã Đàn, Quận Đống Đa, Hà Nội', '0366667788', '001072001357', 'dungmai.driver@transport.vn', 'Việt Nam', 'Tài xế'),
+(17, 'Tô Ngọc Hà', '1990-12-01', 'FEMALE', '14 Ngách 50, Ngõ Lương Sử C, Hà Nội', '0377778899', '001190008642', 'ha.to.hr@corporate.com', 'Việt Nam', 'Chuyên viên nhân sự'),
+(18, 'Lâm Gia Bảo', '2008-06-26', 'MALE', '50 Đường Võ Thị Sáu, Quận 3, TP. Hồ Chí Minh', '0388889900', '079208009753', 'baolam.2k8@gmail.com', 'Việt Nam', 'Học sinh Trung học'),
+(19, 'Trịnh Thị Thúy', '1960-03-03', 'FEMALE', '18 Đường Hoàng Diệu, Quận Ba Đình, Hà Nội', '0399990011', '001060001010', 'thuytrinh.retired@email.com', 'Việt Nam', 'Nghỉ hưu'),
+(20, 'Đoàn Quốc Trung', '1983-11-11', 'MALE', '91 Đường Nguyễn Chí Thanh, Quận 5, TP. Hồ Chí Minh', '0701112233', '079083002020', 'trungdoan.law@firm.vn', 'Việt Nam', 'Luật sư');
+
+INSERT INTO tbl_medical_record (customer_id, patient_id, barcode) VALUES
+(1001, 1, 'MR000001XYZ'),  -- Bệnh nhân 1 được đăng ký bởi Khách hàng 1001
+(1002, 2, 'MR000002ABC'),  -- Bệnh nhân 2 được đăng ký bởi Khách hàng 1002
+(1003, 3, 'MR000003DEF'),  -- Bệnh nhân 3 được đăng ký bởi Khách hàng 1003
+(1004, 4, 'MR000004GHI'),  -- Bệnh nhân 4 được đăng ký bởi Khách hàng 1004
+(1005, 5, 'MR000005JKL'),  -- Bệnh nhân 5 được đăng ký bởi Khách hàng 1005
+(1006, 6, 'MR000006MNO'),  -- Bệnh nhân 6 được đăng ký bởi Khách hàng 1006
+(1007, 7, 'MR000007PQR'),  -- Bệnh nhân 7 được đăng ký bởi Khách hàng 1007
+(1008, 8, 'MR000008STU'),  -- Bệnh nhân 8 được đăng ký bởi Khách hàng 1008
+(1009, 9, 'MR000009VWX'),  -- Bệnh nhân 9 được đăng ký bởi Khách hàng 1009
+(1010, 10, 'MR000010YZA'), -- Bệnh nhân 10 được đăng ký bởi Khách hàng 1010
+(1011, 11, 'MR000011BCD'), -- Bệnh nhân 11 được đăng ký bởi Khách hàng 1011
+(1012, 12, 'MR000012EFG'), -- Bệnh nhân 12 được đăng ký bởi Khách hàng 1012
+(1013, 13, 'MR000013HIJ'), -- Bệnh nhân 13 được đăng ký bởi Khách hàng 1013
+(1014, 14, 'MR000014KLM'), -- Bệnh nhân 14 được đăng ký bởi Khách hàng 1014
+(1015, 15, 'MR000015NOP'), -- Bệnh nhân 15 được đăng ký bởi Khách hàng 1015
+(1016, 16, 'MR000016QRS'), -- Bệnh nhân 16 được đăng ký bởi Khách hàng 1016
+(1017, 17, 'MR000017TUV'), -- Bệnh nhân 17 được đăng ký bởi Khách hàng 1017
+(1018, 18, 'MR000018WXY'), -- Bệnh nhân 18 được đăng ký bởi Khách hàng 1018
+(1019, 19, 'MR000019ZAB'), -- Bệnh nhân 19 được đăng ký bởi Khách hàng 1019
+(1020, 20, 'MR000020CDE'); -- Bệnh nhân 20 được đăng ký bởi Khách hàng 1020
