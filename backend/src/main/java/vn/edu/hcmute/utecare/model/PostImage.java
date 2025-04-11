@@ -20,20 +20,11 @@ public class PostImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "header")
-    private String header;
-
-    @Column(name = "content")
-    private String content;
-
-    @Column(name = "date_of_create")
-    @Temporal(TemporalType.DATE)
-    private LocalDate doc;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
-
-
 }
 

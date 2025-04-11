@@ -254,12 +254,10 @@ create table tbl_post
 
 create table tbl_post_image
 (
-    date_of_create date         null,
     id             bigint auto_increment
         primary key,
     post_id        bigint       null,
-    content        varchar(255) null,
-    header         varchar(255) null,
+    image_url        varchar(255) null,
     constraint FKgu0k1ycm57rgt76r10atw8f8i
         foreign key (post_id) references tbl_post (id)
 );
