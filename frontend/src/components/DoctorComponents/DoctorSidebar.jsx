@@ -60,7 +60,7 @@ const DoctorSideBar = () => {
         >
         <div className="flex flex-row items-center justify-center space-x-2">
           <div className=" flex items-center justify-center">
-            <img src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" alt="" srcset="" 
+            <img src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" alt="" srcSet="" 
             width={50}
             height={50}
             className="object-center" />

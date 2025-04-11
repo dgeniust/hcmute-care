@@ -49,20 +49,20 @@ export const formatTime = (time) => {
 };
 
 export const showData = (rawData) => {
-  const newData = {};
-  if(rawData?.data?.content){
-    rawData.data.content.forEach(schedule  => {
+  const newData = [];
+
+  if (rawData?.data?.content) {
+    rawData.data.content.forEach(schedule => {
       newData.push({
-        id: schedule.id,
-        doctor: schedule.doctorName,
-        gender: schedule.doctorGender,
-        room: schedule.roomName,
-        date: schedule.date,
-        time: `${schedule.startTime} - ${schedule.endTime}`,
-        booked: schedule.bookedSlots,
-        capacity: schedule.maxSlots
-      })
+        id: schedule.id.toString(), // Đảm bảo kiểu string
+        title: schedule.roomName,
+        start: `${schedule.date} ${schedule.startTime.slice(0, 5)}`,
+        end: `${schedule.date} ${schedule.endTime.slice(0, 5)}`,
+        description: `${schedule.doctorName} | ${schedule.doctorGender} | ${schedule.bookedSlots}/${schedule.maxSlots}`,
+        calendarId: 'work'
+      });
     });
   }
+
   return newData;
-}
+};

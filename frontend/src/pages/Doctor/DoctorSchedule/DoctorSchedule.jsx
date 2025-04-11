@@ -1,24 +1,57 @@
-import React, { useState, useEffect } from 'react'
-import { useCalendarApp, ScheduleXCalendar } from '@schedule-x/react'
+import React, { useState, useEffect, useMemo } from 'react';
+import { useCalendarApp, ScheduleXCalendar } from '@schedule-x/react';
 import {
-  createViewMonthGrid,
-  createViewWeek,
   createViewDay,
-} from '@schedule-x/calendar'
-import { createEventsServicePlugin } from '@schedule-x/events-service'
-import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop'
-import '@schedule-x/theme-default/dist/index.css'
-import { createEventModalPlugin } from '@schedule-x/event-modal'
-import { Modal, Form, Input, DatePicker, Select, Button } from 'antd'
-import moment from 'moment'
-// import {showData} from '../../../utils/formatData'
-const DoctorSchedule = () => {
-  const [form] = Form.useForm()
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [editingEvent, setEditingEvent] = useState(null)
-  
-  const eventsService = useState(() => createEventsServicePlugin())[0]
+  createViewWeek,
+  createViewMonthGrid,
+} from '@schedule-x/calendar';
+import { createEventsServicePlugin } from '@schedule-x/events-service';
+import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop';
+import { createEventModalPlugin } from '@schedule-x/event-modal';
+import '@schedule-x/theme-default/dist/index.css';
+import { 
+  Modal, 
+  Form, 
+  Input, 
+  DatePicker, 
+  Select, 
+  Button, 
+  Spin, 
+  message, 
+  Typography, 
+  Space, 
+  Divider,
+  Card,
+  Tooltip
+} from 'antd';
+import { 
+  PlusOutlined, 
+  CalendarOutlined, 
+  ReloadOutlined, 
+  EditOutlined, 
+  DeleteOutlined,
+  InfoCircleOutlined
+} from '@ant-design/icons';
+import dayjs from 'dayjs';
+import { showData } from '../../../utils/formatData';
 
+const { Title } = Typography;
+
+const DoctorSchedule = () => {
+  const [form] = Form.useForm();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingEvent, setEditingEvent] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [selectedView, setSelectedView] = useState('week');
+  const [messageApi, contextHolder] = message.useMessage();
+  
+  // Create events service plugin once with useState
+  const eventsService = useMemo(() => createEventsServicePlugin(), []);
+
+  // State for doctor schedule data
+  const [doctorScheduleData, setDoctorScheduleData] = useState([]);
+
+  // Default example events - can be used as fallback
   const initialEvents = [
     {
       id: '1',
@@ -36,307 +69,405 @@ const DoctorSchedule = () => {
       description: 'Meeting with surgical team',
       calendarId: 'meeting',
     },
-    {
-      id: '3',
-      title: 'Morning Shift',
-      start: '2025-04-15 06:00',
-      end: '2025-04-15 11:00',
-      description: 'Pediatrics appointments',
-      calendarId: 'work',
-    },
-    {
-      id: '4',
-      title: 'Afternoon Consultations',
-      start: '2025-04-15 13:30',
-      end: '2025-04-15 16:30',
-      description: 'Post-op evaluations',
-      calendarId: 'work',
-    },
-    {
-      id: '5',
-      title: 'Morning Shift',
-      start: '2025-04-16 06:00',
-      end: '2025-04-16 11:00',
-      description: 'Cardiology rounds',
-      calendarId: 'meeting',
-    },
-    {
-      id: '6',
-      title: 'Afternoon Consultations',
-      start: '2025-04-16 13:30',
-      end: '2025-04-16 16:30',
-      description: 'Team strategy session',
-      calendarId: 'meeting',
-    },
-    {
-      id: '7',
-      title: 'Morning Shift',
-      start: '2025-04-17 06:00',
-      end: '2025-04-17 11:00',
-      description: 'General diagnostics',
-      calendarId: 'work',
-    },
-    {
-      id: '8',
-      title: 'Afternoon Consultations',
-      start: '2025-04-17 13:30',
-      end: '2025-04-17 16:30',
-      description: 'Patient file reviews',
-      calendarId: 'work',
-    },
-    {
-      id: '9',
-      title: 'Morning Shift',
-      start: '2025-04-18 06:00',
-      end: '2025-04-18 11:00',
-      description: 'Routine checkups',
-      calendarId: 'work',
-    },
-    {
-      id: '10',
-      title: 'Afternoon Consultations',
-      start: '2025-04-18 13:30',
-      end: '2025-04-18 16:30',
-      description: 'Staff training session',
-      calendarId: 'meeting',
-    },
-    {
-      id: '11',
-      title: 'Morning Shift',
-      start: '2025-04-19 06:00',
-      end: '2025-04-19 11:00',
-      description: 'Surgical prep overview',
-      calendarId: 'meeting',
-    },
-    {
-      id: '12',
-      title: 'Afternoon Consultations',
-      start: '2025-04-19 13:30',
-      end: '2025-04-19 16:30',
-      description: 'Clinical research update',
-      calendarId: 'meeting',
-    },
-    {
-      id: '13',
-      title: 'Morning Shift',
-      start: '2025-04-20 06:00',
-      end: '2025-04-20 11:00',
-      description: 'New patient evaluations',
-      calendarId: 'work',
-    },
-    {
-      id: '14',
-      title: 'Afternoon Consultations',
-      start: '2025-04-20 13:30',
-      end: '2025-04-20 16:30',
-      description: 'End-of-week reports',
-      calendarId: 'work',
-    },
+    // Additional events removed for brevity
+  ];
 
-  ]
-  // const [doctorScheduleData, setDoctorScheduleData] = useState()
-  // const base_url = import.meta.env.VITE_API_BASE_URL;
-  // const api = base_url + 'schedules?page=1&size=30&sort=id&direction=asc'
-  // const fetchDoctorSchedule = async () => {
-  //   try {
-  //     const response = await fetch(api,
-  //       {
-  //       method: 'POST',
-  //       }
-  //     );
-  //     console.log('RES: ' + api);
-  //     if(!response.ok) {
-  //       throw new Error(`Lỗi: ${response.status} - ${response.statusText}`);
-  //     }
-  //     const scheduleData = await response.json();
-  //     const finalResult = showData(scheduleData);
-  //     console.log('Schedule Data:', finalResult);
-  //   }
-  //   catch(e) {
-  //     console.error("❌ Lỗi khi fetch:", e);
-  //   }
-  // }
-
-  const calendar = useCalendarApp({
-    views: [createViewDay(), createViewWeek(), createViewMonthGrid()],
+  // API configuration
+  const base_url = import.meta.env.VITE_API_BASE_URL || 'https://api.example.com/';
+  const api = `${base_url}schedules?page=1&size=30&sort=id&direction=asc`;
+  
+  // Calendar configuration with custom styling
+  const calendarConfig = useMemo(() => ({
+    views: [
+      createViewDay(), 
+      createViewWeek(), 
+      createViewMonthGrid()
+    ],
     plugins: [
       eventsService,
       createDragAndDropPlugin(),
       createEventModalPlugin(),
     ],
+    defaultView: selectedView,
     calendars: {
-      leisure:{
+      leisure: {
         colorName: 'leisure',
         lightColors: {
-          main: '#1c7df9',
-          container: '#d2e7ff',
-          onContainer: '#002859',
+          main: '#1677ff',
+          container: '#e6f4ff',
+          onContainer: '#004080',
+        },
+        darkColors: {
+          main: '#69b1ff',
+          container: '#0050b3',
+          onContainer: '#d6e8ff',
         }
       },
       work: {
         colorName: 'work',
         lightColors: {
-          main: '#f91c45',
-          container: '#ffd2dc',
-          onContainer: '#59000d',
+          main: '#f5222d',
+          container: '#fff1f0',
+          onContainer: '#5c0011',
         },
         darkColors: {
-          main: '#ffc0cc',
-          onContainer: '#ffdee6',
-          container: '#a24258',
+          main: '#ff7875',
+          container: '#a8071a',
+          onContainer: '#ffa39e',
         },
       },
       meeting: {
-        colorName: 'personal',
+        colorName: 'meeting',
         lightColors: {
-          main: '#f9d71c',
-          container: '#fff5aa',
-          onContainer: '#594800',
+          main: '#faad14',
+          container: '#fffbe6',
+          onContainer: '#613400',
         },
         darkColors: {
-          main: '#fff5c0',
-          onContainer: '#fff5de',
-          container: '#a29742',
+          main: '#ffd666',
+          container: '#ad6800',
+          onContainer: '#fff1b8',
         },
       },
     },
-    onEventClick: ({ event }) => {
-      showModal(event)
+    onEventClick: ({ event }) => showModal(event),
+    translations: {
+      monthView: 'Month',
+      weekView: 'Week',
+      dayView: 'Day',
+    },
+    datePickerDefaults: {
+      todayButton: {
+        text: 'Today',
+        className: 'bg-blue-500 text-white',
+      }
     }
-  })
+  }), [eventsService, selectedView]);
+  
+  const calendar = useCalendarApp(calendarConfig);
 
+  // Fetch doctor schedule from API
+  const fetchDoctorSchedule = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(api, { method: 'GET' });
+      
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      
+      const scheduleData = await response.json();
+      const formattedData = showData(scheduleData);
+      
+      console.log('Schedule Data:', formattedData);
+      setDoctorScheduleData(formattedData);
+      messageApi.success('Schedule data loaded successfully');
+    } catch (error) {
+      console.error("❌ Error fetching data:", error);
+      messageApi.error('Failed to load schedule data');
+      
+      // Load initial events as fallback
+      setDoctorScheduleData(initialEvents);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load events into calendar whenever doctorScheduleData changes
   useEffect(() => {
-    initialEvents.forEach(event => {
-      eventsService.add(event)
-    })
-  }, [])
+    if (doctorScheduleData.length > 0) {
+      eventsService.remove(); // Clear old events
+      doctorScheduleData.forEach(event => {
+        eventsService.add(event);
+      });
+      // No longer calling calendar.rerender() as it doesn't exist
+    }
+  }, [doctorScheduleData, eventsService]);
 
+  // Initial load
+  useEffect(() => {
+    fetchDoctorSchedule();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Handle modal display
   const showModal = (event = null) => {
-    setEditingEvent(event)
+    setEditingEvent(event);
+    
     if (event) {
       form.setFieldsValue({
         title: event.title,
-        start: moment(event.start),
-        end: moment(event.end),
+        start: dayjs(event.start),
+        end: dayjs(event.end),
         description: event.description,
         calendarId: event.calendarId,
-      })
+      });
     } else {
-      form.resetFields()
+      const now = dayjs();
+      const oneHourLater = dayjs().add(1, 'hour');
+      
+      form.setFieldsValue({
+        title: '',
+        start: now,
+        end: oneHourLater,
+        description: '',
+        calendarId: 'work',
+      });
     }
-    setIsModalVisible(true)
-  }
+    
+    setIsModalVisible(true);
+  };
 
+  // Handle form submission
   const handleOk = () => {
-    form.validateFields().then(values => {
-      const newEvent = {
-        id: editingEvent ? editingEvent.id : Date.now().toString(),
-        title: values.title,
-        start: values.start.format('YYYY-MM-DD HH:mm'),
-        end: values.end.format('YYYY-MM-DD HH:mm'),
-        description: values.description,
-        calendarId: values.calendarId,
-      }
+    form.validateFields()
+      .then(values => {
+        const newEvent = {
+          id: editingEvent ? editingEvent.id : `event-${Date.now()}`,
+          title: values.title,
+          start: values.start.format('YYYY-MM-DD HH:mm'),
+          end: values.end.format('YYYY-MM-DD HH:mm'),
+          description: values.description,
+          calendarId: values.calendarId,
+        };
 
-      if (editingEvent) {
-        eventsService.update(newEvent)
-      } else {
-        eventsService.add(newEvent)
-      }
+        if (editingEvent) {
+          eventsService.update(newEvent);
+          messageApi.success('Event updated successfully');
+        } else {
+          eventsService.add(newEvent);
+          messageApi.success('New event added successfully');
+        }
 
-      setIsModalVisible(false)
-      form.resetFields()
-      // Force calendar re-render by updating events
-      calendar.rerender()
-    })
-  }
+        setIsModalVisible(false);
+        form.resetFields();
+        
+        // Update the local state to keep things in sync
+        if (editingEvent) {
+          setDoctorScheduleData(prev => 
+            prev.map(event => event.id === newEvent.id ? newEvent : event)
+          );
+        } else {
+          setDoctorScheduleData(prev => [...prev, newEvent]);
+        }
+      })
+      .catch(info => {
+        console.error('Validate Failed:', info);
+      });
+  };
 
+  // Handle modal cancellation
   const handleCancel = () => {
-    setIsModalVisible(false)
-    form.resetFields()
-  }
+    setIsModalVisible(false);
+    form.resetFields();
+  };
+
+  // Handle event deletion
+  const handleDeleteEvent = () => {
+    if (editingEvent) {
+      eventsService.remove([editingEvent.id]);
+      setDoctorScheduleData(prev => 
+        prev.filter(event => event.id !== editingEvent.id)
+      );
+      messageApi.success('Event deleted successfully');
+      setIsModalVisible(false);
+      form.resetFields();
+    }
+  };
+
+  // Toggle between views
+  const handleViewChange = (view) => {
+    setSelectedView(view);
+    if (calendar && calendar.setView) {
+      calendar.setView(view);
+    }
+  };
+
+  // Error handling for API connection issues
+  const handleFetchError = () => {
+    messageApi.error({
+      content: 'Cannot connect to the server. Using sample data instead.',
+      duration: 5,
+    });
+    setDoctorScheduleData(initialEvents);
+    setLoading(false);
+  };
 
   return (
-    <div className="w-full h-full p-4">
-      <div className="mb-4">
-        <Button 
-          type="primary"
-          onClick={() => showModal()}
-          className="bg-blue-500 hover:bg-blue-600"
-        >
-          Add New Event
-        </Button>
-        <Button onClick={fetchDoctorSchedule}>Fetch</Button>
+    <Card className="w-full shadow-md">
+      {contextHolder}
+      <div className="mb-6">
+        <div className="flex justify-between items-center">
+          <Title level={4} className="flex items-center m-0">
+            <CalendarOutlined className="mr-2 text-blue-500" /> Lịch làm việc
+          </Title>
+          <Space>
+            <Tooltip title="Add new appointment">
+              <Button 
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={() => showModal()}
+                className="bg-blue-500 hover:bg-blue-600"
+              >
+                New Appointment
+              </Button>
+            </Tooltip>
+            <Tooltip title="Refresh schedule data">
+              <Button 
+                icon={<ReloadOutlined />} 
+                onClick={fetchDoctorSchedule}
+                loading={loading}
+              >
+                Refresh
+              </Button>
+            </Tooltip>
+          </Space>
+        </div>
+        <Divider className="my-4" />
       </div>
 
-      <ScheduleXCalendar calendarApp={calendar} />
+      {loading ? (
+        <div className="flex justify-center items-center h-96">
+          <Spin size="large" tip="Loading schedule..." />
+        </div>
+      ) : (
+        <div className="border rounded-md overflow-hidden">
+          <ScheduleXCalendar 
+            calendarApp={calendar} 
+            className="min-h-96" 
+          />
+        </div>
+      )}
 
       <Modal
-        title={editingEvent ? "Edit Event" : "Add New Event"}
+        title={
+          <div className="flex items-center">
+            {editingEvent ? <EditOutlined className="mr-2" /> : <PlusOutlined className="mr-2" />}
+            {editingEvent ? "Edit Appointment" : "Add New Appointment"}
+          </div>
+        }
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         okButtonProps={{ className: "bg-blue-500 hover:bg-blue-600" }}
+        footer={[
+          editingEvent && (
+            <Button 
+              key="delete" 
+              danger 
+              icon={<DeleteOutlined />}
+              onClick={handleDeleteEvent}
+            >
+              Delete
+            </Button>
+          ),
+          <Button key="cancel" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            onClick={handleOk}
+            className="bg-blue-500 hover:bg-blue-600"
+          >
+            {editingEvent ? 'Update' : 'Add'}
+          </Button>,
+        ]}
       >
         <Form
           form={form}
           layout="vertical"
-          className="space-y-4"
+          className="mt-4"
         >
           <Form.Item
             name="title"
             label="Title"
-            rules={[{ required: true, message: 'Please enter event title' }]}
+            rules={[{ required: true, message: 'Please enter appointment title' }]}
           >
-            <Input className="w-full" />
+            <Input placeholder="E.g., Morning Shift" className="w-full" />
           </Form.Item>
 
-          <Form.Item
-            name="start"
-            label="Start Time"
-            rules={[{ required: true, message: 'Please select start time' }]}
-          >
-            <DatePicker 
-              showTime 
-              format="YYYY-MM-DD HH:mm"
-              className="w-full"
-            />
-          </Form.Item>
+          <div className="grid grid-cols-2 gap-4">
+            <Form.Item
+              name="start"
+              label="Start Time"
+              rules={[{ required: true, message: 'Select start time' }]}
+            >
+              <DatePicker 
+                showTime 
+                format="YYYY-MM-DD HH:mm"
+                className="w-full"
+              />
+            </Form.Item>
 
-          <Form.Item
-            name="end"
-            label="End Time"
-            rules={[{ required: true, message: 'Please select end time' }]}
-          >
-            <DatePicker 
-              showTime 
-              format="YYYY-MM-DD HH:mm"
-              className="w-full"
-            />
-          </Form.Item>
+            <Form.Item
+              name="end"
+              label="End Time"
+              rules={[
+                { required: true, message: 'Select end time' },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('start').isBefore(value)) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('End time must be after start time'));
+                  },
+                }),
+              ]}
+            >
+              <DatePicker 
+                showTime 
+                format="YYYY-MM-DD HH:mm"
+                className="w-full"
+              />
+            </Form.Item>
+          </div>
 
           <Form.Item
             name="description"
             label="Description"
           >
-            <Input.TextArea rows={3} className="w-full" />
+            <Input.TextArea 
+              rows={3} 
+              className="w-full" 
+              placeholder="Add details about this appointment..."
+            />
           </Form.Item>
 
           <Form.Item
             name="calendarId"
             label="Category"
             rules={[{ required: true, message: 'Please select a category' }]}
+            tooltip={{ 
+              title: 'Categorize your appointment for better organization', 
+              icon: <InfoCircleOutlined /> 
+            }}
           >
             <Select className="w-full">
-              <Select.Option value="work">Work</Select.Option>
-              <Select.Option value="meeting">Meeting</Select.Option>
-              <Select.Option value="leisure">Leisure</Select.Option>
+              <Select.Option value="work">
+                <span className="flex items-center">
+                  <span className="w-3 h-3 rounded-full bg-red-500 mr-2"></span>
+                  Work
+                </span>
+              </Select.Option>
+              <Select.Option value="meeting">
+                <span className="flex items-center">
+                  <span className="w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+                  Meeting
+                </span>
+              </Select.Option>
+              <Select.Option value="leisure">
+                <span className="flex items-center">
+                  <span className="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
+                  Leisure
+                </span>
+              </Select.Option>
             </Select>
           </Form.Item>
         </Form>
       </Modal>
-    </div>
-  )
-}
+    </Card>
+  );
+};
 
-export default DoctorSchedule
+export default DoctorSchedule;
