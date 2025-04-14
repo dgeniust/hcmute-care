@@ -19,8 +19,4 @@ public class Customer extends User {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private Membership membership = Membership.NORMAL;
-
-    @OneToMany(mappedBy = "customer")
-    @Builder.Default
-    private Set<MedicalRecord> medicalRecords = new HashSet<>();
 }

@@ -41,7 +41,6 @@ public class Account implements UserDetails {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));

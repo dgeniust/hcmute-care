@@ -49,9 +49,9 @@ public class CustomerServiceImpl implements CustomerService {
                 .status(AccountStatus.ACTIVE)
                 .build();
 
-        customer.setAccount(account);
-
         Customer savedCustomer = customerRepository.save(customer);
+        account.setUser(savedCustomer);
+        accountRepository.save(account);
 
         log.info("Customer created successfully with ID: {}", savedCustomer.getId());
         return CustomerMapper.INSTANCE.toResponse(savedCustomer);

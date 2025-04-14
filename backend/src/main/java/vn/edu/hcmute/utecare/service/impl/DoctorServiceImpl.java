@@ -59,16 +59,15 @@ public class DoctorServiceImpl implements DoctorService {
             doctor.setMedicalSpecialty(specialty);
         }
 
+        Doctor savedDoctor = doctorRepository.save(doctor);
 
         Account account = Account.builder()
                 .password(passwordEncoder.encode(request.getPhone()))
-                .user(doctor)
-                .role(Role.DOCTOR)
+                .user(savedDoctor)
+                .role(Role.NURSE)
                 .status(AccountStatus.ACTIVE)
                 .build();
-        doctor.setAccount(account);
-
-        Doctor savedDoctor = doctorRepository.save(doctor);
+        accountRepository.save(account);
         log.info("Saved doctor: {}", savedDoctor);
         return DoctorMapper.INSTANCE.toResponse(savedDoctor);
     }

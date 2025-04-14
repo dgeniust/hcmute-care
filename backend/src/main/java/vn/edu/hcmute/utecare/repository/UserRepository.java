@@ -13,7 +13,7 @@ import vn.edu.hcmute.utecare.util.enumeration.Role;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u " +
-            "LEFT JOIN FETCH u.account acc " +
+            "INNER JOIN FETCH Account acc ON acc.user = u " +
             "WHERE (:role IS NULL OR acc.role = :role) " +
             "AND (:keyword IS NULL OR :keyword = '' " +
             "OR LOWER(u.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +

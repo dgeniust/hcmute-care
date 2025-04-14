@@ -11,6 +11,6 @@ import vn.edu.hcmute.utecare.model.User;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(target = "roleName", source = "account.role")
+//    @Mapping(target = "roleName", source = "account.role")
     UserSummaryResponse toSummaryResponse(User user);
 }
