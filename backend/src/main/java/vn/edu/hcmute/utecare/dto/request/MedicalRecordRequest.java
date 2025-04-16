@@ -1,19 +1,16 @@
 package vn.edu.hcmute.utecare.dto.request;
 
-import lombok.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import vn.edu.hcmute.utecare.dto.request.PatientRequest;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MedicalRecordRequest {
-    @NotNull(message = "Patient information is required")
+    @NotNull(message = "Patient details are required")
     private PatientRequest patient;
-
-    @NotBlank(message = "Barcode is required")
-    private String barcode;
 
     @NotNull(message = "Customer ID is required")
     private Long customerId;

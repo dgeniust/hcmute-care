@@ -9,7 +9,6 @@ import lombok.*;
 public class MedicalRecordResponse {
     private Long id;
     private String barcode;
-    private Long patientId;
     private Long customerId;
     private PatientResponse patient;
 }
