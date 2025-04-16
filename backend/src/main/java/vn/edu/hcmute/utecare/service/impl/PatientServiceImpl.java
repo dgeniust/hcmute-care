@@ -15,13 +15,13 @@ import vn.edu.hcmute.utecare.service.PatientService;
 @RequiredArgsConstructor
 public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
-    private final PatientMapper patientMapper;
+
 
     @Override
     public PatientResponse getById(Long id) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Patient not found with id: " + id));
-        return patientMapper.toResponse(patient);
+        return PatientMapper.INSTANCE.toResponse(patient);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class PatientServiceImpl implements PatientService {
         patient.setNation(request.getNation());
         patient.setCareer(request.getCareer());
 
-        return patientMapper.toResponse(patientRepository.save(patient));
+        return PatientMapper.INSTANCE.toResponse(patientRepository.save(patient));
     }
 
 

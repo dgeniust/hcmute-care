@@ -3,18 +3,21 @@ package vn.edu.hcmute.utecare.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 import vn.edu.hcmute.utecare.dto.request.MedicalRecordRequest;
 import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
 import vn.edu.hcmute.utecare.model.MedicalRecord;
 
-@Mapper(componentModel = "spring", imports = {PatientMapper.class})
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {PatientMapper.class})
 public interface MedicalRecordMapper {
-    @Mapping(target = "patientId", source = "patient.id")
+
+    MedicalRecordMapper INSTANCE = Mappers.getMapper(MedicalRecordMapper.class);
     @Mapping(target = "customerId", source = "customer.id")
-    @Mapping(target = "patient", source = "patient")
+
     MedicalRecordResponse toResponse(MedicalRecord medicalRecord);
 
-    @Mapping(target = "patient", source = "patient")
+
     @Mapping(target = "customer.id", source = "customerId")
     MedicalRecord toEntity(MedicalRecordRequest request);
 }
