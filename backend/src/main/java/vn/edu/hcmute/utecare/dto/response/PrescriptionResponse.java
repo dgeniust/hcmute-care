@@ -3,12 +3,10 @@ package vn.edu.hcmute.utecare.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import vn.edu.hcmute.utecare.model.Encounter;
-import vn.edu.hcmute.utecare.model.PrescriptionItem;
 import vn.edu.hcmute.utecare.util.enumeration.PrescriptionStatus;
+import java.util.List;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -20,7 +18,7 @@ public class PrescriptionResponse {
 
     private PrescriptionStatus status;
 
-    private Encounter encounter;
+    private Long encounterId;
 
-    private Set<PrescriptionItem> prescriptionItems;
+    private List<Long> prescriptionItemsId;
 }

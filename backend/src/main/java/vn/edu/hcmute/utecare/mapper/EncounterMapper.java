@@ -16,8 +16,8 @@ public interface EncounterMapper {
 
     Encounter toEntity(EncounterRequest request);
 
-    @Mapping(target = "prescription", source = "prescription")
-//    @Mapping(target = "medicalRecord", source = "medicalRecord")
+    @Mapping(target = "prescriptionId", source = "prescription.id")
+    @Mapping(target = "medicalRecordId", source = "medicalRecord.id")
     EncounterResponse toResponse(Encounter encounter);
 
     void update(EncounterRequest request, @MappingTarget Encounter encounter);

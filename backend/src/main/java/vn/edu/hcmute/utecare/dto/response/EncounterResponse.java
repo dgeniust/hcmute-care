@@ -19,7 +19,7 @@ public class EncounterResponse {
 
     private String notes;
 
-    private PrescriptionResponse prescription;
+    private Long prescriptionId;
 
-//    private MedicalRecord medicalRecord;
+    private Long medicalRecordId;
 }

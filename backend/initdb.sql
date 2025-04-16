@@ -1275,3 +1275,79 @@ INSERT INTO tbl_doctor_schedule (doctor_id, date, time_slot_id, room_detail_id, 
 (2001, '2024-05-22', 7, 273, 4, 3),  -- BS 2001, Chiều T4, Khung giờ 7, Phòng CLSG05 (Siêu âm 2), Max 4, Đặt 3
 (2002, '2024-05-22', 1, 275, 5, 2),  -- BS 2002, Sáng T4, Khung giờ 1, Phòng CLSG07 (X-Quang 1), Max 5, Đặt 2
 (2002, '2024-05-22', 2, 275, 5, 1);  -- BS 2002, Sáng T4, Khung giờ 2, Phòng CLSG07 (X-Quang 1), Max 5, Đặt 1
+
+INSERT INTO tbl_medicine (name, price, medicine_usage, strength) VALUES
+('Paracetamol 500mg', 15000.00, 'Giảm đau, hạ sốt. Uống sau ăn 6 giờ nếu cần.', '500mg'),
+('Amoxicillin 500mg', 28000.00, 'Kháng sinh điều trị nhiễm khuẩn đường hô hấp, uống 2 lần/ngày.', '500mg'),
+('Ibuprofen 400mg', 22000.00, 'Giảm đau, kháng viêm, điều trị viêm khớp. Uống mỗi 8 giờ.', '400mg'),
+('Vitamin C 1000mg', 18000.00, 'Tăng cường miễn dịch, chống oxy hóa. Uống 1 viên/ngày sau ăn.', '1000mg'),
+('Loperamide 2mg', 12000.00, 'Điều trị tiêu chảy cấp. Uống 1 viên sau mỗi lần đi tiêu lỏng.', '2mg'),
+('Cetirizine 10mg', 16000.00, 'Giảm dị ứng, nổi mề đay. Uống 1 viên/ngày vào buổi tối.', '10mg'),
+('Azithromycin 250mg', 35000.00, 'Kháng sinh điều trị nhiễm khuẩn. Uống 1 viên/ngày trong 3 ngày.', '250mg'),
+('Omeprazole 20mg', 19000.00, 'Giảm tiết axit dạ dày. Uống trước bữa sáng.', '20mg'),
+('Metformin 500mg', 25000.00, 'Điều trị tiểu đường tuýp 2. Uống 2 lần/ngày sau ăn.', '500mg'),
+('Diazepam 5mg', 21000.00, 'An thần, hỗ trợ giấc ngủ. Uống 1 viên trước khi ngủ.', '5mg'),
+('Ciprofloxacin 500mg', 38000.00, 'Kháng sinh điều trị nhiễm khuẩn đường tiết niệu. Uống 2 lần/ngày.', '500mg'),
+('Amlodipine 5mg', 25000.00, 'Điều trị tăng huyết áp. Uống 1 viên/ngày.', '5mg'),
+('Atorvastatin 20mg', 30000.00, 'Giảm cholesterol trong máu. Uống 1 viên vào buổi tối.', '20mg'),
+('Pantoprazole 40mg', 27000.00, 'Giảm tiết axit dạ dày, điều trị viêm loét dạ dày. Uống trước bữa ăn sáng.', '40mg'),
+('Levothyroxine 50mcg', 22000.00, 'Điều trị suy giáp. Uống vào buổi sáng khi bụng đói.', '50mcg'),
+('Salbutamol 100mcg', 15000.00, 'Giãn phế quản, giảm khó thở trong hen suyễn. Xịt khi cần.', '100mcg'),
+('Fluticasone 50mcg', 20000.00, 'Kháng viêm tại chỗ, điều trị viêm mũi dị ứng. Xịt mỗi bên mũi.', '50mcg'),
+('Montelukast 10mg', 28000.00, 'Dự phòng và điều trị hen suyễn. Uống 1 viên vào buổi tối.', '10mg'),
+('Losartan 50mg', 26000.00, 'Điều trị tăng huyết áp. Uống 1 viên/ngày.', '50mg'),
+('Bisoprolol 5mg', 24000.00, 'Điều trị tăng huyết áp, đau thắt ngực. Uống 1 viên/ngày.', '5mg'),
+('Furosemide 40mg', 18000.00, 'Thuốc lợi tiểu, điều trị phù. Uống theo chỉ định của bác sĩ.', '40mg'),
+('Warfarin 2mg', 35000.00, 'Thuốc chống đông máu. Uống theo chỉ định của bác sĩ.', '2mg');
+
+INSERT INTO tbl_prescription (status, issue_date) VALUES
+(0, '2025-04-20 10:00:00'),
+(1, '2025-04-21 14:45:00'),
+(2, '2025-04-22 09:30:00'),
+(1, '2025-04-23 11:15:00'),
+(0, '2025-04-24 16:30:00'),
+(2, '2025-04-25 08:00:00'),
+(1, '2025-04-26 13:00:00'),
+(0, '2025-04-27 17:45:00'),
+(1, '2025-04-28 10:30:00'),
+(2, '2025-04-29 15:15:00'),
+(0, '2025-04-30 09:00:00'),
+(1, '2025-05-01 14:00:00');
+
+INSERT INTO tbl_prescription_item (quantity, medicine_id, prescription_id, dosage, name, unit) VALUES
+(10, 1, 3, '1 vien/lan x 3 lan/ngay', 'Paracetamol 500mg', 'vien'),
+(5, 2, 3, '1 vien/lan x 2 lan/ngay', 'Amoxicillin 500mg', 'vien'),
+(15, 3, 4, '1 vien/lan x 3 lan/ngay', 'Ibuprofen 400mg', 'vien'),
+(7, 4, 4, '1 vien/lan x 1 lan/ngay', 'Vitamin C 1000mg', 'vien'),
+(8, 5, 5, '1 vien sau moi lan tieu chay', 'Loperamide 2mg', 'vien'),
+(6, 6, 5, '1 vien truoc khi ngu', 'Cetirizine 10mg', 'vien'),
+(12, 7, 6, '1 vien/ngay trong 3 ngay', 'Azithromycin 250mg', 'vien'),
+(14, 8, 6, '1 vien truoc bua sang', 'Omeprazole 20mg', 'vien'),
+(10, 9, 7, '1 vien/lan x 2 lan/ngay', 'Metformin 500mg', 'vien'),
+(4, 10, 7, '1 vien truoc khi ngu', 'Diazepam 5mg', 'vien'),
+(14, 11, 8, '1 vien/lan x 2 lan/ngay', 'Ciprofloxacin 500mg', 'vien'),
+(30, 12, 9, '1 vien/lan x 1 lan/ngay', 'Amlodipine 5mg', 'vien'),
+(30, 13, 9, '1 vien/lan x 1 lan/ngay', 'Atorvastatin 20mg', 'vien'),
+(28, 14, 10, '1 vien truoc bua an sang', 'Pantoprazole 40mg', 'vien'),
+(60, 15, 11, '1 vien vao buoi sang khi bung doi', 'Levothyroxine 50mcg', 'vien'),
+(2, 16, 12, 'Xit khi can', 'Salbutamol 100mcg', 'lan xit'),
+(1, 17, 3, 'Xit moi ben mui', 'Fluticasone 50mcg', 'lan xit'),
+(30, 18, 4, '1 vien vao buoi toi', 'Montelukast 10mg', 'vien'),
+(30, 19, 5, '1 vien/lan x 1 lan/ngay', 'Losartan 50mg', 'vien'),
+(30, 20, 6, '1 vien/lan x 1 lan/ngay', 'Bisoprolol 5mg', 'vien'),
+(15, 21, 7, 'Uong theo chi dinh cua bac si', 'Furosemide 40mg', 'vien'),
+(20, 22, 8, 'Uong theo chi dinh cua bac si', 'Warfarin 2mg', 'vien'),
+(10, 1, 9, '1 vien/lan x 3 lan/ngay', 'Paracetamol 500mg', 'vien'),
+(7, 2, 10, '1 vien/lan x 2 lan/ngay', 'Amoxicillin 500mg', 'vien'),
+(12, 9, 11, '1 vien/lan x 2 lan/ngay', 'Metformin 500mg', 'vien'),
+(5, 12, 12, '1 vien/lan x 1 lan/ngay', 'Amlodipine 5mg', 'vien'),
+(8, 14, 3, '1 vien truoc bua an sang', 'Pantoprazole 40mg', 'vien'),
+(4, 18, 4, '1 vien vao buoi toi', 'Montelukast 10mg', 'vien');
+
+DELETE from tbl_medicine where price>=0 ;
+DELETE from tbl_prescription where status>=0;
+SELECT * FROM tbl_medicine;
+SELECT * FROM tbl_prescription;
+SELECT * FROM tbl_prescription_item;
+
+ALTER TABLE tbl_prescription_item AUTO_INCREMENT = 0;
