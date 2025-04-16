@@ -21,6 +21,9 @@ public class Patient {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "cccd")
+    private String cccd;
+
     @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE)
     private Date dob;
@@ -34,6 +37,12 @@ public class Patient {
 
     @Column(name = "phone")
     private String phone;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "nation")
+    private String nation;
 
     @Column(name = "career")
     private String career;

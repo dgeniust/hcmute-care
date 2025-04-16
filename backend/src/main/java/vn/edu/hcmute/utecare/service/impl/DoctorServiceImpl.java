@@ -11,6 +11,7 @@ import vn.edu.hcmute.utecare.dto.request.DoctorCreationRequest;
 import vn.edu.hcmute.utecare.dto.request.DoctorRequest;
 import vn.edu.hcmute.utecare.dto.response.DoctorResponse;
 import vn.edu.hcmute.utecare.dto.response.DoctorScheduleResponse;
+import vn.edu.hcmute.utecare.dto.response.DoctorScheduleSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.AccountMapper;
@@ -141,7 +142,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public PageResponse<DoctorScheduleResponse> getDoctorAvailability(Long doctorId, LocalDate date, int page, int size, String sort, String direction) {
+    public PageResponse<DoctorScheduleSummaryResponse> getDoctorAvailability(Long doctorId, LocalDate date, int page, int size, String sort, String direction) {
         log.info("Retrieving doctor availability with doctorId: {}, date: {}, page={}, size={}, sort={}, direction={}",
                 doctorId, date, page, size, sort, direction);
 
@@ -155,12 +156,12 @@ public class DoctorServiceImpl implements DoctorService {
         // Gọi repository để lấy các lịch trình còn trống
         Page<DoctorSchedule> schedulePage = doctorScheduleRepository.findAvailableSchedules(doctorId, date, pageable);
 
-        return PageResponse.<DoctorScheduleResponse>builder()
+        return PageResponse.<DoctorScheduleSummaryResponse>builder()
                 .currentPage(page)
                 .pageSize(size)
                 .totalPages(schedulePage.getTotalPages())
                 .totalElements(schedulePage.getTotalElements())
-                .content(schedulePage.getContent().stream().map(DoctorScheduleMapper.INSTANCE::toResponse).toList())
+                .content(schedulePage.getContent().stream().map(DoctorScheduleMapper.INSTANCE::toSummaryResponse).toList())
                 .build();
     }
 }
