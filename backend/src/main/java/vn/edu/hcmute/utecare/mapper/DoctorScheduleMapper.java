@@ -17,9 +17,7 @@ public interface DoctorScheduleMapper {
 
     DoctorSchedule toEntity(DoctorScheduleRequest request);
 
-    @Mapping(target = "doctor", source = "doctor")
-    @Mapping(target = "timeSlot", source = "timeSlot")
-    @Mapping(target = "roomDetail", source = "roomDetail")
+
     DoctorScheduleResponse toResponse(DoctorSchedule schedule);
 
     @Mapping(target = "doctorName", source = "doctor.fullName")

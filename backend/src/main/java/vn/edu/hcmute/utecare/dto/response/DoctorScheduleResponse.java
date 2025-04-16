@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class DoctorScheduleResponse {
     private Long id;
 
-    private DoctorResponse doctor;
+    private DoctorInfoResponse doctor;
 
     private TimeSlotResponse timeSlot;
 

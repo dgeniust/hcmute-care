@@ -177,9 +177,7 @@ create table tbl_appointment
     id                 bigint auto_increment
         primary key,
     medical_record_id  bigint                                      null,
-    status             enum ('CANCELLED', 'COMPLETE', 'CONFIRMED') null,
-    constraint UKu7moaa0eab8ih8k6yu8sy28l
-        unique (medical_record_id),
+    status             enum ('CANCELLED', 'COMPLETE', 'CONFIRMED', 'PENDING', 'PAID') null,
     constraint FKdy5brsoiwlcvr5cosj4c4y8pm
         foreign key (medical_record_id) references tbl_medical_record (id),
     constraint FKogy0vgymnmgjy4m12oj9wnoky
@@ -254,10 +252,10 @@ create table tbl_post
 
 create table tbl_post_image
 (
-    id             bigint auto_increment
+    id        bigint auto_increment
         primary key,
-    post_id        bigint       null,
-    image_url        varchar(255) null,
+    post_id   bigint       null,
+    image_url varchar(255) null,
     constraint FKgu0k1ycm57rgt76r10atw8f8i
         foreign key (post_id) references tbl_post (id)
 );

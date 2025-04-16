@@ -11,7 +11,9 @@ import vn.edu.hcmute.utecare.dto.request.AccountStatusUpdateRequest;
 import vn.edu.hcmute.utecare.dto.response.AccountResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
+import vn.edu.hcmute.utecare.model.Account;
 import vn.edu.hcmute.utecare.service.AccountService;
+import vn.edu.hcmute.utecare.util.SecurityUtil;
 import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
 import vn.edu.hcmute.utecare.util.enumeration.Role;
 
@@ -80,5 +82,10 @@ public class AccountController {
                 .message("Accounts search completed successfully")
                 .data(accountService.searchAccounts(keyword, role, status, page, size, sort, direction))
                 .build();
+    }
+
+    @GetMapping("/test")
+    public Account test() {
+        return SecurityUtil.getCurrentUser();
     }
 }

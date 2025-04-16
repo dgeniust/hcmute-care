@@ -42,16 +42,14 @@ public class StaffServiceImpl implements StaffService {
 
         Staff staff = StaffMapper.INSTANCE.toEntity(request);
 
+        Staff savedStaff = staffRepository.save(staff);
         Account account = Account.builder()
                 .password(passwordEncoder.encode(request.getPhone()))
-                .user(staff)
-                .role(Role.STAFF)
+                .user(savedStaff)
+                .role(Role.NURSE)
                 .status(AccountStatus.ACTIVE)
                 .build();
-
-        staff.setAccount(account);
-
-        Staff savedStaff = staffRepository.save(staff);
+        accountRepository.save(account);
 
         log.info("Saved staff: {}", savedStaff);
         return StaffMapper.INSTANCE.toResponse(savedStaff);

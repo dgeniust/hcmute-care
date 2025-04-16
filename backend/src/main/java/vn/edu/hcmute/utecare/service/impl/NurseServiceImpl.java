@@ -41,16 +41,14 @@ public class NurseServiceImpl implements NurseService {
         }
 
         Nurse nurse = NurseMapper.INSTANCE.toEntity(request);
-
+        Nurse savedNurse = nurseRepository.save(nurse);
         Account account = Account.builder()
                 .password(passwordEncoder.encode(request.getPhone()))
-                .user(nurse)
+                .user(savedNurse)
                 .role(Role.NURSE)
                 .status(AccountStatus.ACTIVE)
                 .build();
-        nurse.setAccount(account);
-
-        Nurse savedNurse = nurseRepository.save(nurse);
+        accountRepository.save(account);
         log.info("Saved nurse: {}", savedNurse);
         return NurseMapper.INSTANCE.toResponse(savedNurse);
     }
