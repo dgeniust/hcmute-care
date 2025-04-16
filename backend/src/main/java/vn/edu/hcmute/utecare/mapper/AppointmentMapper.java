@@ -6,8 +6,7 @@ import vn.edu.hcmute.utecare.dto.response.AppointmentDetailResponse;
 import vn.edu.hcmute.utecare.model.Appointment;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
-uses = { DoctorScheduleMapper.class},
-imports = {MedicalRecordMapper.class})
+uses = { DoctorScheduleMapper.class,MedicalRecordMapper.class})
 public interface AppointmentMapper {
     AppointmentMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(AppointmentMapper.class);
 

@@ -14,7 +14,6 @@ public interface MedicalRecordMapper {
 
     MedicalRecordMapper INSTANCE = Mappers.getMapper(MedicalRecordMapper.class);
     @Mapping(target = "customerId", source = "customer.id")
-
     MedicalRecordResponse toResponse(MedicalRecord medicalRecord);
 
 

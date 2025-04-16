@@ -28,10 +28,9 @@ public class PostRequest {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate doc;
 
-    @NotBlank(message = "postImage must not be null")
     private Set<PostImageRequest> postImages;
 
-    @NotBlank(message = "staff must not be null")
+    @NotNull(message = "staff must not be null")
     private Long staffId;
 
 }

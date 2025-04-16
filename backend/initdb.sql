@@ -32,31 +32,6 @@ create table tbl_patient
     gender        enum ('FEMALE', 'MALE', 'OTHER') null
 );
 
-create table tbl_prescription
-(
-    status     tinyint     null,
-    id         bigint auto_increment
-        primary key,
-    issue_date datetime(6) not null,
-    check (`status` between 0 and 2)
-);
-
-create table tbl_prescription_item
-(
-    quantity        int          null,
-    id              bigint auto_increment
-        primary key,
-    medicine_id     bigint       null,
-    prescription_id bigint       null,
-    dosage          varchar(255) null,
-    name            varchar(255) null,
-    unit            varchar(255) null,
-    constraint FKa2gl0hbtds9hshpw8vdy6ry07
-        foreign key (prescription_id) references tbl_prescription (id),
-    constraint FKhxus9135s3539xayk7aqko7wr
-        foreign key (medicine_id) references tbl_medicine (id)
-);
-
 create table tbl_room_detail
 (
     floor    int          null,
@@ -172,12 +147,12 @@ create table tbl_medical_record
 
 create table tbl_appointment
 (
-    waiting_number     int                                         null,
-    doctor_schedule_id bigint                                      null,
+    waiting_number     int                                                            null,
+    doctor_schedule_id bigint                                                         null,
     id                 bigint auto_increment
         primary key,
-    medical_record_id  bigint                                      null,
-    status             enum ('CANCELLED', 'COMPLETE', 'CONFIRMED', 'PENDING', 'PAID') null,
+    medical_record_id  bigint                                                         null,
+    status             enum ('CANCELLED', 'COMPLETE', 'CONFIRMED', 'PAID', 'PENDING') null,
     constraint FKdy5brsoiwlcvr5cosj4c4y8pm
         foreign key (medical_record_id) references tbl_medical_record (id),
     constraint FKogy0vgymnmgjy4m12oj9wnoky
@@ -190,16 +165,11 @@ create table tbl_encounter
     id                bigint auto_increment
         primary key,
     medical_record_id bigint       null,
-    prescription_id   bigint       null,
     diagnosis         varchar(255) null,
     notes             varchar(255) null,
     treatment         varchar(255) null,
-    constraint UKg5xc51vh9u0hp05d2xsyfv11c
-        unique (prescription_id),
     constraint FKa0003p6u2xrrtdrc3nptvln9c
-        foreign key (medical_record_id) references tbl_medical_record (id),
-    constraint FKi7846mug4bgj14veaq167r17c
-        foreign key (prescription_id) references tbl_prescription (id)
+        foreign key (medical_record_id) references tbl_medical_record (id)
 );
 
 create table tbl_nurse
@@ -227,6 +197,33 @@ create table tbl_payment
     constraint FKhf5omma6r24fh55aexb10s3yq
         foreign key (appointment_id) references tbl_appointment (id),
     check (`payment_status` between 0 and 4)
+);
+
+create table tbl_prescription
+(
+    status       tinyint     null,
+    encounter_id bigint      null,
+    id           bigint auto_increment
+        primary key,
+    issue_date   datetime(6) not null,
+    constraint FKr5prfsfs4y65t9wsbuxcy1bn2
+        foreign key (encounter_id) references tbl_encounter (id),
+    check (`status` between 0 and 2)
+);
+
+create table tbl_prescription_item
+(
+    quantity        int          null,
+    id              bigint auto_increment
+        primary key,
+    medicine_id     bigint       null,
+    prescription_id bigint       null,
+    dosage          varchar(255) null,
+    unit            varchar(255) null,
+    constraint FKa2gl0hbtds9hshpw8vdy6ry07
+        foreign key (prescription_id) references tbl_prescription (id),
+    constraint FKhxus9135s3539xayk7aqko7wr
+        foreign key (medicine_id) references tbl_medicine (id)
 );
 
 create table tbl_staff
@@ -1343,43 +1340,35 @@ INSERT INTO tbl_prescription (status, issue_date) VALUES
 (0, '2025-04-30 09:00:00'),
 (1, '2025-05-01 14:00:00');
 
-INSERT INTO tbl_prescription_item (quantity, medicine_id, prescription_id, dosage, name, unit) VALUES
-(10, 1, 3, '1 vien/lan x 3 lan/ngay', 'Paracetamol 500mg', 'vien'),
-(5, 2, 3, '1 vien/lan x 2 lan/ngay', 'Amoxicillin 500mg', 'vien'),
-(15, 3, 4, '1 vien/lan x 3 lan/ngay', 'Ibuprofen 400mg', 'vien'),
-(7, 4, 4, '1 vien/lan x 1 lan/ngay', 'Vitamin C 1000mg', 'vien'),
-(8, 5, 5, '1 vien sau moi lan tieu chay', 'Loperamide 2mg', 'vien'),
-(6, 6, 5, '1 vien truoc khi ngu', 'Cetirizine 10mg', 'vien'),
-(12, 7, 6, '1 vien/ngay trong 3 ngay', 'Azithromycin 250mg', 'vien'),
-(14, 8, 6, '1 vien truoc bua sang', 'Omeprazole 20mg', 'vien'),
-(10, 9, 7, '1 vien/lan x 2 lan/ngay', 'Metformin 500mg', 'vien'),
-(4, 10, 7, '1 vien truoc khi ngu', 'Diazepam 5mg', 'vien'),
-(14, 11, 8, '1 vien/lan x 2 lan/ngay', 'Ciprofloxacin 500mg', 'vien'),
-(30, 12, 9, '1 vien/lan x 1 lan/ngay', 'Amlodipine 5mg', 'vien'),
-(30, 13, 9, '1 vien/lan x 1 lan/ngay', 'Atorvastatin 20mg', 'vien'),
-(28, 14, 10, '1 vien truoc bua an sang', 'Pantoprazole 40mg', 'vien'),
-(60, 15, 11, '1 vien vao buoi sang khi bung doi', 'Levothyroxine 50mcg', 'vien'),
-(2, 16, 12, 'Xit khi can', 'Salbutamol 100mcg', 'lan xit'),
-(1, 17, 3, 'Xit moi ben mui', 'Fluticasone 50mcg', 'lan xit'),
-(30, 18, 4, '1 vien vao buoi toi', 'Montelukast 10mg', 'vien'),
-(30, 19, 5, '1 vien/lan x 1 lan/ngay', 'Losartan 50mg', 'vien'),
-(30, 20, 6, '1 vien/lan x 1 lan/ngay', 'Bisoprolol 5mg', 'vien'),
-(15, 21, 7, 'Uong theo chi dinh cua bac si', 'Furosemide 40mg', 'vien'),
-(20, 22, 8, 'Uong theo chi dinh cua bac si', 'Warfarin 2mg', 'vien'),
-(10, 1, 9, '1 vien/lan x 3 lan/ngay', 'Paracetamol 500mg', 'vien'),
-(7, 2, 10, '1 vien/lan x 2 lan/ngay', 'Amoxicillin 500mg', 'vien'),
-(12, 9, 11, '1 vien/lan x 2 lan/ngay', 'Metformin 500mg', 'vien'),
-(5, 12, 12, '1 vien/lan x 1 lan/ngay', 'Amlodipine 5mg', 'vien'),
-(8, 14, 3, '1 vien truoc bua an sang', 'Pantoprazole 40mg', 'vien'),
-(4, 18, 4, '1 vien vao buoi toi', 'Montelukast 10mg', 'vien');
-
-DELETE from tbl_medicine where price>=0 ;
-DELETE from tbl_prescription where status>=0;
-SELECT * FROM tbl_medicine;
-SELECT * FROM tbl_prescription;
-SELECT * FROM tbl_prescription_item;
-
-ALTER TABLE tbl_prescription_item AUTO_INCREMENT = 0;
+# INSERT INTO tbl_prescription_item (quantity, medicine_id, prescription_id, dosage, name, unit) VALUES
+# (10, 1, 3, '1 vien/lan x 3 lan/ngay', 'Paracetamol 500mg', 'vien'),
+# (5, 2, 3, '1 vien/lan x 2 lan/ngay', 'Amoxicillin 500mg', 'vien'),
+# (15, 3, 4, '1 vien/lan x 3 lan/ngay', 'Ibuprofen 400mg', 'vien'),
+# (7, 4, 4, '1 vien/lan x 1 lan/ngay', 'Vitamin C 1000mg', 'vien'),
+# (8, 5, 5, '1 vien sau moi lan tieu chay', 'Loperamide 2mg', 'vien'),
+# (6, 6, 5, '1 vien truoc khi ngu', 'Cetirizine 10mg', 'vien'),
+# (12, 7, 6, '1 vien/ngay trong 3 ngay', 'Azithromycin 250mg', 'vien'),
+# (14, 8, 6, '1 vien truoc bua sang', 'Omeprazole 20mg', 'vien'),
+# (10, 9, 7, '1 vien/lan x 2 lan/ngay', 'Metformin 500mg', 'vien'),
+# (4, 10, 7, '1 vien truoc khi ngu', 'Diazepam 5mg', 'vien'),
+# (14, 11, 8, '1 vien/lan x 2 lan/ngay', 'Ciprofloxacin 500mg', 'vien'),
+# (30, 12, 9, '1 vien/lan x 1 lan/ngay', 'Amlodipine 5mg', 'vien'),
+# (30, 13, 9, '1 vien/lan x 1 lan/ngay', 'Atorvastatin 20mg', 'vien'),
+# (28, 14, 10, '1 vien truoc bua an sang', 'Pantoprazole 40mg', 'vien'),
+# (60, 15, 11, '1 vien vao buoi sang khi bung doi', 'Levothyroxine 50mcg', 'vien'),
+# (2, 16, 12, 'Xit khi can', 'Salbutamol 100mcg', 'lan xit'),
+# (1, 17, 3, 'Xit moi ben mui', 'Fluticasone 50mcg', 'lan xit'),
+# (30, 18, 4, '1 vien vao buoi toi', 'Montelukast 10mg', 'vien'),
+# (30, 19, 5, '1 vien/lan x 1 lan/ngay', 'Losartan 50mg', 'vien'),
+# (30, 20, 6, '1 vien/lan x 1 lan/ngay', 'Bisoprolol 5mg', 'vien'),
+# (15, 21, 7, 'Uong theo chi dinh cua bac si', 'Furosemide 40mg', 'vien'),
+# (20, 22, 8, 'Uong theo chi dinh cua bac si', 'Warfarin 2mg', 'vien'),
+# (10, 1, 9, '1 vien/lan x 3 lan/ngay', 'Paracetamol 500mg', 'vien'),
+# (7, 2, 10, '1 vien/lan x 2 lan/ngay', 'Amoxicillin 500mg', 'vien'),
+# (12, 9, 11, '1 vien/lan x 2 lan/ngay', 'Metformin 500mg', 'vien'),
+# (5, 12, 12, '1 vien/lan x 1 lan/ngay', 'Amlodipine 5mg', 'vien'),
+# (8, 14, 3, '1 vien truoc bua an sang', 'Pantoprazole 40mg', 'vien'),
+# (4, 18, 4, '1 vien vao buoi toi', 'Montelukast 10mg', 'vien');
 
 INSERT INTO tbl_patient (id, name, date_of_birth, gender, address, phone, cccd, email, nation, career) VALUES
 (1, 'Nguyễn Thị Mai', '1995-08-12', 'FEMALE', '12 Phố Huế, Quận Hai Bà Trưng, Hà Nội', '0901112233', '001195001234', 'ntmai.95@example.com', 'Việt Nam', 'Kế toán'),

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface EncounterRepository extends JpaRepository<Encounter, Long> {
-    Optional<Encounter> findByPrescription_Id(Long prescriptionId);
+   // Optional<Encounter> findByPrescription_Id(Long prescriptionId);
     List<Encounter> findByMedicalRecord_Id(Long medicalRecordId);
 
 }

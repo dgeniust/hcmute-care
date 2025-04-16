@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import vn.edu.hcmute.utecare.util.enumeration.Gender;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -26,7 +27,7 @@ public class Patient {
 
     @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE)
-    private Date dob;
+    private LocalDate dob;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)

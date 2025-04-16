@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EncounterService {
 
-    EncounterResponse getEncounterPrescription(Long prescriptionId);
+   // EncounterResponse getEncounterPrescription(Long prescriptionId);
 
     void deleteEncounter(Long id);
 

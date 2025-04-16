@@ -1,6 +1,7 @@
 package vn.edu.hcmute.utecare.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -18,6 +19,7 @@ public interface PostMapper {
 
     PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
 
+    @Mapping(target = "staffId", source = "staff.id")
     PostResponse toResponse(Post post);
 
     Post toEntity(PostRequest request);

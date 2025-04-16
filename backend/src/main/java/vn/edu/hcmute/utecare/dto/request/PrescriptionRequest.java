@@ -16,7 +16,7 @@ public class PrescriptionRequest {
 
     @NotNull(message = "Status is required")
     @EnumValue(name = "prescriptionStatus", enumClass = PrescriptionStatus.class)
-    private PrescriptionStatus prescriptionStatus;
+    private String status;
 
     //List of prescription items request (IDs, quantity, etc.)
     @NotNull(message = "Prescription items are required")

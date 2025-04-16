@@ -10,6 +10,7 @@ import vn.edu.hcmute.utecare.dto.request.PostRequest;
 import vn.edu.hcmute.utecare.dto.request.PostImageRequest;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.PostResponse;
+import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.PostMapper;
 import vn.edu.hcmute.utecare.model.Post;
 import vn.edu.hcmute.utecare.model.PostImage;
@@ -36,7 +37,7 @@ public class PostServiceImpl implements PostService {
 
         // Set Staff
         Staff staff = staffRepository.findById(request.getStaffId())
-                .orElseThrow(() -> new RuntimeException("Staff not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Staff not found"));
         post.setStaff(staff);
 
         // Map PostImages
@@ -63,19 +64,19 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse getPostById(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
         return postMapper.toResponse(post);
     }
 
     @Override
     public PostResponse updatePost(Long id, PostRequest request) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
 
         postMapper.updateEntity(request, post);
 
         Staff staff = staffRepository.findById(request.getStaffId())
-                .orElseThrow(() -> new RuntimeException("Staff not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Staff not found"));
         post.setStaff(staff);
 
         Set<PostImage> postImages = request.getPostImages().stream()
@@ -94,7 +95,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(Long id) {
         if (!postRepository.existsById(id)) {
-            throw new RuntimeException("Post not found");
+            throw new ResourceNotFoundException("Post not found");
         }
         postRepository.deleteById(id);
     }

@@ -27,10 +27,12 @@ public class Prescription {
     @Column(name = "status")
     private PrescriptionStatus status;
 
-    @OneToOne(mappedBy = "prescription", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
+    @JoinColumn(name = "encounter_id", referencedColumnName = "id")
     private Encounter encounter;
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
     @Builder.Default
     private Set<PrescriptionItem> prescriptionItems = new HashSet<>();
+
 }

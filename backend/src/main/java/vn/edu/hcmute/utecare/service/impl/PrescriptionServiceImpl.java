@@ -27,7 +27,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     private final PrescriptionRepository prescriptionRepository;
     private final PrescriptionItemRepository prescriptionItemRepository;
-    private final PrescriptionMapper prescriptionMapper;
+    //private final PrescriptionMapper prescriptionMapper;
 
 //    @Autowired
 //    public void PrescriptionService(PrescriptionMapper prescriptionMapper) {
@@ -37,7 +37,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public PrescriptionResponse getPrescriptionById(Long id) {
         log.info("Get prescription with id {}", id);
         Prescription prescription = prescriptionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Prescription with id " + id + " not found"));
-        return prescriptionMapper.toResponse(prescription);
+        return PrescriptionMapper.INSTANCE.toResponse(prescription);
     }
 
     @Override
@@ -70,22 +70,22 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public List<PrescriptionResponse> getAllPrescriptions() {
         log.info("Get all prescription");
         List<Prescription> prescriptions = prescriptionRepository.findAll();
-        return prescriptions.stream().map(prescriptionMapper::toResponse).toList();
+        return prescriptions.stream().map(PrescriptionMapper.INSTANCE::toResponse).toList();
     }
 
     @Override
     public PrescriptionResponse addPrescription(PrescriptionRequest request) {
         log.info("Create a new prescription");
-        Prescription prescription = prescriptionMapper.toEntity(request);
-        return prescriptionMapper.toResponse(prescriptionRepository.save(prescription));
+        Prescription prescription = PrescriptionMapper.INSTANCE.toEntity(request);
+        return PrescriptionMapper.INSTANCE.toResponse(prescriptionRepository.save(prescription));
     }
 
     @Override
     public PrescriptionResponse updatePrescription(Long id, PrescriptionRequest request) {
         log.info("Update prescription with id {}, request {}", id, request);
         Prescription prescription = prescriptionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Prescription with id " + id + " not found"));
-        prescriptionMapper.update(request, prescription);
+        PrescriptionMapper.INSTANCE.update(request, prescription);
         Prescription updatedPrescription = prescriptionRepository.save(prescription);
-        return prescriptionMapper.toResponse(updatedPrescription);
+        return PrescriptionMapper.INSTANCE.toResponse(updatedPrescription);
     }
 }

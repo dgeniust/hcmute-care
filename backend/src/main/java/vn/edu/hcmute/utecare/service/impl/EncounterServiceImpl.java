@@ -19,13 +19,13 @@ import java.util.List;
 @Slf4j
 public class EncounterServiceImpl implements EncounterService {
     private final EncounterRepository encounterRepository;
-    @Override
-    public EncounterResponse getEncounterPrescription(Long prescriptionId) {
-        log.info("Get encounter prescription with request {}", prescriptionId);
-        Encounter encounter = encounterRepository.findByPrescription_Id(prescriptionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Prescription id " + prescriptionId +" not found"));
-        return EncounterMapper.INSTANCE.toResponse(encounter);
-    }
+//    @Override
+//    public EncounterResponse getEncounterPrescription(Long prescriptionId) {
+//        log.info("Get encounter prescription with request {}", prescriptionId);
+//        Encounter encounter = encounterRepository.findByPrescription_Id(prescriptionId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Prescription id " + prescriptionId +" not found"));
+//        return EncounterMapper.INSTANCE.toResponse(encounter);
+//    }
 
     @Transactional(rollbackOn = Exception.class)
     @Override

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "tbl_encounter")
@@ -29,9 +30,8 @@ public class Encounter {
     @Column(name = "notes")
     private String notes;
 
-    @OneToOne
-    @JoinColumn(name = "prescription_id", referencedColumnName = "id")
-    private Prescription prescription;
+    @OneToMany(mappedBy = "encounter")
+    private Set<Prescription> prescriptions;
 
     @ManyToOne
     @JoinColumn(name = "medical_record_id", referencedColumnName = "id")

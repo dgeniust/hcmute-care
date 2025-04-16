@@ -2,8 +2,11 @@ package vn.edu.hcmute.utecare.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import vn.edu.hcmute.utecare.util.enumeration.Gender;
+import vn.edu.hcmute.utecare.util.validator.PhoneNumber;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -19,15 +22,15 @@ public class PatientRequest {
     private String cccd;
 
     @NotNull(message = "Date of birth is required")
-    @Past(message = "Date of birth must be in the past")
-    private Date dob;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dob;
 
     @NotNull(message = "Gender is required")
     private Gender gender;
 
     private String address;
 
-    @Pattern(regexp = "^\\d{10}$", message = "Phone must be 10 digits")
+    @PhoneNumber(message = "Invalid phone number format")
     private String phone;
 
     @Email(message = "Invalid email format")
