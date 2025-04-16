@@ -177,7 +177,7 @@ create table tbl_appointment
     id                 bigint auto_increment
         primary key,
     medical_record_id  bigint                                      null,
-    status             enum ('CANCELLED', 'COMPLETE', 'CONFIRMED') null,
+    status             enum ('CANCELLED', 'COMPLETE', 'CONFIRMED', 'PENDING', 'PAID') null,
     constraint FKdy5brsoiwlcvr5cosj4c4y8pm
         foreign key (medical_record_id) references tbl_medical_record (id),
     constraint FKogy0vgymnmgjy4m12oj9wnoky

@@ -7,7 +7,7 @@ import vn.edu.hcmute.utecare.dto.request.MedicalRecordRequest;
 import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
 import vn.edu.hcmute.utecare.model.MedicalRecord;
 
-@Mapper(componentModel = "spring", uses = {PatientMapper.class})
+@Mapper(componentModel = "spring", imports = {PatientMapper.class})
 public interface MedicalRecordMapper {
     @Mapping(target = "patientId", source = "patient.id")
     @Mapping(target = "customerId", source = "customer.id")
