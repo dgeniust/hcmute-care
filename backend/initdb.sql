@@ -1,3 +1,4 @@
+
 create table tbl_medical_specialty
 (
     id    int auto_increment
@@ -151,6 +152,105 @@ create table tbl_encounter
         foreign key (medical_record_id) references tbl_medical_record (id)
 );
 
+create table tbl_medical_test
+(
+    encounter_id bigint       not null,
+    id           bigint auto_increment
+        primary key,
+    evaluate     varchar(255) null,
+    notes        varchar(255) null,
+    constraint FK7xkfdl55rhuc65a7i1ke4yvbq
+        foreign key (encounter_id) references tbl_encounter (id)
+);
+
+create table tbl_functional_tests
+(
+    is_invasive     bit          null,
+    is_quantitative bit          null,
+    record_duration int          null,
+    id              bigint       not null
+        primary key,
+    organ_system    varchar(255) null,
+    test_name       varchar(255) null,
+    constraint FKidnbqi1mi7orykdvssaoy3po5
+        foreign key (id) references tbl_medical_test (id)
+);
+
+create table tbl_cardiac_test
+(
+    id    bigint                                      not null
+        primary key,
+    image varchar(255)                                null,
+    type  enum ('ECG', 'HolterMonitor', 'StressTest') null,
+    constraint FKb78iwlk2507w08vmsh1r1vtna
+        foreign key (id) references tbl_functional_tests (id)
+);
+
+create table tbl_digestive_tests
+(
+    duration int          null,
+    id       bigint       not null
+        primary key,
+    image    varchar(255) null,
+    constraint FKtq0k3y10uyf3pjwguf90pwb7a
+        foreign key (id) references tbl_functional_tests (id)
+);
+
+create table tbl_imaging_test
+(
+    id         bigint       not null
+        primary key,
+    pdf_result varchar(255) null,
+    constraint FK4emm9irvq5viofm93yf8bl75g
+        foreign key (id) references tbl_medical_test (id)
+);
+
+create table tbl_laboratory_test
+(
+    gra  float  null,
+    hct  float  null,
+    hgb  float  null,
+    lym  float  null,
+    mch  float  null,
+    mcv  float  null,
+    momo float  null,
+    plt  float  null,
+    rbc  float  null,
+    wbc  float  null,
+    id   bigint not null
+        primary key,
+    constraint FKjn23hbr33rdeeb5u3159w7q20
+        foreign key (id) references tbl_medical_test (id)
+);
+
+create table tbl_neuro_test
+(
+    id    bigint       not null
+        primary key,
+    image varchar(255) null,
+    constraint FKte68av9wnbuqa55oqxf1olvsn
+        foreign key (id) references tbl_functional_tests (id)
+);
+
+create table tbl_eeg
+(
+    channels        int    null,
+    detects_seizure bit    null,
+    id              bigint not null
+        primary key,
+    constraint FKcno51xe1yh6e33pfr4dqde3fu
+        foreign key (id) references tbl_neuro_test (id)
+);
+
+create table tbl_emg
+(
+    id           bigint       not null
+        primary key,
+    muscle_group varchar(255) null,
+    constraint FKkp2v0g0hg7g6ab5xpewk9vffh
+        foreign key (id) references tbl_neuro_test (id)
+);
+
 create table tbl_nurse
 (
     id            bigint       not null
@@ -203,6 +303,37 @@ create table tbl_prescription_item
         foreign key (medicine_id) references tbl_medicine (id)
 );
 
+create table tbl_respiratory_test
+(
+    id               bigint       not null
+        primary key,
+    patient_position varchar(255) null,
+    test_environment varchar(255) null,
+    constraint FKe7x4utgcksjmoeblegngau1uy
+        foreign key (id) references tbl_functional_tests (id)
+);
+
+create table tbl_blood_gas_analysis
+(
+    pco2 float  null,
+    ph   float  null,
+    po2  float  null,
+    id   bigint not null
+        primary key,
+    constraint FKl2e1x2t55te4yc7j1xt2cc0na
+        foreign key (id) references tbl_respiratory_test (id)
+);
+
+create table tbl_nerve_conduction
+(
+    conduction_speed float        null,
+    id               bigint       not null
+        primary key,
+    nerve            varchar(255) null,
+    constraint FK5k25s9imkjr5osx822abmmgqq
+        foreign key (id) references tbl_respiratory_test (id)
+);
+
 create table tbl_schedule
 (
     booked_slots   int    null,
@@ -238,6 +369,16 @@ create table tbl_appointment_schedule
         foreign key (schedule_id) references tbl_schedule (id)
 );
 
+create table tbl_spirometry
+(
+    fevl float  null,
+    fvc  float  null,
+    id   bigint not null
+        primary key,
+    constraint FK52hxqpfuty6m6sh800mbd9wfa
+        foreign key (id) references tbl_respiratory_test (id)
+);
+
 create table tbl_staff
 (
     id         bigint                                  not null
@@ -268,6 +409,9 @@ create table tbl_post_image
     constraint FKgu0k1ycm57rgt76r10atw8f8i
         foreign key (post_id) references tbl_post (id)
 );
+
+
+
 
 ALTER TABLE tbl_schedule
 ADD CONSTRAINT chk_doctor_schedule_slots CHECK (booked_slots <= max_slots);
