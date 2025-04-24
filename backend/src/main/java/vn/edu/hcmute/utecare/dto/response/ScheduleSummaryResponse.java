@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Builder
-public class DoctorScheduleSummaryResponse {
+public class ScheduleSummaryResponse {
     private Long id;
 
     private String doctorName;

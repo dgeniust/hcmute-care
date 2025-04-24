@@ -6,6 +6,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import vn.edu.hcmute.utecare.dto.request.MedicalRecordRequest;
+import vn.edu.hcmute.utecare.dto.response.MedicalRecordInfoResponse;
 import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
 import vn.edu.hcmute.utecare.model.MedicalRecord;
 
@@ -19,4 +20,11 @@ public interface MedicalRecordMapper {
 
     @Mapping(target = "customer.id", source = "customerId")
     MedicalRecord toEntity(MedicalRecordRequest request);
+
+    @Mapping(target = "patientId", source = "patient.id")
+    @Mapping(target = "patientName", source = "patient.name")
+    @Mapping(target = "dob", source = "patient.dob")
+    @Mapping(target = "gender", source = "patient.gender")
+    @Mapping(target = "phone", source = "patient.phone")
+    MedicalRecordInfoResponse toInfoResponse(MedicalRecord medicalRecord);
 }

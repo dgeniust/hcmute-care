@@ -1,6 +1,5 @@
 package vn.edu.hcmute.utecare.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +11,7 @@ import java.time.LocalDate;
 
 @Getter
 @ValidSlots
-public class DoctorScheduleRequest {
+public class ScheduleRequest {
     @NotNull(message = "doctorId must not be null")
     private Long doctorId;
 

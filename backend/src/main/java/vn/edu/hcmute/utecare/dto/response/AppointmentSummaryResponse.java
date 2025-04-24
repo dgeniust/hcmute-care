@@ -1,22 +1,26 @@
 package vn.edu.hcmute.utecare.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import vn.edu.hcmute.utecare.util.enumeration.AppointmentStatus;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
 @Setter
-public class AppointmentDetailResponse {
+@Builder
+public class AppointmentSummaryResponse {
     private Long id;
-
-    private List<AppointmentScheduleResponse> schedules;
-
-    private MedicalRecordInfoResponse medicalRecord;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private PatientInfoResponse patient;
+
+    private List<AppointmentScheduleInfoResponse> schedules;
 }

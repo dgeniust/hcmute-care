@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-public class DoctorScheduleResponse {
+public class ScheduleResponse {
     private Long id;
 
     private DoctorInfoResponse doctor;

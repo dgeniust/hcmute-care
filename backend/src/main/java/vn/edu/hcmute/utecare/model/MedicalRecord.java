@@ -27,8 +27,7 @@ public class MedicalRecord {
     @OneToMany(mappedBy = "medicalRecord")
     private Set<Encounter> encounters;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
-
 }

@@ -27,5 +27,5 @@ public class Doctor extends User {
 
     @OneToMany(mappedBy = "doctor")
     @Builder.Default
-    private Set<DoctorSchedule> doctorSchedules = new HashSet<>();
+    private Set<Schedule> schedules = new HashSet<>();
 }
