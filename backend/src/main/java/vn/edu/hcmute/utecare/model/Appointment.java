@@ -26,7 +26,7 @@ public class Appointment {
     private MedicalRecord medicalRecord;
 
     @OneToMany(mappedBy = "appointment")
-    private List<AppointmentSchedule> appointmentSchedules;
+    private List<AppointmentSchedule> schedules;
 
     @Column(name = "created_at")
     @CreationTimestamp
