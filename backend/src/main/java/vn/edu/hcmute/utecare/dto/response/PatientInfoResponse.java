@@ -8,16 +8,12 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class DoctorInfoResponse {
+public class PatientInfoResponse {
     private Long id;
 
-    private String fullName;
+    private String name;
+
+    private LocalDate dob;
 
     private Gender gender;
-
-    private String position;
-
-    private String qualification;
-
-    private String medicalSpecialtyName;
 }

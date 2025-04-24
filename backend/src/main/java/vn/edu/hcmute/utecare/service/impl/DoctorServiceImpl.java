@@ -7,23 +7,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vn.edu.hcmute.utecare.dto.request.DoctorCreationRequest;
 import vn.edu.hcmute.utecare.dto.request.DoctorRequest;
 import vn.edu.hcmute.utecare.dto.response.DoctorResponse;
-import vn.edu.hcmute.utecare.dto.response.DoctorScheduleResponse;
-import vn.edu.hcmute.utecare.dto.response.DoctorScheduleSummaryResponse;
+import vn.edu.hcmute.utecare.dto.response.ScheduleSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
-import vn.edu.hcmute.utecare.mapper.AccountMapper;
 import vn.edu.hcmute.utecare.mapper.DoctorMapper;
-import vn.edu.hcmute.utecare.mapper.DoctorScheduleMapper;
+import vn.edu.hcmute.utecare.mapper.ScheduleMapper;
 import vn.edu.hcmute.utecare.model.Account;
 import vn.edu.hcmute.utecare.model.Doctor;
-import vn.edu.hcmute.utecare.model.DoctorSchedule;
+import vn.edu.hcmute.utecare.model.Schedule;
 import vn.edu.hcmute.utecare.model.MedicalSpecialty;
 import vn.edu.hcmute.utecare.repository.AccountRepository;
 import vn.edu.hcmute.utecare.repository.DoctorRepository;
-import vn.edu.hcmute.utecare.repository.DoctorScheduleRepository;
+import vn.edu.hcmute.utecare.repository.ScheduleRepository;
 import vn.edu.hcmute.utecare.repository.MedicalSpecialtyRepository;
 import vn.edu.hcmute.utecare.service.DoctorService;
 import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
@@ -39,7 +36,7 @@ public class DoctorServiceImpl implements DoctorService {
     private final AccountRepository accountRepository;
     private final DoctorRepository doctorRepository;
     private final MedicalSpecialtyRepository medicalSpecialtyRepository;
-    private final DoctorScheduleRepository doctorScheduleRepository;
+    private final ScheduleRepository scheduleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -141,7 +138,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public PageResponse<DoctorScheduleSummaryResponse> getDoctorAvailability(Long doctorId, LocalDate date, int page, int size, String sort, String direction) {
+    public PageResponse<ScheduleSummaryResponse> getDoctorAvailability(Long doctorId, LocalDate date, int page, int size, String sort, String direction) {
         log.info("Retrieving doctor availability with doctorId: {}, date: {}, page={}, size={}, sort={}, direction={}",
                 doctorId, date, page, size, sort, direction);
 
@@ -153,14 +150,14 @@ public class DoctorServiceImpl implements DoctorService {
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         // Gọi repository để lấy các lịch trình còn trống
-        Page<DoctorSchedule> schedulePage = doctorScheduleRepository.findAvailableSchedules(doctorId, date, pageable);
+        Page<Schedule> schedulePage = scheduleRepository.findAvailableSchedules(doctorId, date, pageable);
 
-        return PageResponse.<DoctorScheduleSummaryResponse>builder()
+        return PageResponse.<ScheduleSummaryResponse>builder()
                 .currentPage(page)
                 .pageSize(size)
                 .totalPages(schedulePage.getTotalPages())
                 .totalElements(schedulePage.getTotalElements())
-                .content(schedulePage.getContent().stream().map(DoctorScheduleMapper.INSTANCE::toSummaryResponse).toList())
+                .content(schedulePage.getContent().stream().map(ScheduleMapper.INSTANCE::toSummaryResponse).toList())
                 .build();
     }
 }

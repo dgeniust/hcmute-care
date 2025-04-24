@@ -3,10 +3,10 @@ package vn.edu.hcmute.utecare.util.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import vn.edu.hcmute.utecare.dto.request.DoctorScheduleRequest; // Import DTO cần validate
+import vn.edu.hcmute.utecare.dto.request.ScheduleRequest; // Import DTO cần validate
 
 
-public class ValidSlotsValidator implements ConstraintValidator<ValidSlots, DoctorScheduleRequest> {
+public class ValidSlotsValidator implements ConstraintValidator<ValidSlots, ScheduleRequest> {
 
     @Override
     public void initialize(ValidSlots constraintAnnotation) {
@@ -14,7 +14,7 @@ public class ValidSlotsValidator implements ConstraintValidator<ValidSlots, Doct
     }
 
     @Override
-    public boolean isValid(DoctorScheduleRequest request, ConstraintValidatorContext context) {
+    public boolean isValid(ScheduleRequest request, ConstraintValidatorContext context) {
         if (request.getMaxSlots() == null || request.getBookedSlots() == null) {
             return true;
         }
