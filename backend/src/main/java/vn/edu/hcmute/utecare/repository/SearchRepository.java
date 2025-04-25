@@ -49,18 +49,17 @@ public class SearchRepository {
             for (String a : appointment) {
                 Matcher matcher = pattern.matcher(a);
                 if (matcher.find()) {
-                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(4));
+                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3));
                     appointmentPredicates.add(toAppointmentPredicate(appointmentRoot, builder, criteria));
                 }
             }
         }
 
-        // Process medical record criteria
         if (medicalRecord != null) {
             for (String m : medicalRecord) {
                 Matcher matcher = pattern.matcher(m);
                 if (matcher.find()) {
-                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(4));
+                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3));
                     medicalRecordPredicates.add(toMedicalRecordPredicate(medicalRecordJoin, builder, criteria));
                 }
             }
@@ -71,7 +70,7 @@ public class SearchRepository {
             for (String p : patient) {
                 Matcher matcher = pattern.matcher(p);
                 if (matcher.find()) {
-                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(4));
+                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3));
                     patientPredicates.add(toPatientPredicate(patientJoin, builder, criteria));
                 }
             }
@@ -146,7 +145,7 @@ public class SearchRepository {
             for (String a : appointment) {
                 Matcher matcher = pattern.matcher(a);
                 if (matcher.find()) {
-                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(4));
+                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3));
                     appointmentPredicates.add(toAppointmentPredicate(appointmentRoot, builder, criteria));
                 }
             }
@@ -156,7 +155,7 @@ public class SearchRepository {
             for (String m : medicalRecord) {
                 Matcher matcher = pattern.matcher(m);
                 if (matcher.find()) {
-                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(4));
+                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3));
                     medicalRecordPredicates.add(toMedicalRecordPredicate(medicalRecordJoin, builder, criteria));
                 }
             }
@@ -166,7 +165,7 @@ public class SearchRepository {
             for (String p : patient) {
                 Matcher matcher = pattern.matcher(p);
                 if (matcher.find()) {
-                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(4));
+                    SearchCriteria criteria = new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3));
                     patientPredicates.add(toPatientPredicate(patientJoin, builder, criteria));
                 }
             }

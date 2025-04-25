@@ -16,7 +16,7 @@ public class AppointmentSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Appointment appointment;
 

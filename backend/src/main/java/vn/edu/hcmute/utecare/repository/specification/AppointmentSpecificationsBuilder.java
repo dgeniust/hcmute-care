@@ -30,7 +30,7 @@ public class AppointmentSpecificationsBuilder {
         Pattern pattern = Pattern.compile(SEARCH_SPEC_OPERATOR);
         Matcher matcher = pattern.matcher(search);
         if (matcher.find()) {
-            with(matcher.group(1), matcher.group(2), matcher.group(4));
+            with(matcher.group(1), matcher.group(2), matcher.group(3));
         }
         return this;
     }

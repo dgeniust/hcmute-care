@@ -32,4 +32,21 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long>,
             @Param("endDate") LocalDate endDate,
             Pageable pageable
     );
+
+    @Query("SELECT DISTINCT a FROM Appointment a " +
+            "LEFT JOIN FETCH a.medicalRecord mr " +
+            "LEFT JOIN FETCH mr.patient p " +
+            "LEFT JOIN FETCH a.schedules asch " +
+            "LEFT JOIN FETCH asch.schedule s " +
+            "LEFT JOIN FETCH s.doctor d " +
+            "LEFT JOIN FETCH d.medicalSpecialty ms " +
+            "LEFT JOIN FETCH s.roomDetail rd " +
+            "LEFT JOIN FETCH s.timeSlot ts " +
+            "WHERE (a.medicalRecord = :medicalRecord)")
+    Page<Appointment> findAppointmentsWithDetails(
+            @Param("medicalRecord") MedicalRecord medicalRecord,
+            Pageable pageable
+    );
+
+
 }
