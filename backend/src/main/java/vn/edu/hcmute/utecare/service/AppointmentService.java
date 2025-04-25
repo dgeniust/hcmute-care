@@ -1,5 +1,6 @@
 package vn.edu.hcmute.utecare.service;
 
+import org.springframework.data.domain.Pageable;
 import vn.edu.hcmute.utecare.dto.request.CreateAppointmentRequest;
 import vn.edu.hcmute.utecare.dto.response.AppointmentDetailResponse;
 import vn.edu.hcmute.utecare.dto.response.AppointmentSummaryResponse;
@@ -15,5 +16,5 @@ public interface AppointmentService {
 
     PageResponse<AppointmentSummaryResponse> getAllAppointments(int page, int size, String sort, String direction, LocalDate startDate, LocalDate endDate);
 
-    PageResponse<AppointmentSummaryResponse> getAllAppointments(int pageNo, int size, String search[], String sortBy);
+    PageResponse<AppointmentSummaryResponse> getAllAppointments(Pageable pageable, String[] appointment, String[] medicalRecord, String[] patient);
 }
