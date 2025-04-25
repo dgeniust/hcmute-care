@@ -257,7 +257,7 @@ create table tbl_post_image
         foreign key (post_id) references tbl_post (id)
 );
 
-ALTER TABLE tbl_doctor_schedule
+    ALTER TABLE tbl_doctor_schedule
     ADD CONSTRAINT chk_doctor_schedule_slots CHECK (booked_slots <= max_slots);
 
 -- Modified INSERT statements for tbl_time_slot with explicit IDs
@@ -513,8 +513,6 @@ INSERT INTO tbl_account (user_id, password, role, status) VALUES
 (1136, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1137, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1138, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1139, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1140, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'),
 (1141, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1142, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1143, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1144, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1145, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'),
 (1146, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1147, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1148, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1149, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE'), (1150, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'CUSTOMER', 'ACTIVE');
-
-
 
 -- === Specialty: Khám tổng quát (ID: 1) ===
 INSERT INTO tbl_user (id, date_of_birth, address, email, full_name, nation, phone, gender) VALUES
@@ -1414,3 +1412,27 @@ INSERT INTO tbl_medical_record (customer_id, patient_id, barcode) VALUES
 (1019, 19, 'MR000019ZAB'), -- Bệnh nhân 19 được đăng ký bởi Khách hàng 1019
 (1020, 20, 'MR000020CDE'); -- Bệnh nhân 20 được đăng ký bởi Khách hàng 1020
 
+INSERT INTO tbl_post (date_of_create, staff_id, content, header)
+VALUES
+(DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY), 2252, 'Exploring the power of AI in daily work.', 'AI and Work'),
+(DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY), 2252, 'Team collaboration has improved significantly.', 'Better Collaboration'),
+(DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY), 2252, 'Successfully deployed the new microservice architecture.', 'Microservices Success'),
+(DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY), 2252, 'Training sessions on new tools are helpful.', 'Training Recap'),
+(DATE_SUB(CURDATE(), INTERVAL FLOOR(RAND() * 365) DAY), 2252, 'Looking forward to the upcoming project launch.', 'Project Launch Insights');
+
+INSERT INTO tbl_post_image (post_id, image_url) VALUES
+(11, 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400726/muscle/eq7mhtyswgnswnuxyc33.jpg'),
+(11, 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400726/muscle/gtvlwti1idpdbgilfobn.jpg'),
+(7, 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400726/muscle/eq7mhtyswgnswnuxyc33.jpg'),
+(8, 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400726/muscle/gtvlwti1idpdbgilfobn.jpg'),
+(9, 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400726/muscle/eq7mhtyswgnswnuxyc33.jpg'),
+(11, 'https://res.cloudinary.com/dujzjcmai/image/upload/v1742400726/muscle/gtvlwti1idpdbgilfobn.jpg');
+
+
+INSERT INTO tbl_user (id, date_of_birth, address, email, full_name, nation, phone, gender) VALUES
+    (2252, '2004-01-01', 'Đăng Văn Bi', 'bldq@gmail.com', 'Bùi Lê Đông Quân', 'Việt Nam', '0997788665', 'MALE');
+
+INSERT INTO tbl_account (user_id, password, role, status) VALUES
+    (2252, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'STAFF', 'ACTIVE');
+
+INSERT INTO tbl_staff (staff_role, id) VALUES (2, 2251);

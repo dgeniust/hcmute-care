@@ -85,7 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Account account = accountRepository.findByUser_Phone(phone).orElseThrow(() -> new AccessDeniedException("Account not found"));
 
         String storedRefreshToken = (String) redisService.get("refresh:" + account.getUser().getPhone());
-        if (storedRefreshToken == null || !storedRefreshToken.equals(request.getRefreshToken())) {
+        if (storedRefreshToken != null && storedRefreshToken.equals(request.getRefreshToken())) {
             throw new AccessDeniedException("Invalid or revoked refresh token");
         }
 
