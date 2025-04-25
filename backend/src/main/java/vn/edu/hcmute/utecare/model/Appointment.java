@@ -2,7 +2,12 @@ package vn.edu.hcmute.utecare.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import vn.edu.hcmute.utecare.util.enumeration.AppointmentStatus;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_appointment")
@@ -20,15 +25,14 @@ public class Appointment {
     @JoinColumn(name = "medical_record_id", referencedColumnName = "id")
     private MedicalRecord medicalRecord;
 
-    @ManyToOne
-    @JoinColumn(name = "doctor_schedule_id", referencedColumnName = "id")
-    private DoctorSchedule doctorSchedule;
+    @OneToMany(mappedBy = "appointment")
+    private List<AppointmentSchedule> schedules;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private AppointmentStatus status;
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    @Column(name = "waiting_number")
-    private Integer waitingNumber;
-
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

@@ -20,6 +20,7 @@ public interface DoctorMapper {
 
     DoctorResponse toResponse(Doctor doctor);
 
+    @Mapping(target = "medicalSpecialtyName", source = "medicalSpecialty.name")
     DoctorInfoResponse toInfoResponse(Doctor doctor);
 
     void updateEntity(DoctorRequest request,@MappingTarget Doctor doctor);

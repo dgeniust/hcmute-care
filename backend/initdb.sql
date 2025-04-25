@@ -1,3 +1,4 @@
+
 create table tbl_medical_specialty
 (
     id    int auto_increment
@@ -110,24 +111,6 @@ create table tbl_doctor
         foreign key (medical_specialty_id) references tbl_medical_specialty (id)
 );
 
-create table tbl_doctor_schedule
-(
-    booked_slots   int    null,
-    date           date   null,
-    max_slots      int    null,
-    room_detail_id int    null,
-    time_slot_id   int    null,
-    doctor_id      bigint null,
-    id             bigint auto_increment
-        primary key,
-    constraint FKhhnbh9rpr4fhep2i6cevnk4h5
-        foreign key (time_slot_id) references tbl_time_slot (id),
-    constraint FKs20axpfsoqt7q2rnmuedqepfd
-        foreign key (room_detail_id) references tbl_room_detail (id),
-    constraint FKtljixsf3pq4w2ml1y0ndpq66q
-        foreign key (doctor_id) references tbl_doctor (id)
-);
-
 create table tbl_medical_record
 (
     customer_id bigint       null,
@@ -147,16 +130,13 @@ create table tbl_medical_record
 
 create table tbl_appointment
 (
-    waiting_number     int                                                            null,
-    doctor_schedule_id bigint                                                         null,
-    id                 bigint auto_increment
+    created_at        datetime(6) null,
+    id                bigint auto_increment
         primary key,
-    medical_record_id  bigint                                                         null,
-    status             enum ('CANCELLED', 'COMPLETE', 'CONFIRMED', 'PAID', 'PENDING') null,
+    medical_record_id bigint      null,
+    updated_at        datetime(6) null,
     constraint FKdy5brsoiwlcvr5cosj4c4y8pm
-        foreign key (medical_record_id) references tbl_medical_record (id),
-    constraint FKogy0vgymnmgjy4m12oj9wnoky
-        foreign key (doctor_schedule_id) references tbl_doctor_schedule (id)
+        foreign key (medical_record_id) references tbl_medical_record (id)
 );
 
 create table tbl_encounter
@@ -172,6 +152,105 @@ create table tbl_encounter
         foreign key (medical_record_id) references tbl_medical_record (id)
 );
 
+create table tbl_medical_test
+(
+    encounter_id bigint       not null,
+    id           bigint auto_increment
+        primary key,
+    evaluate     varchar(255) null,
+    notes        varchar(255) null,
+    constraint FK7xkfdl55rhuc65a7i1ke4yvbq
+        foreign key (encounter_id) references tbl_encounter (id)
+);
+
+create table tbl_functional_tests
+(
+    is_invasive     bit          null,
+    is_quantitative bit          null,
+    record_duration int          null,
+    id              bigint       not null
+        primary key,
+    organ_system    varchar(255) null,
+    test_name       varchar(255) null,
+    constraint FKidnbqi1mi7orykdvssaoy3po5
+        foreign key (id) references tbl_medical_test (id)
+);
+
+create table tbl_cardiac_test
+(
+    id    bigint                                      not null
+        primary key,
+    image varchar(255)                                null,
+    type  enum ('ECG', 'HolterMonitor', 'StressTest') null,
+    constraint FKb78iwlk2507w08vmsh1r1vtna
+        foreign key (id) references tbl_functional_tests (id)
+);
+
+create table tbl_digestive_tests
+(
+    duration int          null,
+    id       bigint       not null
+        primary key,
+    image    varchar(255) null,
+    constraint FKtq0k3y10uyf3pjwguf90pwb7a
+        foreign key (id) references tbl_functional_tests (id)
+);
+
+create table tbl_imaging_test
+(
+    id         bigint       not null
+        primary key,
+    pdf_result varchar(255) null,
+    constraint FK4emm9irvq5viofm93yf8bl75g
+        foreign key (id) references tbl_medical_test (id)
+);
+
+create table tbl_laboratory_test
+(
+    gra  float  null,
+    hct  float  null,
+    hgb  float  null,
+    lym  float  null,
+    mch  float  null,
+    mcv  float  null,
+    momo float  null,
+    plt  float  null,
+    rbc  float  null,
+    wbc  float  null,
+    id   bigint not null
+        primary key,
+    constraint FKjn23hbr33rdeeb5u3159w7q20
+        foreign key (id) references tbl_medical_test (id)
+);
+
+create table tbl_neuro_test
+(
+    id    bigint       not null
+        primary key,
+    image varchar(255) null,
+    constraint FKte68av9wnbuqa55oqxf1olvsn
+        foreign key (id) references tbl_functional_tests (id)
+);
+
+create table tbl_eeg
+(
+    channels        int    null,
+    detects_seizure bit    null,
+    id              bigint not null
+        primary key,
+    constraint FKcno51xe1yh6e33pfr4dqde3fu
+        foreign key (id) references tbl_neuro_test (id)
+);
+
+create table tbl_emg
+(
+    id           bigint       not null
+        primary key,
+    muscle_group varchar(255) null,
+    constraint FKkp2v0g0hg7g6ab5xpewk9vffh
+        foreign key (id) references tbl_neuro_test (id)
+);
+
 create table tbl_nurse
 (
     id            bigint       not null
@@ -184,31 +263,29 @@ create table tbl_nurse
 
 create table tbl_payment
 (
-    amount         decimal(10, 2)         null,
-    payment_status tinyint                null,
-    appointment_id bigint                 null,
+    amount         decimal(10, 2)                                                   null,
+    appointment_id bigint                                                           null,
     id             bigint auto_increment
         primary key,
-    payment_date   datetime(6)            null,
-    transaction_id varchar(255)           null,
-    payment_method enum ('MOMO', 'VNPAY') null,
+    payment_date   datetime(6)                                                      null,
+    transaction_id varchar(255)                                                     null,
+    payment_method enum ('MOMO', 'VNPAY')                                           null,
+    payment_status enum ('CANCELLED', 'COMPLETED', 'FAILED', 'PENDING', 'REFUNDED') null,
     constraint UKe9b0fsqkh2871s1f2idv7jkue
         unique (appointment_id),
     constraint FKhf5omma6r24fh55aexb10s3yq
-        foreign key (appointment_id) references tbl_appointment (id),
-    check (`payment_status` between 0 and 4)
+        foreign key (appointment_id) references tbl_appointment (id)
 );
 
 create table tbl_prescription
 (
-    status       tinyint     null,
-    encounter_id bigint      null,
+    encounter_id bigint                                    null,
     id           bigint auto_increment
         primary key,
-    issue_date   datetime(6) not null,
+    issue_date   datetime(6)                               not null,
+    status       enum ('CANCELLED', 'PENDING', 'RECEIVED') null,
     constraint FKr5prfsfs4y65t9wsbuxcy1bn2
-        foreign key (encounter_id) references tbl_encounter (id),
-    check (`status` between 0 and 2)
+        foreign key (encounter_id) references tbl_encounter (id)
 );
 
 create table tbl_prescription_item
@@ -224,6 +301,82 @@ create table tbl_prescription_item
         foreign key (prescription_id) references tbl_prescription (id),
     constraint FKhxus9135s3539xayk7aqko7wr
         foreign key (medicine_id) references tbl_medicine (id)
+);
+
+create table tbl_respiratory_test
+(
+    id               bigint       not null
+        primary key,
+    patient_position varchar(255) null,
+    test_environment varchar(255) null,
+    constraint FKe7x4utgcksjmoeblegngau1uy
+        foreign key (id) references tbl_functional_tests (id)
+);
+
+create table tbl_blood_gas_analysis
+(
+    pco2 float  null,
+    ph   float  null,
+    po2  float  null,
+    id   bigint not null
+        primary key,
+    constraint FKl2e1x2t55te4yc7j1xt2cc0na
+        foreign key (id) references tbl_respiratory_test (id)
+);
+
+create table tbl_nerve_conduction
+(
+    conduction_speed float        null,
+    id               bigint       not null
+        primary key,
+    nerve            varchar(255) null,
+    constraint FK5k25s9imkjr5osx822abmmgqq
+        foreign key (id) references tbl_respiratory_test (id)
+);
+
+create table tbl_schedule
+(
+    booked_slots   int    null,
+    date           date   null,
+    max_slots      int    null,
+    room_detail_id int    null,
+    time_slot_id   int    null,
+    doctor_id      bigint null,
+    id             bigint auto_increment
+        primary key,
+    constraint FK55yk8g8j89o9ackfn8d81km4p
+        foreign key (room_detail_id) references tbl_room_detail (id),
+    constraint FKh07cf18sxludbts9gvtbo7h8r
+        foreign key (doctor_id) references tbl_doctor (id),
+    constraint FKppdwm593xypuhcjmd21pl2nnt
+        foreign key (time_slot_id) references tbl_time_slot (id)
+);
+
+create table tbl_appointment_schedule
+(
+    waiting_number int                                                            null,
+    appointment_id bigint                                                         null,
+    id             bigint auto_increment
+        primary key,
+    schedule_id    bigint                                                         null,
+    ticket_code    varchar(255)                                                   null,
+    status         enum ('CANCELLED', 'COMPLETE', 'CONFIRMED', 'PAID', 'PENDING') null,
+    constraint UKmlqgrayuwg4ixbicgn71imy31
+        unique (ticket_code),
+    constraint FK4jldfjsyb8yov62w0cck4d8p1
+        foreign key (appointment_id) references tbl_appointment (id),
+    constraint FKlyy01ep3e929srfmklxp6gmk6
+        foreign key (schedule_id) references tbl_schedule (id)
+);
+
+create table tbl_spirometry
+(
+    fevl float  null,
+    fvc  float  null,
+    id   bigint not null
+        primary key,
+    constraint FK52hxqpfuty6m6sh800mbd9wfa
+        foreign key (id) references tbl_respiratory_test (id)
 );
 
 create table tbl_staff
@@ -260,9 +413,14 @@ create table tbl_post_image
     ALTER TABLE tbl_doctor_schedule
     ADD CONSTRAINT chk_doctor_schedule_slots CHECK (booked_slots <= max_slots);
 
+
+
+ALTER TABLE tbl_schedule
+ADD CONSTRAINT chk_doctor_schedule_slots CHECK (booked_slots <= max_slots);
+
+
 -- Modified INSERT statements for tbl_time_slot with explicit IDs
 INSERT INTO tbl_time_slot (id, start_time, end_time) VALUES
- -- a
 (1, '06:00:00', '07:00:00'), -- Buổi sáng
 (2, '07:00:00', '08:00:00'),
 (3, '08:00:00', '09:00:00'),
@@ -1264,40 +1422,40 @@ INSERT INTO tbl_room_detail (id, floor, building, name) VALUES
 (279, 0, 'Khu CLS', 'Phòng CLSG11 - Phòng Chờ Khu CLS'),
 (280, 0, 'Khu CLS', 'Phòng CLSG12 - Nhà thuốc Bệnh viện');
 
-INSERT INTO tbl_doctor_schedule (doctor_id, date, time_slot_id, room_detail_id, max_slots, booked_slots) VALUES
--- Lịch ngày 2024-05-20
-(2001, '2024-05-20', 1, 202, 5, 3),  -- BS 2001, Sáng T2, Khung giờ 1 (06:00-07:00), Phòng AG02, Max 5, Đặt 3
-(2001, '2024-05-20', 2, 202, 5, 5),  -- BS 2001, Sáng T2, Khung giờ 2 (07:00-08:00), Phòng AG02, Max 5, Đặt 5 (Full)
-(2001, '2024-05-20', 3, 202, 5, 4),  -- BS 2001, Sáng T2, Khung giờ 3 (08:00-09:00), Phòng AG02, Max 5, Đặt 4
-(2002, '2024-05-20', 6, 202, 4, 1),  -- BS 2002 (Trưởng khoa), Chiều T2, Khung giờ 6 (13:30-14:30), Phòng AG02, Max 4, Đặt 1
-(2002, '2024-05-20', 7, 202, 4, 0),  -- BS 2002, Chiều T2, Khung giờ 7 (14:30-15:30), Phòng AG02, Max 4, Đặt 0
-(2003, '2024-05-20', 1, 272, 6, 5),  -- BS 2003, Sáng T2, Khung giờ 1, Phòng CLSG04 (Siêu âm 1), Max 6, Đặt 5
-(2003, '2024-05-20', 2, 272, 6, 6),  -- BS 2003, Sáng T2, Khung giờ 2, Phòng CLSG04 (Siêu âm 1), Max 6, Đặt 6 (Full)
-(2003, '2024-05-20', 3, 272, 6, 4),  -- BS 2003, Sáng T2, Khung giờ 3, Phòng CLSG04 (Siêu âm 1), Max 6, Đặt 4
-(2006, '2024-05-20', 4, 273, 4, 2),  -- BS 2006 (Tiến sĩ), Sáng T2, Khung giờ 4 (09:00-10:00), Phòng CLSG05 (Siêu âm 2), Max 4, Đặt 2
-(2006, '2024-05-20', 5, 273, 4, 1),  -- BS 2006, Sáng T2, Khung giờ 5 (10:00-11:00), Phòng CLSG05 (Siêu âm 2), Max 4, Đặt 1
+INSERT INTO tbl_schedule (doctor_id, date, time_slot_id, room_detail_id, max_slots, booked_slots) VALUES
+-- Lịch ngày 2025-05-20
+(2001, '2025-05-20', 1, 202, 5, 3),  -- BS 2001, Sáng T2, Khung giờ 1 (06:00-07:00), Phòng AG02, Max 5, Đặt 3
+(2001, '2025-05-20', 2, 202, 5, 5),  -- BS 2001, Sáng T2, Khung giờ 2 (07:00-08:00), Phòng AG02, Max 5, Đặt 5 (Full)
+(2001, '2025-05-20', 3, 202, 5, 4),  -- BS 2001, Sáng T2, Khung giờ 3 (08:00-09:00), Phòng AG02, Max 5, Đặt 4
+(2002, '2025-05-20', 6, 202, 4, 1),  -- BS 2002 (Trưởng khoa), Chiều T2, Khung giờ 6 (13:30-14:30), Phòng AG02, Max 4, Đặt 1
+(2002, '2025-05-20', 7, 202, 4, 0),  -- BS 2002, Chiều T2, Khung giờ 7 (14:30-15:30), Phòng AG02, Max 4, Đặt 0
+(2003, '2025-05-20', 1, 272, 6, 5),  -- BS 2003, Sáng T2, Khung giờ 1, Phòng CLSG04 (Siêu âm 1), Max 6, Đặt 5
+(2003, '2025-05-20', 2, 272, 6, 6),  -- BS 2003, Sáng T2, Khung giờ 2, Phòng CLSG04 (Siêu âm 1), Max 6, Đặt 6 (Full)
+(2003, '2025-05-20', 3, 272, 6, 4),  -- BS 2003, Sáng T2, Khung giờ 3, Phòng CLSG04 (Siêu âm 1), Max 6, Đặt 4
+(2006, '2025-05-20', 4, 273, 4, 2),  -- BS 2006 (Tiến sĩ), Sáng T2, Khung giờ 4 (09:00-10:00), Phòng CLSG05 (Siêu âm 2), Max 4, Đặt 2
+(2006, '2025-05-20', 5, 273, 4, 1),  -- BS 2006, Sáng T2, Khung giờ 5 (10:00-11:00), Phòng CLSG05 (Siêu âm 2), Max 4, Đặt 1
 
--- Lịch ngày 2024-05-21
-(2004, '2024-05-21', 1, 202, 5, 2),  -- BS 2004, Sáng T3, Khung giờ 1, Phòng AG02, Max 5, Đặt 2
-(2004, '2024-05-21', 2, 202, 5, 4),  -- BS 2004, Sáng T3, Khung giờ 2, Phòng AG02, Max 5, Đặt 4
-(2005, '2024-05-21', 6, 202, 5, 3),  -- BS 2005, Chiều T3, Khung giờ 6, Phòng AG02, Max 5, Đặt 3
-(2005, '2024-05-21', 7, 202, 5, 5),  -- BS 2005, Chiều T3, Khung giờ 7, Phòng AG02, Max 5, Đặt 5 (Full)
-(2005, '2024-05-21', 8, 202, 5, 2),  -- BS 2005, Chiều T3, Khung giờ 8, Phòng AG02, Max 5, Đặt 2
-(2007, '2024-05-21', 1, 275, 6, 0),  -- BS 2007, Sáng T3, Khung giờ 1, Phòng CLSG07 (X-Quang 1), Max 6, Đặt 0
-(2007, '2024-05-21', 2, 275, 6, 3),  -- BS 2007, Sáng T3, Khung giờ 2, Phòng CLSG07 (X-Quang 1), Max 6, Đặt 3
-(2008, '2024-05-21', 6, 276, 6, 4),  -- BS 2008, Chiều T3, Khung giờ 6, Phòng CLSG08 (X-Quang 2), Max 6, Đặt 4
-(2008, '2024-05-21', 7, 276, 6, 6),  -- BS 2008, Chiều T3, Khung giờ 7, Phòng CLSG08 (X-Quang 2), Max 6, Đặt 6 (Full)
+-- Lịch ngày 2025-05-21
+(2004, '2025-05-21', 1, 202, 5, 2),  -- BS 2004, Sáng T3, Khung giờ 1, Phòng AG02, Max 5, Đặt 2
+(2004, '2025-05-21', 2, 202, 5, 4),  -- BS 2004, Sáng T3, Khung giờ 2, Phòng AG02, Max 5, Đặt 4
+(2005, '2025-05-21', 6, 202, 5, 3),  -- BS 2005, Chiều T3, Khung giờ 6, Phòng AG02, Max 5, Đặt 3
+(2005, '2025-05-21', 7, 202, 5, 5),  -- BS 2005, Chiều T3, Khung giờ 7, Phòng AG02, Max 5, Đặt 5 (Full)
+(2005, '2025-05-21', 8, 202, 5, 2),  -- BS 2005, Chiều T3, Khung giờ 8, Phòng AG02, Max 5, Đặt 2
+(2007, '2025-05-21', 1, 275, 6, 0),  -- BS 2007, Sáng T3, Khung giờ 1, Phòng CLSG07 (X-Quang 1), Max 6, Đặt 0
+(2007, '2025-05-21', 2, 275, 6, 3),  -- BS 2007, Sáng T3, Khung giờ 2, Phòng CLSG07 (X-Quang 1), Max 6, Đặt 3
+(2008, '2025-05-21', 6, 276, 6, 4),  -- BS 2008, Chiều T3, Khung giờ 6, Phòng CLSG08 (X-Quang 2), Max 6, Đặt 4
+(2008, '2025-05-21', 7, 276, 6, 6),  -- BS 2008, Chiều T3, Khung giờ 7, Phòng CLSG08 (X-Quang 2), Max 6, Đặt 6 (Full)
 
--- Lịch ngày 2024-05-22
-(2009, '2024-05-22', 1, 202, 5, 1),  -- BS 2009, Sáng T4, Khung giờ 1, Phòng AG02, Max 5, Đặt 1
-(2009, '2024-05-22', 2, 202, 5, 3),  -- BS 2009, Sáng T4, Khung giờ 2, Phòng AG02, Max 5, Đặt 3
-(2009, '2024-05-22', 3, 202, 5, 2),  -- BS 2009, Sáng T4, Khung giờ 3, Phòng AG02, Max 5, Đặt 2
-(2010, '2024-05-22', 1, 272, 6, 4),  -- BS 2010, Sáng T4, Khung giờ 1, Phòng CLSG04 (Siêu âm 1), Max 6, Đặt 4
-(2010, '2024-05-22', 2, 272, 6, 5),  -- BS 2010, Sáng T4, Khung giờ 2, Phòng CLSG04 (Siêu âm 1), Max 6, Đặt 5
-(2001, '2024-05-22', 6, 273, 4, 4),  -- BS 2001, Chiều T4, Khung giờ 6, Phòng CLSG05 (Siêu âm 2), Max 4, Đặt 4 (Full)
-(2001, '2024-05-22', 7, 273, 4, 3),  -- BS 2001, Chiều T4, Khung giờ 7, Phòng CLSG05 (Siêu âm 2), Max 4, Đặt 3
-(2002, '2024-05-22', 1, 275, 5, 2),  -- BS 2002, Sáng T4, Khung giờ 1, Phòng CLSG07 (X-Quang 1), Max 5, Đặt 2
-(2002, '2024-05-22', 2, 275, 5, 1);  -- BS 2002, Sáng T4, Khung giờ 2, Phòng CLSG07 (X-Quang 1), Max 5, Đặt 1
+-- Lịch ngày 2025-05-22
+(2009, '2025-05-22', 1, 202, 5, 1),  -- BS 2009, Sáng T4, Khung giờ 1, Phòng AG02, Max 5, Đặt 1
+(2009, '2025-05-22', 2, 202, 5, 3),  -- BS 2009, Sáng T4, Khung giờ 2, Phòng AG02, Max 5, Đặt 3
+(2009, '2025-05-22', 3, 202, 5, 2),  -- BS 2009, Sáng T4, Khung giờ 3, Phòng AG02, Max 5, Đặt 2
+(2010, '2025-05-22', 1, 272, 6, 4),  -- BS 2010, Sáng T4, Khung giờ 1, Phòng CLSG04 (Siêu âm 1), Max 6, Đặt 4
+(2010, '2025-05-22', 2, 272, 6, 5),  -- BS 2010, Sáng T4, Khung giờ 2, Phòng CLSG04 (Siêu âm 1), Max 6, Đặt 5
+(2001, '2025-05-22', 6, 273, 4, 4),  -- BS 2001, Chiều T4, Khung giờ 6, Phòng CLSG05 (Siêu âm 2), Max 4, Đặt 4 (Full)
+(2001, '2025-05-22', 7, 273, 4, 3),  -- BS 2001, Chiều T4, Khung giờ 7, Phòng CLSG05 (Siêu âm 2), Max 4, Đặt 3
+(2002, '2025-05-22', 1, 275, 5, 2),  -- BS 2002, Sáng T4, Khung giờ 1, Phòng CLSG07 (X-Quang 1), Max 5, Đặt 2
+(2002, '2025-05-22', 2, 275, 5, 1);  -- BS 2002, Sáng T4, Khung giờ 2, Phòng CLSG07 (X-Quang 1), Max 5, Đặt 1
 
 
 INSERT INTO tbl_medicine (name, price, medicine_usage, strength) VALUES
@@ -1325,18 +1483,18 @@ INSERT INTO tbl_medicine (name, price, medicine_usage, strength) VALUES
 ('Warfarin 2mg', 35000.00, 'Thuốc chống đông máu. Uống theo chỉ định của bác sĩ.', '2mg');
 
 INSERT INTO tbl_prescription (status, issue_date) VALUES
-(0, '2025-04-20 10:00:00'),
-(1, '2025-04-21 14:45:00'),
-(2, '2025-04-22 09:30:00'),
-(1, '2025-04-23 11:15:00'),
-(0, '2025-04-24 16:30:00'),
-(2, '2025-04-25 08:00:00'),
-(1, '2025-04-26 13:00:00'),
-(0, '2025-04-27 17:45:00'),
-(1, '2025-04-28 10:30:00'),
-(2, '2025-04-29 15:15:00'),
-(0, '2025-04-30 09:00:00'),
-(1, '2025-05-01 14:00:00');
+('RECEIVED', '2025-04-20 10:00:00'),
+('RECEIVED', '2025-04-21 14:45:00'),
+('RECEIVED', '2025-04-22 09:30:00'),
+('RECEIVED', '2025-04-23 11:15:00'),
+('CANCELLED', '2025-04-24 16:30:00'),
+('RECEIVED', '2025-04-25 08:00:00'),
+('RECEIVED', '2025-04-26 13:00:00'),
+('CANCELLED', '2025-04-27 17:45:00'),
+('RECEIVED', '2025-04-28 10:30:00'),
+('PENDING', '2025-04-29 15:15:00'),
+('CANCELLED', '2025-04-30 09:00:00'),
+('PENDING', '2025-05-01 14:00:00');
 
 # INSERT INTO tbl_prescription_item (quantity, medicine_id, prescription_id, dosage, name, unit) VALUES
 # (10, 1, 3, '1 vien/lan x 3 lan/ngay', 'Paracetamol 500mg', 'vien'),
@@ -1436,3 +1594,17 @@ INSERT INTO tbl_account (user_id, password, role, status) VALUES
     (2252, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'STAFF', 'ACTIVE');
 
 INSERT INTO tbl_staff (staff_role, id) VALUES (2, 2251);
+INSERT INTO tbl_appointment (id, medical_record_id, created_at, updated_at) VALUES
+(1, 1, NOW(), NOW()),
+(2, 2,  NOW(), NOW()),
+(3, 3,  NOW(), NOW()),
+(4, 4, NOW(), NOW()),
+(5, 5, NOW(), NOW());
+
+INSERT INTO tbl_appointment_schedule (appointment_id, id, schedule_id, waiting_number, ticket_code, status) VALUES
+(1, 1, 1, 2, 'HC2126618181', 'PENDING'),
+(1, 6, 2, 5, 'HC3126334111', 'PENDING'),
+(2, 2, 1, 3, 'HC4127282274', 'PENDING'),
+(3, 3, 2, 4, 'HC1128335111', 'PENDING'),
+(4, 4, 2, 5, 'HC2127281232', 'PENDING'),
+(5, 5, 3, 6, 'HC3127643331', 'PENDING');

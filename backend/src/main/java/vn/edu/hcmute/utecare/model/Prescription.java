@@ -25,6 +25,7 @@ public class Prescription {
     private LocalDateTime issueDate;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private PrescriptionStatus status;
 
     @ManyToOne
