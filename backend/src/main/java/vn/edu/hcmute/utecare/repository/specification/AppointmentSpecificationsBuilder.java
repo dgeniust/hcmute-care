@@ -5,6 +5,10 @@ import vn.edu.hcmute.utecare.model.Appointment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static vn.edu.hcmute.utecare.util.AppConst.SEARCH_SPEC_OPERATOR;
 
 public class AppointmentSpecificationsBuilder {
 
@@ -14,26 +18,19 @@ public class AppointmentSpecificationsBuilder {
         params = new ArrayList<>();
     }
 
-    public AppointmentSpecificationsBuilder with(String key, String operation, Object value, String prefix, String suffix) {
-        return with(null, key, operation, value, prefix, suffix);
-    }
-
-    public AppointmentSpecificationsBuilder with(String orPredicate, String key, String operation, Object value, String prefix, String suffix) {
+    public AppointmentSpecificationsBuilder with(String key, String operation, Object value) {
         SearchOperation searchOperation = SearchOperation.getSimpleOperation(operation.charAt(0));
         if (searchOperation != null) {
-            if (searchOperation == SearchOperation.EQUALITY) {
-                boolean startWithAsterisk = prefix != null && prefix.contains(SearchOperation.ZERO_OR_MORE_REGEX);
-                boolean endWithAsterisk = suffix != null && suffix.contains(SearchOperation.ZERO_OR_MORE_REGEX);
+            params.add(new SpecSearchCriteria(key, searchOperation, value));
+        }
+        return this;
+    }
 
-                if (startWithAsterisk && endWithAsterisk) {
-                    searchOperation = SearchOperation.CONTAINS;
-                } else if (startWithAsterisk) {
-                    searchOperation = SearchOperation.ENDS_WITH;
-                } else if (endWithAsterisk) {
-                    searchOperation = SearchOperation.STARTS_WITH;
-                }
-            }
-            params.add(new SpecSearchCriteria(orPredicate, key, searchOperation, value));
+    public AppointmentSpecificationsBuilder with(String search) {
+        Pattern pattern = Pattern.compile(SEARCH_SPEC_OPERATOR);
+        Matcher matcher = pattern.matcher(search);
+        if (matcher.find()) {
+            with(matcher.group(1), matcher.group(2), matcher.group(4));
         }
         return this;
     }
@@ -46,21 +43,9 @@ public class AppointmentSpecificationsBuilder {
         Specification<Appointment> result = new AppointmentSpecification(params.get(0));
 
         for (int i = 1; i < params.size(); i++) {
-            result = params.get(i).isOrPredicate()
-                    ? Specification.where(result).or(new AppointmentSpecification(params.get(i)))
-                    : Specification.where(result).and(new AppointmentSpecification(params.get(i)));
+            result = Specification.where(result).and(new AppointmentSpecification(params.get(i)));
         }
 
         return result;
-    }
-
-    public AppointmentSpecificationsBuilder with(AppointmentSpecification spec) {
-        params.add(spec.getCriteria());
-        return this;
-    }
-
-    public AppointmentSpecificationsBuilder with(SpecSearchCriteria criteria) {
-        params.add(criteria);
-        return this;
     }
 }

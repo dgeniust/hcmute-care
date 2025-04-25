@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -65,15 +68,21 @@ public class AppointmentController {
 
     @GetMapping("/search")
     public ResponseData<PageResponse<AppointmentSummaryResponse>> searchAppointments(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(required = false) String[] search
+            @RequestParam(value = "appointment", required = false) String[] appointment,
+            @RequestParam(value = "medicalRecord", required = false) String[] medicalRecord,
+            @RequestParam(value = "patient", required = false) String[] patient,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sort", defaultValue = "id:asc") String sort
     ) {
-        log.info("Searching appointments with page: {}, size: {}, sortBy: {}", page, size, sortBy);
+        String[] sortParts = sort.split(":");
+        String sortField = sortParts[0];
+        Sort.Direction sortDirection = sortParts[1].equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortDirection, sortField));
+
         return ResponseData.<PageResponse<AppointmentSummaryResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .data(appointmentService.getAllAppointments(page, size, search, sortBy))
+                .data(appointmentService.getAllAppointments(pageable, appointment, medicalRecord, patient))
                 .message("Search appointments successfully")
                 .build();
     }
