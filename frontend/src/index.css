@@ -74,7 +74,7 @@ body {
 /* Kiểu cho phần login-bg */
 .login-bg {
   /* background-image: var(--login-background); */
-  background-color: black;
+  background-color: white;
   font-family: 'Roboto Slab', sans-serif;
 }
 .personal-bg {

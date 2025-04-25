@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ArrowLeftOutlined, LockOutlined, CheckCircleOutlined, CheckCircleFilled } from '@ant-design/icons';
 import { Input, Timeline, Button, notification, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
-
+import {notifySuccess, notifyError, notifyErrorWithCustomMessage} from "../../utils/notificationHelper";
 const ConfirmPassword = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
@@ -16,12 +16,6 @@ const ConfirmPassword = () => {
   const [isValidNumber, setIsValidNumber] = useState(false);
   const [isPasswordMatch, setIsPasswordMatch] = useState(false);
   
-  function success(){
-    messageApi.open({
-      type: 'success',
-      content: 'Signup success 😙',
-    });
-  };
 
   function error(message){
     messageApi.open({
@@ -55,9 +49,7 @@ const ConfirmPassword = () => {
     if (password.trim() === "") {
       valid = false;
       setPasswordStatus('error');
-      error("Vui lòng nhập mật khẩu 🫠");
-    }
-    if (valid==true && password === "123") {
+      notifyErrorWithCustomMessage("Vui lòng nhập mật khẩu 🫠", messageApi);
     }
     return valid;
   }
@@ -70,18 +62,41 @@ const ConfirmPassword = () => {
     setIsValidPassword(lengthCondition);
     setIsValidUppercase(uppercaseCondition);
   }
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const isValid = validateForm();
-    if(isValid) {
-      openNotification(true);
-      setTimeout(() => {
-        navigate('/login'); 
-      }, 1000)
+    if(!isValid && !isPasswordMatch) return;
+    const payload = {
+      password: password,
+      confirmPassword: confirmPassword
     }
-    else{
-      error("Đăng nhập thất bại 🫠");
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/auth/register/set-password", {
+        method: "POST",
+        headers: {
+          'X-Verification-Token': localStorage.getItem("verificationToken"),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      })
+      console.log('Response:', response);
+        if(response.ok) {
+          const data = await response.json();
+          if(data.status === 201) {
+            notifySuccess("Thành công", "Đặt mật khẩu thành công 🥳", api);
+            setTimeout(() => {
+              navigate('/login');
+            }, 2000);
+          }else {
+            notifyErrorWithCustomMessage(data.message || "Mật khẩu không bảo mật 🫠", messageApi);
+          }
+        }
+    } catch (error) {
+      console.log('Lỗi server 🫠:', error);
+      notifyErrorWithCustomMessage("Lỗi server 🫠", messageApi)
     }
+
+    
   }
   const handleSignupRedirect = () => {
     // Navigate to the Signup page when the button is clicked

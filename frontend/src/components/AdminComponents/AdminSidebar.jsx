@@ -74,11 +74,11 @@ const AdminSideBar = () => {
           icon: <ForkOutlined />,
         },
         
-        {
-          key: 'manage-posts',
-          label: 'Tin tức - Sự kiện',
-          icon: <BellOutlined />,
-        },
+        // {
+        //   key: 'manage-posts',
+        //   label: 'Tin tức - Sự kiện',
+        //   icon: <BellOutlined />,
+        // },
         {
           key: 'regulation-use',
           label: 'Quy định sử dụng',

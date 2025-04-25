@@ -32,6 +32,7 @@ import DoctorHomePage from './pages/Doctor/DoctorHomepage/DoctorHomepage';
 import DoctorManageRecords from './pages/Doctor/DoctorManageRecords/DoctorManageRecords';
 import PatientRecords from './components/DoctorComponents/PatientRecords/PatientRecords';
 import DoctorSchedule from './pages/Doctor/DoctorSchedule/DoctorSchedule';
+import ProtectedRoute from './pages/ProtectedRoute';
 function App() {
 
   return (
@@ -47,39 +48,51 @@ function App() {
           <Route path="/getPassword" element={<GetPassword/>} />
           
           {/* USER ROUTES */}
-          <Route path="/" element={<HomePage />}>
-            <Route index element={<MainPage />} />
-            <Route path="calculate" element={<CalculateContent />} />
-            <Route path="personal-profile" element={<Personal_Profile />} />
-            <Route path="medical-records" element={<MedicalRecord />} />
-            <Route path="medical-history" element={<MedicalHistory />} />
-            <Route path="regulation-use" element={<RegulationUse />} />
-            <Route path="terms-service" element={<TermsService />} />
-            <Route path="service-list" element={<ServiceList />} />
-            <Route path="notification-event" element={<Notification_Event />} />
-            <Route path="booking" element={<BookingContent />} />
+          <Route element={<ProtectedRoute allowedRoles={['ROLE_CUSTOMER']} />}>
+            <Route path="/" element={<HomePage />}>
+              <Route index element={<MainPage />} />
+              <Route path="calculate" element={<CalculateContent />} />
+              <Route path="personal-profile" element={<Personal_Profile />} />
+              <Route path="medical-records" element={<MedicalRecord />} />
+              <Route path="medical-history" element={<MedicalHistory />} />
+              <Route path="regulation-use" element={<RegulationUse />} />
+              <Route path="terms-service" element={<TermsService />} />
+              <Route path="service-list" element={<ServiceList />} />
+              <Route path="notification-event" element={<Notification_Event />} />
+              <Route path="booking" element={<BookingContent />} />
+            </Route>
           </Route>
 
           {/* ADMIN ROUTES */}
-          <Route path="/admin" element={<AdminDashboard />} >
-            <Route index element={<AdminHomePage />} />
-            <Route path="/admin/manage-users" element={<ManageUser />} />
-            <Route path="/admin/manage-rooms" element={<ManageRoom />} />
-            <Route path="/admin/manage-posts" element={<ManagePost />} />
-            <Route path="/admin/manage-service" element={<ManageService />} />
-            <Route path="/admin/manage-employee" element={<ManageEmployee />} />
-            <Route path="/admin/manage-numbers" element={<ManageNumber_Orders />} />
+          <Route element={<ProtectedRoute allowedRoles={['ROLE_ADMIN']} />}>
+            <Route path="/admin" element={<AdminDashboard />} >
+              <Route index element={<AdminHomePage />} />
+              <Route path="/admin/manage-users" element={<ManageUser />} />
+              <Route path="/admin/manage-rooms" element={<ManageRoom />} />
+              {/* <Route path="/admin/manage-posts" element={<ManagePost />} /> */}
+              <Route path="/admin/manage-service" element={<ManageService />} />
+              <Route path="/admin/manage-employee" element={<ManageEmployee />} />
+              <Route path="/admin/manage-numbers" element={<ManageNumber_Orders />} />
+            </Route>
           </Route>
 
           {/* DOCTOR ROUTES */}
-          <Route path="/doctor" element={<DoctorDashboard />} >
-            <Route index element={<DoctorHomePage />} />
-            <Route path="/doctor/records" element={<DoctorManageRecords />} />
-            <Route path="/doctor/patient" element={<PatientRecords />} />
-            <Route path="/doctor/schedule" element={<DoctorSchedule />} />
-            {/*<Route path="/doctor/manage-posts" element={<ManagePost />} /> */}
+          <Route element={<ProtectedRoute allowedRoles={['ROLE_DOCTOR']} />}>
+            <Route path="/doctor" element={<DoctorDashboard />} >
+              <Route index element={<DoctorHomePage />} />
+              <Route path="/doctor/records" element={<DoctorManageRecords />} />
+              <Route path="/doctor/patient" element={<PatientRecords />} />
+              <Route path="/doctor/schedule" element={<DoctorSchedule />} />
+              {/*<Route path="/doctor/manage-posts" element={<ManagePost />} /> */}
+            </Route>
           </Route>
-
+          {/* STAFF ROUTES */}
+          <Route element={<ProtectedRoute allowedRoles={['ROLE_STAFF']} />}>
+            <Route path="/staff" element={<DoctorDashboard />} >
+              {/* <Route index element={<DoctorHomePage />} /> */}
+              <Route index element={<ManagePost />} />
+            </Route>
+          </Route>
           {/* ANOTHER ROUTES */}
           <Route path="/book" element={<Book_Review/>}/>
         </Routes>

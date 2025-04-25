@@ -1,12 +1,14 @@
 
 import React, {useState, useRef, useEffect} from 'react';
 import {CaretDownOutlined, CaretUpOutlined} from '@ant-design/icons';
-import { Modal } from "antd";
+import { Modal } from 'antd';
 import dayjs from 'dayjs';
 const TextWithReadMore = ({ text, maxLength = 100 }) => {
-
   const [isExpanded, setIsExpanded] = useState(false);
 
+  if (!text) {
+    return <p className="mt-1 text-gray-700">No content available</p>;
+  }
   if (text.length <= maxLength) {
       return <p className="mt-1 text-gray-700">{text}</p>;
   }
@@ -14,7 +16,7 @@ const TextWithReadMore = ({ text, maxLength = 100 }) => {
   const truncatedText = isExpanded ? text : `${text.slice(0, maxLength)}...`;
 
   return (
-      <div className="mt-1 text-gray-700">
+      <p className="mt-1 text-gray-700">
           <p>{truncatedText}</p>
           <button
               className="text-blue-500 cursor-pointer"
@@ -26,22 +28,19 @@ const TextWithReadMore = ({ text, maxLength = 100 }) => {
                     <>Xem thêm <CaretDownOutlined /></>
               )}
           </button>
-      </div>
+      </p>
   );
 };
-const TwitterPost = ({textData, storageImg, headerData}) => {
+const TwitterPost = ({ id, header, content, doc, postImages }) => {
+  const today = dayjs();
+  const dateFormat = 'HH:mm DD/MM/YYYY'
   //Modal Image
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImg, setSelectedImg] = useState("");
-
   const handleOpenModal = (imgSrc) => {
       setSelectedImg(imgSrc);
       setIsModalOpen(true);
   };
-
-  const today = dayjs();
-  const dateFormat = 'HH:mm DD/MM/YYYY'
-
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollContainerRef = useRef(null);
   const scrollToImage = (index) => {
@@ -65,12 +64,12 @@ const TwitterPost = ({textData, storageImg, headerData}) => {
       scrollContainer.addEventListener('scroll', handleScroll);
       return () => scrollContainer.removeEventListener('scroll', handleScroll);
     }
-    console.log(storageImg)
-  }, [storageImg]);
+    console.log(postImages)
+  }, [postImages]);
   return (
     <>
       {/* <h1 className='w-full font-bold text-xl text-center my-2'>Xem trước bài post</h1> */}
-      <div className="max-w-xl mx-auto bg-white shadow-md overflow-hidden border-b-1 border-slate-200">
+      <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
       {/* Twitter header */}
       <div className="p-4 flex items-start flex-col">
         <div className="mr-3 w-full h-fit flex flex-row items-center space-x-2">
@@ -103,8 +102,8 @@ const TwitterPost = ({textData, storageImg, headerData}) => {
           
           <div className="mt-1 text-gray-700">
             {/* today is my first day of <span className="text-blue-500">@_buildspace</span> school 🔥 a place where you turn your ideas into reality and make friends along the way 😊 buildspace.so */}
-            <h1 className='font-bold text-base'>{headerData}</h1>
-            <TextWithReadMore text={textData} />
+            <h1 className='font-bold text-base'>{header}</h1>
+            <TextWithReadMore text={content} />
           </div>
         </div>
       </div>
@@ -115,17 +114,17 @@ const TwitterPost = ({textData, storageImg, headerData}) => {
         <div ref={scrollContainerRef} className="scrollbar-hide  w-full overflow-x-auto pb-2" style={{ WebkitOverflowScrolling: 'touch' }}>
           {/* We make sure this inner container is wider than the parent to trigger scrolling */}
           <div className="inline-flex space-x-2 pb-1 pr-4">
-            {storageImg.map((image) => (
+            {postImages && postImages.map((image) => (
               <div 
                 key={image.id} 
                 className="flex-none w-48 h-48 rounded-lg overflow-hidden border border-gray-200 shadow-sm"
               >
                 <img 
-                  src={image.src} 
+                  src={image.imageUrl} 
                   alt="Ảnh" 
                   className="w-full h-full object-cover"
                   draggable="false"
-                  onClick={() => handleOpenModal(image.src)}
+                  onClick={() => handleOpenModal(image.imageUrl)}
                 />
               </div>
             ))}
@@ -135,7 +134,7 @@ const TwitterPost = ({textData, storageImg, headerData}) => {
         {/* Scroll indicator dots */}
         <div className="mt-1 flex justify-center">
           <div className="flex space-x-1">
-            {storageImg.map((_, index) => (
+            {postImages && postImages.map((_, index) => (
               <button
                 key={index}
                 onClick={() => scrollToImage(index)}
@@ -172,14 +171,14 @@ const TwitterPost = ({textData, storageImg, headerData}) => {
       </div>
     </div>
     {/* Modal Preview */}
-      <Modal
-        open={isModalOpen}
-        footer={null}
-        onCancel={() => setIsModalOpen(false)}
-        centered
-      >
-          <img src={selectedImg} alt="Preview" className="w-full h-auto rounded-lg" />
-      </Modal>
+          <Modal
+            open={isModalOpen}
+            footer={null}
+            onCancel={() => setIsModalOpen(false)}
+            centered
+          >
+              <img src={selectedImg} alt="Preview" className="w-full h-auto rounded-lg" />
+          </Modal>
     </>
   );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout, theme, Breadcrumb } from 'antd';
 import AdminSideBar from '../../components/AdminComponents/AdminSidebar';
 import { Outlet, useLocation, Link } from 'react-router-dom';
+import SideBar from '../../components/Sidebar';
 const AdminDashboard = () => {
   const location = useLocation();
   const path = location.pathname.split('/').filter((path) => path);
@@ -62,7 +63,7 @@ const AdminDashboard = () => {
             flexDirection: 'row',
           }}
         >
-          <AdminSideBar/>
+          <SideBar/>
           <Outlet />
         </Layout>
       </div>

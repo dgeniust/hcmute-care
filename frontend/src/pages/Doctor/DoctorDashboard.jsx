@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout, theme, Breadcrumb } from 'antd';
 import DoctorSideBar from '../../components/DoctorComponents/DoctorSidebar';
 import { Outlet, useLocation, Link } from 'react-router-dom';
+import SideBar from '../../components/Sidebar';
 const DoctorDashboard = () => {
   const location = useLocation();
   const path = location.pathname.split('/').filter((path) => path);
@@ -54,7 +55,7 @@ const DoctorDashboard = () => {
             flexDirection: 'row',
           }}
         >
-          <DoctorSideBar/>
+          <SideBar/>
           <Outlet />
         </Layout>
       </div>
