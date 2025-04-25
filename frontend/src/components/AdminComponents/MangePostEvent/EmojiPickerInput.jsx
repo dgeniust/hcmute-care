@@ -4,7 +4,7 @@ import { Input, Button } from 'antd';
 import { SmileOutlined, FileImageOutlined, SendOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
-const EmojiPickerInput = ({setTextData, setHeaderData, storageImg, setStorageImg}) => {
+const EmojiPickerInput = ({setTextData, setHeaderData, storageImg, setStorageImg, handleUploadPost}) => {
     const [inputValue, setInputValue] = useState('');
     const [showPicker, setShowPicker] = useState(false);
     const inputRef = useRef(null);
@@ -14,7 +14,9 @@ const EmojiPickerInput = ({setTextData, setHeaderData, storageImg, setStorageImg
         setInputValue(prevInput => prevInput + emojiObject.emoji);
         inputRef.current.focus(); // Keep focus on the input
     };
-
+    const handleClickPost = () => {
+        handleUploadPost();
+    }
     const handleContentChange = (event) => {
         setInputValue(event.target.value);
         console.log(event.target.value);
@@ -50,26 +52,28 @@ const EmojiPickerInput = ({setTextData, setHeaderData, storageImg, setStorageImg
             }
       
             const uploadImageURL = await res.json();
-            // console.log('url :' + uploadImageURL.url);
-
+            console.log('url :' + uploadImageURL.url);
             const newId = storageImg.length > 0 
             ? Math.max(...storageImg.map(img => img.id)) + 1 
             : 1;
-
-            setStorageImg(prev => [...prev, { 
-                id: newId, 
-                src: uploadImageURL.url 
-              }]);
+            //add to database (POST_IMAGE_TABLE) 
+            setStorageImg(url =>  { 
+                const newState = [...url, {
+                    id: newId,
+                    imageUrl: uploadImageURL.url
+                }];
+                console.log(newState); // Should log: [{ id: 1, src: "url1" }, { id: 2, src: "url2" }]
+                return newState;
+            });
             // You can now use uploadImageURL.secure_url to display the image or store it.
           } catch (error) {
             console.error('Error uploading file:', error);
             // Handle the error appropriately (e.g., show an error message to the user)
           }
     }
-
     //kiểm tra image storage
     useEffect(() => {
-        console.log(storageImg);
+        console.log("storage img: "+ JSON.stringify(storageImg, null, 2));
     }, [storageImg])
 
     
@@ -113,7 +117,7 @@ const EmojiPickerInput = ({setTextData, setHeaderData, storageImg, setStorageImg
                     </div>
                     <div className='w-1/2 flex justify-end'>
                         <Button onClick={() => {
-                            alert('Đăng bài')
+                            handleClickPost();
                             }} style={{ width: '80%', display:'flex', justifyContent:'center', padding:'1.2rem 1rem' }}
                             >
                             <p>Đăng bài</p>

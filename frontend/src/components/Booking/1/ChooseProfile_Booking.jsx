@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef, useEffect } from 'react';
 import { Button, Modal, Tag } from 'antd';
 import { PlusOutlined, InfoCircleTwoTone, RightOutlined, BarcodeOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
 // import '../css/BookingContent.css';
@@ -13,6 +13,14 @@ const ChooseProfile_Booking = forwardRef(({ setStatus,refs }, ref) => {
     const handleSetStatus = (value) => {
         setStatus(value);
     }
+
+    // useEffect(() => {
+    //     const handleShowMedicalRecord = async () => {
+    //         const 
+    //     }
+
+    // }, []);
+
     return (
         <div className='w-full h-full space-y-4'>
             <h1 className='text-black font-bold text-lg'>Chọn hồ sơ đặt khám</h1>

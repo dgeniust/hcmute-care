@@ -34,12 +34,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse createPost(PostRequest request) {
         Post post = postMapper.toEntity(request);
-
         // Set Staff
         Staff staff = staffRepository.findById(request.getStaffId())
                 .orElseThrow(() -> new ResourceNotFoundException("Staff not found"));
         post.setStaff(staff);
-
         // Map PostImages
         Set<PostImage> postImages = request.getPostImages().stream()
                 .map(imageRequest -> {

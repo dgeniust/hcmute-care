@@ -34,6 +34,7 @@
     "emoji-picker-react": "^4.12.2",
     "framer-motion": "^12.5.0",
     "jotai": "^2.12.1",
+    "jwt-decode": "^4.0.0",
     "lodash-es": "^4.17.21",
     "maath": "^0.10.8",
     "moment": "^2.30.1",

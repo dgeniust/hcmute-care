@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Input, Button, message, notification } from 'antd';
 import { useNavigate, useLocation} from 'react-router-dom';
 import { ArrowLeftOutlined, CheckCircleFilled } from '@ant-design/icons';
-
+import {notifySuccess, notifyError, handleHttpStatusCode} from "../../utils/notificationHelper";
 const Signup = () => {
 
     const location = useLocation();
@@ -11,26 +11,17 @@ const Signup = () => {
 
     const navigate = useNavigate();
     const [messageApi, contextMessageHolder] = message.useMessage();
-    const [seconds, setSeconds] = useState(2);
+    const [seconds, setSeconds] = useState(60);
     const [isTimeUp, setIsTimeUp] = useState(false); // To track if time is up
-    const [api, contextNotificationHolder] = notification.useNotification();
     const [otp, setOTP] = useState('');
-    function openNotification(pauseOnHover) {
-      api.open({
-        message: 'Gửi lại mã OTP',
-        description:
-          'Mã xác nhận OTP đã được gửi về tin nhắn điện thoại của bạn.',
-        showProgress: true,
-        pauseOnHover,
-        icon: (<CheckCircleFilled style={{color: '#2ed573'}}/>)
-      });
-    };
+    const [notificationApi, contextNotiHolder] = notification.useNotification();
+    
     useEffect(() => {
         if (seconds === 0) {
             setIsTimeUp(true);
             return;
         }; // Stop if the countdown reaches 0
-    
+        console.log('otp: ', otp);
         const intervalId = setInterval(() => {
             setSeconds((prevSeconds) => prevSeconds - 1);
         }, 1000);
@@ -41,7 +32,7 @@ const Signup = () => {
     function resetOTP() {
         setSeconds(2);
         setIsTimeUp(false);
-        openNotification(true);
+        notifySuccess("Gửi lại mã thành công","Gửi lại mã OTP thành công, vui lòng kiểm tra tin nhắn SMS của bạn để xác thực tài khoản 🥳",notificationApi);
     }
     const onChange = (text) => {
         console.log('onChange:', text);
@@ -54,43 +45,61 @@ const Signup = () => {
         onChange,
         onInput,
     };
-    function success(){
-        messageApi.open({
-          type: 'success',
-          content: 'Signup success 😙',
-        });
-      };
     
-    function error(){
-        messageApi.open({
-          type: 'error',
-          content: 'Something went wrong 🫠',
-        });
-    };
-    const validateForm = () => {
-        let fakeOtp = "000000"
-        if(otp === fakeOtp) {
-            return true;
-        }
-        return false;
-    }
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const isValid = validateForm();
         // Validate the form
         console.log('type: '+ type)
-        if (isValid) {
-            if(type === 'signup'){
-                success();
-                navigate('/confirmPassword');
+        if(type === 'signup'){
+            var phone = localStorage.getItem("phone");
+            const payload = {
+                phone: phone,
+                otp: otp,
             }
-            else if(type === 'getPhone'){
-                success();
-                navigate('/getPassword');
+            if(!isEmptyOTP) {
+                console.log("Payload: ", payload);
+                const response = await fetch("http://localhost:8080/api/v1/auth/register/verify-otp", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                })
+                console.log("Raw response:", response);  
+                if(response.ok ) {
+                    const result = await response.json();
+                    if(result.status === 200){
+                        const {verificationToken} = result.data;
+                        localStorage.setItem("verificationToken", verificationToken);
+                        console.log("Data result: ", result.data);
+                        notifySuccess("Thành công","Xác thực mã OTP thành công 🥳", notificationApi);
+                        setTimeout(() => {
+                            navigate('/confirmPassword');
+                        }, 1000); // Wait for 2 seconds before redirecting
+                    }
+                    else if(result.status === 400){
+                        handleHttpStatusCode(400, "Xác thực mã OTP thất bại", "Mã OTP không chính xác hoặc đã hết hạn. Vui lòng thử lại.");
+                        return;
+                    }
+                    else if(result.status === 500){
+                        handleHttpStatusCode(500, "Lỗi hệ thống", "Đã xảy ra lỗi trong quá trình xác thực mã OTP. Vui lòng thử lại sau.");
+                        return;
+                    }
+                    else {
+                        notifyErrorWithCustomMessage("Mã OTP không chính xác 🫠", messageApi)
+                        return;
+                    }
+                }
             }
+            else {
+                notifyErrorWithCustomMessage("Vui lòng nhập mã OTP 🫠",messageApi)
+                return;
+            }
+            
         }
-        else{
-            error()
+        else if(type === 'getPhone'){
+            notifySuccessWithCustomMessage("type get phone",messageApi);
+            navigate('/getPassword');
         }
     }
     const isEmptyOTP = otp.trim() === '';
@@ -141,7 +150,7 @@ const Signup = () => {
         </div>
         </div>
         {contextMessageHolder}
-        {contextNotificationHolder}
+        {contextNotiHolder}
     </div>
 }
 export default Signup;

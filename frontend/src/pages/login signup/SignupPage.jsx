@@ -2,26 +2,14 @@ import React, { useState } from "react";
 import { PhoneOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import { Input, Checkbox, Button, message  } from 'antd';
 import { useNavigate } from 'react-router-dom';
-
+import {notifySuccessWithCustomMessage, notifyErrorWithCustomMessage} from "../../utils/notificationHelper";
 const Signup = () => {
     const navigate = useNavigate();
     const [phone, setPhone] = useState('')
     const [agreeTerms, setAgreeTerms] = useState(false);
     const [phoneStatus, setPhoneStatus] = useState(''); // State for phone input status (error, success)
     const [messageApi, contextHolder] = message.useMessage();
-    function success(){
-        messageApi.open({
-          type: 'success',
-          content: 'Signup success 😙',
-        });
-      };
     
-      function error(){
-        messageApi.open({
-          type: 'error',
-          content: 'Something went wrong 🫠',
-        });
-    };
     const handlePhoneChange = (e) => {
         setPhone(e.target.value);
         console.log('Phone changed: ', e.target.value);
@@ -45,23 +33,53 @@ const Signup = () => {
         }
         if (!agreeTerms) {
             valid = false;
+            notifyErrorWithCustomMessage("Vui lòng đồng ý với điều khoản sử dụng 🫠", messageApi);
+        }
+        if(phone.length < 10 || phone.length > 11) {
+            setPhoneStatus('error');
+            valid = false;
+            notifyErrorWithCustomMessage("Số điện thoại không hợp lệ, vui lòng kiểm tra lại thông tin 🫠", messageApi);
         }
         return valid;
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const isValid = validateForm();
-        // Validate the form
 
-        if (isValid) {
-        // Redirect to another page if necessary
-            success()
-            setTimeout(() => {
-                navigate('/verifyOTP?type=signup');
-            }, 1000); // Wait for 2 seconds before redirecting
+        if(!isValid) return;
+
+        const payload = {
+            phone: phone,
         }
-        else{
-            error()
+        try {
+            const response = await fetch("http://localhost:8080/api/v1/auth/register/send-otp", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            })
+            console.log("Raw response:", response);  // Log response trực tiếp
+            if(response.ok ) {
+                const result = await response.json();
+                if(result.status === 200){
+                    const {phone} = result.data;
+                    localStorage.setItem("phone", phone);
+                    console.log("Data result: ", result.data);
+                    notifySuccessWithCustomMessage("Gửi mã OTP thành công, vui lòng kiểm tra tin nhắn SMS của bạn để xác thực tài khoản 🥳",messageApi);
+                    setTimeout(() => {
+                        navigate('/verifyOTP?type=signup');
+                    }, 1000); // Wait for 2 seconds before redirecting
+                }
+                else {
+                    console.log("Error result: ", result.message);
+                    notifyErrorWithCustomMessage("Số điện thoại không hợp lệ, vui lòng kiểm tra lại thông tin 🫠",messageApi);
+                }
+            }
+        }
+        catch (e) {
+            notifyErrorWithCustomMessage("Lỗi kết nối đến server 🫠", messageApi);
+            console.error("Login error:", e);
         }
     }
     const handleLoginRedirect = () => {

@@ -3,7 +3,6 @@ import { Tabs } from "antd";
 import { Collapse, theme } from "antd";
 
 const InfoChildren = ({ infoBodyData, label }) => {
-  console.log(infoBodyData);
   const { token } = theme.useToken();
   const panelStyle = {
     marginBottom: 12,
@@ -98,7 +97,6 @@ const InfomationBody = ({ infoBodyData, activeTab, setActiveTab, infoBodyDataBac
     const onChange = (key) => {
         setActiveTab(key);
     };
-    console.log(infoBodyDataBack);
     const items = useMemo(() => {
       if (displayBack && infoBodyDataBack) {
           // Trả về items dựa trên infoBodyDataBack

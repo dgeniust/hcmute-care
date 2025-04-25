@@ -7,8 +7,10 @@ import { useNavigate } from "react-router-dom";
 const {Sider} = Layout
 const DoctorSideBar = () => { 
     const navigate = useNavigate();
-    
-      const menu_items2 = [
+    const handleLogout = () => {
+      localStorage.clear();
+    }
+      const menu_doctor = [
         {
           key: '',
           label: 'Bảng điều khiển',
@@ -45,9 +47,12 @@ const DoctorSideBar = () => {
           icon: <PhoneOutlined />,
         },
         {
-          key: 'logout',
+          key: 'login',
           label: 'Đăng xuất',
           icon: <NotificationOutlined />,
+          onClick: ()=>{
+            handleLogout();
+          }
         },
       ]
     return <Sider
@@ -77,7 +82,7 @@ const DoctorSideBar = () => {
             style={{
             height: '100%',
             }}
-            items={menu_items2}
+            items={menu_doctor}
             onClick={(e) => navigate(`/doctor/${e.key}`)}
         />
     </Sider>
