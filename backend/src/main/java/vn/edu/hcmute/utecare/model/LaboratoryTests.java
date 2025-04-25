@@ -10,7 +10,6 @@ import java.io.Serializable;
 @Table(name = "tbl_laboratory_test")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -34,7 +33,7 @@ public class LaboratoryTests extends MedicalTest implements Serializable  {
     private float mch;
 
     @Column(name = "plt")
-    private float olt;
+    private float plt;
 
     @Column(name = "wbc")
     private float wbc;
