@@ -19,8 +19,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Table(name = "tbl_digestive_tests")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class DigestiveTest extends FunctionalTests implements Serializable {
-
+public class DigestiveTest extends FunctionalTests implements Serializable {
     @Column(name = "image")
     private String image;
 

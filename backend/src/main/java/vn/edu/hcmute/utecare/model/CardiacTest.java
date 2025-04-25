@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Table(name = "tbl_cardiac_test")
 @Getter
 @Setter
-@Builder
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
