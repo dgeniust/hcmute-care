@@ -26,6 +26,13 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    @ExceptionHandler(ConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleConflictException(ConflictException e, WebRequest request) {
+        log.warn("Conflict error: {}", e.getMessage());
+        return buildErrorResponse(HttpStatus.CONFLICT, HttpStatus.CONFLICT.getReasonPhrase(), e.getMessage(), request);
+    }
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e, WebRequest request) {

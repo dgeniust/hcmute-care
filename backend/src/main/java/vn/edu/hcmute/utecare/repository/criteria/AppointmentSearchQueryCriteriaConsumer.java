@@ -28,12 +28,12 @@ public class AppointmentSearchQueryCriteriaConsumer implements Consumer<SearchCr
             predicate = builder.and(predicate, builder.lessThanOrEqualTo(root.get(param.getKey()), param.getValue().toString()));
         } else if (param.getOperation().equalsIgnoreCase(":")) {
             if (root.get(param.getKey()).getJavaType() == String.class) {
-                predicate = builder.and(predicate, builder.like(root.get(param.getKey()), "%" + param.getValue() + "%"));
+                predicate = builder.and(predicate, builder.equal(root.get(param.getKey()), param.getValue()));
             } else {
                 predicate = builder.and(predicate, builder.equal(root.get(param.getKey()), param.getValue()));
             }
-        } else if (param.getOperation().equalsIgnoreCase("~")) {
-            predicate = builder.and(predicate, builder.like(root.get(param.getKey()), "%" + param.getValue() + "%"));
+        } else if (param.getOperation().equalsIgnoreCase("!")) {
+            predicate = builder.and(predicate, builder.notEqual(root.get(param.getKey()), param.getValue()));
         }
     }
 }

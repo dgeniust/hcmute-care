@@ -25,7 +25,7 @@ public class Appointment {
     @JoinColumn(name = "medical_record_id", referencedColumnName = "id")
     private MedicalRecord medicalRecord;
 
-    @OneToMany(mappedBy = "appointment")
+    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL)
     private List<AppointmentSchedule> schedules;
 
     @Column(name = "created_at")

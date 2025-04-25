@@ -1,6 +1,7 @@
 package vn.edu.hcmute.utecare.repository;
 
 import io.lettuce.core.dynamic.annotation.Param;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Repository;
 import vn.edu.hcmute.utecare.model.Schedule;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
@@ -35,4 +39,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             @Param("doctorId") Long doctorId,
             @Param("date") LocalDate date,
             Pageable pageable);
+
+
+    List<Schedule> findAllByIdIn(List<Long> scheduleIds);
 }

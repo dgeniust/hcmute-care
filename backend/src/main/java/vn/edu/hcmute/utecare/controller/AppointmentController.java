@@ -38,6 +38,18 @@ public class AppointmentController {
                 .build();
     }
 
+    @PutMapping("/{id}/status")
+    public ResponseData<AppointmentDetailResponse> updateAppointmentStatus(
+            @PathVariable("id") Long id,
+            @RequestParam AppointmentStatus status) {
+        log.info("Updating appointment status for ID: {} to {}", id, status);
+        return ResponseData.<AppointmentDetailResponse>builder()
+                .status(HttpStatus.OK.value())
+                .data(appointmentService.updateAppointmentStatus(id, status))
+                .message("Update appointment status successfully")
+                .build();
+    }
+
     @GetMapping("/{id}")
     public ResponseData<AppointmentDetailResponse> getAppointmentById(@PathVariable("id") Long id) {
         log.info("Fetching appointment with ID: {}", id);

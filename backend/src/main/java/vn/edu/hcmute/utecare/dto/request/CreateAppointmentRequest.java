@@ -11,5 +11,5 @@ public class CreateAppointmentRequest {
     private Long medicalRecordId;
 
     @NotNull(message = "Doctor schedule ID cannot be null")
-    private List<Long> doctorScheduleIds;
+    private List<Long> scheduleIds;
 }

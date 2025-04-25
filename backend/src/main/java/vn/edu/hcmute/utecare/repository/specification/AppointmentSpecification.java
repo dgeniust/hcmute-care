@@ -36,7 +36,6 @@ public class AppointmentSpecification implements Specification<Appointment> {
             case NEGATION -> builder.notEqual(path.get(key), criteria.getValue());
             case GREATER_THAN -> builder.greaterThan(path.get(key), criteria.getValue().toString());
             case LESS_THAN -> builder.lessThan(path.get(key), criteria.getValue().toString());
-            case LIKE -> builder.like(path.get(key), "%" + criteria.getValue() + "%");
         };
     }
 }
