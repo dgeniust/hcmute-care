@@ -2239,3 +2239,19 @@ INSERT INTO tbl_appointment_schedule (appointment_id, id, schedule_id, waiting_n
 (3, 3, 2, 4, 'HC1128335111', 'PENDING'),
 (4, 4, 2, 5, 'HC2127281232', 'PENDING'),
 (5, 5, 3, 6, 'HC3127643331', 'PENDING');
+
+
+INSERT INTO tbl_encounter (visit_date, medical_record_id, diagnosis, notes, treatment)
+VALUES
+    ('2025-04-20', 1, 'Cảm cúm', 'Hắt hơi, sổ mũi', 'Uống thuốc cảm 5 ngày'),
+    ('2025-04-21', 1, 'Viêm amidan', 'Sưng đỏ họng', 'Kháng sinh 7 ngày'),
+    ('2025-04-22', 2, 'Đau bụng', 'Đau nhẹ quanh rốn', 'Ăn uống dễ tiêu'),
+    ('2025-04-23', 2, 'Tiêu chảy', 'Đi ngoài phân lỏng', 'Bù nước và oresol'),
+    ('2025-04-24', 3, 'Sốt virus', 'Sốt cao 39 độ', 'Hạ sốt và theo dõi tại nhà'),
+    ('2025-04-25', 3, 'Đau lưng', 'Đau vùng thắt lưng', 'Nghỉ ngơi, vật lý trị liệu'),
+    ('2025-04-26', 4, 'Viêm phế quản', 'Ho có đờm', 'Kháng sinh và thuốc long đờm'),
+    ('2025-04-27', 4, 'Chấn thương mềm', 'Sưng nề nhẹ', 'Chườm lạnh, giảm đau'),
+    ('2025-04-28', 5, 'Đau dạ dày', 'Đau thượng vị', 'Uống thuốc dạ dày, ăn uống hợp lý'),
+    ('2025-04-29', 5, 'Mệt mỏi', 'Chán ăn, mất ngủ', 'Bổ sung vitamin và nghỉ ngơi');
+
+
