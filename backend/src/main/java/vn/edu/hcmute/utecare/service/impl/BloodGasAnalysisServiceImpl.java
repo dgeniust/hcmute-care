@@ -30,15 +30,12 @@ public class BloodGasAnalysisServiceImpl implements BloodGasAnalysisService {
     public BloodGasAnalysisResponse createBloodGasAnalysis(BloodGasAnalysisRequest request) {
         log.info("Tạo BloodGasAnalysis mới: {}", request);
 
-        // Chuyển đổi request sang entity
         BloodGasAnalysis bloodGasAnalysis = bloodGasAnalysisMapper.toEntity(request);
 
-        // Thiết lập thông tin Encounter
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         bloodGasAnalysis.setEncounter(encounter);
 
-        // Gán các thông tin từ request vào các trường của BloodGasAnalysis
         bloodGasAnalysis.setEvaluate(request.getEvaluate());
         bloodGasAnalysis.setNotes(request.getNotes());
         bloodGasAnalysis.setTestName(request.getTestName());
@@ -50,10 +47,8 @@ public class BloodGasAnalysisServiceImpl implements BloodGasAnalysisService {
         bloodGasAnalysis.setPatientPosition(request.getPatientPosition());
 
 
-        // Lưu entity vào cơ sở dữ liệu
         BloodGasAnalysis saved = bloodGasAnalysisRepository.save(bloodGasAnalysis);
 
-        // Chuyển entity đã lưu sang DTO để trả về
         return bloodGasAnalysisMapper.toResponse(saved);
     }
 
@@ -97,15 +92,12 @@ public class BloodGasAnalysisServiceImpl implements BloodGasAnalysisService {
         BloodGasAnalysis bloodGasAnalysis = bloodGasAnalysisRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy BloodGasAnalysis với id: " + id));
 
-        // Cập nhật entity từ request
         bloodGasAnalysisMapper.updateEntity(bloodGasAnalysis, request);
 
-        // Thiết lập thông tin Encounter
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         bloodGasAnalysis.setEncounter(encounter);
 
-        // Lưu và trả về entity đã cập nhật
         bloodGasAnalysisRepository.save(bloodGasAnalysis);
         return bloodGasAnalysisMapper.toResponse(bloodGasAnalysis);
     }
