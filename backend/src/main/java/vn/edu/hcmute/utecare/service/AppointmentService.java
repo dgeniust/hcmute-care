@@ -1,17 +1,21 @@
 package vn.edu.hcmute.utecare.service;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import vn.edu.hcmute.utecare.dto.request.CreateAppointmentRequest;
 import vn.edu.hcmute.utecare.dto.response.AppointmentDetailResponse;
 import vn.edu.hcmute.utecare.dto.response.AppointmentSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.DoctorAppointmentResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
+import vn.edu.hcmute.utecare.model.Appointment;
 import vn.edu.hcmute.utecare.util.enumeration.AppointmentStatus;
 
 import java.time.LocalDate;
 
 public interface AppointmentService {
     AppointmentDetailResponse createAppointment(CreateAppointmentRequest request);
+
+    Appointment confirmAppointment(Long appointmentId);
 
     AppointmentDetailResponse getAppointmentById(Long id);
 

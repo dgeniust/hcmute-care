@@ -15,6 +15,7 @@ import vn.edu.hcmute.utecare.dto.response.AppointmentDetailResponse;
 import vn.edu.hcmute.utecare.dto.response.AppointmentSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
+import vn.edu.hcmute.utecare.mapper.AppointmentMapper;
 import vn.edu.hcmute.utecare.service.AppointmentService;
 import vn.edu.hcmute.utecare.util.enumeration.AppointmentStatus;
 
@@ -96,6 +97,15 @@ public class AppointmentController {
                 .status(HttpStatus.OK.value())
                 .data(appointmentService.getAllAppointments(pageable, appointment, medicalRecord, patient))
                 .message("Search appointments successfully")
+                .build();
+    }
+
+    @GetMapping("/test")
+    public ResponseData<AppointmentDetailResponse> test(@RequestParam Long appointmentId) {
+        return ResponseData.<AppointmentDetailResponse>builder()
+                .status(HttpStatus.OK.value())
+                .data(AppointmentMapper.INSTANCE.toDetailResponse(appointmentService.confirmAppointment(appointmentId)))
+                .message("Test appointment API")
                 .build();
     }
 }

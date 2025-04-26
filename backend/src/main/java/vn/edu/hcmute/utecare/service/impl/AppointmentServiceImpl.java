@@ -80,8 +80,8 @@ public class AppointmentServiceImpl implements AppointmentService {
                     .appointment(appointment)
                     .schedule(schedule)
                     .status(AppointmentStatus.PENDING)
-                    .waitingNumber(calculateWaitingNumber(schedule.getId()))
-                    .ticketCode(generateTicketCode())
+//                    .waitingNumber(calculateWaitingNumber(schedule.getId()))
+//                    .ticketCode(generateTicketCode())
                     .build();
             appointmentSchedules.add(appointmentSchedule);
 
@@ -91,7 +91,30 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setSchedules(appointmentSchedules);
         scheduleRepository.saveAll(schedules);
 
+        //return vnPay_url cũn được tùy Đạt
+
         return AppointmentMapper.INSTANCE.toDetailResponse(appointmentRepository.save(appointment));
+    }
+
+    @Transactional
+    @Override
+    public Appointment confirmAppointment(Long appointmentId) {
+        log.info("Confirming appointment with ID: {}", appointmentId);
+
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+
+        for (AppointmentSchedule schedule : appointment.getSchedules()) {
+            if (schedule.getStatus() != AppointmentStatus.PENDING) {
+                throw new ConflictException("Cannot update a confirmed appointment");
+            }
+            schedule.setWaitingNumber(calculateWaitingNumber(schedule.getSchedule()));
+            schedule.setTicketCode(generateTicketCode());
+            schedule.setStatus(AppointmentStatus.CONFIRMED);
+        }
+        appointmentScheduleRepository.saveAll(appointment.getSchedules());
+
+        return appointment;
     }
 
     private String generateTicketCode() {
@@ -101,8 +124,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         return String.format("HC%04d%06d", timestamp, Math.abs(randomPart));
     }
 
-    private Integer calculateWaitingNumber(Long scheduleId) {
-        return appointmentScheduleRepository.countByScheduleId(scheduleId) + 1;
+    private Integer calculateWaitingNumber(Schedule schedule) {
+        return appointmentScheduleRepository.countByScheduleAndStatus(schedule, AppointmentStatus.CONFIRMED) + 1;
     }
 
     private void checkDuplicateTimeSlots(List<Schedule> schedules) {
