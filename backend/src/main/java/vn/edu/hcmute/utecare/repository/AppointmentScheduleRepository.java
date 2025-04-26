@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.edu.hcmute.utecare.model.AppointmentSchedule;
+import vn.edu.hcmute.utecare.model.Schedule;
 import vn.edu.hcmute.utecare.util.enumeration.AppointmentStatus;
 
 import java.time.LocalDate;
@@ -36,4 +37,6 @@ public interface AppointmentScheduleRepository extends JpaRepository<Appointment
     List<AppointmentSchedule> findByAppointmentMedicalRecordIdAndScheduleIdIn(Long medicalRecordId, List<Long> scheduleIds);
 
     Integer countByScheduleId(Long scheduleId);
+
+    Integer countByScheduleAndStatus(Schedule schedule, AppointmentStatus status);
 }
