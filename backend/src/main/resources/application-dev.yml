@@ -44,3 +44,13 @@ jwt:
   resetToken:
     secretKey: ${JWT_RESET_TOKEN_SECRET_KEY:FsWyO8iaNYbbs0sPDeSjWpJtL45yVIkmFIcnqC2VUmmB}
     expiry: 3600000  # 1h
+
+payment:
+  vnPay:
+    url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+    tmnCode: OZBXYTBE
+    secretKey: IKQZSOT3POWN3QECH31Y7P78BLDWZ6XG
+    returnUrl: http://localhost:8080/api/v1/payment/vnpay-callback
+    version: 2.1.0
+    command: pay
+    orderType: other
