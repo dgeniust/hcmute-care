@@ -11,10 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.CreateAppointmentRequest;
-import vn.edu.hcmute.utecare.dto.response.AppointmentDetailResponse;
-import vn.edu.hcmute.utecare.dto.response.AppointmentSummaryResponse;
-import vn.edu.hcmute.utecare.dto.response.PageResponse;
-import vn.edu.hcmute.utecare.dto.response.ResponseData;
+import vn.edu.hcmute.utecare.dto.response.*;
 import vn.edu.hcmute.utecare.mapper.AppointmentMapper;
 import vn.edu.hcmute.utecare.service.AppointmentService;
 import vn.edu.hcmute.utecare.util.enumeration.AppointmentStatus;
@@ -39,12 +36,12 @@ public class AppointmentController {
                 .build();
     }
 
-    @PutMapping("/{id}/status")
-    public ResponseData<AppointmentDetailResponse> updateAppointmentStatus(
+    @PatchMapping("appointment-schedule/{id}/status")
+    public ResponseData<DoctorAppointmentResponse> updateAppointmentStatus(
             @PathVariable("id") Long id,
             @RequestParam AppointmentStatus status) {
         log.info("Updating appointment status for ID: {} to {}", id, status);
-        return ResponseData.<AppointmentDetailResponse>builder()
+        return ResponseData.<DoctorAppointmentResponse>builder()
                 .status(HttpStatus.OK.value())
                 .data(appointmentService.updateAppointmentStatus(id, status))
                 .message("Update appointment status successfully")
