@@ -17,9 +17,11 @@ public interface AppointmentService {
 
     Appointment confirmAppointment(Long appointmentId);
 
+     Appointment cancelAppointment(Long appointmentId);
+
     AppointmentDetailResponse getAppointmentById(Long id);
 
-    AppointmentDetailResponse updateAppointmentStatus(Long id, AppointmentStatus status);
+    DoctorAppointmentResponse updateAppointmentStatus(Long appointmentId, AppointmentStatus status);
 
     PageResponse<AppointmentSummaryResponse> getAllAppointments(Long medicalRecordId, int page, int size, String sort, String direction);
 

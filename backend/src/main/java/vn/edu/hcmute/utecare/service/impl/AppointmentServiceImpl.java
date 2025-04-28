@@ -80,8 +80,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                     .appointment(appointment)
                     .schedule(schedule)
                     .status(AppointmentStatus.PENDING)
-//                    .waitingNumber(calculateWaitingNumber(schedule.getId()))
-//                    .ticketCode(generateTicketCode())
                     .build();
             appointmentSchedules.add(appointmentSchedule);
 
@@ -115,6 +113,49 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentScheduleRepository.saveAll(appointment.getSchedules());
 
         return appointment;
+    }
+
+    @Transactional
+    @Override
+    public Appointment cancelAppointment(Long appointmentId) {
+        log.info("Cancelling appointment with ID: {}", appointmentId);
+
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+
+        List<Schedule> schedules = new ArrayList<>();
+        for (AppointmentSchedule schedule : appointment.getSchedules()) {
+            if (schedule.getStatus() == AppointmentStatus.CANCELLED) {
+                throw new ConflictException("Cannot update a cancelled appointment");
+            }
+            schedule.setStatus(AppointmentStatus.CANCELLED);
+            schedule.getSchedule().setBookedSlots(schedule.getSchedule().getBookedSlots() - 1);
+            schedules.add(schedule.getSchedule());
+        }
+        scheduleRepository.saveAll(schedules);
+        appointmentScheduleRepository.saveAll(appointment.getSchedules());
+
+        return appointment;
+    }
+
+    @Transactional
+    @Override
+    public DoctorAppointmentResponse updateAppointmentStatus(Long appointmentId, AppointmentStatus status) {
+        log.info("Updating appointment status with ID: {}, new status: {}", appointmentId, status);
+
+        AppointmentSchedule appointmentSchedule = appointmentScheduleRepository.findById(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+
+        if (appointmentSchedule.getStatus() == AppointmentStatus.CANCELLED) {
+            throw new ConflictException("Cannot update a cancelled appointment");
+        }
+        if (appointmentSchedule.getStatus() == AppointmentStatus.COMPLETED) {
+            throw new ConflictException("Cannot update a completed appointment");
+        }
+        appointmentSchedule.setStatus(status);
+        appointmentScheduleRepository.save(appointmentSchedule);
+
+        return AppointmentScheduleMapper.INSTANCE.toDoctorAppointmentResponse(appointmentSchedule);
     }
 
     private String generateTicketCode() {
@@ -164,26 +205,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
         return AppointmentMapper.INSTANCE.toDetailResponse(appointment);
-    }
-
-    @Override
-    public AppointmentDetailResponse updateAppointmentStatus(Long id, AppointmentStatus status) {
-        log.info("Updating appointment with ID: {}", id);
-
-        AppointmentSchedule appointmentSchedule = appointmentScheduleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
-
-        if (appointmentSchedule.getStatus() == AppointmentStatus.CANCELLED) {
-            throw new ConflictException("Cannot update a cancelled appointment");
-        }
-        if (appointmentSchedule.getStatus() == AppointmentStatus.COMPLETED) {
-            throw new ConflictException("Cannot update a completed appointment");
-        }
-        appointmentSchedule.setStatus(status);
-        appointmentScheduleRepository.save(appointmentSchedule);
-
-
-        return AppointmentMapper.INSTANCE.toDetailResponse(appointmentSchedule.getAppointment());
     }
 
     @Override
