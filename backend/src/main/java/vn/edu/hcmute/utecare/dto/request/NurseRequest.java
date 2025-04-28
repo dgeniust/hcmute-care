@@ -38,4 +38,7 @@ public class NurseRequest {
 
     @NotEmpty(message = "qualification must not be null")
     private String qualification;
+
+    @Min(value = 1, message = "medicalSpecialtyId must be greater than 0")
+    private Integer medicalSpecialtyId;
 }

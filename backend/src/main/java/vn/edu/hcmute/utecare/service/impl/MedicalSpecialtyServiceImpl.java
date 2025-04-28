@@ -6,13 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.MedicalSpecialtyRequest;
-import vn.edu.hcmute.utecare.dto.response.DoctorResponse;
 import vn.edu.hcmute.utecare.dto.response.MedicalSpecialtyResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
-import vn.edu.hcmute.utecare.mapper.DoctorMapper;
 import vn.edu.hcmute.utecare.mapper.MedicalSpecialtyMapper;
-import vn.edu.hcmute.utecare.model.Doctor;
 import vn.edu.hcmute.utecare.model.MedicalSpecialty;
 import vn.edu.hcmute.utecare.repository.DoctorRepository;
 import vn.edu.hcmute.utecare.repository.MedicalSpecialtyRepository;
@@ -88,36 +85,6 @@ public class MedicalSpecialtyServiceImpl implements MedicalSpecialtyService {
                 .totalPages(medicalSpecialtyPage.getTotalPages())
                 .totalElements(medicalSpecialtyPage.getTotalElements())
                 .content(medicalSpecialtyPage.getContent().stream().map(MedicalSpecialtyMapper.INSTANCE::toResponse).toList())
-                .build();
-    }
-
-    @Override
-    public PageResponse<DoctorResponse> getDoctorsByMedicalSpecialtyId(Integer id, int page, int size, String sort, String direction) {
-        log.info("Fetching doctors for medical specialty with id: {}", id);
-        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-
-        Page<Doctor> doctorPage = doctorRepository.findByMedicalSpecialty_Id(id, pageable);
-        return PageResponse.<DoctorResponse>builder()
-                .currentPage(page)
-                .pageSize(size)
-                .totalPages(doctorPage.getTotalPages())
-                .totalElements(doctorPage.getTotalElements())
-                .content(doctorPage.getContent().stream().map(DoctorMapper.INSTANCE::toResponse).toList())
-                .build();
-    }
-
-    @Override
-    public PageResponse<DoctorResponse> searchDoctorsByMedicalSpecialtyId(Integer id, String keyword, int page, int size, String sort, String direction) {
-        log.info("Searching doctors for medical specialty with id: {} and keyword: {}", id, keyword);
-        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-
-        Page<Doctor> doctorPage = doctorRepository.searchDoctorsByMedicalSpecialty(id, keyword, pageable);
-        return PageResponse.<DoctorResponse>builder()
-                .currentPage(page)
-                .pageSize(size)
-                .totalPages(doctorPage.getTotalPages())
-                .totalElements(doctorPage.getTotalElements())
-                .content(doctorPage.getContent().stream().map(DoctorMapper.INSTANCE::toResponse).toList())
                 .build();
     }
 }

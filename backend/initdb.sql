@@ -1,4 +1,3 @@
-
 create table tbl_medical_specialty
 (
     id    int auto_increment
@@ -251,14 +250,32 @@ create table tbl_emg
         foreign key (id) references tbl_neuro_test (id)
 );
 
+create table tbl_notification
+(
+    is_read    bit                                                       null,
+    created_at datetime(6)                                               null,
+    id         bigint auto_increment
+        primary key,
+    updated_at datetime(6)                                               null,
+    user_id    bigint                                                    null,
+    content    varchar(255)                                              null,
+    title      varchar(255)                                              null,
+    type       enum ('APPOINTMENT', 'PAYMENT', 'PRESCRIPTION', 'SYSTEM') null,
+    constraint FK17xlvi4d2o1r18carkq5kmd3c
+        foreign key (user_id) references tbl_user (id)
+);
+
 create table tbl_nurse
 (
-    id            bigint       not null
+    medical_specialty_id int          null,
+    id                   bigint       not null
         primary key,
-    position      varchar(255) null,
-    qualification varchar(255) null,
+    position             varchar(255) null,
+    qualification        varchar(255) null,
     constraint FKhnbwxio26a4qllnx2ben331r0
-        foreign key (id) references tbl_user (id)
+        foreign key (id) references tbl_user (id),
+    constraint FKkuk4sauxai6rpm16j8h0vfh83
+        foreign key (medical_specialty_id) references tbl_medical_specialty (id)
 );
 
 create table tbl_payment
@@ -354,13 +371,13 @@ create table tbl_schedule
 
 create table tbl_appointment_schedule
 (
-    waiting_number int                                                            null,
-    appointment_id bigint                                                         null,
+    waiting_number int                                                                null,
+    appointment_id bigint                                                             null,
     id             bigint auto_increment
         primary key,
-    schedule_id    bigint                                                         null,
-    ticket_code    varchar(255)                                                   null,
-    status         enum ('CANCELLED', 'COMPLETE', 'CONFIRMED', 'NO_SHOW', 'PENDING') null,
+    schedule_id    bigint                                                             null,
+    ticket_code    varchar(255)                                                       null,
+    status         enum ('CANCELLED', 'COMPLETED', 'CONFIRMED', 'NO_SHOW', 'PENDING') null,
     constraint UKmlqgrayuwg4ixbicgn71imy31
         unique (ticket_code),
     constraint FK4jldfjsyb8yov62w0cck4d8p1
@@ -412,7 +429,6 @@ create table tbl_post_image
 
 ALTER TABLE tbl_schedule
 ADD CONSTRAINT chk_doctor_schedule_slots CHECK (booked_slots <= max_slots);
-
 
 -- Modified INSERT statements for tbl_time_slot with explicit IDs
 INSERT INTO tbl_time_slot (id, start_time, end_time) VALUES
@@ -1268,33 +1284,58 @@ INSERT INTO tbl_user (id, date_of_birth, address, email, full_name, nation, phon
 (2250, '1990-10-12', '150 Khu Điều Dưỡng K, Q.BT', 'nurse2250@example.com', 'Dương Thị Ánh', 'Việt Nam', '0922002250', 'FEMALE');
 
 -- === Insert Nurse specific info (tbl_nurse) ===
-INSERT INTO tbl_nurse (id, position, qualification) VALUES
-(2201, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2202, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2203, 'Điều dưỡng trưởng', 'Cử nhân Điều dưỡng'), (2204, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'),
-(2205, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'), (2206, 'Điều dưỡng chuyên khoa', 'Chứng chỉ Gây mê hồi sức'),
-(2207, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2208, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2209, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2210, 'Điều dưỡng trưởng Ca', 'Cử nhân Điều dưỡng'),
-(2211, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2212, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2213, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2214, 'Điều dưỡng chuyên khoa', 'Chứng chỉ Hồi sức cấp cứu'),
-(2215, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'), (2216, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'),
-(2217, 'Điều dưỡng trưởng Khoa', 'Thạc sĩ Điều dưỡng'), (2218, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2219, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2220, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2221, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2222, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2223, 'Điều dưỡng chuyên khoa', 'Chứng chỉ Chăm sóc Nhi'), (2224, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'),
-(2225, 'Điều dưỡng trưởng Ca', 'Cử nhân Điều dưỡng'), (2226, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'),
-(2227, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'), (2228, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'),
-(2229, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'), (2230, 'Điều dưỡng trưởng', 'Cử nhân Điều dưỡng'),
-(2231, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2232, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2233, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2234, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2235, 'Điều dưỡng chuyên khoa', 'Chứng chỉ Tim mạch'), (2236, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'),
-(2237, 'Điều dưỡng trưởng Khoa', 'Thạc sĩ Điều dưỡng'), (2238, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2239, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2240, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2241, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2242, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'),
-(2243, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'), (2244, 'Điều dưỡng chuyên khoa', 'Chứng chỉ Ung bướu'),
-(2245, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'), (2246, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'),
-(2247, 'Điều dưỡng trưởng Ca', 'Cử nhân Điều dưỡng'), (2248, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng'),
-(2249, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng'), (2250, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng');
 
+INSERT INTO tbl_nurse (id, position, qualification, medical_specialty_id) VALUES
+(2201, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 1),
+(2202, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 1),
+(2203, 'Điều dưỡng trưởng', 'Cử nhân Điều dưỡng', 2),
+(2204, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 2),
+(2205, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 3),
+(2206, 'Điều dưỡng chuyên khoa', 'Chứng chỉ Gây mê hồi sức', 3),
+(2207, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 4),
+(2208, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 4),
+(2209, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 5),
+(2210, 'Điều dưỡng trưởng Ca', 'Cử nhân Điều dưỡng', 5),
+(2211, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 6),
+(2212, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 6),
+(2213, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 7),
+(2214, 'Điều dưỡng chuyên khoa', 'Chứng chỉ Hồi sức cấp cứu', 7),
+(2215, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 8),
+(2216, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 8),
+(2217, 'Điều dưỡng trưởng Khoa', 'Thạc sĩ Điều dưỡng', 9),
+(2218, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 9),
+(2219, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 10),
+(2220, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 10),
+(2221, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 1),
+(2222, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 1),
+(2223, 'Điều dưỡng chuyên khoa', 'Chứng chỉ Chăm sóc Nhi', 2),
+(2224, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 1),
+(2225, 'Điều dưỡng trưởng Ca', 'Cử nhân Điều dưỡng', 3),
+(2226, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 1),
+(2227, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 4),
+(2228, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 1),
+(2229, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 5),
+(2230, 'Điều dưỡng trưởng', 'Cử nhân Điều dưỡng', 1),
+(2231, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 6),
+(2232, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 1),
+(2233, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 7),
+(2234, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 1),
+(2235, 'Điều dưỡng chuyên khoa', 'Chứng chỉ Tim mạch', 8),
+(2236, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 1),
+(2237, 'Điều dưỡng trưởng Khoa', 'Thạc sĩ Điều dưỡng', 9),
+(2238, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 1),
+(2239, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 10),
+(2240, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 1),
+(2241, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 1),
+(2242, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 19),
+(2243, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 2),
+(2244, 'Điều dưỡng chuyên khoa', 'Chứng chỉ Ung bướu', 11),
+(2245, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 12),
+(2246, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 16),
+(2247, 'Điều dưỡng trưởng Ca', 'Cử nhân Điều dưỡng', 13),
+(2248, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 17),
+(2249, 'Điều dưỡng viên', 'Cử nhân Điều dưỡng', 14),
+(2250, 'Điều dưỡng viên', 'Cao đẳng Điều dưỡng', 18);
 
 -- === Insert Accounts for Nurses (tbl_account) ===
 -- WARNING: Plain text password '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW' - INSECURE!

@@ -21,7 +21,7 @@ public class Staff extends User {
     @Enumerated(EnumType.STRING)
     private StaffRole staffRole;
 
-    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<Post> posts = new HashSet<>();
 

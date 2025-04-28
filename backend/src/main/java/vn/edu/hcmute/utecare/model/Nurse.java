@@ -1,8 +1,6 @@
 package vn.edu.hcmute.utecare.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -19,4 +17,8 @@ public class Nurse extends User {
 
     @Column(name = "qualification")
     private String qualification;
+
+    @ManyToOne
+    @JoinColumn(name = "medical_specialty_id", referencedColumnName = "id")
+    private MedicalSpecialty medicalSpecialty;
 }

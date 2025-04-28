@@ -258,7 +258,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                         .content(appointmentPage.getContent().stream().map(AppointmentMapper.INSTANCE::toSummaryResponse).toList())
                         .build();
             } else {
-                // Use Specifications for simple Appointment search
+                // Use Specifications for a simple Appointment search
                 AppointmentSpecificationsBuilder builder = new AppointmentSpecificationsBuilder();
                 Pattern pattern = Pattern.compile(SEARCH_SPEC_OPERATOR);
 

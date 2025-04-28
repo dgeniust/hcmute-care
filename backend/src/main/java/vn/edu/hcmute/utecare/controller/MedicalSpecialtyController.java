@@ -8,11 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.MedicalSpecialtyRequest;
-import vn.edu.hcmute.utecare.dto.response.DoctorResponse;
-import vn.edu.hcmute.utecare.dto.response.MedicalSpecialtyResponse;
-import vn.edu.hcmute.utecare.dto.response.PageResponse;
-import vn.edu.hcmute.utecare.dto.response.ResponseData;
+import vn.edu.hcmute.utecare.dto.response.*;
+import vn.edu.hcmute.utecare.service.DoctorService;
 import vn.edu.hcmute.utecare.service.MedicalSpecialtyService;
+import vn.edu.hcmute.utecare.service.NurseService;
 
 @RestController
 @RequestMapping("/api/v1/medical-specialties")
@@ -21,6 +20,8 @@ import vn.edu.hcmute.utecare.service.MedicalSpecialtyService;
 @Slf4j(topic = "MEDICAL_SPECIALTY_CONTROLLER")
 public class MedicalSpecialtyController {
     private final MedicalSpecialtyService medicalSpecialtyService;
+    private final DoctorService doctorService;
+    private final NurseService nurseService;
 
     @GetMapping("/{id}")
     @Operation(summary = "Get medical specialty by ID", description = "Retrieve a medical specialty by its ID")
@@ -111,7 +112,7 @@ public class MedicalSpecialtyController {
         return ResponseData.<PageResponse<DoctorResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctors retrieved successfully")
-                .data(medicalSpecialtyService.getDoctorsByMedicalSpecialtyId(id, page, size, sort, direction))
+                .data(doctorService.getDoctorsByMedicalSpecialtyId(id, page, size, sort, direction))
                 .build();
     }
 
@@ -128,7 +129,40 @@ public class MedicalSpecialtyController {
         return ResponseData.<PageResponse<DoctorResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Doctors search completed successfully")
-                .data(medicalSpecialtyService.searchDoctorsByMedicalSpecialtyId(id, keyword, page, size, sort, direction))
+                .data(doctorService.searchDoctorsByMedicalSpecialtyId(id, keyword, page, size, sort, direction))
+                .build();
+    }
+
+    @GetMapping("/{id}/nurses")
+    @Operation(summary = "Get nurses by medical specialty ID", description = "Retrieve a paginated list of nurses for a specific medical specialty")
+    public ResponseData<PageResponse<NurseResponse>> getNursesByMedicalSpecialtyId(
+            @PathVariable("id") Integer id,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction) {
+        log.info("Get nurses by medical specialty ID request: id={}, page={}, size={}, sort={}, direction={}", id, page, size, sort, direction);
+        return ResponseData.<PageResponse<NurseResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Nurses retrieved successfully")
+                .data(nurseService.getNursesByMedicalSpecialtyId(id, page, size, sort, direction))
+                .build();
+    }
+
+    @GetMapping("/{id}/nurses/search")
+    @Operation(summary = "Search nurses by medical specialty ID", description = "Search nurses by keyword for a specific medical specialty")
+    public ResponseData<PageResponse<NurseResponse>> searchNursesByMedicalSpecialtyId(
+            @PathVariable("id") Integer id,
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction) {
+        log.info("Search nurses by medical specialty ID request: id={}, keyword={}, page={}, size={}, sort={}, direction={}", id, keyword, page, size, sort, direction);
+        return ResponseData.<PageResponse<NurseResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Nurses search completed successfully")
+                .data(nurseService.searchNursesByMedicalSpecialtyId(id, keyword, page, size, sort, direction))
                 .build();
     }
 }
