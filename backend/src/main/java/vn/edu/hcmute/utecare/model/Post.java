@@ -31,7 +31,7 @@ public class Post {
     private LocalDate doc;
 
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<PostImage> postImages = new HashSet<>();
 

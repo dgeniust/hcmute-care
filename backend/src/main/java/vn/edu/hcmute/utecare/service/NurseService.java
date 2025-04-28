@@ -12,4 +12,8 @@ public interface NurseService {
     void deleteNurse(Long id);
     PageResponse<NurseResponse> getAllNurses(int page, int size, String sort, String direction);
     PageResponse<NurseResponse> searchNurses(String keyword, int page, int size, String sort, String direction);
+
+    PageResponse<NurseResponse> getNursesByMedicalSpecialtyId(Integer medicalSpecialtyId, int page, int size, String sort, String direction);
+
+    PageResponse<NurseResponse> searchNursesByMedicalSpecialtyId(Integer medicalSpecialtyId, String keyword, int page, int size, String sort, String direction);
 }

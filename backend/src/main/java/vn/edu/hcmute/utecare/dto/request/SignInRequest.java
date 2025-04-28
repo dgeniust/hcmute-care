@@ -13,9 +13,4 @@ public class SignInRequest {
 
     @NotBlank(message = "password must be not null")
     private String password;
-
-    @EnumValue(name = "platform", enumClass = Platform.class)
-    private String platform;
-
-    private String deviceToken;
 }

@@ -40,55 +40,55 @@ public class PreFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("{} {}", request.getMethod(), request.getRequestURI());
+        if ("websocket".equalsIgnoreCase(request.getHeader("Upgrade")) || request.getRequestURI().equals("/ws")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         final String authHeader = request.getHeader(AUTHORIZATION);
-        if (StringUtils.hasLength(authHeader) && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
+        if (!StringUtils.hasText(authHeader) || !authHeader.startsWith("Bearer ")) {
+            log.info("Header Authorization bị thiếu hoặc không hợp lệ");
+            filterChain.doFilter(request, response);
+            return;
+        }
+        String token = authHeader.substring(7);
             log.info("token: {}...", token.substring(0, 15));
             String username = "";
             try {
                 username = jwtService.extractUsername(token, TokenType.ACCESS_TOKEN);
                 log.info("username: {}", username);
-
-                // Kiểm tra token hết hạn
-                if (jwtService.isTokenExpired(token, TokenType.ACCESS_TOKEN)) {
-                    throw new AccessDeniedException("Token has expired");
+                if (StringUtils.hasText(username) && SecurityContextHolder.getContext().getAuthentication() == null){
+                    UserDetails user = userDetailsService.loadUserByUsername(username);
+                    Object blacklistedTokenObj = redisService.get(AT_BLACKLIST_PREFIX + username);
+                    if (blacklistedTokenObj instanceof String blacklistedToken && blacklistedToken.equals(token)) {
+                        throw new AccessDeniedException("Token has been revoked");
+                    }
+                    // Kiểm tra token hết hạn
+                    if (jwtService.isValid(token, TokenType.ACCESS_TOKEN, user)) {
+                        SecurityContext context = SecurityContextHolder.createEmptyContext();
+                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        context.setAuthentication(authentication);
+                        SecurityContextHolder.setContext(context);
+                    }
                 }
-
-                // Kiểm tra token trong blacklist
-                String blacklistedToken = (String) redisService.get(AT_BLACKLIST_PREFIX + username);
-                if (blacklistedToken != null && blacklistedToken.equals(token)) {
-                    throw new AccessDeniedException("Token has been revoked");
-                }
-
             } catch (MalformedJwtException e) {
                 log.error("Malformed JWT token: {}", e.getMessage());
-                response.setStatus(HttpServletResponse.SC_OK);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(errorResponse(request.getRequestURI(), "Invalid or malformed JWT token"));
                 return;
             } catch (AccessDeniedException e) {
                 log.info(e.getMessage());
-                response.setStatus(HttpServletResponse.SC_OK);
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(errorResponse(request.getRequestURI(), e.getMessage()));
                 return;
             }
-
-            UserDetails user = userDetailsService.loadUserByUsername(username);
-
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            context.setAuthentication(authToken);
-            SecurityContextHolder.setContext(context);
-
-            filterChain.doFilter(request, response);
-        } else {
-            filterChain.doFilter(request, response);
-        }
+        filterChain.doFilter(request, response);
     }
 
     private String errorResponse(String url, String message) {

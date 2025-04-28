@@ -138,6 +138,36 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    public PageResponse<DoctorResponse> getDoctorsByMedicalSpecialtyId(Integer id, int page, int size, String sort, String direction) {
+        log.info("Fetching doctors for medical specialty with id: {}", id);
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+
+        Page<Doctor> doctorPage = doctorRepository.findByMedicalSpecialty_Id(id, pageable);
+        return PageResponse.<DoctorResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalPages(doctorPage.getTotalPages())
+                .totalElements(doctorPage.getTotalElements())
+                .content(doctorPage.getContent().stream().map(DoctorMapper.INSTANCE::toResponse).toList())
+                .build();
+    }
+
+    @Override
+    public PageResponse<DoctorResponse> searchDoctorsByMedicalSpecialtyId(Integer id, String keyword, int page, int size, String sort, String direction) {
+        log.info("Searching doctors for medical specialty with id: {} and keyword: {}", id, keyword);
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+
+        Page<Doctor> doctorPage = doctorRepository.searchDoctorsByMedicalSpecialty(id, keyword, pageable);
+        return PageResponse.<DoctorResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalPages(doctorPage.getTotalPages())
+                .totalElements(doctorPage.getTotalElements())
+                .content(doctorPage.getContent().stream().map(DoctorMapper.INSTANCE::toResponse).toList())
+                .build();
+    }
+
+    @Override
     public PageResponse<ScheduleSummaryResponse> getDoctorAvailability(Long doctorId, LocalDate date, int page, int size, String sort, String direction) {
         log.info("Retrieving doctor availability with doctorId: {}, date: {}, page={}, size={}, sort={}, direction={}",
                 doctorId, date, page, size, sort, direction);

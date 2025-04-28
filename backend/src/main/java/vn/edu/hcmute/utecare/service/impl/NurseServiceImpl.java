@@ -15,8 +15,10 @@ import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.AccountMapper;
 import vn.edu.hcmute.utecare.mapper.NurseMapper;
 import vn.edu.hcmute.utecare.model.Account;
+import vn.edu.hcmute.utecare.model.MedicalSpecialty;
 import vn.edu.hcmute.utecare.model.Nurse;
 import vn.edu.hcmute.utecare.repository.AccountRepository;
+import vn.edu.hcmute.utecare.repository.MedicalSpecialtyRepository;
 import vn.edu.hcmute.utecare.repository.NurseRepository;
 import vn.edu.hcmute.utecare.service.NurseService;
 import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
@@ -28,6 +30,7 @@ import vn.edu.hcmute.utecare.util.enumeration.Role;
 @Slf4j
 public class NurseServiceImpl implements NurseService {
     private final AccountRepository accountRepository;
+    private final MedicalSpecialtyRepository medicalSpecialtyRepository;
     private final NurseRepository nurseRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -41,6 +44,11 @@ public class NurseServiceImpl implements NurseService {
         }
 
         Nurse nurse = NurseMapper.INSTANCE.toEntity(request);
+        if (request.getMedicalSpecialtyId() != null) {
+            MedicalSpecialty specialty = medicalSpecialtyRepository.findById(request.getMedicalSpecialtyId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Medical specialty not found with ID: " + request.getMedicalSpecialtyId()));
+            nurse.setMedicalSpecialty(specialty);
+        }
         Nurse savedNurse = nurseRepository.save(nurse);
         Account account = Account.builder()
                 .password(passwordEncoder.encode(request.getPhone()))
@@ -73,6 +81,11 @@ public class NurseServiceImpl implements NurseService {
         }
 
         NurseMapper.INSTANCE.updateEntity(request, nurse);
+        if (request.getMedicalSpecialtyId() != null) {
+            MedicalSpecialty specialty = medicalSpecialtyRepository.findById(request.getMedicalSpecialtyId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Medical specialty not found with ID: " + request.getMedicalSpecialtyId()));
+            nurse.setMedicalSpecialty(specialty);
+        }
         return NurseMapper.INSTANCE.toResponse(nurseRepository.save(nurse));
     }
 
@@ -107,6 +120,36 @@ public class NurseServiceImpl implements NurseService {
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<Nurse> nursePage = nurseRepository.searchNurses(keyword, pageable);
+        return PageResponse.<NurseResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalPages(nursePage.getTotalPages())
+                .totalElements(nursePage.getTotalElements())
+                .content(nursePage.getContent().stream().map(NurseMapper.INSTANCE::toResponse).toList())
+                .build();
+    }
+
+    @Override
+    public PageResponse<NurseResponse> getNursesByMedicalSpecialtyId(Integer medicalSpecialtyId, int page, int size, String sort, String direction) {
+        log.info("Fetching nurses for medical specialty with id: {}", medicalSpecialtyId);
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+
+        Page<Nurse> nursePage = nurseRepository.findByMedicalSpecialty_Id(medicalSpecialtyId, pageable);
+        return PageResponse.<NurseResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalPages(nursePage.getTotalPages())
+                .totalElements(nursePage.getTotalElements())
+                .content(nursePage.getContent().stream().map(NurseMapper.INSTANCE::toResponse).toList())
+                .build();
+    }
+
+    @Override
+    public PageResponse<NurseResponse> searchNursesByMedicalSpecialtyId(Integer medicalSpecialtyId, String keyword, int page, int size, String sort, String direction) {
+        log.info("Searching nurses for medical specialty with id: {}, keyword: {}", medicalSpecialtyId, keyword);
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+
+        Page<Nurse> nursePage = nurseRepository.searchNursesByMedicalSpecialty(medicalSpecialtyId, keyword, pageable);
         return PageResponse.<NurseResponse>builder()
                 .currentPage(page)
                 .pageSize(size)

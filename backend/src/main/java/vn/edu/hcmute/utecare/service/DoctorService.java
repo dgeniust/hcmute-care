@@ -20,5 +20,9 @@ public interface DoctorService {
 
     PageResponse<DoctorResponse> searchDoctors(String keyword, int page, int size, String sort, String direction);
 
+    PageResponse<DoctorResponse> getDoctorsByMedicalSpecialtyId(Integer id, int page, int size, String sort, String direction);
+
+    PageResponse<DoctorResponse> searchDoctorsByMedicalSpecialtyId(Integer id, String keyword, int page, int size, String sort, String direction);
+
     PageResponse<ScheduleSummaryResponse> getDoctorAvailability(Long id, LocalDate date, int page, int size, String sort, String direction);
 }
