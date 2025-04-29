@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.CreateCustomerRequest;
 import vn.edu.hcmute.utecare.dto.request.CustomerRequest;
 import vn.edu.hcmute.utecare.dto.response.CustomerResponse;
+import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.CustomerService;
@@ -98,6 +99,23 @@ public class CustomerController {
                 .status(HttpStatus.OK.value())
                 .message("Customers search completed successfully")
                 .data(customerService.searchCustomers(keyword, membership, page, size, sort, direction))
+                .build();
+    }
+
+    @GetMapping("/{id}/medicalRecords")
+    @Operation(summary = "Get all medical records", description = "Retrieve a paginated list of all medical records for a specific customer")
+    public ResponseData<PageResponse<MedicalRecordResponse>> getAllMedicalRecords(
+            @PathVariable("id") Long customerId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction) {
+        log.info("Get all medical records request for customerId={}: page={}, size={}, sort={}, direction={}",
+                customerId, page, size, sort, direction);
+        return ResponseData.<PageResponse<MedicalRecordResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Medical records retrieved successfully")
+                .data(customerService.getAllMedicalRecords(customerId, page, size, sort, direction))
                 .build();
     }
 }

@@ -16,7 +16,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_functional_tests")
-@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class FunctionalTests extends MedicalTest implements Serializable {
 
     @Column(name = "test_name")
