@@ -9,13 +9,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.CustomerRequest;
 import vn.edu.hcmute.utecare.dto.response.CustomerResponse;
+import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.CustomerMapper;
+import vn.edu.hcmute.utecare.mapper.MedicalRecordMapper;
 import vn.edu.hcmute.utecare.model.Account;
 import vn.edu.hcmute.utecare.model.Customer;
+import vn.edu.hcmute.utecare.model.MedicalRecord;
 import vn.edu.hcmute.utecare.repository.AccountRepository;
 import vn.edu.hcmute.utecare.repository.CustomerRepository;
+import vn.edu.hcmute.utecare.repository.MedicalRecordRepository;
 import vn.edu.hcmute.utecare.service.CustomerService;
 import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
 import vn.edu.hcmute.utecare.util.enumeration.Membership;
@@ -30,6 +34,8 @@ public class CustomerServiceImpl implements CustomerService {
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MedicalRecordRepository medicalRecordRepository;
+
 
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -124,4 +130,32 @@ public class CustomerServiceImpl implements CustomerService {
                 .content(customerPage.getContent().stream().map(CustomerMapper.INSTANCE::toResponse).toList())
                 .build();
     }
+
+    @Override
+    public PageResponse<MedicalRecordResponse> getAllMedicalRecords(Long customerId, int page, int size, String sort, String direction) {
+        log.info("Fetching all medical records for customerId: {} with pagination: page={}, size={}, sort={}, direction={}",
+                customerId, page, size, sort, direction);
+
+        // Kiểm tra xem customer có tồn tại không
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
+
+        // Tạo pageable cho phân trang
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+
+        // Lấy danh sách medical records theo customerId
+        Page<MedicalRecord> medicalRecordPage = medicalRecordRepository.findByCustomerId(customerId, pageable);
+
+        // Chuyển đổi sang response
+        return PageResponse.<MedicalRecordResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalPages(medicalRecordPage.getTotalPages())
+                .totalElements(medicalRecordPage.getTotalElements())
+                .content(medicalRecordPage.getContent().stream()
+                        .map(MedicalRecordMapper.INSTANCE::toResponse)
+                        .toList())
+                .build();
+    }
+
 }
