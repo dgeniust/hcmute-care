@@ -1,5 +1,6 @@
 package vn.edu.hcmute.utecare.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,17 +9,27 @@ import vn.edu.hcmute.utecare.dto.request.EncounterRequest;
 import vn.edu.hcmute.utecare.dto.response.EncounterResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.EncounterMapper;
+import vn.edu.hcmute.utecare.mapper.MedicalRecordMapper;
+import vn.edu.hcmute.utecare.mapper.PrescriptionMapper;
 import vn.edu.hcmute.utecare.model.Encounter;
+import vn.edu.hcmute.utecare.model.MedicalRecord;
+import vn.edu.hcmute.utecare.model.Prescription;
 import vn.edu.hcmute.utecare.repository.EncounterRepository;
+import vn.edu.hcmute.utecare.repository.MedicalRecordRepository;
+import vn.edu.hcmute.utecare.repository.PrescriptionRepository;
 import vn.edu.hcmute.utecare.service.EncounterService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class EncounterServiceImpl implements EncounterService {
     private final EncounterRepository encounterRepository;
+    private final MedicalRecordRepository medicalRecordRepository;
+    private final PrescriptionRepository prescriptionRepository;
 //    @Override
 //    public EncounterResponse getEncounterPrescription(Long prescriptionId) {
 //        log.info("Get encounter prescription with request {}", prescriptionId);
@@ -58,12 +69,19 @@ public class EncounterServiceImpl implements EncounterService {
         return EncounterMapper.INSTANCE.toResponse(encounter);
     }
 
+    @Transactional(rollbackOn = Exception.class)
     @Override
     public EncounterResponse createEncounter(EncounterRequest request) {
-//        log.info("Create encounter with request {}", request);
-//        Encounter encounter = EncounterMapper.INSTANCE.toEntity(request);
-//        return EncounterMapper.INSTANCE.toResponse(encounterRepository.save(encounter));
-        return null;
+        log.info("Create encounter with request {}", request);
+        Encounter encounter = EncounterMapper.INSTANCE.toEntity(request);
+
+        MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getMedicalRecordId()).orElseThrow(() -> new ResourceNotFoundException("Medical record with id " + request.getMedicalRecordId() + " not found"));
+        encounter.setMedicalRecord(medicalRecord);
+
+        encounter.setPrescriptions(new HashSet<>());
+        Encounter savedEncounter = encounterRepository.save(encounter);
+
+        return EncounterMapper.INSTANCE.toResponse(savedEncounter);
     }
 
     @Transactional(rollbackOn = Exception.class)
@@ -73,6 +91,39 @@ public class EncounterServiceImpl implements EncounterService {
         Encounter encounter = encounterRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Encounter not found with id " + id));
         EncounterMapper.INSTANCE.update(request, encounter);
+        // Update MedicalRecord if provided
+        if (request.getMedicalRecordId() != null) {
+            MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getMedicalRecordId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Medical record with id " + request.getMedicalRecordId() + " not found"));
+            encounter.setMedicalRecord(medicalRecord);
+        }
+
+        // Update Prescriptions
+        Set<Prescription> prescriptions = new HashSet<>();
+        if (request.getPrescriptionId() != null && !request.getPrescriptionId().isEmpty()) {
+            List<Prescription> prescriptionList = prescriptionRepository.findAllById(request.getPrescriptionId());
+            if (prescriptionList.size() != request.getPrescriptionId().size()) {
+                throw new EntityNotFoundException("One or more Prescriptions not found");
+            }
+            // Clear existing prescriptions (optional, depending on your requirements)
+            encounter.getPrescriptions().forEach(prescription -> prescription.setEncounter(null));
+            encounter.getPrescriptions().clear();
+
+            // Set new prescriptions
+            for (Prescription prescription : prescriptionList) {
+                if (prescription.getEncounter() != null && !prescription.getEncounter().equals(encounter)) {
+                    throw new IllegalStateException("Prescription " + prescription.getId() + " is already associated with another Encounter");
+                }
+                prescription.setEncounter(encounter); // Set the owning side
+                prescriptions.add(prescription);
+            }
+        } else {
+            // If prescriptionId is null or empty, clear prescriptions
+            encounter.getPrescriptions().forEach(prescription -> prescription.setEncounter(null));
+            encounter.getPrescriptions().clear();
+        }
+        encounter.setPrescriptions(prescriptions);
+
         Encounter updatedEncounter = encounterRepository.save(encounter);
         return EncounterMapper.INSTANCE.toResponse(updatedEncounter);
     }

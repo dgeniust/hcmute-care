@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 public class EncounterRequest {
@@ -20,7 +21,7 @@ public class EncounterRequest {
     private String notes;
 
     @NotNull(message = "Prescription ID is required")
-    private Long prescriptionId;
+    private List<Long> prescriptionId;
 
     @NotNull(message = "Medical Record ID is required")
     private Long medicalRecordId;

@@ -71,7 +71,7 @@ public class PrescriptionController {
             return ResponseData.<List<PrescriptionItemResponse>>builder()
                     .status(HttpStatus.OK.value())
                     .message("Get all prescription items by prescription id successfully ")
-                    .data(prescriptionService.getAllPrescriptionItemsByPrescriptionItemId(id))
+                    .data(prescriptionService.getAllPrescriptionItemsByPrescriptionId(id))
                     .build();
         } catch (Exception e) {
             log.error("Error in get all prescription items by prescription id : {}", e.getMessage());
