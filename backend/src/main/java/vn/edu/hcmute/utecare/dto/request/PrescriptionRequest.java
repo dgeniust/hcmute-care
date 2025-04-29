@@ -21,4 +21,7 @@ public class PrescriptionRequest {
     //List of prescription items request (IDs, quantity, etc.)
     @NotNull(message = "Prescription items are required")
     private List<PrescriptionItemRequest> prescriptionItems;
+
+    @NotNull(message = "Encounter id is required")
+    private Long encounterId;
 }

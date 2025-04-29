@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.time.LocalDate;
 @Getter
 @Setter
@@ -19,7 +20,7 @@ public class EncounterResponse {
 
     private String notes;
 
-    private Long prescriptionId;
+    private List<Long> prescriptionId;
 
     private Long medicalRecordId;
 }

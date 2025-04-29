@@ -2121,73 +2121,6 @@ INSERT INTO tbl_schedule (id, doctor_id, date, time_slot_id, room_detail_id, max
 (539, 2175, '2025-08-21', 1, 255, 5, 0),  -- BS 2175, Sáng T5, Khung giờ 1, Phòng D401, Max 5, Đặt 4
 (540, 2176, '2025-08-21', 2, 256, 5, 0);  -- BS 2176, Sáng T5, Khung giờ 2, Phòng D402, Max 5, Đặt 5 (Full)
 
-INSERT INTO tbl_medicine (name, price, medicine_usage, strength) VALUES
-('Paracetamol 500mg', 15000.00, 'Giảm đau, hạ sốt. Uống sau ăn 6 giờ nếu cần.', '500mg'),
-('Amoxicillin 500mg', 28000.00, 'Kháng sinh điều trị nhiễm khuẩn đường hô hấp, uống 2 lần/ngày.', '500mg'),
-('Ibuprofen 400mg', 22000.00, 'Giảm đau, kháng viêm, điều trị viêm khớp. Uống mỗi 8 giờ.', '400mg'),
-('Vitamin C 1000mg', 18000.00, 'Tăng cường miễn dịch, chống oxy hóa. Uống 1 viên/ngày sau ăn.', '1000mg'),
-('Loperamide 2mg', 12000.00, 'Điều trị tiêu chảy cấp. Uống 1 viên sau mỗi lần đi tiêu lỏng.', '2mg'),
-('Cetirizine 10mg', 16000.00, 'Giảm dị ứng, nổi mề đay. Uống 1 viên/ngày vào buổi tối.', '10mg'),
-('Azithromycin 250mg', 35000.00, 'Kháng sinh điều trị nhiễm khuẩn. Uống 1 viên/ngày trong 3 ngày.', '250mg'),
-('Omeprazole 20mg', 19000.00, 'Giảm tiết axit dạ dày. Uống trước bữa sáng.', '20mg'),
-('Metformin 500mg', 25000.00, 'Điều trị tiểu đường tuýp 2. Uống 2 lần/ngày sau ăn.', '500mg'),
-('Diazepam 5mg', 21000.00, 'An thần, hỗ trợ giấc ngủ. Uống 1 viên trước khi ngủ.', '5mg'),
-('Ciprofloxacin 500mg', 38000.00, 'Kháng sinh điều trị nhiễm khuẩn đường tiết niệu. Uống 2 lần/ngày.', '500mg'),
-('Amlodipine 5mg', 25000.00, 'Điều trị tăng huyết áp. Uống 1 viên/ngày.', '5mg'),
-('Atorvastatin 20mg', 30000.00, 'Giảm cholesterol trong máu. Uống 1 viên vào buổi tối.', '20mg'),
-('Pantoprazole 40mg', 27000.00, 'Giảm tiết axit dạ dày, điều trị viêm loét dạ dày. Uống trước bữa ăn sáng.', '40mg'),
-('Levothyroxine 50mcg', 22000.00, 'Điều trị suy giáp. Uống vào buổi sáng khi bụng đói.', '50mcg'),
-('Salbutamol 100mcg', 15000.00, 'Giãn phế quản, giảm khó thở trong hen suyễn. Xịt khi cần.', '100mcg'),
-('Fluticasone 50mcg', 20000.00, 'Kháng viêm tại chỗ, điều trị viêm mũi dị ứng. Xịt mỗi bên mũi.', '50mcg'),
-('Montelukast 10mg', 28000.00, 'Dự phòng và điều trị hen suyễn. Uống 1 viên vào buổi tối.', '10mg'),
-('Losartan 50mg', 26000.00, 'Điều trị tăng huyết áp. Uống 1 viên/ngày.', '50mg'),
-('Bisoprolol 5mg', 24000.00, 'Điều trị tăng huyết áp, đau thắt ngực. Uống 1 viên/ngày.', '5mg'),
-('Furosemide 40mg', 18000.00, 'Thuốc lợi tiểu, điều trị phù. Uống theo chỉ định của bác sĩ.', '40mg'),
-('Warfarin 2mg', 35000.00, 'Thuốc chống đông máu. Uống theo chỉ định của bác sĩ.', '2mg');
-
-INSERT INTO tbl_prescription (status, issue_date) VALUES
-('RECEIVED', '2025-04-20 10:00:00'),
-('RECEIVED', '2025-04-21 14:45:00'),
-('RECEIVED', '2025-04-22 09:30:00'),
-('RECEIVED', '2025-04-23 11:15:00'),
-('CANCELLED', '2025-04-24 16:30:00'),
-('RECEIVED', '2025-04-25 08:00:00'),
-('RECEIVED', '2025-04-26 13:00:00'),
-('CANCELLED', '2025-04-27 17:45:00'),
-('RECEIVED', '2025-04-28 10:30:00'),
-('PENDING', '2025-04-29 15:15:00'),
-('CANCELLED', '2025-04-30 09:00:00'),
-('PENDING', '2025-05-01 14:00:00');
-
-# INSERT INTO tbl_prescription_item (quantity, medicine_id, prescription_id, dosage, name, unit) VALUES
-# (10, 1, 3, '1 vien/lan x 3 lan/ngay', 'Paracetamol 500mg', 'vien'),
-# (5, 2, 3, '1 vien/lan x 2 lan/ngay', 'Amoxicillin 500mg', 'vien'),
-# (15, 3, 4, '1 vien/lan x 3 lan/ngay', 'Ibuprofen 400mg', 'vien'),
-# (7, 4, 4, '1 vien/lan x 1 lan/ngay', 'Vitamin C 1000mg', 'vien'),
-# (8, 5, 5, '1 vien sau moi lan tieu chay', 'Loperamide 2mg', 'vien'),
-# (6, 6, 5, '1 vien truoc khi ngu', 'Cetirizine 10mg', 'vien'),
-# (12, 7, 6, '1 vien/ngay trong 3 ngay', 'Azithromycin 250mg', 'vien'),
-# (14, 8, 6, '1 vien truoc bua sang', 'Omeprazole 20mg', 'vien'),
-# (10, 9, 7, '1 vien/lan x 2 lan/ngay', 'Metformin 500mg', 'vien'),
-# (4, 10, 7, '1 vien truoc khi ngu', 'Diazepam 5mg', 'vien'),
-# (14, 11, 8, '1 vien/lan x 2 lan/ngay', 'Ciprofloxacin 500mg', 'vien'),
-# (30, 12, 9, '1 vien/lan x 1 lan/ngay', 'Amlodipine 5mg', 'vien'),
-# (30, 13, 9, '1 vien/lan x 1 lan/ngay', 'Atorvastatin 20mg', 'vien'),
-# (28, 14, 10, '1 vien truoc bua an sang', 'Pantoprazole 40mg', 'vien'),
-# (60, 15, 11, '1 vien vao buoi sang khi bung doi', 'Levothyroxine 50mcg', 'vien'),
-# (2, 16, 12, 'Xit khi can', 'Salbutamol 100mcg', 'lan xit'),
-# (1, 17, 3, 'Xit moi ben mui', 'Fluticasone 50mcg', 'lan xit'),
-# (30, 18, 4, '1 vien vao buoi toi', 'Montelukast 10mg', 'vien'),
-# (30, 19, 5, '1 vien/lan x 1 lan/ngay', 'Losartan 50mg', 'vien'),
-# (30, 20, 6, '1 vien/lan x 1 lan/ngay', 'Bisoprolol 5mg', 'vien'),
-# (15, 21, 7, 'Uong theo chi dinh cua bac si', 'Furosemide 40mg', 'vien'),
-# (20, 22, 8, 'Uong theo chi dinh cua bac si', 'Warfarin 2mg', 'vien'),
-# (10, 1, 9, '1 vien/lan x 3 lan/ngay', 'Paracetamol 500mg', 'vien'),
-# (7, 2, 10, '1 vien/lan x 2 lan/ngay', 'Amoxicillin 500mg', 'vien'),
-# (12, 9, 11, '1 vien/lan x 2 lan/ngay', 'Metformin 500mg', 'vien'),
-# (5, 12, 12, '1 vien/lan x 1 lan/ngay', 'Amlodipine 5mg', 'vien'),
-# (8, 14, 3, '1 vien truoc bua an sang', 'Pantoprazole 40mg', 'vien'),
-# (4, 18, 4, '1 vien vao buoi toi', 'Montelukast 10mg', 'vien');
 
 INSERT INTO tbl_patient (id, name, date_of_birth, gender, address, phone, cccd, email, nation, career) VALUES
 (1, 'Nguyễn Thị Mai', '1995-08-12', 'FEMALE', '12 Phố Huế, Quận Hai Bà Trưng, Hà Nội', '0901112233', '001195001234', 'ntmai.95@example.com', 'Việt Nam', 'Kế toán'),
@@ -2234,16 +2167,16 @@ INSERT INTO tbl_medical_record (customer_id, patient_id, barcode) VALUES
 (1020, 20, 'MR000020CDE'); -- Bệnh nhân 20 được đăng ký bởi Khách hàng 1020
 
 INSERT INTO tbl_user (id, date_of_birth, address, email, full_name, nation, phone, gender) VALUES
-    (2251, '2004-01-01', 'Đăng Văn Bi', 'bldq@gmail.com', 'Bùi Lê Đông Quân', 'Việt Nam', '0997788665', 'MALE'),
-    (2252, '2004-01-01', 'Vũng Tàu', 'ntt@gmail.com', 'Nguyễn Thành Đạt', 'Việt Nam', '0997782661', 'MALE'),
-    (2253, '2004-01-01', 'Hàn Quốc', 'cmv@gmail.com', 'Choi Minh Văn', 'Việt Nam', '0997742665', 'MALE'),
-    (2254, '2004-09-25', 'Biên Hòa', 'chien@gmail.com', 'Phạm Công Chiến', 'Việt Nam', '0979859559', 'MALE');
+(2251, '2004-01-01', 'Đăng Văn Bi', 'bldq@gmail.com', 'Bùi Lê Đông Quân', 'Việt Nam', '0997788665', 'MALE'),
+(2252, '2004-01-01', 'Vũng Tàu', 'ntt@gmail.com', 'Nguyễn Thành Đạt', 'Việt Nam', '0997782661', 'MALE'),
+(2253, '2004-01-01', 'Hàn Quốc', 'cmv@gmail.com', 'Choi Minh Văn', 'Việt Nam', '0997742665', 'MALE'),
+(2254, '2004-09-25', 'Biên Hòa', 'chien@gmail.com', 'Phạm Công Chiến', 'Việt Nam', '0979859559', 'MALE');
 
 INSERT INTO tbl_account (user_id, password, role, status) VALUES
-    (2251, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'STAFF', 'ACTIVE'),
-    (2252, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'STAFF', 'ACTIVE'),
-    (2253, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'STAFF', 'ACTIVE'),
-    (2254, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'STAFF', 'ACTIVE');
+(2251, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'STAFF', 'ACTIVE'),
+(2252, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'STAFF', 'ACTIVE'),
+(2253, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'STAFF', 'ACTIVE'),
+(2254, '$2a$10$5zVt.fbYLgqdw9Rn3.coX.xETazDmzblSKgPJtG71yUCHYWpnDoqW', 'STAFF', 'ACTIVE');
 
 INSERT INTO tbl_staff (staff_role, id) VALUES (2, 2251),
                                               (2, 2252),
@@ -2284,15 +2217,82 @@ INSERT INTO tbl_appointment_schedule (appointment_id, id, schedule_id, waiting_n
 
 INSERT INTO tbl_encounter (visit_date, medical_record_id, diagnosis, notes, treatment)
 VALUES
-    ('2025-04-20', 1, 'Cảm cúm', 'Hắt hơi, sổ mũi', 'Uống thuốc cảm 5 ngày'),
-    ('2025-04-21', 1, 'Viêm amidan', 'Sưng đỏ họng', 'Kháng sinh 7 ngày'),
-    ('2025-04-22', 2, 'Đau bụng', 'Đau nhẹ quanh rốn', 'Ăn uống dễ tiêu'),
-    ('2025-04-23', 2, 'Tiêu chảy', 'Đi ngoài phân lỏng', 'Bù nước và oresol'),
-    ('2025-04-24', 3, 'Sốt virus', 'Sốt cao 39 độ', 'Hạ sốt và theo dõi tại nhà'),
-    ('2025-04-25', 3, 'Đau lưng', 'Đau vùng thắt lưng', 'Nghỉ ngơi, vật lý trị liệu'),
-    ('2025-04-26', 4, 'Viêm phế quản', 'Ho có đờm', 'Kháng sinh và thuốc long đờm'),
-    ('2025-04-27', 4, 'Chấn thương mềm', 'Sưng nề nhẹ', 'Chườm lạnh, giảm đau'),
-    ('2025-04-28', 5, 'Đau dạ dày', 'Đau thượng vị', 'Uống thuốc dạ dày, ăn uống hợp lý'),
-    ('2025-04-29', 5, 'Mệt mỏi', 'Chán ăn, mất ngủ', 'Bổ sung vitamin và nghỉ ngơi');
+('2025-04-20', 1, 'Cảm cúm', 'Hắt hơi, sổ mũi', 'Uống thuốc cảm 5 ngày'),
+('2025-04-21', 1, 'Viêm amidan', 'Sưng đỏ họng', 'Kháng sinh 7 ngày'),
+('2025-04-22', 2, 'Đau bụng', 'Đau nhẹ quanh rốn', 'Ăn uống dễ tiêu'),
+('2025-04-23', 2, 'Tiêu chảy', 'Đi ngoài phân lỏng', 'Bù nước và oresol'),
+('2025-04-24', 3, 'Sốt virus', 'Sốt cao 39 độ', 'Hạ sốt và theo dõi tại nhà'),
+('2025-04-25', 3, 'Đau lưng', 'Đau vùng thắt lưng', 'Nghỉ ngơi, vật lý trị liệu'),
+('2025-04-26', 4, 'Viêm phế quản', 'Ho có đờm', 'Kháng sinh và thuốc long đờm'),
+('2025-04-27', 4, 'Chấn thương mềm', 'Sưng nề nhẹ', 'Chườm lạnh, giảm đau'),
+('2025-04-28', 5, 'Đau dạ dày', 'Đau thượng vị', 'Uống thuốc dạ dày, ăn uống hợp lý'),
+('2025-04-29', 5, 'Mệt mỏi', 'Chán ăn, mất ngủ', 'Bổ sung vitamin và nghỉ ngơi');
 
 
+INSERT INTO tbl_prescription (encounter_id, status, issue_date) VALUES
+(1,'RECEIVED', '2025-04-20 10:00:00'),
+(2,'RECEIVED', '2025-04-21 14:45:00'),
+(3,'RECEIVED', '2025-04-22 09:30:00'),
+(4,'RECEIVED', '2025-04-23 11:15:00'),
+(5,'CANCELLED', '2025-04-24 16:30:00'),
+(6,'RECEIVED', '2025-04-25 08:00:00'),
+(7,'RECEIVED', '2025-04-26 13:00:00'),
+(8,'CANCELLED', '2025-04-27 17:45:00'),
+(9,'RECEIVED', '2025-04-28 10:30:00'),
+(10,'PENDING', '2025-04-29 15:15:00'),
+(1,'CANCELLED', '2025-04-30 09:00:00'),
+(2,'PENDING', '2025-05-01 14:00:00');
+
+INSERT INTO tbl_prescription_item (quantity, medicine_id, prescription_id, dosage, unit) VALUES
+(10, 1, 3, '1 vien/lan x 3 lan/ngay', 'vien'),
+(5, 2, 3, '1 vien/lan x 2 lan/ngay', 'vien'),
+(15, 3, 4, '1 vien/lan x 3 lan/ngay', 'vien'),
+(7, 4, 4, '1 vien/lan x 1 lan/ngay', 'vien'),
+(8, 5, 5, '1 vien sau moi lan tieu chay', 'vien'),
+(6, 6, 5, '1 vien truoc khi ngu', 'vien'),
+(12, 7, 6, '1 vien/ngay trong 3 ngay', 'vien'),
+(14, 8, 6, '1 vien truoc bua sang', 'vien'),
+(10, 9, 7, '1 vien/lan x 2 lan/ngay', 'vien'),
+(4, 10, 7, '1 vien truoc khi ngu', 'vien'),
+(14, 11, 8, '1 vien/lan x 2 lan/ngay', 'vien'),
+(30, 12, 9, '1 vien/lan x 1 lan/ngay', 'vien'),
+(30, 13, 9, '1 vien/lan x 1 lan/ngay', 'vien'),
+(28, 14, 10, '1 vien truoc bua an sang', 'vien'),
+(60, 15, 11, '1 vien vao buoi sang khi bung doi', 'vien'),
+(2, 16, 12, 'Xit khi can', 'lan xit'),
+(1, 17, 3, 'Xit moi ben mui', 'lan xit'),
+(30, 18, 4, '1 vien vao buoi toi', 'vien'),
+(30, 19, 5, '1 vien/lan x 1 lan/ngay', 'vien'),
+(30, 20, 6, '1 vien/lan x 1 lan/ngay', 'vien'),
+(15, 21, 7, 'Uong theo chi dinh cua bac si',  'vien'),
+(20, 22, 8, 'Uong theo chi dinh cua bac si', 'vien'),
+(10, 1, 9, '1 vien/lan x 3 lan/ngay', 'vien'),
+(7, 2, 10, '1 vien/lan x 2 lan/ngay', 'vien'),
+(12, 9, 11, '1 vien/lan x 2 lan/ngay', 'vien'),
+(5, 12, 12, '1 vien/lan x 1 lan/ngay', 'vien'),
+(8, 14, 3, '1 vien truoc bua an sang',  'vien'),
+(4, 18, 4, '1 vien vao buoi toi',  'vien');
+
+INSERT INTO tbl_medicine (name, price, medicine_usage, strength) VALUES
+('Paracetamol 500mg', 15000.00, 'Giảm đau, hạ sốt. Uống sau ăn 6 giờ nếu cần.', '500mg'),
+('Amoxicillin 500mg', 28000.00, 'Kháng sinh điều trị nhiễm khuẩn đường hô hấp, uống 2 lần/ngày.', '500mg'),
+('Ibuprofen 400mg', 22000.00, 'Giảm đau, kháng viêm, điều trị viêm khớp. Uống mỗi 8 giờ.', '400mg'),
+('Vitamin C 1000mg', 18000.00, 'Tăng cường miễn dịch, chống oxy hóa. Uống 1 viên/ngày sau ăn.', '1000mg'),
+('Loperamide 2mg', 12000.00, 'Điều trị tiêu chảy cấp. Uống 1 viên sau mỗi lần đi tiêu lỏng.', '2mg'),
+('Cetirizine 10mg', 16000.00, 'Giảm dị ứng, nổi mề đay. Uống 1 viên/ngày vào buổi tối.', '10mg'),
+('Azithromycin 250mg', 35000.00, 'Kháng sinh điều trị nhiễm khuẩn. Uống 1 viên/ngày trong 3 ngày.', '250mg'),
+('Omeprazole 20mg', 19000.00, 'Giảm tiết axit dạ dày. Uống trước bữa sáng.', '20mg'),
+('Metformin 500mg', 25000.00, 'Điều trị tiểu đường tuýp 2. Uống 2 lần/ngày sau ăn.', '500mg'),
+('Diazepam 5mg', 21000.00, 'An thần, hỗ trợ giấc ngủ. Uống 1 viên trước khi ngủ.', '5mg'),
+('Ciprofloxacin 500mg', 38000.00, 'Kháng sinh điều trị nhiễm khuẩn đường tiết niệu. Uống 2 lần/ngày.', '500mg'),
+('Amlodipine 5mg', 25000.00, 'Điều trị tăng huyết áp. Uống 1 viên/ngày.', '5mg'),
+('Atorvastatin 20mg', 30000.00, 'Giảm cholesterol trong máu. Uống 1 viên vào buổi tối.', '20mg'),
+('Pantoprazole 40mg', 27000.00, 'Giảm tiết axit dạ dày, điều trị viêm loét dạ dày. Uống trước bữa ăn sáng.', '40mg'),
+('Levothyroxine 50mcg', 22000.00, 'Điều trị suy giáp. Uống vào buổi sáng khi bụng đói.', '50mcg'),
+('Salbutamol 100mcg', 15000.00, 'Giãn phế quản, giảm khó thở trong hen suyễn. Xịt khi cần.', '100mcg'),
+('Fluticasone 50mcg', 20000.00, 'Kháng viêm tại chỗ, điều trị viêm mũi dị ứng. Xịt mỗi bên mũi.', '50mcg'),
+('Montelukast 10mg', 28000.00, 'Dự phòng và điều trị hen suyễn. Uống 1 viên vào buổi tối.', '10mg'),
+('Losartan 50mg', 26000.00, 'Điều trị tăng huyết áp. Uống 1 viên/ngày.', '50mg'),
+('Bisoprolol 5mg', 24000.00, 'Điều trị tăng huyết áp, đau thắt ngực. Uống 1 viên/ngày.', '5mg'),
+('Furosemide 40mg', 18000.00, 'Thuốc lợi tiểu, điều trị phù. Uống theo chỉ định của bác sĩ.', '40mg'),
+('Warfarin 2mg', 35000.00, 'Thuốc chống đông máu. Uống theo chỉ định của bác sĩ.', '2mg');

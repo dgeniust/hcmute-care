@@ -9,11 +9,14 @@ import vn.edu.hcmute.utecare.dto.request.PrescriptionItemRequest;
 import vn.edu.hcmute.utecare.dto.response.PrescriptionItemResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.PrescriptionItemMapper;
+import vn.edu.hcmute.utecare.model.Medicine;
 import vn.edu.hcmute.utecare.model.PrescriptionItem;
+import vn.edu.hcmute.utecare.repository.MedicineRepository;
 import vn.edu.hcmute.utecare.repository.PrescriptionItemRepository;
 import vn.edu.hcmute.utecare.service.PrescriptionItemService;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -21,11 +24,15 @@ import java.util.List;
 @Slf4j
 public class PrescriptionItemServiceImpl implements PrescriptionItemService {
     private final PrescriptionItemRepository prescriptionItemRepository;
+    private final MedicineRepository medicineRepository;
 
     @Override
     public PrescriptionItemResponse addPrescriptionItem(@RequestBody @Valid PrescriptionItemRequest request) {
         log.info("Add prescription item by request{}", request);
         PrescriptionItem prescriptionItem = PrescriptionItemMapper.INSTANCE.toEntity(request);
+        Medicine medicine = medicineRepository.findById(request.getMedicineId())
+                .orElseThrow(() -> new ResourceNotFoundException("Medicine not found with id " + request.getMedicineId()));
+        prescriptionItem.setMedicine(medicine);
         return PrescriptionItemMapper.INSTANCE.toResponse(prescriptionItemRepository.save(prescriptionItem));
     }
 

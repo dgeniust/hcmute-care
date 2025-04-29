@@ -5,9 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class PrescriptionItemRequest {
-    @NotNull(message = "name is required")
-    private String name;
-
     @NotNull(message = "dosage is required")
     private String dosage;
 
@@ -20,6 +17,4 @@ public class PrescriptionItemRequest {
     @NotNull(message = "Medicine ID is required")
     private Long medicineId;
 
-    @NotNull(message = "Prescription ID is required")
-    private Long prescriptionId;
 }

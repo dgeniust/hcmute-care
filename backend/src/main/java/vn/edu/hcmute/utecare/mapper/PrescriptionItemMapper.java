@@ -17,6 +17,7 @@ public interface PrescriptionItemMapper {
 
     @Mapping(target = "medicineId", source = "medicine.id")
     @Mapping(target = "prescriptionId", source = "prescription.id")
+    @Mapping(target = "name", source = "medicine.name")
     PrescriptionItemResponse toResponse(PrescriptionItem prescriptionItem);
 
     void update(PrescriptionItemRequest request, @MappingTarget PrescriptionItem prescriptionItem);
