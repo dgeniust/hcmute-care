@@ -39,7 +39,7 @@ public class AppConfig {
                 registry.addMapping("/**")
                         .allowedMethods("*")
                         .allowedHeaders("*")
-                        .allowedOrigins("http://localhost:5173", "http://localhost:3000")
+                        .allowedOrigins("http://localhost:5173")
                         .allowCredentials(true)
                         .maxAge(3600);
             }

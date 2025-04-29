@@ -1,11 +1,13 @@
 package vn.edu.hcmute.utecare.service;
 
 import vn.edu.hcmute.utecare.dto.request.ScheduleRequest;
+import vn.edu.hcmute.utecare.dto.response.ScheduleInfoResponse;
 import vn.edu.hcmute.utecare.dto.response.ScheduleResponse;
 import vn.edu.hcmute.utecare.dto.response.ScheduleSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface ScheduleService {
     ScheduleSummaryResponse createDoctorSchedule(ScheduleRequest request);
@@ -19,4 +21,6 @@ public interface ScheduleService {
     PageResponse<ScheduleSummaryResponse> getAllDoctorSchedules(int page, int size, String sort, String direction);
 
     PageResponse<ScheduleSummaryResponse> searchDoctorSchedules(Long doctorId, LocalDate date, Integer timeSlotId, int page, int size, String sort, String direction);
+
+    List<ScheduleInfoResponse> getAvailableSchedulesByMedicalSpecialtyId(Integer id, LocalDate date);
 }

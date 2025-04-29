@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.MedicalSpecialtyRequest;
@@ -12,6 +13,10 @@ import vn.edu.hcmute.utecare.dto.response.*;
 import vn.edu.hcmute.utecare.service.DoctorService;
 import vn.edu.hcmute.utecare.service.MedicalSpecialtyService;
 import vn.edu.hcmute.utecare.service.NurseService;
+import vn.edu.hcmute.utecare.service.ScheduleService;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/medical-specialties")
@@ -20,6 +25,7 @@ import vn.edu.hcmute.utecare.service.NurseService;
 @Slf4j(topic = "MEDICAL_SPECIALTY_CONTROLLER")
 public class MedicalSpecialtyController {
     private final MedicalSpecialtyService medicalSpecialtyService;
+    private final ScheduleService scheduleService;
     private final DoctorService doctorService;
     private final NurseService nurseService;
 
@@ -165,4 +171,18 @@ public class MedicalSpecialtyController {
                 .data(nurseService.searchNursesByMedicalSpecialtyId(id, keyword, page, size, sort, direction))
                 .build();
     }
+
+    @GetMapping("/{id}/schedule/available")
+    @Operation(summary = "Get available schedules for medical specialty", description = "Retrieve available schedules for a specific medical specialty")
+    public ResponseData<List<ScheduleInfoResponse>> getAvailableSchedulesByMedicalSpecialtyId(
+            @PathVariable("id") Integer id,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+            log.info("Get available schedules for medical specialty request: id={}, date={}", id, date);
+            return ResponseData.<List<ScheduleInfoResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Available schedules retrieved successfully")
+                .data(scheduleService.getAvailableSchedulesByMedicalSpecialtyId(id, date))
+                .build();
+    }
+
 }

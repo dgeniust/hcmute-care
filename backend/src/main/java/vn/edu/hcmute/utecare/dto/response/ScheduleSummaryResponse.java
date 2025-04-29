@@ -18,6 +18,8 @@ public class ScheduleSummaryResponse {
 
     private Gender doctorGender;
 
+    private String doctorQualification;
+
     private String roomName;
 
     private LocalDate date;
