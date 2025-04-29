@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestParam;
 import vn.edu.hcmute.utecare.model.Schedule;
 
 import java.time.LocalDate;
@@ -42,4 +43,15 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
 
     List<Schedule> findAllByIdIn(List<Long> scheduleIds);
+
+    @Query("SELECT s FROM Schedule s " +
+            "LEFT JOIN FETCH s.doctor d " +
+            "LEFT JOIN FETCH s.timeSlot t " +
+            "WHERE d.medicalSpecialty.id = :medicalSpecialtyId " +
+            "AND (:date IS NULL OR s.date = :date) " +
+            "AND s.bookedSlots < s.maxSlots " +
+            "ORDER BY s.doctor.id, t.startTime")
+    List<Schedule> findAvailableSchedulesByMedicalSpecialtyId(
+            @Param("medicalSpecialtyId") Integer medicalSpecialtyId,
+            @Param("date") LocalDate date);
 }

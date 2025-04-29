@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.ScheduleRequest;
+import vn.edu.hcmute.utecare.dto.response.ScheduleInfoResponse;
 import vn.edu.hcmute.utecare.dto.response.ScheduleResponse;
 import vn.edu.hcmute.utecare.dto.response.ScheduleSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
@@ -24,6 +25,7 @@ import vn.edu.hcmute.utecare.service.ScheduleService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -144,5 +146,12 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .totalElements(schedulePage.getTotalElements())
                 .content(schedulePage.getContent().stream().map(ScheduleMapper.INSTANCE::toSummaryResponse).toList())
                 .build();
+    }
+
+    @Override
+    public List<ScheduleInfoResponse> getAvailableSchedulesByMedicalSpecialtyId(Integer id, LocalDate date) {
+        log.info("Fetching available schedules by medical specialty id: {} and date: {}", id, date);
+        List<Schedule> schedules = scheduleRepository.findAvailableSchedulesByMedicalSpecialtyId(id, date);
+        return schedules.stream().map(ScheduleMapper.INSTANCE::toInfoResponse).toList();
     }
 }

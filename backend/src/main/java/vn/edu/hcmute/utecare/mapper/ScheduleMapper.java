@@ -24,6 +24,7 @@ public interface ScheduleMapper {
 
     @Mapping(target = "doctorName", source = "doctor.fullName")
     @Mapping(target = "doctorGender", source = "doctor.gender")
+    @Mapping(target = "doctorQualification", source = "doctor.qualification")
     @Mapping(target = "startTime", source = "timeSlot.startTime")
     @Mapping(target = "endTime", source = "timeSlot.endTime")
     @Mapping(target = "roomName", source = "roomDetail.name")
