@@ -17,5 +17,4 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
     Page<Staff> searchStaff(String keyword, Pageable pageable);
 
     boolean existsByPhone(String phone);
-    long count();
 }
