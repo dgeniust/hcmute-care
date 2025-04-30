@@ -5,16 +5,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.DoctorRequest;
 import vn.edu.hcmute.utecare.dto.response.*;
-import vn.edu.hcmute.utecare.service.AppointmentService;
 import vn.edu.hcmute.utecare.service.DoctorService;
-import vn.edu.hcmute.utecare.util.enumeration.AppointmentStatus;
+import vn.edu.hcmute.utecare.service.ScheduleService;
 
 import java.time.LocalDate;
+
 
 @RestController
 @RequestMapping("/api/v1/doctors")
@@ -23,7 +22,7 @@ import java.time.LocalDate;
 @Slf4j(topic = "DOCTOR_CONTROLLER")
 public class DoctorController {
     private final DoctorService doctorService;
-    private final AppointmentService appointmentService;
+    private final ScheduleService scheduleService;
 
     @GetMapping("/{id}")
     @Operation(summary = "Get doctor by ID", description = "Retrieve a doctor by their ID")
@@ -102,39 +101,21 @@ public class DoctorController {
                 .build();
     }
 
-    @GetMapping("/{id}/schedule/availability")
-    @Operation(summary = "Get doctor schedule availability", description = "Retrieve available schedules for a doctor")
-    public ResponseData<PageResponse<ScheduleSummaryResponse>> getDoctorScheduleAvailability(
+    @GetMapping("/{id}/schedules")
+    @Operation(summary = "Get doctor's schedules", description = "Retrieve a paginated list of schedules for a specific doctor")
+    public ResponseData<PageResponse<ScheduleResponse>> getDoctorSchedules(
             @PathVariable("id") Long id,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sort,
             @RequestParam(defaultValue = "asc") String direction) {
-        log.info("Get schedule availability request for doctor id: {}, date: {}", id, date);
-        return ResponseData.<PageResponse<ScheduleSummaryResponse>>builder()
+        log.info("Get doctor's schedules request for doctor ID: {}", id);
+        return ResponseData.<PageResponse<ScheduleResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("Doctor schedule availability retrieved successfully")
-                .data(doctorService.getDoctorAvailability(id, date, page, size, sort, direction))
-                .build();
-    }
-
-    @GetMapping("/{id}/appointments")
-    @Operation(summary = "Get doctor appointments", description = "Retrieve appointments for a doctor")
-    public ResponseData<PageResponse<DoctorAppointmentResponse>> getDoctorAppointments(
-            @PathVariable("id") Long id,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sort,
-            @RequestParam(defaultValue = "asc") String direction,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-            @RequestParam(required = false) AppointmentStatus status,
-            @RequestParam(required = false) Integer timeSlotId) {
-        log.info("Get doctor appointments request for doctor id: {}, date: {}", id, date);
-        return ResponseData.<PageResponse<DoctorAppointmentResponse>>builder()
-                .status(HttpStatus.OK.value())
-                .message("Doctor appointments retrieved successfully")
-                .data(appointmentService.getAllAppointments(id, page, size, sort, direction, date, status, timeSlotId))
+                .message("Doctor's schedules retrieved successfully")
+                .data(scheduleService.getDoctorSchedules(id, startDate, endDate, page, size, sort, direction))
                 .build();
     }
 }

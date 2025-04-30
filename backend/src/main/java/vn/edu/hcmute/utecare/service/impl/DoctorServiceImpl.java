@@ -9,25 +9,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.DoctorRequest;
 import vn.edu.hcmute.utecare.dto.response.DoctorResponse;
-import vn.edu.hcmute.utecare.dto.response.ScheduleSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.DoctorMapper;
-import vn.edu.hcmute.utecare.mapper.ScheduleMapper;
 import vn.edu.hcmute.utecare.model.Account;
 import vn.edu.hcmute.utecare.model.Doctor;
-import vn.edu.hcmute.utecare.model.Schedule;
 import vn.edu.hcmute.utecare.model.MedicalSpecialty;
 import vn.edu.hcmute.utecare.repository.AccountRepository;
 import vn.edu.hcmute.utecare.repository.DoctorRepository;
-import vn.edu.hcmute.utecare.repository.ScheduleRepository;
 import vn.edu.hcmute.utecare.repository.MedicalSpecialtyRepository;
 import vn.edu.hcmute.utecare.service.DoctorService;
 import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.Role;
 
-import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +31,6 @@ public class DoctorServiceImpl implements DoctorService {
     private final AccountRepository accountRepository;
     private final DoctorRepository doctorRepository;
     private final MedicalSpecialtyRepository medicalSpecialtyRepository;
-    private final ScheduleRepository scheduleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -164,30 +158,6 @@ public class DoctorServiceImpl implements DoctorService {
                 .totalPages(doctorPage.getTotalPages())
                 .totalElements(doctorPage.getTotalElements())
                 .content(doctorPage.getContent().stream().map(DoctorMapper.INSTANCE::toResponse).toList())
-                .build();
-    }
-
-    @Override
-    public PageResponse<ScheduleSummaryResponse> getDoctorAvailability(Long doctorId, LocalDate date, int page, int size, String sort, String direction) {
-        log.info("Retrieving doctor availability with doctorId: {}, date: {}, page={}, size={}, sort={}, direction={}",
-                doctorId, date, page, size, sort, direction);
-
-        // Kiểm tra xem doctorId có tồn tại không (tùy chọn)
-        if (!doctorRepository.existsById(doctorId)) {
-            throw new ResourceNotFoundException("Doctor not found with ID: " + doctorId);
-        }
-
-        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-
-        // Gọi repository để lấy các lịch trình còn trống
-        Page<Schedule> schedulePage = scheduleRepository.findAvailableSchedules(doctorId, date, pageable);
-
-        return PageResponse.<ScheduleSummaryResponse>builder()
-                .currentPage(page)
-                .pageSize(size)
-                .totalPages(schedulePage.getTotalPages())
-                .totalElements(schedulePage.getTotalElements())
-                .content(schedulePage.getContent().stream().map(ScheduleMapper.INSTANCE::toSummaryResponse).toList())
                 .build();
     }
 }

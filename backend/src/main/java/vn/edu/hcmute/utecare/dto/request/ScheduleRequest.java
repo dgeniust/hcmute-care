@@ -5,30 +5,26 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
-import vn.edu.hcmute.utecare.util.validator.ValidSlots;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
-@ValidSlots
 public class ScheduleRequest {
-    @NotNull(message = "doctorId must not be null")
-    private Long doctorId;
-
-    @NotNull(message = "roomId must not be null")
-    private Integer roomId;
-
-    @NotNull(message = "timeSlotId must not be null")
-    private Integer timeSlotId;
-
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @FutureOrPresent
     private LocalDate date;
 
-    @Min(value = 1, message = "maxSlots must be greater than 0")
+    @Min(value = 1, message = "maxSlots must be greater than or equal to 1")
     private Integer maxSlots;
 
-    @Min(value = 0, message = "bookedSlots must be greater than or equal to 0")
-    private Integer bookedSlots;
+    @NotNull(message = "roomId must not be null")
+    private Integer roomId;
+
+    @NotNull(message = "doctorId must not be null")
+    private Long doctorId;
+
+    @NotNull(message = "timeSlotId must not be null")
+    private List<Integer> timeSlotIds;
 }

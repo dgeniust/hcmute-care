@@ -2,17 +2,12 @@ package vn.edu.hcmute.utecare.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import vn.edu.hcmute.utecare.configuration.VNPayConfig;
 import vn.edu.hcmute.utecare.dto.request.PaymentRequest;
 import vn.edu.hcmute.utecare.dto.response.PaymentResponse;
-import vn.edu.hcmute.utecare.dto.response.VNPayResponse;
-import vn.edu.hcmute.utecare.mapper.PaymentMapper;
 import vn.edu.hcmute.utecare.model.Appointment;
 import vn.edu.hcmute.utecare.model.Payment;
-import vn.edu.hcmute.utecare.repository.AppointmentRepository;
 import vn.edu.hcmute.utecare.repository.PaymentRepository;
 import vn.edu.hcmute.utecare.service.PaymentService;
 import vn.edu.hcmute.utecare.util.VNPayUtil;
@@ -20,7 +15,6 @@ import vn.edu.hcmute.utecare.util.enumeration.PaymentMethod;
 import vn.edu.hcmute.utecare.util.enumeration.PaymentStatus;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -29,12 +23,12 @@ import java.util.Map;
 public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final VNPayConfig vnpayConfig;
-    private final AppointmentRepository appointmentRepository;
+//    private final AppointmentRepository appointmentRepository;
     @Override
     public PaymentResponse createPaymentUrl(PaymentRequest request, HttpServletRequest httpServletRequest) {
 
-        Appointment appointment = appointmentRepository.findById(request.getAppointmentId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment not found"));
-
+//        Appointment appointment = appointmentRepository.findById(request.getAppointmentId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment not found"));
+            Appointment appointment = new Appointment();
 
         Payment payment = Payment.builder()
                 .appointment(appointment)
