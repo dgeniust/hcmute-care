@@ -8,9 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import vn.edu.hcmute.utecare.model.Customer;
 import vn.edu.hcmute.utecare.util.enumeration.Membership;
 
+
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     boolean existsByPhone(String phone);
-
+    long count();
 
     @Query("SELECT c FROM Customer c WHERE " +
             "c.membership IS NULL OR c.membership = :membership AND " +
