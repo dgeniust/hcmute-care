@@ -2,10 +2,13 @@ package vn.edu.hcmute.utecare.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.hcmute.utecare.dto.request.AppointmentRequest;
 import vn.edu.hcmute.utecare.dto.response.AppointmentResponse;
+import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ConflictException;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.AppointmentMapper;
@@ -18,8 +21,10 @@ import vn.edu.hcmute.utecare.repository.MedicalRecordRepository;
 import vn.edu.hcmute.utecare.repository.ScheduleSlotRepository;
 import vn.edu.hcmute.utecare.repository.TicketRepository;
 import vn.edu.hcmute.utecare.service.AppointmentService;
+import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
 
+import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,5 +92,71 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with ID: " + id));
         return AppointmentMapper.INSTANCE.toResponse(appointment);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public PageResponse<AppointmentResponse> getAppointmentByMedicalRecordId(Long medicalRecordId
+            , int page, int size, String sort, String direction) {
+        log.info("Fetching appointments for medical record with ID: {} between page: {} and size: {}", medicalRecordId, page, size);
+
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+
+        Page<Appointment> appointmentPage = appointmentRepository.findAllByMedicalRecordId(medicalRecordId, pageable);
+
+        return PageResponse.<AppointmentResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalElements(appointmentPage.getTotalElements())
+                .totalPages(appointmentPage.getTotalPages())
+                .content(appointmentPage.getContent().stream()
+                        .map(AppointmentMapper.INSTANCE::toResponse)
+                        .toList())
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public AppointmentResponse confirmAppointment(Long appointmentId) {
+        log.info("Confirming appointment with ID: {}", appointmentId);
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with ID: " + appointmentId));
+
+        for (Ticket ticket : appointment.getTickets()) {
+            if (ticket.getStatus() == TicketStatus.PENDING) {
+                ticket.setStatus(TicketStatus.CONFIRMED);
+                ticket.setTicketCode(generateTicketCode());
+                ticket.setWaitingNumber(calculateWaitingNumber(ticket));
+            }
+        }
+
+        return AppointmentMapper.INSTANCE.toResponse(appointmentRepository.save(appointment));
+    }
+
+    @Transactional
+    @Override
+    public AppointmentResponse cancelAppointment(Long appointmentId) {
+        log.info("Cancelling appointment with ID: {}", appointmentId);
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with ID: " + appointmentId));
+
+        for (Ticket ticket : appointment.getTickets()) {
+            if (ticket.getStatus() == TicketStatus.PENDING) {
+                ticket.setStatus(TicketStatus.CANCELLED);
+            }
+        }
+
+        return AppointmentMapper.INSTANCE.toResponse(appointmentRepository.save(appointment));
+    }
+
+    private String generateTicketCode() {
+        SecureRandom random = new SecureRandom();
+        long timestamp = System.currentTimeMillis() % 10_000; // 4 chữ số từ timestamp
+        long randomPart = random.nextLong() % 1_000_000; // 6 chữ số ngẫu nhiên
+        return String.format("HC%04d%06d", timestamp, Math.abs(randomPart));
+    }
+
+    private Integer calculateWaitingNumber(Ticket ticket) {
+        return ticketRepository.countByScheduleSlot_IdAndStatus(ticket.getScheduleSlot().getId(), TicketStatus.CONFIRMED) + 1;
     }
 }

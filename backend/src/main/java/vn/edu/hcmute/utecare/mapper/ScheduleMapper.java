@@ -21,17 +21,9 @@ public interface ScheduleMapper {
 
     Schedule toEntity(ScheduleRequest request);
 
-    @Mapping(target = "timeSlots", source = "scheduleSlots", qualifiedByName = "mapTimeSlots")
+    @Mapping(target = "scheduleSlots", source = "scheduleSlots")
     ScheduleInfoResponse toInfoResponse(Schedule schedule);
 
     @Mapping(target = "scheduleSlots", source = "scheduleSlots")
     ScheduleResponse toResponse(Schedule schedule);
-
-    @Named("mapTimeSlots")
-    default Set<TimeSlotResponse> mapTimeSlots(Set<ScheduleSlot> scheduleSlots) {
-        return scheduleSlots.stream()
-                .map(ScheduleSlot::getTimeSlot)
-                .map(TimeSlotMapper.INSTANCE::toResponse)
-                .collect(Collectors.toSet());
-    }
 }

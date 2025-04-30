@@ -6,10 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.AppointmentRequest;
 import vn.edu.hcmute.utecare.dto.response.AppointmentResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
@@ -31,6 +28,17 @@ public class AppointmentController {
                 .status(HttpStatus.CREATED.value())
                 .message("Appointment created successfully")
                 .data(appointmentService.createAppointment(request))
+                .build();
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get appointment by ID", description = "Retrieve an appointment by its ID")
+    public ResponseData<AppointmentResponse> getAppointmentById(@PathVariable("id") Long id) {
+        log.info("Get appointment request for ID: {}", id);
+        return ResponseData.<AppointmentResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("Appointment retrieved successfully")
+                .data(appointmentService.getAppointmentById(id))
                 .build();
     }
 }

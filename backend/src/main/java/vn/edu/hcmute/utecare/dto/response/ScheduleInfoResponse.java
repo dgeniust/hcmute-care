@@ -18,7 +18,7 @@ public class ScheduleInfoResponse {
 
     private RoomDetailResponse roomDetail;
 
-    private Set<TimeSlotResponse> timeSlots;
+    private Set<ScheduleSlotResponse> scheduleSlots;
 
     private LocalDateTime createdAt;
 

@@ -6,12 +6,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.MedicalRecordRequest;
-import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
-import vn.edu.hcmute.utecare.dto.response.PageResponse;
-import vn.edu.hcmute.utecare.dto.response.ResponseData;
+import vn.edu.hcmute.utecare.dto.response.*;
+import vn.edu.hcmute.utecare.service.AppointmentService;
 import vn.edu.hcmute.utecare.service.MedicalRecordService;
+import vn.edu.hcmute.utecare.service.TicketService;
+import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
 
 @RestController
 @RequestMapping("/api/v1/medical-records")
@@ -20,6 +22,8 @@ import vn.edu.hcmute.utecare.service.MedicalRecordService;
 @Slf4j(topic = "MEDICAL_RECORD_CONTROLLER")
 public class MedicalRecordController {
     private final MedicalRecordService medicalRecordService;
+    private final AppointmentService appointmentService;
+    private final TicketService ticketService;
 
     @PostMapping
     @Operation(summary = "Create a new medical record", description = "Creates a new medical record along with its associated patient details")
@@ -82,30 +86,40 @@ public class MedicalRecordController {
                 .build();
     }
 
-//    @GetMapping("/{id}/appointments")
-//    @Operation(summary = "Get all appointments by medical record ID", description = "Retrieves all appointments associated with a specific medical record ID")
-//    public ResponseData<PageResponse<AppointmentSummaryResponse>> getAppointmentsByMedicalRecordId(
-//            @PathVariable Long id,
-//            @RequestParam(defaultValue = "1") int page,
-//            @RequestParam(defaultValue = "10") int size,
-//            @RequestParam(defaultValue = "id") String sort,
-//            @RequestParam(defaultValue = "asc") String direction) {
-//        log.info("Get all appointments by medical record ID: {}", id);
-//        return ResponseData.<PageResponse<AppointmentSummaryResponse>>builder()
-//                .status(HttpStatus.OK.value())
-//                .message("Appointments retrieved successfully")
-//                .data(appointmentService.getAllAppointments(id, page, size, sort, direction))
-//                .build();
-//    }
-
-    @PostMapping("/{barcode}")
-    @Operation(summary = "Get medical record by barcode", description = "Get customer's medical record by CustomerId and Barcode")
-    public ResponseData<MedicalRecordResponse> getByBarcode(@PathVariable String barcode, Long customerId) {
-        log.info("Get medical record request for barcode: {}", barcode);
-        return ResponseData.<MedicalRecordResponse>builder()
+    @GetMapping("/{id}/appointments")
+    @Operation(summary = "Get appointments by medical record ID", description = "Retrieves a paginated list of appointments associated with a medical record")
+    public ResponseData<PageResponse<AppointmentResponse>> getAppointmentsByMedicalRecordId(
+            @PathVariable("id") Long medicalRecordId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction) {
+        log.info("Get appointments by medical record ID: {}, page: {}, size: {}, sort: {}, direction: {}",
+                medicalRecordId, page, size, sort, direction);
+        return ResponseData.<PageResponse<AppointmentResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("Medical record retrieved successfully")
-                .data(medicalRecordService.getByBarcodeAndCustomerId(barcode, customerId))
+                .message("Appointments retrieved successfully")
+                .data(appointmentService.getAppointmentByMedicalRecordId(medicalRecordId, page, size, sort, direction))
                 .build();
     }
+
+    @GetMapping("/{id}/tickets")
+    @Operation(summary = "Get tickets by medical record ID", description = "Retrieves a paginated list of tickets associated with a medical record")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'CUSTOMER')")
+    public ResponseData<PageResponse<TicketResponse>> getTicketsByMedicalRecordId(
+            @PathVariable("id") Long medicalRecordId,
+            @RequestParam(required = false) TicketStatus status,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction) {
+        log.info("Get tickets by medical record ID: {}, status: {}, page: {}, size: {}, sort: {}, direction: {}",
+                medicalRecordId, status, page, size, sort, direction);
+        return ResponseData.<PageResponse<TicketResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Tickets retrieved successfully")
+                .data(ticketService.getAllTicketsByMedicalRecordId(medicalRecordId, status, page, size, sort, direction))
+                .build();
+    }
+
 }
