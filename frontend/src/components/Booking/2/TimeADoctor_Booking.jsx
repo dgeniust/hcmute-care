@@ -140,7 +140,7 @@ const TimeADoctor_Booking = ({handleSlotClick}) => {
                     bordered={false}
                     defaultActiveKey={['0']}
                     expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} 
-                    iconPosition='end'/>}
+                    iconposition='end'/>}
                     expandIconPosition='end'
                     style={{
                         background: token.colorBgContainer,

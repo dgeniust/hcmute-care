@@ -100,4 +100,15 @@ public class MedicalRecordController {
                 .data(appointmentService.getAllAppointments(id, page, size, sort, direction))
                 .build();
     }
+
+    @PostMapping("/{barcode}")
+    @Operation(summary = "Get medical record by barcode", description = "Get customer's medical record by CustomerId and Barcode")
+    public ResponseData<MedicalRecordResponse> getByBarcode(@PathVariable String barcode, Long customerId) {
+        log.info("Get medical record request for barcode: {}", barcode);
+        return ResponseData.<MedicalRecordResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("Medical record retrieved successfully")
+                .data(medicalRecordService.getByBarcodeAndCustomerId(barcode, customerId))
+                .build();
+    }
 }
