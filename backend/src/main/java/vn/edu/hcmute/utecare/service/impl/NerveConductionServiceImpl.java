@@ -24,37 +24,34 @@ import java.util.stream.Collectors;
 public class NerveConductionServiceImpl implements NerveConductionService {
 
     private final NerveConductionRepository nerveConductionRepository;
-    private final NerveConductionMapper nerveConductionMapper;
 
     @Override
     public NerveConductionResponse createNerveConduction(NerveConductionRequest request) {
         log.info("Tạo NerveConduction mới: {}", request);
 
         // Chuyển đổi request sang entity
-        NerveConduction nerveConduction = nerveConductionMapper.toEntity(request);
+        NerveConduction nerveConduction = NerveConductionMapper.INSTANCE.toEntity(request);
 
         // Thiết lập thông tin Encounter
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         nerveConduction.setEncounter(encounter);
-
-        nerveConduction.setEvaluate(request.getEvaluate());
-        nerveConduction.setNotes(request.getNotes());
-        nerveConduction.setTestName(request.getTestName());
-        nerveConduction.setOrganSystem(request.getOrganSystem());
-        nerveConduction.setIsInvasive(request.getIsInvasive());
-        nerveConduction.setIsQuantitative(request.getIsQuantitative());
-        nerveConduction.setRecordDuration(request.getRecordDuration());
-        nerveConduction.setTestEnvironment(request.getTestEnvironment());
-        nerveConduction.setPatientPosition(request.getPatientPosition());
-        nerveConduction.setNerve(request.getNerve());
-        nerveConduction.setConductionSpeed(request.getConductionSpeed());
-
+        nerveConduction.setEvaluate(null);
+        nerveConduction.setNotes(null);
+        nerveConduction.setTestName(null);
+        nerveConduction.setOrganSystem(null);
+        nerveConduction.setIsInvasive(null);
+        nerveConduction.setIsQuantitative(null);
+        nerveConduction.setRecordDuration(null);
+        nerveConduction.setTestEnvironment(null);
+        nerveConduction.setPatientPosition(null);
+        nerveConduction.setNerve(null);
+        nerveConduction.setConductionSpeed(0);
         // Lưu entity vào cơ sở dữ liệu
         NerveConduction saved = nerveConductionRepository.save(nerveConduction);
 
         // Chuyển entity đã lưu sang DTO để trả về
-        return nerveConductionMapper.toResponse(saved);
+        return NerveConductionMapper.INSTANCE.toResponse(saved);
     }
 
     @Override
@@ -62,14 +59,14 @@ public class NerveConductionServiceImpl implements NerveConductionService {
         log.info("Lấy thông tin NerveConduction với id: {}", id);
         NerveConduction nerveConduction = nerveConductionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy NerveConduction với id: " + id));
-        return nerveConductionMapper.toResponse(nerveConduction);
+        return NerveConductionMapper.INSTANCE.toResponse(nerveConduction);
     }
 
     @Override
     public List<NerveConductionResponse> getAll() {
         log.info("Lấy danh sách tất cả NerveConduction");
         return nerveConductionRepository.findAll().stream()
-                .map(nerveConductionMapper::toResponse)
+                .map(NerveConductionMapper.INSTANCE::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -85,7 +82,7 @@ public class NerveConductionServiceImpl implements NerveConductionService {
                 .totalPages(nerveConductionPage.getTotalPages())
                 .totalElements(nerveConductionPage.getTotalElements())
                 .content(nerveConductionPage.getContent().stream()
-                        .map(nerveConductionMapper::toResponse)
+                        .map(NerveConductionMapper.INSTANCE::toResponse)
                         .toList())
                 .build();
     }
@@ -97,14 +94,14 @@ public class NerveConductionServiceImpl implements NerveConductionService {
         NerveConduction nerveConduction = nerveConductionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy NerveConduction với id: " + id));
 
-        nerveConductionMapper.updateEntity(nerveConduction, request);
+        NerveConductionMapper.INSTANCE.updateEntity(nerveConduction, request);
 
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         nerveConduction.setEncounter(encounter);
 
         nerveConductionRepository.save(nerveConduction);
-        return nerveConductionMapper.toResponse(nerveConduction);
+        return NerveConductionMapper.INSTANCE.toResponse(nerveConduction);
     }
 
     @Override

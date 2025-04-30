@@ -44,7 +44,6 @@ const CureInfo_Booking = () => {
     const [clickContinue, setClickContinue] = useState(false);
 
     const [api, contextHolder] = notification.useNotification();
-    const [totalPrice, setTotalPrice] = useState(0);
     const onSelectDate = (newValue) => {
         setSelectedValue(newValue)
         setStep(3)
@@ -151,17 +150,12 @@ const CureInfo_Booking = () => {
         }
     };
     
-    const result = selectedValue ? selectedValue.format('DD-MM-YYYY') : null ; // Ensure selectedValue is dayjs object
+    const result = selectedValue ? selectedValue.format('YYYY-MM-DD') : null ; // Ensure selectedValue is dayjs object
+
+    localStorage.setItem('dateBooking', result)
+
     console.log('step: ', step)
 
-    useEffect(() => {
-        const calculatedTotalPrice = bookingList.reduce((total, item) => {
-          const itemPrice = parseInt(item.price.replace(/[^\d]/g, ''), 10);
-          return total + (isNaN(itemPrice) ? 0 : itemPrice);
-        }, 0);
-    
-        setTotalPrice(calculatedTotalPrice);
-      }, [bookingList]);
     return (
         <div className='w-full h-fit min-h-[460px] border border-red-600 p-8'>
             <div className='flex flex-row gap-4 w-full h-full items-center' onClick={() => handleSetStatus('records')}>
@@ -268,10 +262,6 @@ const CureInfo_Booking = () => {
             {
                 selectedTime && (
                     <div className='flex flex-col justify-center items-center w-full h-fit p-8 '>
-                        <div className='flex flex-row justify-between items-center w-[36vw] h-fit'>
-                            <p className='text-black text-base font-bold'>Thanh toán tạm tính: </p>
-                            <p className='text-[#273c75] font-bold text-xl'>{totalPrice.toLocaleString()}đ</p>
-                        </div>
                         <div className='flex flex-row justify-center items-center w-full h-fit space-x-4'>
                             <Button type="primary" className='w-full h-fit mt-4' icon={<ForkOutlined/>} style={{width:'300px', height:'40px', fontSize:'15px', fontWeight:'bold', backgroundColor:'white', color:'blue', border:'1px solid blue'}} onClick={continueBooking}>Thêm chuyên khoa</Button>
                             <Button type="primary" className='w-full h-fit mt-4' style={{width:'200px', height:'40px', fontSize:'15px', fontWeight:'bold', backgroundColor:'blue'}} onClick={handleClickNext}>Tiếp tục</Button>

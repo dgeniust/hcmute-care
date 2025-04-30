@@ -12,7 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NerveConductionRequest {
-    @NotBlank(message = "Evaluation cannot be blank")
     private String evaluate;
 
     private String notes;
@@ -20,16 +19,12 @@ public class NerveConductionRequest {
     @NotNull(message = "Encounter ID cannot be null")
     private Long encounterId;
 
-    @NotBlank(message = "Test Environment cannot be blank")
     private String testEnvironment;
 
-    @NotBlank(message = "Patient Position cannot be blank")
     private String patientPosition;
 
-    @NotBlank(message = "Test name cannot be blank")
     private String testName;
 
-    @NotBlank(message = "Organ system cannot be blank")
     private String organSystem;
 
     private Boolean isInvasive;
@@ -38,7 +33,6 @@ public class NerveConductionRequest {
 
     private Integer recordDuration;
 
-    @NotBlank(message = "Nerve cannot be blank")
     private String nerve;
 
     private Float conductionSpeed;

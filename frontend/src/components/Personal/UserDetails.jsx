@@ -1,15 +1,16 @@
+import dayjs from "dayjs";
 const UserDetails = ({ modalContent }) => {
     const details = [
-      { label: 'Họ tên', value: modalContent?.name },
-      { label: 'Mã người bệnh', value: modalContent?.patientId }, // Giả sử có patientId
-      { label: 'Ngày sinh', value: modalContent?.dob },
-      { label: 'Giới tính', value: modalContent?.gender },
-      { label: 'CMND/Passport', value: modalContent?.cmnd },
-      { label: 'Quốc gia', value: modalContent?.nation },
-      { label: 'Nghề nghiệp', value: modalContent?.job },
-      { label: 'Số điện thoại', value: modalContent?.phone },
-      { label: 'Email', value: modalContent?.email },
-      { label: 'Địa chỉ', value: modalContent?.address },
+      { label: 'Họ tên', value: modalContent?.patient.name },
+      { label: 'Mã người bệnh', value: modalContent?.barcode }, // Giả sử có patientId
+      { label: 'Ngày sinh', value: dayjs(modalContent?.patient.dob).format('YYYY-MM-DD') },
+      { label: 'Giới tính', value: modalContent?.patient.gender === 'MALE' ? 'Nam' : "Nữ" },
+      { label: 'CMND/Passport', value: modalContent?.patient.cccd },
+      { label: 'Quốc gia', value: modalContent?.patient.nation },
+      { label: 'Nghề nghiệp', value: modalContent?.patient.career },
+      { label: 'Số điện thoại', value: modalContent?.patient.phone },
+      { label: 'Email', value: modalContent?.patient.email },
+      { label: 'Địa chỉ', value: modalContent?.patient.address },
     ];
   
     return (

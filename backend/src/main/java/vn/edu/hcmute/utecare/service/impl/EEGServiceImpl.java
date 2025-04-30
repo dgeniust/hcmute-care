@@ -26,30 +26,31 @@ import java.util.stream.Collectors;
 public class EEGServiceImpl implements EEGService {
 
     private final EEGRepository eegRepository;
-    private final EEGMapper eegMapper;
 
     @Override
     public EEGResponse createEEG(EEGRequest request) {
         log.info("Tạo EEG mới: {}", request);
 
-        EEG eeg = eegMapper.toEntity(request);
+        EEG eeg = EEGMapper.INSTANCE.toEntity(request);
 
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         eeg.setEncounter(encounter);
+        eeg.setEvaluate(null);
+        eeg.setNotes(null);
+        eeg.setTestName(null);
+        eeg.setOrganSystem(null);
+        eeg.setIsInvasive(null);
+        eeg.setIsQuantitative(null);
+        eeg.setRecordDuration(null);
+        eeg.setChannels(null);
+        eeg.setImage(null);
+        eeg.setDetectSeizure(false);
 
-        eeg.setEvaluate(request.getEvaluate());
-        eeg.setNotes(request.getNotes());
-        eeg.setTestName(request.getTestName());
-        eeg.setOrganSystem(request.getOrganSystem());
-        eeg.setIsInvasive(request.getIsInvasive());
-        eeg.setIsQuantitative(request.getIsQuantitative());
-        eeg.setRecordDuration(request.getRecordDuration());
-        eeg.setChannels(request.getChannels());
-        eeg.setDetectSeizure(request.getDetectSeizure());
+
         EEG saved = eegRepository.save(eeg);
 
-        return eegMapper.toResponse(saved);
+        return EEGMapper.INSTANCE.toResponse(saved);
     }
 
     @Override
@@ -57,14 +58,14 @@ public class EEGServiceImpl implements EEGService {
         log.info("Lấy thông tin EEG với id: {}", id);
         EEG eeg = eegRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy EEG với id: " + id));
-        return eegMapper.toResponse(eeg);
+        return EEGMapper.INSTANCE.toResponse(eeg);
     }
 
     @Override
     public List<EEGResponse> getAll() {
         log.info("Lấy danh sách tất cả EEG");
         return eegRepository.findAll().stream()
-                .map(eegMapper::toResponse)
+                .map(EEGMapper.INSTANCE::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -80,7 +81,7 @@ public class EEGServiceImpl implements EEGService {
                 .totalPages(eegPage.getTotalPages())
                 .totalElements(eegPage.getTotalElements())
                 .content(eegPage.getContent().stream()
-                        .map(eegMapper::toResponse)
+                        .map(EEGMapper.INSTANCE::toResponse)
                         .toList())
                 .build();
     }
@@ -92,14 +93,14 @@ public class EEGServiceImpl implements EEGService {
         EEG eeg = eegRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy EEG với id: " + id));
 
-        eegMapper.updateEntity(eeg, request);
+        EEGMapper.INSTANCE.updateEntity(eeg, request);
 
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         eeg.setEncounter(encounter);
 
         eegRepository.save(eeg);
-        return eegMapper.toResponse(eeg);
+        return EEGMapper.INSTANCE.toResponse(eeg);
     }
 
     @Override

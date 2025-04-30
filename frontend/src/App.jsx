@@ -33,8 +33,8 @@ import DoctorManageRecords from './pages/Doctor/DoctorManageRecords/DoctorManage
 import PatientRecords from './components/DoctorComponents/PatientRecords/PatientRecords';
 import DoctorSchedule from './pages/Doctor/DoctorSchedule/DoctorSchedule';
 import ProtectedRoute from './pages/ProtectedRoute';
+import ManageSchedule from './pages/Admin/ManageSchedule/ManageSchedule';
 function App() {
-
   return (
     <Router>
       <div>
@@ -73,6 +73,7 @@ function App() {
               <Route path="/admin/manage-service" element={<ManageService />} />
               <Route path="/admin/manage-employee" element={<ManageEmployee />} />
               <Route path="/admin/manage-numbers" element={<ManageNumber_Orders />} />
+              <Route path="/admin/manage-schedule" element={<ManageSchedule />} />
             </Route>
           </Route>
 

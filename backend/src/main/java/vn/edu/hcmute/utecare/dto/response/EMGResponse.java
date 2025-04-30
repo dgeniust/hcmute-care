@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EMGResponse {
-
+    private Long id;
     private String evaluate;
     private String notes;
     private Long encounterId;
