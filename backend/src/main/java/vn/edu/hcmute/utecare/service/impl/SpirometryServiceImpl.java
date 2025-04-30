@@ -24,38 +24,19 @@ import java.util.stream.Collectors;
 public class SpirometryServiceImpl implements SpirometryService {
 
     private final SpirometryRepository spirometryRepository;
-    private final SpirometryMapper spirometryMapper;
 
     @Override
     public SpirometryResponse createSpirometry(SpirometryRequest request) {
         log.info("Tạo Spirometry mới: {}", request);
-        Spirometry spirometry = spirometryMapper.toEntity(request);
+        Spirometry spirometry = SpirometryMapper.INSTANCE.toEntity(request);
 
 
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         spirometry.setEncounter(encounter);
 
-        spirometry.setEvaluate(request.getEvaluate());
-        spirometry.setNotes(request.getNotes());
-
-
-        // FunctionalTests
-        spirometry.setTestName(request.getTestName());
-        spirometry.setOrganSystem(request.getOrganSystem());
-        spirometry.setIsInvasive(request.getIsInvasive());
-        spirometry.setIsQuantitative(request.getIsQuantitative());
-        spirometry.setRecordDuration(request.getRecordDuration());
-
-        // RespiratoryTest
-        spirometry.setTestEnvironment(request.getTestEnvironment());
-        spirometry.setPatientPosition(request.getPatientPosition());
-
-
-        spirometry.setFevl(request.getFevl());
-        spirometry.setFvc(request.getFvc());
         Spirometry saved = spirometryRepository.save(spirometry);
-        return spirometryMapper.toResponse(saved);
+        return SpirometryMapper.INSTANCE.toResponse(saved);
     }
 
     @Override
@@ -63,14 +44,14 @@ public class SpirometryServiceImpl implements SpirometryService {
         log.info("Lấy thông tin Spirometry với id: {}", id);
         Spirometry spirometry = spirometryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy Spirometry với id: " + id));
-        return spirometryMapper.toResponse(spirometry);
+        return SpirometryMapper.INSTANCE.toResponse(spirometry);
     }
 
     @Override
     public List<SpirometryResponse> getAll() {
         log.info("Lấy danh sách tất cả Spirometry");
         return spirometryRepository.findAll().stream()
-                .map(spirometryMapper::toResponse)
+                .map(SpirometryMapper.INSTANCE::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -86,7 +67,7 @@ public class SpirometryServiceImpl implements SpirometryService {
                 .totalPages(spirometryPage.getTotalPages())
                 .totalElements(spirometryPage.getTotalElements())
                 .content(spirometryPage.getContent().stream()
-                        .map(spirometryMapper::toResponse)
+                        .map(SpirometryMapper.INSTANCE::toResponse)
                         .toList())
                 .build();
     }
@@ -98,14 +79,14 @@ public class SpirometryServiceImpl implements SpirometryService {
         Spirometry spirometry = spirometryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy Spirometry với id: " + id));
 
-        spirometryMapper.updateEntity(spirometry, request);
+        SpirometryMapper.INSTANCE.updateEntity(spirometry, request);
 
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         spirometry.setEncounter(encounter);
 
         spirometryRepository.save(spirometry);
-        return spirometryMapper.toResponse(spirometry);
+        return SpirometryMapper.INSTANCE.toResponse(spirometry);
     }
     @Override
     public void deleteSpirometry(Long id) {

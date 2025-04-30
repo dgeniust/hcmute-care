@@ -24,32 +24,20 @@ import java.util.stream.Collectors;
 public class BloodGasAnalysisServiceImpl implements BloodGasAnalysisService {
 
     private final BloodGasAnalysisRepository bloodGasAnalysisRepository;
-    private final BloodGasAnalysisMapper bloodGasAnalysisMapper;
 
     @Override
     public BloodGasAnalysisResponse createBloodGasAnalysis(BloodGasAnalysisRequest request) {
         log.info("Tạo BloodGasAnalysis mới: {}", request);
 
-        BloodGasAnalysis bloodGasAnalysis = bloodGasAnalysisMapper.toEntity(request);
+        BloodGasAnalysis bloodGasAnalysis = BloodGasAnalysisMapper.INSTANCE.toEntity(request);
 
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         bloodGasAnalysis.setEncounter(encounter);
 
-        bloodGasAnalysis.setEvaluate(request.getEvaluate());
-        bloodGasAnalysis.setNotes(request.getNotes());
-        bloodGasAnalysis.setTestName(request.getTestName());
-        bloodGasAnalysis.setOrganSystem(request.getOrganSystem());
-        bloodGasAnalysis.setIsInvasive(request.getIsInvasive());
-        bloodGasAnalysis.setIsQuantitative(request.getIsQuantitative());
-        bloodGasAnalysis.setRecordDuration(request.getRecordDuration());
-        bloodGasAnalysis.setTestEnvironment(request.getTestEnvironment());
-        bloodGasAnalysis.setPatientPosition(request.getPatientPosition());
-
-
         BloodGasAnalysis saved = bloodGasAnalysisRepository.save(bloodGasAnalysis);
 
-        return bloodGasAnalysisMapper.toResponse(saved);
+        return BloodGasAnalysisMapper.INSTANCE.toResponse(saved);
     }
 
     @Override
@@ -57,14 +45,14 @@ public class BloodGasAnalysisServiceImpl implements BloodGasAnalysisService {
         log.info("Lấy thông tin BloodGasAnalysis với id: {}", id);
         BloodGasAnalysis bloodGasAnalysis = bloodGasAnalysisRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy BloodGasAnalysis với id: " + id));
-        return bloodGasAnalysisMapper.toResponse(bloodGasAnalysis);
+        return BloodGasAnalysisMapper.INSTANCE.toResponse(bloodGasAnalysis);
     }
 
     @Override
     public List<BloodGasAnalysisResponse> getAll() {
         log.info("Lấy danh sách tất cả BloodGasAnalysis");
         return bloodGasAnalysisRepository.findAll().stream()
-                .map(bloodGasAnalysisMapper::toResponse)
+                .map(BloodGasAnalysisMapper.INSTANCE::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -80,7 +68,7 @@ public class BloodGasAnalysisServiceImpl implements BloodGasAnalysisService {
                 .totalPages(bloodGasAnalysisPage.getTotalPages())
                 .totalElements(bloodGasAnalysisPage.getTotalElements())
                 .content(bloodGasAnalysisPage.getContent().stream()
-                        .map(bloodGasAnalysisMapper::toResponse)
+                        .map(BloodGasAnalysisMapper.INSTANCE::toResponse)
                         .toList())
                 .build();
     }
@@ -92,14 +80,14 @@ public class BloodGasAnalysisServiceImpl implements BloodGasAnalysisService {
         BloodGasAnalysis bloodGasAnalysis = bloodGasAnalysisRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy BloodGasAnalysis với id: " + id));
 
-        bloodGasAnalysisMapper.updateEntity(bloodGasAnalysis, request);
+        BloodGasAnalysisMapper.INSTANCE.updateEntity(bloodGasAnalysis, request);
 
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         bloodGasAnalysis.setEncounter(encounter);
 
         bloodGasAnalysisRepository.save(bloodGasAnalysis);
-        return bloodGasAnalysisMapper.toResponse(bloodGasAnalysis);
+        return BloodGasAnalysisMapper.INSTANCE.toResponse(bloodGasAnalysis);
     }
 
     @Override

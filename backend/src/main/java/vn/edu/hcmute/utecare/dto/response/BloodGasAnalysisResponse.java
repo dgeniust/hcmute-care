@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BloodGasAnalysisResponse {
-
+    private Long id;
     private String evaluate;
     private String notes;
     private Long encounterId;

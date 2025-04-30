@@ -13,7 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EEGRequest {
 
-    @NotBlank(message = "Evaluation cannot be blank")
     private String evaluate;
 
     private String notes;
@@ -21,10 +20,8 @@ public class EEGRequest {
     @NotNull(message = "Encounter ID cannot be null")
     private Long encounterId;
 
-    @NotBlank(message = "Test name cannot be blank")
     private String testName;
 
-    @NotBlank(message = "Organ system cannot be blank")
     private String organSystem;
 
     private Boolean isInvasive;
@@ -33,7 +30,6 @@ public class EEGRequest {
 
     private Integer recordDuration;
 
-    @NotBlank(message = "Image cannot be blank")
     private String image;
 
    private Integer channels;

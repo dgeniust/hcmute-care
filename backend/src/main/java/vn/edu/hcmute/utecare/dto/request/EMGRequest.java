@@ -13,7 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EMGRequest {
 
-    @NotBlank(message = "Evaluation cannot be blank")
     private String evaluate;
 
     private String notes;
@@ -21,10 +20,8 @@ public class EMGRequest {
     @NotNull(message = "Encounter ID cannot be null")
     private Long encounterId;
 
-    @NotBlank(message = "Test name cannot be blank")
     private String testName;
 
-    @NotBlank(message = "Organ system cannot be blank")
     private String organSystem;
 
     private Boolean isInvasive;
@@ -33,9 +30,7 @@ public class EMGRequest {
 
     private Integer recordDuration;
 
-    @NotBlank(message = "Image cannot be blank")
     private String image;
 
-    @NotBlank(message = "Muscle Group cannot be blank")
     private String muscleGroup;
 }
