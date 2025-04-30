@@ -33,4 +33,5 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             Pageable pageable);
 
     boolean existsByPhone(String phone);
+    long count();
 }

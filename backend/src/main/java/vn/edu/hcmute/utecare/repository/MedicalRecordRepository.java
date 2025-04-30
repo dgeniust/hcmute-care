@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, Long> {
     Optional<MedicalRecord> findByBarcode(String barcode);
     Page<MedicalRecord> findByCustomerId(Long customerId, Pageable pageable);
+    MedicalRecord findByBarcodeAndCustomerId(String barcode, Long customerId);
+    long count();
 }
