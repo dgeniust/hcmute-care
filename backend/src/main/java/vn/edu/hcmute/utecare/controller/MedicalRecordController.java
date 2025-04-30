@@ -82,7 +82,6 @@ public class MedicalRecordController {
                 .build();
     }
 
-//
 //    @GetMapping("/{id}/appointments")
 //    @Operation(summary = "Get all appointments by medical record ID", description = "Retrieves all appointments associated with a specific medical record ID")
 //    public ResponseData<PageResponse<AppointmentSummaryResponse>> getAppointmentsByMedicalRecordId(
