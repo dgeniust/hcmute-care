@@ -35,7 +35,6 @@ import DoctorSchedule from './pages/Doctor/DoctorSchedule/DoctorSchedule';
 import ProtectedRoute from './pages/ProtectedRoute';
 import ManageSchedule from './pages/Admin/ManageSchedule/ManageSchedule';
 function App() {
-
   return (
     <Router>
       <div>

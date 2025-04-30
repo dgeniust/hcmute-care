@@ -12,7 +12,10 @@ const Specialty_Booking = ({setSpecialty, setPrice, setChoosedSpecialty, setStep
     }
     const [messageApi, contextHolder] = message.useMessage();
     const [specialtyData, setSpecialtyData] = useState([]);
-
+    const handleSpecialty = (value) => {
+        console.log('Selected specialty id:', value);
+        localStorage.setItem('specialtyId', value);
+    }
     useEffect(() => {
         const handleDataSpecialty = async () => {
             try {
@@ -60,7 +63,9 @@ const Specialty_Booking = ({setSpecialty, setPrice, setChoosedSpecialty, setStep
                 {
                     specialtyData && specialtyData.length > 0 ? (
                         specialtyData.map((item) => (
-                            <Button key={item.id} style={{width:'100%', height:'70px', padding: '25px', display: 'flex', justifyContent: 'center',flexDirection:'column', alignItems:'center', border: '1px solid black', borderRadius: '5px'}}>
+                            <Button key={item.id} style={{width:'100%', height:'70px', padding: '25px', display: 'flex', justifyContent: 'center',flexDirection:'column', alignItems:'center', border: '1px solid black', borderRadius: '5px'}}
+                                onClick={() => handleSpecialty(item.id)}
+                            >
                             <div className='w-full h-fit flex flex-row items-center justify-between' onClick = {() => handleCureInfo(item.name, item.price)}>
                                 <div className='flex flex-row items-center space-x-4 justify-start'>
                                     <InfoCircleTwoTone style={{fontSize: '20px'}}/>
