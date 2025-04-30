@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NerveConductionResponse {
+    private Long id;
     private String evaluate;
     private String notes;
     private Long encounterId;
