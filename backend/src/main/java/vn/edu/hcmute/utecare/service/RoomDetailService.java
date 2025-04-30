@@ -15,7 +15,7 @@ public interface RoomDetailService {
 
     void deleteRoomDetail(Integer id);
 
-    List<RoomDetailResponse> getAllRoomDetails();
+    PageResponse<RoomDetailResponse> getAllRoomDetails(int page, int size, String sort, String direction);
 
     PageResponse<RoomDetailResponse> searchRoomDetails(String keyword, int page, int size, String sort, String direction);
 }

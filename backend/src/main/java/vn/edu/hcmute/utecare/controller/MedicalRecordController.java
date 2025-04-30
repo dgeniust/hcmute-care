@@ -8,11 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.MedicalRecordRequest;
-import vn.edu.hcmute.utecare.dto.response.AppointmentSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
-import vn.edu.hcmute.utecare.service.AppointmentService;
 import vn.edu.hcmute.utecare.service.MedicalRecordService;
 
 @RestController
@@ -22,7 +20,6 @@ import vn.edu.hcmute.utecare.service.MedicalRecordService;
 @Slf4j(topic = "MEDICAL_RECORD_CONTROLLER")
 public class MedicalRecordController {
     private final MedicalRecordService medicalRecordService;
-    private final AppointmentService appointmentService;
 
     @PostMapping
     @Operation(summary = "Create a new medical record", description = "Creates a new medical record along with its associated patient details")
@@ -84,6 +81,7 @@ public class MedicalRecordController {
                 .message("Medical record deleted successfully")
                 .build();
     }
+
 
     @GetMapping("/{id}/appointments")
     @Operation(summary = "Get all appointments by medical record ID", description = "Retrieves all appointments associated with a specific medical record ID")

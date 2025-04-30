@@ -73,12 +73,17 @@ public class RoomDetailController {
 
     @GetMapping
     @Operation(summary = "Get all room details", description = "Retrieve a list of all room details")
-    public ResponseData<List<RoomDetailResponse>> getAllRoomDetails() {
-        log.info("Get all room details request");
-        return ResponseData.<List<RoomDetailResponse>>builder()
+    public ResponseData<PageResponse<RoomDetailResponse>> getAllRoomDetails(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        log.info("Get all room details request: page={}, size={}, sort={}, direction={}", page, size, sort, direction);
+        return ResponseData.<PageResponse<RoomDetailResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Room details retrieved successfully")
-                .data(roomDetailService.getAllRoomDetails())
+                .data(roomDetailService.getAllRoomDetails(page, size, sort, direction))
                 .build();
     }
 

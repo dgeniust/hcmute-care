@@ -1,26 +1,44 @@
 package vn.edu.hcmute.utecare.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import vn.edu.hcmute.utecare.dto.request.ScheduleRequest;
+import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ScheduleInfoResponse;
 import vn.edu.hcmute.utecare.dto.response.ScheduleResponse;
-import vn.edu.hcmute.utecare.dto.response.ScheduleSummaryResponse;
-import vn.edu.hcmute.utecare.dto.response.PageResponse;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface ScheduleService {
-    ScheduleSummaryResponse createDoctorSchedule(ScheduleRequest request);
+    ScheduleResponse createSchedule(ScheduleRequest request);
 
-    ScheduleResponse getDoctorScheduleById(Long id);
+    @Transactional
+    ScheduleResponse updateSchedule(Long id, ScheduleRequest request);
 
-    ScheduleSummaryResponse updateDoctorSchedule(Long id, ScheduleRequest request);
+    @Transactional
+    void deleteSchedule(Long id);
 
-    void deleteDoctorSchedule(Long id);
+    @Transactional(readOnly = true)
+    ScheduleResponse getScheduleById(Long id);
 
-    PageResponse<ScheduleSummaryResponse> getAllDoctorSchedules(int page, int size, String sort, String direction);
+    @Transactional(readOnly = true)
+    PageResponse<ScheduleResponse> getAllSchedules(
+            Long doctorId,
+            Integer roomId,
+            LocalDate startDate,
+            LocalDate endDate,
+            Integer page, Integer size, String sort, String direction);
 
-    PageResponse<ScheduleSummaryResponse> searchDoctorSchedules(Long doctorId, LocalDate date, Integer timeSlotId, int page, int size, String sort, String direction);
+    @Transactional(readOnly = true)
+    List<ScheduleInfoResponse> getAvailableSchedules(
+            Integer medicalSpecialtyId,
+            LocalDate date
+    );
 
-    List<ScheduleInfoResponse> getAvailableSchedulesByMedicalSpecialtyId(Integer id, LocalDate date);
+    @Transactional(readOnly = true)
+    PageResponse<ScheduleResponse> getDoctorSchedules(
+            Long doctorId,
+            LocalDate startDate,
+            LocalDate endDate,
+            Integer page, Integer size, String sort, String direction);
 }
