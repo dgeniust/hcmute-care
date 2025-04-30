@@ -25,31 +25,29 @@ import java.util.stream.Collectors;
 public class EMGServiceImpl implements EMGService {
 
     private final EMGRepository emgRepository;
-    private final EMGMapper emgMapper;
 
     @Override
     public EMGResponse createEMG(EMGRequest request) {
         log.info("Tạo EMG mới: {}", request);
 
-        EMG emg = emgMapper.toEntity(request);
+        EMG emg = EMGMapper.INSTANCE.toEntity(request);
 
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         emg.setEncounter(encounter);
-
-        emg.setEvaluate(request.getEvaluate());
-        emg.setNotes(request.getNotes());
-        emg.setTestName(request.getTestName());
-        emg.setOrganSystem(request.getOrganSystem());
-        emg.setIsInvasive(request.getIsInvasive());
-        emg.setIsQuantitative(request.getIsQuantitative());
-        emg.setRecordDuration(request.getRecordDuration());
-        emg.setImage(request.getImage());
-        emg.setMuscleGroup(request.getMuscleGroup());
+        emg.setEvaluate(null);
+        emg.setNotes(null);
+        emg.setTestName(null);
+        emg.setOrganSystem(null);
+        emg.setIsInvasive(null);
+        emg.setIsQuantitative(null);
+        emg.setRecordDuration(null);
+        emg.setImage(null);
+        emg.setMuscleGroup(null);
 
         EMG saved = emgRepository.save(emg);
 
-        return emgMapper.toResponse(saved);
+        return EMGMapper.INSTANCE.toResponse(saved);
     }
 
     @Override
@@ -57,14 +55,14 @@ public class EMGServiceImpl implements EMGService {
         log.info("Lấy thông tin EMG với id: {}", id);
         EMG emg = emgRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy EMG với id: " + id));
-        return emgMapper.toResponse(emg);
+        return EMGMapper.INSTANCE.toResponse(emg);
     }
 
     @Override
     public List<EMGResponse> getAll() {
         log.info("Lấy danh sách tất cả EMG");
         return emgRepository.findAll().stream()
-                .map(emgMapper::toResponse)
+                .map(EMGMapper.INSTANCE::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -80,7 +78,7 @@ public class EMGServiceImpl implements EMGService {
                 .totalPages(emgPage.getTotalPages())
                 .totalElements(emgPage.getTotalElements())
                 .content(emgPage.getContent().stream()
-                        .map(emgMapper::toResponse)
+                        .map(EMGMapper.INSTANCE::toResponse)
                         .toList())
                 .build();
     }
@@ -92,14 +90,14 @@ public class EMGServiceImpl implements EMGService {
         EMG emg = emgRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy EMG với id: " + id));
 
-        emgMapper.updateEntity(emg, request);
+        EMGMapper.INSTANCE.updateEntity(emg, request);
 
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         emg.setEncounter(encounter);
 
         emgRepository.save(emg);
-        return emgMapper.toResponse(emg);
+        return EMGMapper.INSTANCE.toResponse(emg);
     }
 
     @Override
