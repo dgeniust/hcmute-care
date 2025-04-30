@@ -31,5 +31,4 @@ public interface NurseRepository extends JpaRepository<Nurse, Long> {
             Pageable pageable);
 
     boolean existsByPhone(String phone);
-    long count();
 }

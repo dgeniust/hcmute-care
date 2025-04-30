@@ -68,15 +68,15 @@ const SideBar = () => {
     const fetchUserDetails = async (customerId, accessToken) => {
       try {
         let url;
-        if (role === "ROLE_ADMIN") {
-          return { gender: "MALE" };
-        }
         switch (role) {
           case 'ROLE_DOCTOR':
             url = `http://localhost:8080/api/v1/doctors/${customerId}`;
             break;
           case 'ROLE_NURSE':
             url = `http://localhost:8080/api/v1/nurses/${customerId}`;
+            break;
+          case 'ROLE_ADMIN':
+            url = `http://localhost:8080/api/v1/admins/${customerId}`;
             break;
           case 'ROLE_STAFF':
             url = `http://localhost:8080/api/v1/staff/${customerId}`;

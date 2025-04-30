@@ -3,14 +3,15 @@ package vn.edu.hcmute.utecare.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import vn.edu.hcmute.utecare.dto.request.MedicalRecordRequest;
 import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
-import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.MedicalRecordMapper;
 import vn.edu.hcmute.utecare.model.Customer;
 import vn.edu.hcmute.utecare.model.MedicalRecord;
@@ -22,6 +23,7 @@ import vn.edu.hcmute.utecare.util.PaginationUtil;
 import java.time.Year;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,21 +75,6 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         MedicalRecord medicalRecord = medicalRecordRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Medical record not found with id: " + id));
         medicalRecordRepository.delete(medicalRecord);
-    }
-
-    @Override
-    public MedicalRecordResponse getByBarcodeAndCustomerId(String barcode, Long customerId) {
-        if (barcode == null || barcode.trim().isEmpty()) {
-            throw new IllegalArgumentException("Barcode cannot be null or empty");
-        }
-        if (customerId == null || customerId <= 0) {
-            throw new IllegalArgumentException("Customer ID must be a valid positive number");
-        }
-        MedicalRecord medicalRecord = medicalRecordRepository.findByBarcodeAndCustomerId(barcode, customerId);
-        if(medicalRecord == null){
-            throw new ResourceNotFoundException("No medical record found for barcode: " + barcode + " and customerId: " + customerId);
-        }
-        return MedicalRecordMapper.INSTANCE.toResponse(medicalRecord);
     }
 
     @Override

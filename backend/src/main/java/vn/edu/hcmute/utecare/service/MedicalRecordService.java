@@ -9,9 +9,6 @@ import java.util.List;
 public interface MedicalRecordService {
     MedicalRecordResponse create(MedicalRecordRequest request);
     MedicalRecordResponse getById(Long id);
-
-    MedicalRecordResponse getByBarcodeAndCustomerId(String barcode, Long customerId);
-
     List<MedicalRecordResponse> getAll();
     PageResponse<MedicalRecordResponse> getAll(int page, int size, String sort, String direction);
     MedicalRecordResponse update(Long id, MedicalRecordRequest request);

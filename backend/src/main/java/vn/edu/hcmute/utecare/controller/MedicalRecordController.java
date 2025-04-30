@@ -82,31 +82,4 @@ public class MedicalRecordController {
                 .build();
     }
 
-
-    @GetMapping("/{id}/appointments")
-    @Operation(summary = "Get all appointments by medical record ID", description = "Retrieves all appointments associated with a specific medical record ID")
-    public ResponseData<PageResponse<AppointmentSummaryResponse>> getAppointmentsByMedicalRecordId(
-            @PathVariable Long id,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sort,
-            @RequestParam(defaultValue = "asc") String direction) {
-        log.info("Get all appointments by medical record ID: {}", id);
-        return ResponseData.<PageResponse<AppointmentSummaryResponse>>builder()
-                .status(HttpStatus.OK.value())
-                .message("Appointments retrieved successfully")
-                .data(appointmentService.getAllAppointments(id, page, size, sort, direction))
-                .build();
-    }
-
-    @PostMapping("/{barcode}")
-    @Operation(summary = "Get medical record by barcode", description = "Get customer's medical record by CustomerId and Barcode")
-    public ResponseData<MedicalRecordResponse> getByBarcode(@PathVariable String barcode, Long customerId) {
-        log.info("Get medical record request for barcode: {}", barcode);
-        return ResponseData.<MedicalRecordResponse>builder()
-                .status(HttpStatus.OK.value())
-                .message("Medical record retrieved successfully")
-                .data(medicalRecordService.getByBarcodeAndCustomerId(barcode, customerId))
-                .build();
-    }
 }
