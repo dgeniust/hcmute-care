@@ -5,17 +5,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.ScheduleRequest;
-import vn.edu.hcmute.utecare.dto.response.ScheduleResponse;
-import vn.edu.hcmute.utecare.dto.response.ScheduleSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
+import vn.edu.hcmute.utecare.dto.response.ScheduleInfoResponse;
+import vn.edu.hcmute.utecare.dto.response.ScheduleResponse;
 import vn.edu.hcmute.utecare.service.ScheduleService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/schedules")
@@ -25,83 +26,89 @@ import java.time.LocalDate;
 public class ScheduleController {
     private final ScheduleService scheduleService;
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get schedule by ID", description = "Retrieve a schedule by its ID")
-    public ResponseData<ScheduleResponse> getDoctorScheduleById(@PathVariable("id") Long id) {
-        log.info("Get schedule request for id: {}", id);
-        return ResponseData.<ScheduleResponse>builder()
-                .status(HttpStatus.OK.value())
-                .message("Schedule retrieved successfully")
-                .data(scheduleService.getDoctorScheduleById(id))
-                .build();
-    }
-
     @PostMapping
-    @Operation(summary = "Create a new schedule", description = "Create a new schedule with provided details")
-    public ResponseData<ScheduleSummaryResponse> createDoctorSchedule(@RequestBody @Valid ScheduleRequest request) {
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
+    @Operation(summary = "Create a new schedule", description = "Create a new schedule with the provided details")
+    public ResponseData<ScheduleResponse> createSchedule(@RequestBody @Valid ScheduleRequest request) {
         log.info("Create schedule request: {}", request);
-        return ResponseData.<ScheduleSummaryResponse>builder()
+        return ResponseData.<ScheduleResponse>builder()
                 .status(HttpStatus.CREATED.value())
-                .message("schedule created successfully")
-                .data(scheduleService.createDoctorSchedule(request))
+                .message("Schedule created successfully")
+                .data(scheduleService.createSchedule(request))
                 .build();
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update a schedule", description = "Update an existing schedule by its ID")
-    public ResponseData<ScheduleSummaryResponse> updateDoctorSchedule(
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
+    @Operation(summary = "Update an existing schedule", description = "Update the details of a schedule by its ID")
+    public ResponseData<ScheduleResponse> updateSchedule(
             @PathVariable("id") Long id,
             @RequestBody @Valid ScheduleRequest request) {
-        log.info("Update schedule request for id: {}", id);
-        return ResponseData.<ScheduleSummaryResponse>builder()
+        log.info("Update schedule request for ID: {}, request: {}", id, request);
+        return ResponseData.<ScheduleResponse>builder()
                 .status(HttpStatus.OK.value())
-                .message("schedule updated successfully")
-                .data(scheduleService.updateDoctorSchedule(id, request))
+                .message("Schedule updated successfully")
+                .data(scheduleService.updateSchedule(id, request))
                 .build();
     }
 
     @DeleteMapping("/{id}")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     @Operation(summary = "Delete a schedule", description = "Delete a schedule by its ID")
-    public ResponseData<Void> deleteDoctorSchedule(@PathVariable("id") Long id) {
-        log.info("Delete schedule request for id: {}", id);
-        scheduleService.deleteDoctorSchedule(id);
+    public ResponseData<Void> deleteSchedule(@PathVariable("id") Long id) {
+        log.info("Delete schedule request for ID: {}", id);
+        scheduleService.deleteSchedule(id);
         return ResponseData.<Void>builder()
-                .status(HttpStatus.NO_CONTENT.value())
-                .message("schedule deleted successfully")
+                .status(HttpStatus.OK.value())
+                .message("Schedule deleted successfully")
+                .build();
+    }
+
+    @GetMapping("/{id}")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
+    @Operation(summary = "Get a schedule by ID", description = "Retrieve the details of a schedule by its ID")
+    public ResponseData<ScheduleResponse> getScheduleById(@PathVariable("id") Long id) {
+        log.info("Get schedule request for ID: {}", id);
+        return ResponseData.<ScheduleResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("Schedule retrieved successfully")
+                .data(scheduleService.getScheduleById(id))
                 .build();
     }
 
     @GetMapping
-    @Operation(summary = "Get all schedules", description = "Retrieve a paginated list of all schedules")
-    public ResponseData<PageResponse<ScheduleSummaryResponse>> getAllDoctorSchedules(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sort,
-            @RequestParam(defaultValue = "asc") String direction) {
-        log.info("Get all schedules request: page={}, size={}, sort={}, direction={}", page, size, sort, direction);
-        return ResponseData.<PageResponse<ScheduleSummaryResponse>>builder()
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
+    @Operation(summary = "Get all schedules", description = "Retrieve a paginated list of schedules with optional filters")
+    public ResponseData<PageResponse<ScheduleResponse>> getAllSchedules(
+            @RequestParam(value = "doctorId", required = false) Long doctorId,
+            @RequestParam(value = "roomId", required = false) Integer roomId,
+            @RequestParam(value = "startDate", required = false) LocalDate startDate,
+            @RequestParam(value = "endDate", required = false) LocalDate endDate,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size,
+            @RequestParam(value = "sort", defaultValue = "date") String sort,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+        log.info("Get all schedules request with doctorId: {}, roomId: {}, startDate: {}, endDate: {}, page: {}, size: {}, sort: {}, direction: {}",
+                doctorId, roomId, startDate, endDate, page, size, sort, direction);
+        return ResponseData.<PageResponse<ScheduleResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("schedules retrieved successfully")
-                .data(scheduleService.getAllDoctorSchedules(page, size, sort, direction))
+                .message("Schedules retrieved successfully")
+                .data(scheduleService.getAllSchedules(doctorId, roomId, startDate, endDate, page, size, sort, direction))
                 .build();
     }
 
-    @GetMapping("/search")
-    @Operation(summary = "Search schedules", description = "Search schedules by doctor ID, date, and time slot with pagination")
-    public ResponseData<PageResponse<ScheduleSummaryResponse>> searchDoctorSchedules(
-            @RequestParam(required = false) Long doctorId,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-            @RequestParam(required = false) Integer timeSlotId,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sort,
-            @RequestParam(defaultValue = "asc") String direction) {
-        log.info("Search schedules request with doctorId: {}, date: {}, timeSlotId: {}", doctorId, date, timeSlotId);
-        return ResponseData.<PageResponse<ScheduleSummaryResponse>>builder()
+    @GetMapping("/available")
+    @Operation(summary = "Get available schedules", description = "Retrieve a paginated list of available schedules with optional filters")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'CUSTOMER', 'DOCTOR', 'NURSE')")
+    public ResponseData<List<ScheduleInfoResponse>> getAvailableSchedules(
+        @RequestParam(value = "medicalSpecialtyId") Integer medicalSpecialtyId,
+        @RequestParam(value = "date") LocalDate date) {
+        log.info("Get available schedules request with medicalSpecialtyId: {}, date: {}",
+                medicalSpecialtyId, date);
+        return ResponseData.<List<ScheduleInfoResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("schedules search completed successfully")
-                .data(scheduleService.searchDoctorSchedules(doctorId, date, timeSlotId, page, size, sort, direction))
+                .message("Available schedules retrieved successfully")
+                .data(scheduleService.getAvailableSchedules(medicalSpecialtyId, date))
                 .build();
     }
-
 }

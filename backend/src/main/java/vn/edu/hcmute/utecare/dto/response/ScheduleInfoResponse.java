@@ -4,17 +4,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
 public class ScheduleInfoResponse {
     private Long id;
 
-    private DoctorInfoResponse doctor;
+    private LocalDate date;
 
-    private TimeSlotResponse timeSlot;
+    private DoctorInfoResponse doctor;
 
     private RoomDetailResponse roomDetail;
 
-    private LocalDate date;
+    private Set<TimeSlotResponse> timeSlots;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }

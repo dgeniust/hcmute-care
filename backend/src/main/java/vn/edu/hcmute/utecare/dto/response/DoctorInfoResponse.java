@@ -18,6 +18,4 @@ public class DoctorInfoResponse {
     private String position;
 
     private String qualification;
-
-    private String medicalSpecialtyName;
 }

@@ -1,5 +1,6 @@
 package vn.edu.hcmute.utecare.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,7 +28,14 @@ public class MedicalSpecialty {
     @Column(name =  "note")
     private String note;
 
-    @OneToMany(mappedBy = "medicalSpecialty")
-    private Set<Doctor> doctors;
+    @OneToMany(mappedBy = "medicalSpecialty", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<Doctor> doctors = new java.util.HashSet<>();
+
+    @OneToMany(mappedBy = "medicalSpecialty", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<Nurse> nurses = new java.util.HashSet<>();
 }
 

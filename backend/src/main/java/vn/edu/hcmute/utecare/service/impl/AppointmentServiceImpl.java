@@ -2,312 +2,90 @@ package vn.edu.hcmute.utecare.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import vn.edu.hcmute.utecare.dto.request.CreateAppointmentRequest;
-import vn.edu.hcmute.utecare.dto.response.AppointmentDetailResponse;
-import vn.edu.hcmute.utecare.dto.response.AppointmentSummaryResponse;
-import vn.edu.hcmute.utecare.dto.response.DoctorAppointmentResponse;
-import vn.edu.hcmute.utecare.dto.response.PageResponse;
+import vn.edu.hcmute.utecare.dto.request.AppointmentRequest;
+import vn.edu.hcmute.utecare.dto.response.AppointmentResponse;
 import vn.edu.hcmute.utecare.exception.ConflictException;
-import vn.edu.hcmute.utecare.exception.DuplicatedException;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.AppointmentMapper;
-import vn.edu.hcmute.utecare.mapper.AppointmentScheduleMapper;
-import vn.edu.hcmute.utecare.model.*;
-import vn.edu.hcmute.utecare.repository.*;
-import vn.edu.hcmute.utecare.repository.specification.AppointmentSpecificationsBuilder;
+import vn.edu.hcmute.utecare.model.Appointment;
+import vn.edu.hcmute.utecare.model.MedicalRecord;
+import vn.edu.hcmute.utecare.model.ScheduleSlot;
+import vn.edu.hcmute.utecare.model.Ticket;
+import vn.edu.hcmute.utecare.repository.AppointmentRepository;
+import vn.edu.hcmute.utecare.repository.MedicalRecordRepository;
+import vn.edu.hcmute.utecare.repository.ScheduleSlotRepository;
+import vn.edu.hcmute.utecare.repository.TicketRepository;
 import vn.edu.hcmute.utecare.service.AppointmentService;
-import vn.edu.hcmute.utecare.util.PaginationUtil;
-import vn.edu.hcmute.utecare.util.enumeration.AppointmentStatus;
+import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
 
-import java.security.SecureRandom;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.regex.Pattern;
-
-import static vn.edu.hcmute.utecare.util.AppConst.SEARCH_SPEC_OPERATOR;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
-    private final SearchRepository searchRepository;
+    private final TicketRepository ticketRepository;
     private final MedicalRecordRepository medicalRecordRepository;
-    private final ScheduleRepository scheduleRepository;
-    private final AppointmentScheduleRepository appointmentScheduleRepository;
+    private final ScheduleSlotRepository scheduleSlotRepository;
 
-    @Override
     @Transactional
-    public AppointmentDetailResponse createAppointment(CreateAppointmentRequest request) {
+    @Override
+    public AppointmentResponse createAppointment(AppointmentRequest request){
         log.info("Creating appointment with request: {}", request);
+
         MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getMedicalRecordId())
-                .orElseThrow(() -> new ResourceNotFoundException("Medical record not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Medical record not found with ID: " + request.getMedicalRecordId()));
 
-        if (request.getScheduleIds().isEmpty()) {
-            throw new IllegalArgumentException("At least one doctor schedule ID is required");
+        //thêm check permission
+
+        List<ScheduleSlot> scheduleSlots = scheduleSlotRepository.findAllById(request.getScheduleSlotIds());
+        if (scheduleSlots.size() != request.getScheduleSlotIds().size()) {
+            throw new ResourceNotFoundException("Some schedule slots not found");
         }
 
-        Set<Long> scheduleIds = new HashSet<>(request.getScheduleIds());
-        if (scheduleIds.size() != request.getScheduleIds().size()) {
-            throw new IllegalArgumentException("Duplicate schedule IDs are not allowed");
-        }
-
-        List<Schedule> schedules = scheduleRepository.findAllByIdIn(request.getScheduleIds());
-
-        for (Schedule schedule : schedules) {
-            if (schedule.getBookedSlots() >= schedule.getMaxSlots()) {
-                throw new ConflictException("Schedule " + schedule.getId() + " is fully booked");
+        for (ScheduleSlot scheduleSlot : scheduleSlots) {
+            if (scheduleSlot.getBookedSlots() >= scheduleSlot.getSchedule().getMaxSlots()){
+                throw new ConflictException("Schedule slot is full for ID: " + scheduleSlot.getId());
             }
         }
 
-        checkDistinctSpecialties(schedules);
-
-        checkExistingAppointments(medicalRecord.getId(), request.getScheduleIds());
-
-        checkDuplicateTimeSlots(schedules);
+        Set<Integer> medicalSpecialtyIds = new HashSet<>();
+        for (ScheduleSlot scheduleSlot : scheduleSlots) {
+            Integer specialtyId = scheduleSlot.getSchedule().getDoctor().getMedicalSpecialty().getId();
+            if (!medicalSpecialtyIds.add(specialtyId)) {
+                throw new ConflictException("Duplicate medical specialty detected for slot ID: " + scheduleSlot.getId());
+            }
+        }
 
         Appointment appointment = Appointment.builder()
                 .medicalRecord(medicalRecord)
                 .build();
 
-        List<AppointmentSchedule> appointmentSchedules = new ArrayList<>();
-        for (Schedule schedule : schedules) {
-            AppointmentSchedule appointmentSchedule = AppointmentSchedule.builder()
+        Set<Ticket> tickets = new HashSet<>();
+        for (ScheduleSlot scheduleSlot : scheduleSlots) {
+            Ticket ticket = Ticket.builder()
+                    .status(TicketStatus.PENDING)
+                    .scheduleSlot(scheduleSlot)
                     .appointment(appointment)
-                    .schedule(schedule)
-                    .status(AppointmentStatus.PENDING)
                     .build();
-            appointmentSchedules.add(appointmentSchedule);
-
-            // Cập nhật booked_slots
-            schedule.setBookedSlots(schedule.getBookedSlots() + 1);
+            tickets.add(ticket);
+            scheduleSlot.setBookedSlots(scheduleSlot.getBookedSlots() + 1);
         }
-        appointment.setSchedules(appointmentSchedules);
-        scheduleRepository.saveAll(schedules);
-
-        //return vnPay_url cũn được tùy Đạt
-
-        return AppointmentMapper.INSTANCE.toDetailResponse(appointmentRepository.save(appointment));
+        appointment.setTickets(tickets);
+        return AppointmentMapper.INSTANCE.toResponse(appointmentRepository.save(appointment));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public Appointment confirmAppointment(Long appointmentId) {
-        log.info("Confirming appointment with ID: {}", appointmentId);
-
-        Appointment appointment = appointmentRepository.findById(appointmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
-
-        for (AppointmentSchedule schedule : appointment.getSchedules()) {
-            if (schedule.getStatus() != AppointmentStatus.PENDING) {
-                throw new ConflictException("Cannot update a confirmed appointment");
-            }
-            schedule.setWaitingNumber(calculateWaitingNumber(schedule.getSchedule()));
-            schedule.setTicketCode(generateTicketCode());
-            schedule.setStatus(AppointmentStatus.CONFIRMED);
-        }
-        appointmentScheduleRepository.saveAll(appointment.getSchedules());
-
-        return appointment;
-    }
-
-    @Transactional
-    @Override
-    public Appointment cancelAppointment(Long appointmentId) {
-        log.info("Cancelling appointment with ID: {}", appointmentId);
-
-        Appointment appointment = appointmentRepository.findById(appointmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
-
-        List<Schedule> schedules = new ArrayList<>();
-        for (AppointmentSchedule schedule : appointment.getSchedules()) {
-            if (schedule.getStatus() == AppointmentStatus.CANCELLED) {
-                throw new ConflictException("Cannot update a cancelled appointment");
-            }
-            schedule.setStatus(AppointmentStatus.CANCELLED);
-            schedule.getSchedule().setBookedSlots(schedule.getSchedule().getBookedSlots() - 1);
-            schedules.add(schedule.getSchedule());
-        }
-        scheduleRepository.saveAll(schedules);
-        appointmentScheduleRepository.saveAll(appointment.getSchedules());
-
-        return appointment;
-    }
-
-    @Transactional
-    @Override
-    public DoctorAppointmentResponse updateAppointmentStatus(Long appointmentId, AppointmentStatus status) {
-        log.info("Updating appointment status with ID: {}, new status: {}", appointmentId, status);
-
-        AppointmentSchedule appointmentSchedule = appointmentScheduleRepository.findById(appointmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
-
-        if (appointmentSchedule.getStatus() == AppointmentStatus.CANCELLED) {
-            throw new ConflictException("Cannot update a cancelled appointment");
-        }
-        if (appointmentSchedule.getStatus() == AppointmentStatus.COMPLETED) {
-            throw new ConflictException("Cannot update a completed appointment");
-        }
-        appointmentSchedule.setStatus(status);
-        appointmentScheduleRepository.save(appointmentSchedule);
-
-        return AppointmentScheduleMapper.INSTANCE.toDoctorAppointmentResponse(appointmentSchedule);
-    }
-
-    private String generateTicketCode() {
-        SecureRandom random = new SecureRandom();
-        long timestamp = System.currentTimeMillis() % 10_000; // 4 chữ số từ timestamp
-        long randomPart = random.nextLong() % 1_000_000; // 6 chữ số ngẫu nhiên
-        return String.format("HC%04d%06d", timestamp, Math.abs(randomPart));
-    }
-
-    private Integer calculateWaitingNumber(Schedule schedule) {
-        return appointmentScheduleRepository.countByScheduleAndStatus(schedule, AppointmentStatus.CONFIRMED) + 1;
-    }
-
-    private void checkDuplicateTimeSlots(List<Schedule> schedules) {
-        Set<String> timeSlotKeys = new HashSet<>();
-        for (Schedule schedule : schedules) {
-            String timeSlotKey = schedule.getDate() + "|"
-                    + schedule.getTimeSlot().getStartTime() + "|"
-                    + schedule.getTimeSlot().getEndTime();
-            if (!timeSlotKeys.add(timeSlotKey)) {
-                throw new ConflictException("Duplicate time slots are not allowed");
-            }
-        }
-    }
-
-    private void checkExistingAppointments(Long medicalRecordId, List<Long> scheduleIds) {
-        List<AppointmentSchedule> existingAppointments = appointmentScheduleRepository
-                .findByAppointmentMedicalRecordIdAndScheduleIdIn(medicalRecordId, scheduleIds);
-        if (!existingAppointments.isEmpty()) {
-            throw new ConflictException("Patient already has an appointment in one of the selected time slots");
-        }
-    }
-
-    private void checkDistinctSpecialties(List<Schedule> schedules){
-        Set<Integer> specialtyIds = new HashSet<>();
-        for (Schedule schedule : schedules) {
-            Integer specialtyId = schedule.getDoctor().getMedicalSpecialty().getId();
-            if (!specialtyIds.add(specialtyId)) {
-                throw new DuplicatedException("Duplicate medical specialties are not allowed");
-            }
-        }
-    }
-
-    @Override
-    public AppointmentDetailResponse getAppointmentById(Long id) {
+    public AppointmentResponse getAppointmentById(Long id) {
         log.info("Fetching appointment with ID: {}", id);
         Appointment appointment = appointmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
-        return AppointmentMapper.INSTANCE.toDetailResponse(appointment);
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with ID: " + id));
+        return AppointmentMapper.INSTANCE.toResponse(appointment);
     }
-
-    @Override
-    public PageResponse<AppointmentSummaryResponse> getAllAppointments(Long medicalRecordId, int page, int size, String sort, String direction) {
-        log.info("Fetching appointments with medical record ID: {}, page: {}, size: {}, sort: {}, direction: {}", medicalRecordId, page, size, sort, direction);
-
-        MedicalRecord medicalRecord = medicalRecordRepository.findById(medicalRecordId)
-                .orElseThrow(() -> new ResourceNotFoundException("Medical record not found"));
-
-        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-
-        Page<Appointment> appointmentPage = appointmentRepository.findAppointmentsWithDetails(medicalRecord, pageable);
-
-
-        return PageResponse.<AppointmentSummaryResponse>builder()
-                .currentPage(page)
-                .pageSize(size)
-                .totalPages(appointmentPage.getTotalPages())
-                .totalElements(appointmentPage.getTotalElements())
-                .content(appointmentPage.getContent().stream().map(AppointmentMapper.INSTANCE::toSummaryResponse).toList())
-                .build();
-    }
-
-    @Override
-    public PageResponse<DoctorAppointmentResponse> getAllAppointments(Long doctorId, int page, int size, String sort, String direction, LocalDate date, AppointmentStatus status, Integer timeSlotId) {
-        log.info("Fetching appointments with page: {}, size: {}, sortBy: {}, direction: {}", page, size, sort, direction);
-
-        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-
-        Page<AppointmentSchedule> appointmentPage = appointmentScheduleRepository.findAllByDoctorIdAndStatusAndTimeSlotId(doctorId, date, status, timeSlotId, pageable);
-
-        return PageResponse.<DoctorAppointmentResponse>builder()
-                .currentPage(page)
-                .pageSize(size)
-                .totalPages(appointmentPage.getTotalPages())
-                .totalElements(appointmentPage.getTotalElements())
-                .content(appointmentPage.getContent().stream().map(AppointmentScheduleMapper.INSTANCE::toDoctorAppointmentResponse).toList())
-                .build();
-    }
-
-
-    @Override
-    public PageResponse<AppointmentSummaryResponse> getAllAppointments(int page, int size, String sort, String direction, LocalDate startDate, LocalDate endDate) {
-        log.info("Fetching appointments with page: {}, size: {}, sortBy: {}, direction: {}", page, size, sort, direction);
-
-        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-
-        Page<Appointment> appointmentPage = appointmentRepository.findAppointmentsWithDetails(startDate, endDate, pageable);
-
-        return PageResponse.<AppointmentSummaryResponse>builder()
-                .currentPage(page)
-                .pageSize(size)
-                .totalPages(appointmentPage.getTotalPages())
-                .totalElements(appointmentPage.getTotalElements())
-                .content(appointmentPage.getContent().stream().map(AppointmentMapper.INSTANCE::toSummaryResponse).toList())
-                .build();
-    }
-
-    @Override
-    public PageResponse<AppointmentSummaryResponse> getAllAppointments(Pageable pageable, String[] appointment, String[] medicalRecord, String[] patient) {
-        log.info("Fetching appointments with criteria: appointment: {}, medicalRecord: {}, patient: {}", appointment, medicalRecord, patient);
-
-        if (appointment != null || medicalRecord != null || patient != null) {
-            if (medicalRecord != null || patient != null) {
-                // Use Criteria API for joins
-                 PageResponse<Appointment> appointmentPage = searchRepository.searchAppointmentByCriteria(pageable, appointment, medicalRecord, patient);
-                return PageResponse.<AppointmentSummaryResponse>builder()
-                        .currentPage(pageable.getPageNumber() + 1)
-                        .pageSize(pageable.getPageSize())
-                        .totalPages(appointmentPage.getTotalPages())
-                        .totalElements(appointmentPage.getTotalElements())
-                        .content(appointmentPage.getContent().stream().map(AppointmentMapper.INSTANCE::toSummaryResponse).toList())
-                        .build();
-            } else {
-                // Use Specifications for a simple Appointment search
-                AppointmentSpecificationsBuilder builder = new AppointmentSpecificationsBuilder();
-                Pattern pattern = Pattern.compile(SEARCH_SPEC_OPERATOR);
-
-                if (appointment != null) {
-                    for (String a : appointment) {
-                        builder.with(a);
-                    }
-                }
-
-                Page<Appointment> appointments = appointmentRepository.findAll(builder.build(), pageable);
-                return PageResponse.<AppointmentSummaryResponse>builder()
-                        .currentPage(pageable.getPageNumber() + 1)
-                        .pageSize(pageable.getPageSize())
-                        .totalPages(appointments.getTotalPages())
-                        .totalElements(appointments.getTotalElements())
-                        .content(appointments.getContent().stream().map(AppointmentMapper.INSTANCE::toSummaryResponse).toList())
-                        .build();
-            }
-        }
-        Page<Appointment> appointments = appointmentRepository.findAll(pageable);
-        return PageResponse.<AppointmentSummaryResponse>builder()
-                .currentPage(pageable.getPageNumber() + 1)
-                .pageSize(pageable.getPageSize())
-                .totalPages(appointments.getTotalPages())
-                .totalElements(appointments.getTotalElements())
-                .content(appointments.getContent().stream().map(AppointmentMapper.INSTANCE::toSummaryResponse).toList())
-                .build();
-    }
-
-
 }

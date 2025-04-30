@@ -15,8 +15,6 @@ import vn.edu.hcmute.utecare.repository.RoomDetailRepository;
 import vn.edu.hcmute.utecare.service.RoomDetailService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -57,10 +55,20 @@ public class RoomDetailServiceImpl implements RoomDetailService {
     }
 
     @Override
-    public List<RoomDetailResponse> getAllRoomDetails() {
+    public PageResponse<RoomDetailResponse> getAllRoomDetails(int page, int size, String sort, String direction) {
         log.info("Fetching all room details");
-        List<RoomDetail> roomDetails = roomDetailRepository.findAll();
-        return  roomDetails.stream().map(RoomDetailMapper.INSTANCE::toResponse).toList();
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+
+        Page<RoomDetail> roomDetailPage = roomDetailRepository.findAll(pageable);
+
+
+        return PageResponse.<RoomDetailResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalPages(roomDetailPage.getTotalPages())
+                .totalElements(roomDetailPage.getTotalElements())
+                .content(roomDetailPage.getContent().stream().map(RoomDetailMapper.INSTANCE::toResponse).toList())
+                .build();
     }
 
     @Override
