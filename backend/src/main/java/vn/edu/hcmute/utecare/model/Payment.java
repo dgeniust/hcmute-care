@@ -41,7 +41,7 @@ public class Payment {
     @Column(name = "transaction_id")
     private String transactionId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Appointment appointment;
 }

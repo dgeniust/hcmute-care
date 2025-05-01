@@ -35,5 +35,18 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             @Param("status") TicketStatus status,
             Pageable pageable);
 
+    @Query("SELECT t FROM Ticket t " +
+            "JOIN t.scheduleSlot ss " +
+            "JOIN ss.schedule s " +
+            "JOIN s.doctor d " +
+            "WHERE d.id = :doctorId " +
+            "AND s.date = :date " +
+            "AND (:status IS NULL OR t.status = :status)")
+    List<Ticket> findAllByDoctorIdAndDateAndStatus(
+            @Param("doctorId") Long doctorId,
+            @Param("date") LocalDate date,
+            @Param("status") TicketStatus status);
+
     Integer countByScheduleSlot_IdAndStatus(Long id, TicketStatus ticketStatus);
+
 }

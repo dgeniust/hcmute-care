@@ -1,12 +1,29 @@
 package vn.edu.hcmute.utecare.service;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.transaction.annotation.Transactional;
 import vn.edu.hcmute.utecare.dto.request.PaymentRequest;
-import vn.edu.hcmute.utecare.dto.response.PaymentResponse;
-import vn.edu.hcmute.utecare.dto.response.VNPayResponse;
+import vn.edu.hcmute.utecare.dto.response.*;
+import vn.edu.hcmute.utecare.util.enumeration.PaymentStatus;
+
+import java.time.LocalDateTime;
 
 
 public interface PaymentService {
-    PaymentResponse createPaymentUrl(PaymentRequest request, HttpServletRequest httpServletRequest);
+    String createPaymentUrl(PaymentRequest request, HttpServletRequest httpServletRequest);
 
+    PaymentAppointmentResponse processPaymentReturn(HttpServletRequest request);
+
+    PaymentResponse getPaymentByTransactionId(String transactionId);
+
+    PageResponse<PaymentResponse> getAllPayments(
+            String transactionId,
+            PaymentStatus paymentStatus,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            int page,
+            int size,
+            String sort,
+            String direction
+    );
 }
