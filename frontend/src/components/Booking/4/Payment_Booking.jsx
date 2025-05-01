@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Tour, Divider, Radio  } from 'antd';
-import {HeartTwoTone, CreditCardTwoTone, RestOutlined, ForkOutlined } from '@ant-design/icons';
+import {HeartTwoTone, CreditCardTwoTone } from '@ant-design/icons';
 
 const style = {
     display: 'flex',
@@ -76,25 +76,9 @@ const VNPAY = () => (
     </svg>
 );
   
-const Payment_Booking = () => {
-    const [open, setOpen] = useState(false);
+const Payment_Booking = ({bookingList}) => {
     const ref1 = useRef(null);
     const ref2 = useRef(null);
-    const tour_steps = [
-        {
-            title: 'Kiểm tra thông tin đặt khám',
-            description: 'Hãy xem lại thông tin đặt khám của bạn. Đảm bảo rằng tất cả chi tiết như chuyên khoa, ngày giờ, và bác sĩ đều chính xác trước khi tiếp tục.',
-            target: () => ref1.current,
-        },
-        {
-            title: 'Chọn phương thức thanh toán',
-            description: 'Chọn phương thức thanh toán mà bạn muốn sử dụng để hoàn tất quá trình đặt khám. Chúng tôi hỗ trợ nhiều phương thức thanh toán an toàn và tiện lợi.',
-            target: () => ref2.current,
-        },
-    ];
-    useEffect(() => {
-        setOpen(true); // Mở tour khi component được mount
-    }, []);
     const [valueBanking, setValueBanking] = useState(1);
 
     const onChange = (e) => {
@@ -112,24 +96,24 @@ const Payment_Booking = () => {
                         <HeartTwoTone twoToneColor="#eb2f96" />
                         <h1 className='text-[#273c75] font-bold text-base'>Chuyên khoa đã chọn (1)</h1>
                     </div>
-                    <div className='flex flex-row space-x-4 bg-white p-4 justify-between text-black'>
-                        <p className='text-sm'>
-                            BỆNH LÝ CỘT SỐNG
-                        </p>
-                        <p className='text-[#273c75]'>150.000đ</p>
-                    </div>
-                    <Divider
-                    style={{
-                        borderColor: 'gray', margin: '0'
-                    }} dashed
-                    >
-                    </Divider>
-                    <div className='flex flex-row space-x-4 bg-white p-4 justify-between text-black'>
-                        <p className='text-sm'>
-                            BỆNH LÝ CỘT SỐNG
-                        </p>
-                        <p className='text-[#273c75]'>150.000đ</p>
-                    </div>
+                    {
+                        bookingList.map((item, index) => (
+                            <div key={index}>
+                                <div className='flex flex-row space-x-4 bg-white p-4 justify-between text-black'>
+                                    <p className='text-sm'>
+                                        {item.specialty}
+                                    </p>
+                                    <p className='text-[#273c75]'>{item.price}</p>
+                                </div>
+                                <Divider
+                                style={{
+                                    borderColor: 'gray', margin: '0'
+                                }} dashed
+                                >
+                                </Divider>
+                            </div>
+                        ))
+                    }
                 </div>
             </div>
             <div className='space-y-4 bg-white p-4 rounded-lg' ref={ref2}>
@@ -169,7 +153,11 @@ const Payment_Booking = () => {
                     />
                 </div>
             </div>
-            <Tour open={open} onClose={() => setOpen(false)} steps={tour_steps} />
+            <div>
+                <Button type="primary" className='w-full h-12 bg-[#273c75] hover:bg-[#273c75] text-white font-bold' onClick={() => {}}>
+                    Thanh toán
+                </Button>
+            </div>
         </div>
     )
 }

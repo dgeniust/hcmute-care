@@ -3,7 +3,7 @@ import { Button, Modal, Tag, message } from 'antd';
 import { PlusOutlined, InfoCircleTwoTone, RightOutlined, BarcodeOutlined, PhoneOutlined, HomeOutlined } from '@ant-design/icons';
 // import '../css/BookingContent.css';
 import { handleHttpStatusCode, notifyErrorWithCustomMessage, notifySuccessWithCustomMessage } from '../../../utils/notificationHelper';
-const ChooseProfile_Booking = forwardRef(({ setStatus,refs }, ref) => {
+const ChooseProfile_Booking = forwardRef(({ setStatus,refs, setCurrent }, ref) => {
     
     const [modalOpen, setModalOpen] = useState(false); // Modal open/close state
     const [medicalRecords, setMedicalRecords] = useState([]); // State to store medical records
@@ -20,6 +20,7 @@ const ChooseProfile_Booking = forwardRef(({ setStatus,refs }, ref) => {
     const handleMedicalRecord = (value) => {
         console.log('Selected medical record:', value);
         localStorage.setItem('medicalRecordId', value);
+        setCurrent(1); // Move to the next step
     }
 
     useEffect(() => {
@@ -44,11 +45,6 @@ const ChooseProfile_Booking = forwardRef(({ setStatus,refs }, ref) => {
                     .filter((record) => {
                         // Convert both to strings to avoid type mismatch
                         const matches = String(record.customerId) === String(customerId);
-                        console.log(
-                            `Record customerId: ${record.customerId} (type: ${typeof record.customerId}), ` +
-                            `Input customerId: ${customerId} (type: ${typeof customerId}), ` +
-                            `Matches: ${matches}`
-                        );
                         return matches;
                     })
                     .map((record) => ({

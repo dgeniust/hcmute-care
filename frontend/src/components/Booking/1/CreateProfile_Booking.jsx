@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import HaveRecord_Booking from './HaveRecord_Booking';
 import ChooseProfile_Booking from './ChooseProfile_Booking';
 import NoRecord_Booking from './NoRecord_Booking';
-const CreateProfile_Booking = forwardRef(({ refs }, ref) => {
+const CreateProfile_Booking = forwardRef(({ refs, setCurrent }, ref) => {
     const [hasAcc, setHasAcc] = useState(true);
     const [status, setStatus] = useState('records');
   
@@ -19,7 +19,7 @@ const CreateProfile_Booking = forwardRef(({ refs }, ref) => {
         ) : (
           <div className='w-full min-h-[460px] flex flex-col p-8 gap-8'>
             {status === 'records' ? (
-              <ChooseProfile_Booking refs={refs} setStatus={setStatus} /> // Truyền ref xuống ChooseProfile_Booking
+              <ChooseProfile_Booking refs={refs} setStatus={setStatus} setCurrent={setCurrent} /> // Truyền ref xuống ChooseProfile_Booking
             ) : status === 'hasUser' ? (
               <HaveRecord_Booking setStatus={setStatus} />
             ) : (

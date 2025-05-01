@@ -28,14 +28,15 @@ const TimeADoctor_Booking = ({handleSlotClick}) => {
                         id: item.id,
                         doctor: item.doctor,
                         roomDetail: item.roomDetail,
-                        timeSlots: item.timeSlots.map(slot => ({
+                        timeSlots: item.scheduleSlots.map(slot => ({
                           id: slot.id,
-                          timeString: `${slot.startTime.slice(0, 5)} - ${slot.endTime.slice(0, 5)}`,
-                          originalSlot: slot
+                          timeString: `${slot.timeSlot.startTime.slice(0, 5)} - ${slot.timeSlot.endTime.slice(0, 5)}`,
+                          bookedSlots: slot.bookedSlots,
+                          originalSlot: slot,
                         }))
                     }));
                     setSchedule(scheduleData);
-                    console.log("Data time and doctor:" ,schedule);
+                    console.log("Data time and doctor:" ,scheduleData);
                 }
             }
             catch(e) {
@@ -44,7 +45,7 @@ const TimeADoctor_Booking = ({handleSlotClick}) => {
             }
         }
         handleDataTimeADoctor();
-    }, [])
+    }, [specialtyId, dateBooking, messageApi]);
     const { token } = theme.useToken();
     
     const panelStyle = {
@@ -77,14 +78,21 @@ const TimeADoctor_Booking = ({handleSlotClick}) => {
               {item.timeSlots.map((slot) => (
                 <Button
                   key={slot.id}
-                  onClick={() => handleSlotClick(slot.timeString, item.doctor.fullName, item.roomDetail.name)}
+                  onClick={() => {
+                    //lưu scheuldeSlotId vào localStorage
+                    localStorage.setItem('scheduleSlotId', slot.id);
+                    
+                    handleSlotClick(slot.timeString, item.doctor.fullName, item.roomDetail.name);
+                  }}
+                  disabled={slot.bookedSlots > 6}
                   style={{
                     padding: '10px 20px',
                     marginRight: '4px',
                     borderRadius: '8px',
                     border: '1px solid #273c75',
-                    backgroundColor: 'white',
-                    cursor: 'pointer'
+                    backgroundColor: slot.bookedSlots > 6 ? '#f5f5f5' : 'white',
+                    cursor: slot.bookedSlots > 6 ? 'not-allowed' : 'pointer',
+                    color: slot.bookedSlots > 6 ? '#999' : '#273c75',
                   }}
                 >
                   {slot.timeString}
