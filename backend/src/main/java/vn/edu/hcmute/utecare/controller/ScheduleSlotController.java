@@ -32,4 +32,5 @@ public class ScheduleSlotController {
                 .data(ticketService.getTicketSummaryByScheduleSlot(id, status))
                 .build();
     }
+
 }
