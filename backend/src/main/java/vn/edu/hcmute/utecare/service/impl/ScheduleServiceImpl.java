@@ -181,4 +181,13 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .toList())
                 .build();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ScheduleResponse getDoctorSchedule(Long id, LocalDate date) {
+        log.info("Getting schedule for doctor with ID: {} on date: {}", id, date);
+        Schedule schedule = scheduleRepository.findByDoctor_IdAndDate(id, date)
+                .orElseThrow(() -> new ResourceNotFoundException("Schedule not found for doctor ID: " + id + " on date: " + date));
+        return ScheduleMapper.INSTANCE.toResponse(schedule);
+    }
 }

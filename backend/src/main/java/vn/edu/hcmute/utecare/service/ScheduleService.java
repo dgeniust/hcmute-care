@@ -41,4 +41,6 @@ public interface ScheduleService {
             LocalDate startDate,
             LocalDate endDate,
             Integer page, Integer size, String sort, String direction);
+
+    ScheduleResponse getDoctorSchedule(Long id, LocalDate date);
 }

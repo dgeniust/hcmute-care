@@ -15,5 +15,7 @@ public class TicketResponse {
 
     private Integer waitingNumber;
 
+    private MedicalRecordResponse medicalRecord;
+
     private ScheduleSlotInfoResponse scheduleSlot;
 }

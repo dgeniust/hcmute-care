@@ -76,6 +76,7 @@ public class ScheduleController {
                 .build();
     }
 
+
     @GetMapping
 //    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     @Operation(summary = "Get all schedules", description = "Retrieve a paginated list of schedules with optional filters")

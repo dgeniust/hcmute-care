@@ -11,6 +11,7 @@ import vn.edu.hcmute.utecare.dto.request.DoctorRequest;
 import vn.edu.hcmute.utecare.dto.response.*;
 import vn.edu.hcmute.utecare.service.DoctorService;
 import vn.edu.hcmute.utecare.service.ScheduleService;
+import vn.edu.hcmute.utecare.service.ScheduleSlotService;
 import vn.edu.hcmute.utecare.service.TicketService;
 import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
 
@@ -27,6 +28,7 @@ public class DoctorController {
     private final DoctorService doctorService;
     private final ScheduleService scheduleService;
     private final TicketService ticketService;
+    private final ScheduleSlotService scheduleSlotService;
 
     @GetMapping("/{id}")
     @Operation(summary = "Get doctor by ID", description = "Retrieve a doctor by their ID")
@@ -102,6 +104,30 @@ public class DoctorController {
                 .status(HttpStatus.OK.value())
                 .message("Doctors search completed successfully")
                 .data(doctorService.searchDoctors(keyword, page, size, sort, direction))
+                .build();
+    }
+
+    @GetMapping("/{id}/schedule")
+    @Operation(summary = "Chi tiết về 1 lịch làm  theo bác sĩ và ngày (option1)", description = "Retrieve a doctor's schedule by their ID")
+    public ResponseData<ScheduleResponse> getDoctorSchedule(@PathVariable("id") Long id,
+                                                            @RequestParam LocalDate date) {
+        log.info("Get doctor's schedule request for doctor ID: {}", id);
+        return ResponseData.<ScheduleResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("Doctor's schedule retrieved successfully")
+                .data(scheduleService.getDoctorSchedule(id, date))
+                .build();
+    }
+
+    @GetMapping("/{id}/schedule-slots")
+    @Operation(summary = "Danh sách schedule slot theo bác sĩ và ngày (Option 2)", description = "Retrieve a list of schedule slots for a specific doctor")
+    public ResponseData<List<ScheduleSlotResponse>> getDoctorScheduleSlots(@PathVariable("id") Long id,
+                                                                           @RequestParam LocalDate date) {
+        log.info("Get doctor's schedule slots request for doctor ID: {}", id);
+        return ResponseData.<List<ScheduleSlotResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Doctor's schedule slots retrieved successfully")
+                .data(scheduleSlotService.getAllScheduleSlotsByDoctorIdAndDate(id, date))
                 .build();
     }
 
