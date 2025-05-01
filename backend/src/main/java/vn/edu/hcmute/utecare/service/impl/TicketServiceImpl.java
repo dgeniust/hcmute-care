@@ -16,6 +16,7 @@ import vn.edu.hcmute.utecare.service.TicketService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -69,5 +70,17 @@ public class TicketServiceImpl implements TicketService {
                         .map(TicketMapper.INSTANCE::toResponse)
                         .toList())
                 .build();
+    }
+
+    @Override
+    public List<TicketResponse> getAllTicketsByDoctorId(Long doctorId,
+                                                        LocalDate date,
+                                                        TicketStatus status) {
+        log.info("Getting all tickets by doctor ID: {}", doctorId);
+        List<Ticket> tickets = ticketRepository.findAllByDoctorIdAndDateAndStatus(doctorId, date, status);
+
+        return tickets.stream()
+                .map(TicketMapper.INSTANCE::toResponse)
+                .toList();
     }
 }

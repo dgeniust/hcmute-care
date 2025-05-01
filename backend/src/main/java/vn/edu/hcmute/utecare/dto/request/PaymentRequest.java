@@ -8,11 +8,6 @@ import java.math.BigDecimal;
 
 @Getter
 public class PaymentRequest {
-
-    @NotNull(message = "amount is required")
-    @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
-    private BigDecimal amount;
-
     @NotNull(message = "bank code is required")
     private String bankCode;
 

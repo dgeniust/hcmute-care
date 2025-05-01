@@ -9,4 +9,6 @@ import vn.edu.hcmute.utecare.model.Appointment;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     Page<Appointment> findAllByMedicalRecordId(Long medicalRecordId, Pageable pageable);
+
+
 }

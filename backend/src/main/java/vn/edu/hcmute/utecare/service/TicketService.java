@@ -22,4 +22,8 @@ public interface TicketService {
                                                                 int size,
                                                                 String sort,
                                                                 String direction);
+
+    List<TicketResponse> getAllTicketsByDoctorId(Long doctorId,
+                                                 LocalDate date,
+                                                 TicketStatus status);
 }

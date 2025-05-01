@@ -11,8 +11,11 @@ import vn.edu.hcmute.utecare.dto.request.DoctorRequest;
 import vn.edu.hcmute.utecare.dto.response.*;
 import vn.edu.hcmute.utecare.service.DoctorService;
 import vn.edu.hcmute.utecare.service.ScheduleService;
+import vn.edu.hcmute.utecare.service.TicketService;
+import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @RestController
@@ -23,6 +26,7 @@ import java.time.LocalDate;
 public class DoctorController {
     private final DoctorService doctorService;
     private final ScheduleService scheduleService;
+    private final TicketService ticketService;
 
     @GetMapping("/{id}")
     @Operation(summary = "Get doctor by ID", description = "Retrieve a doctor by their ID")
@@ -116,6 +120,18 @@ public class DoctorController {
                 .status(HttpStatus.OK.value())
                 .message("Doctor's schedules retrieved successfully")
                 .data(scheduleService.getDoctorSchedules(id, startDate, endDate, page, size, sort, direction))
+                .build();
+    }
+
+    @GetMapping("/{id}/tickets")
+    public ResponseData<List<TicketResponse>> getDoctorTickets(@PathVariable("id") Long id,
+                                                               @RequestParam LocalDate date,
+                                                               @RequestParam(required = false)TicketStatus status){
+        log.info("Get doctor's tickets request for doctor ID: {}", id);
+        return ResponseData.<List<TicketResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Doctor's tickets retrieved successfully")
+                .data(ticketService.getAllTicketsByDoctorId(id, date, status))
                 .build();
     }
 }
