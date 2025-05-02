@@ -3,6 +3,7 @@ package vn.edu.hcmute.utecare.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,24 +43,35 @@ public class PaymentController {
 
 
     @GetMapping("/vnpay/return")
-    public ResponseData<PaymentAppointmentResponse> vnpayReturn(HttpServletRequest request) {
+    public ResponseData<PaymentAppointmentResponse> vnpayReturn(HttpServletRequest request, HttpServletResponse response) {
         log.info("VNPay return request: {}", request.getQueryString());
 
         return ResponseData.<PaymentAppointmentResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("VNPay return request successful")
-                .data(paymentService.processPaymentReturn(request))
+                .data(paymentService.processPaymentReturn(request, response))
                 .build();
     }
 
     @GetMapping("/transaction/{transactionId}")
     @Operation(summary = "Get payment by transaction ID", description = "Get payment details by transaction ID")
-    public ResponseData<PaymentResponse> getPaymentByTransactionId(@PathVariable String transactionId) {
+    public ResponseData<PaymentAppointmentResponse> getPaymentByTransactionId(@PathVariable String transactionId) {
         log.info("Get payment by transaction ID: {}", transactionId);
-        return ResponseData.<PaymentResponse>builder()
+        return ResponseData.<PaymentAppointmentResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("Get payment by transaction ID successful")
                 .data(paymentService.getPaymentByTransactionId(transactionId))
+                .build();
+    }
+
+    @GetMapping("/appointments/{appointmentId}")
+    @Operation(summary = "Get payment by ID", description = "Get payment details by ID")
+    public ResponseData<PaymentAppointmentResponse> getPaymentById(@PathVariable("appointmentId") Long appointmentId) {
+        log.info("Get payment by ID: {}", appointmentId);
+        return ResponseData.<PaymentAppointmentResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("Get payment by ID successful")
+                .data(paymentService.getPaymentByAppointmentId(appointmentId))
                 .build();
     }
 

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import vn.edu.hcmute.utecare.model.Payment;
 import vn.edu.hcmute.utecare.util.enumeration.PaymentStatus;
 
+import java.lang.ScopedValue;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -24,4 +25,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate,
             Pageable pageable);
+
+    Optional<Payment> findByAppointment_Id(Long id);
 }

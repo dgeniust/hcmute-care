@@ -54,3 +54,4 @@ payment:
     version: 2.1.0
     command: pay
     orderType: other
+    redirectUrl:  http://localhost:5173/appointment/success?transactionId=
