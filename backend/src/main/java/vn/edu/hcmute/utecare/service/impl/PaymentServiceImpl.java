@@ -1,15 +1,16 @@
 package vn.edu.hcmute.utecare.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.hcmute.utecare.configuration.VNPayConfig;
 import vn.edu.hcmute.utecare.dto.request.PaymentRequest;
-import vn.edu.hcmute.utecare.dto.response.AppointmentResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.PaymentAppointmentResponse;
 import vn.edu.hcmute.utecare.dto.response.PaymentResponse;
@@ -40,6 +41,9 @@ public class PaymentServiceImpl implements PaymentService {
     private final VNPayConfig vnpayConfig;
     private final AppointmentService appointmentService;
     private final AppointmentRepository appointmentRepository;
+
+    @Value("${payment.vnPay.redirectUrl}")
+    private String redirectUrl;
 
 
     @Transactional
@@ -97,7 +101,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Transactional
     @Override
-    public PaymentAppointmentResponse processPaymentReturn(HttpServletRequest request){
+    public PaymentAppointmentResponse processPaymentReturn(HttpServletRequest request, HttpServletResponse response){
         log.info("Processing payment return for request: {}", request);
 
         Map<String, String> vnpParams = new HashMap<>();
@@ -127,21 +131,42 @@ public class PaymentServiceImpl implements PaymentService {
             paymentRepository.save(payment);
 
             appointmentService.confirmAppointment(payment.getAppointment().getId());
+            try {
+                response.sendRedirect(redirectUrl + vnpTxnRef);
+            }
+            catch (Exception e) {
+                log.error("Error redirecting to success page: {}", e.getMessage());
+            }
         } else {
             payment.setPaymentStatus(PaymentStatus.FAILED);
             paymentRepository.save(payment);
             appointmentService.cancelAppointment(payment.getAppointment().getId());
+            try {
+                response.sendRedirect(redirectUrl + vnpTxnRef);
+            }
+            catch (Exception e) {
+                log.error("Error redirecting to success page: {}", e.getMessage());
+            }
         }
         return PaymentMapper.INSTANCE.toPaymentAppointmentResponse(payment);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public PaymentResponse getPaymentByTransactionId(String transactionId) {
+    public PaymentAppointmentResponse getPaymentByTransactionId(String transactionId) {
         log.info("Fetching payment with transaction ID: {}", transactionId);
         Payment payment = paymentRepository.findByTransactionId(transactionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment not found with transaction ID: " + transactionId));
-        return PaymentMapper.INSTANCE.toResponse(payment);
+        return PaymentMapper.INSTANCE.toPaymentAppointmentResponse(payment);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public PaymentAppointmentResponse getPaymentByAppointmentId(Long appointmentId) {
+        log.info("Fetching payment with appointment ID: {}", appointmentId);
+        Payment payment = paymentRepository.findByAppointment_Id(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with appointment ID: " + appointmentId));
+        return PaymentMapper.INSTANCE.toPaymentAppointmentResponse(payment);
     }
 
     @Override

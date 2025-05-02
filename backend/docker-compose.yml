@@ -1,6 +1,7 @@
 services:
   backend-service:
     container_name: utecare-backend-service
+    image: phamchien04/utecare-backend:latest
     build:
       context: .
       dockerfile: Dockerfile

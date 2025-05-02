@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-slim
+FROM amazoncorretto:21.0.7
 
 ARG JAR_FILE=target/*.jar
 
