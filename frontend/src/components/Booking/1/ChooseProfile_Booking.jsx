@@ -31,6 +31,7 @@ const ChooseProfile_Booking = forwardRef(({ setStatus,refs, setCurrent }, ref) =
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     },
                 });
                 if(!response.ok) {

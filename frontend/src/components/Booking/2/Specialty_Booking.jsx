@@ -2,20 +2,21 @@ import React, {useEffect, useState} from 'react';
 import { Button, message} from 'antd';
 import {RightOutlined, InfoCircleTwoTone} from '@ant-design/icons';
 import { handleHttpStatusCode, notifySuccessWithCustomMessage, notifyErrorWithCustomMessage} from '../../../utils/notificationHelper';
-const Specialty_Booking = ({setSpecialty, setPrice, setChoosedSpecialty, setStep, ref}) => {
-    const handleCureInfo = (name, price) => {
-        setSpecialty(name);
-        console.log('Selected specialty:', name);
-        setPrice(price);
-        setChoosedSpecialty(true)
-        setStep(2)
-    }
+const Specialty_Booking = ({setSpecialty, setSpecialtyId, setPrice, setChoosedSpecialty, setStep, ref}) => {
+    
     const [messageApi, contextHolder] = message.useMessage();
     const [specialtyData, setSpecialtyData] = useState([]);
-    const handleSpecialty = (value) => {
-        console.log('Selected specialty id:', value);
-        localStorage.setItem('specialtyId', value);
-    }
+    const handleSpecialty = (specialtyId, specialtyName, price) => {
+        console.log('Selected specialty id:', specialtyId);
+        localStorage.setItem('specialtyId', specialtyId);
+    
+        // Cập nhật state và chuyển bước
+        setSpecialtyId(specialtyId); // Truyền specialtyId lên parent
+        setSpecialty(specialtyName);
+        setPrice(price);
+        setChoosedSpecialty(true);
+        setStep(2);
+      };
     useEffect(() => {
         const handleDataSpecialty = async () => {
             try {
@@ -23,6 +24,7 @@ const Specialty_Booking = ({setSpecialty, setPrice, setChoosedSpecialty, setStep
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
                     },
                 });
                 if(!response.ok) {
@@ -43,7 +45,7 @@ const Specialty_Booking = ({setSpecialty, setPrice, setChoosedSpecialty, setStep
                     setSpecialtyData(specialties);
                     notifySuccessWithCustomMessage('Chọn chuyên khoa thành công', messageApi);
                 } else {
-                    notifyErrorWithCustomMessage('Không có dữ liệu chuyên khoa 1', messageApi);
+                    notifyErrorWithCustomMessage('Không có dữ liệu chuyên khoa', messageApi);
                 }
             }
             catch (e) {
@@ -64,9 +66,8 @@ const Specialty_Booking = ({setSpecialty, setPrice, setChoosedSpecialty, setStep
                     specialtyData && specialtyData.length > 0 ? (
                         specialtyData.map((item) => (
                             <Button key={item.id} style={{width:'100%', height:'70px', padding: '25px', display: 'flex', justifyContent: 'center',flexDirection:'column', alignItems:'center', border: '1px solid black', borderRadius: '5px'}}
-                                onClick={() => handleSpecialty(item.id)}
                             >
-                            <div className='w-full h-fit flex flex-row items-center justify-between' onClick = {() => handleCureInfo(item.name, item.price)}>
+                            <div className='w-full h-fit flex flex-row items-center justify-between' onClick = {() => handleSpecialty(item.id, item.name, item.price)}>
                                 <div className='flex flex-row items-center space-x-4 justify-start'>
                                     <InfoCircleTwoTone style={{fontSize: '20px'}}/>
                                     <p className='text-[#273c75] text-sm font-bold'>{item.name}</p>

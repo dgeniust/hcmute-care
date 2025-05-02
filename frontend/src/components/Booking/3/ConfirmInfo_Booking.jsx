@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Collapse, theme, message } from 'antd';
 import { ArrowLeftOutlined, UserAddOutlined, CaretRightOutlined, RestOutlined, ForkOutlined } from '@ant-design/icons';
-import { handleHttpStatusCode, notifyErrorWithCustomMessage } from '../../../utils/notificationHelper';
+import { handleHttpStatusCode, notifyErrorWithCustomMessage, notifySuccessWithCustomMessage } from '../../../utils/notificationHelper';
 
 const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
   const { token } = theme.useToken();
@@ -44,8 +44,8 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
   }, []);
 
   const resetBooking = () => {
-    localStorage.removeItem('scheduleSlotId');
     localStorage.removeItem('dateBooking');
+    localStorage.removeItem('specialtyId');
     setCurrent(1); // Navigate back to CureInfo_Booking
   };
 
@@ -99,11 +99,56 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
   ];
 
   const deleteBooking = (index) => {
-    setBookingList(bookingList.filter((_, i) => i !== index));
+    const updatedBookingList = bookingList.filter((_, i) => i !== index);
+    setBookingList(updatedBookingList);
+    // Cập nhật bookings trong localStorage
+    let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    bookings = bookings.filter((_, i) => i !== index);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
   };
 
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
+    try {
+      const scheduleSlotIds = bookingList.map((booking) => booking.scheduleSlotId);
+      if (!scheduleSlotIds || scheduleSlotIds.length === 0) {
+        notifyErrorWithCustomMessage('Không có lịch khám nào được chọn.', messageApi);
+        return;
+      }
+      const payload = {
+        medicalRecordId: medicalRecordId,
+        scheduleSlotIds: scheduleSlotIds
+      }
+      console.log('Payload in appointment', payload)
+      const response = await fetch('http://localhost:8080/api/v1/appointments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      if(!response.ok) {
+        const errorText = await response.text();
+        handleHttpStatusCode(response.status, '', `Đặt khám thất bại: ${errorText || response.statusText}`, messageApi);
+        return;
+      }
+      const data = await response.json();
+      console.log('Appointment Data:', data);
+      notifySuccessWithCustomMessage('Đặt khám thành công', messageApi);
+      if(data) {
+        const appointmentId = data.data.id;
+        localStorage.setItem('appointmentId', appointmentId);
+      }
+      setCurrent(4); // Navigate to Payment_Booking
+    }
+    catch(e) {
+      console.error('Error:', e);
+      notifyErrorWithCustomMessage('Có lỗi xảy ra trong quá trình xử lý yêu cầu.', messageApi);
+    }
     setCurrent(3);
+    localStorage.removeItem('bookings');
+    localStorage.removeItem('dateBooking');
+    localStorage.removeItem('specialtyId');
   };
 
   return (

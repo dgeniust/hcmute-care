@@ -34,6 +34,8 @@ import PatientRecords from './components/DoctorComponents/PatientRecords/Patient
 import DoctorSchedule from './pages/Doctor/DoctorSchedule/DoctorSchedule';
 import ProtectedRoute from './pages/ProtectedRoute';
 import ManageSchedule from './pages/Admin/ManageSchedule/ManageSchedule';
+import ConfirmBill_Booking from './components/Booking/5/ConfirmBill_Booking';
+import PaymentResultPage from './components/Booking/4/PaymentResultPage';
 function App() {
   return (
     <Router>
@@ -60,6 +62,8 @@ function App() {
               <Route path="service-list" element={<ServiceList />} />
               <Route path="notification-event" element={<Notification_Event />} />
               <Route path="booking" element={<BookingContent />} />
+              <Route path="/confirm-booking" element={<PaymentResultPage />} />
+              <Route path='/completed-booking' element={<ConfirmBill_Booking/>}/>
             </Route>
           </Route>
 

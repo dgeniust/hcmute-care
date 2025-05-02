@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button, message, Steps, theme, Tour } from 'antd';
+import { message, Steps, theme, Tour } from 'antd';
 import { SnippetsOutlined, CreditCardOutlined, UserOutlined, ForkOutlined } from '@ant-design/icons';
 import CreateProfile_Booking from '../../components/Booking/1/CreateProfile_Booking';
 import CureInfo_Booking from '../../components/Booking/2/CureInfo_Booking';
 import ConfirmInfo_Booking from '../../components/Booking/3/ConfirmInfo_Booking';
 import Payment_Booking from '../../components/Booking/4/Payment_Booking';
-import ConfirmBill_Booking from '../../components/Booking/5/ConfirmBill_Booking';
 import '../../css/bookingcontent.css';
-import logo from '../../assets/Logo_2.png';
 
 const BookingContent = () => {
   const ref1 = useRef(null);
@@ -32,15 +30,16 @@ const BookingContent = () => {
       return false; // Indicate failure
     }
 
-    // Check for duplicate time slot
-    const isDuplicateTime = bookingList.some(
-      (item) => item.date === newBookingElement.date && item.time === newBookingElement.time
+    // Check for duplicate scheduleSlotId
+    const isDuplicateSlot = bookingList.some(
+      (item) => item.scheduleSlotId === newBookingElement.scheduleSlotId
     );
 
-    if (isDuplicateTime) {
-      messageApi.error('Giờ khám này đã được chọn. Vui lòng chọn giờ khác.');
+    if (isDuplicateSlot) {
+      messageApi.error('Khung giờ này đã được chọn. Vui lòng chọn khung giờ khác.');
       return false; // Indicate failure
     }
+
 
     // Check for exact duplicate booking
     const isDuplicate = bookingList.some(
@@ -63,7 +62,6 @@ const BookingContent = () => {
     messageApi.success('Đã thêm thông tin khám');
     return true; // Indicate success
   };
-
   const steps = [
     {
       title: '1. Hồ sơ',
@@ -94,13 +92,8 @@ const BookingContent = () => {
     },
     {
       title: '4. Thanh toán',
-      content: <Payment_Booking setCurrent={setCurrent} bookingList={bookingList} />,
+      content: <Payment_Booking setCurrent={setCurrent} bookingList={bookingList}/>,
       icon: <CreditCardOutlined />,
-    },
-    {
-      title: '5. In bill',
-      content: <ConfirmBill_Booking setCurrent={setCurrent} bookingList={bookingList} />,
-      icon: <SnippetsOutlined />,
     },
   ];
 
