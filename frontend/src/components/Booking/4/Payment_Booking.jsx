@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, Tour, Divider, Radio  } from 'antd';
+import React, { useState, useRef } from 'react';
+import { Button, Divider, Radio, message } from 'antd';
 import {HeartTwoTone, CreditCardTwoTone } from '@ant-design/icons';
-
+import { handleHttpStatusCode, notifyErrorWithCustomMessage, notifySuccessWithCustomMessage } from '../../../utils/notificationHelper';
 const style = {
     display: 'flex',
     flexDirection: 'column',
@@ -76,14 +76,55 @@ const VNPAY = () => (
     </svg>
 );
   
-const Payment_Booking = ({bookingList}) => {
+const Payment_Booking = ({bookingList, setCurrent}) => {
     const ref1 = useRef(null);
     const ref2 = useRef(null);
-    const [valueBanking, setValueBanking] = useState(1);
-
+    const [valueBanking, setValueBanking] = useState(2);
+    const [messageApi, contextHolder] = message.useMessage();
+    const appointmentId = localStorage.getItem('appointmentId');
     const onChange = (e) => {
         setValueBanking(e.target.value);
     };
+    const handlePayment = async () => {
+        try {
+            const payload = {
+                bankCode: 'NCB',
+                appointmentId: appointmentId
+            }
+            const response = await fetch(`http://localhost:8080/api/v1/payments/vn-pay`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                },
+                body: JSON.stringify(payload)
+            });
+            console.log("Raw response payment",response);
+            if(!response.ok) {
+                const errorText = await response.text();
+                handleHttpStatusCode(response.status, "", errorText, messageApi );
+                return;
+            }
+            const data = await response.json();
+            console.log("Data payment",data);
+            // Kiểm tra response và redirect nếu thành công
+            if(data) {
+                if (data.status === 200 && data.data) {
+                    setTimeout(() => {
+                        notifySuccessWithCustomMessage('Đặt khám thành công, đang chuyển hướng tới trang thanh toán', messageApi);
+                    }, 500);
+                    window.location.href = data.data;
+                } else {
+                    notifyErrorWithCustomMessage('Không tìm thấy URL thanh toán trong response.', messageApi);
+                }
+            }
+        }
+        catch (error) {
+            console.error('Error during payment:', error);
+            notifyErrorWithCustomMessage('Có lỗi xảy ra trong quá trình thanh toán. Vui lòng thử lại sau.', messageApi);
+        }
+
+    }
     return (
         <div className='w-full h-fit min-h-[460px] border border-red-600 p-8 bg-gray-100 space-y-4'>
             <div className='rounded-lg space-y-2'>
@@ -154,10 +195,11 @@ const Payment_Booking = ({bookingList}) => {
                 </div>
             </div>
             <div>
-                <Button type="primary" className='w-full h-12 bg-[#273c75] hover:bg-[#273c75] text-white font-bold' onClick={() => {}}>
+                <Button type="primary" className='w-full h-12 bg-[#273c75] hover:bg-[#273c75] text-white font-bold' onClick={handlePayment}>
                     Thanh toán
                 </Button>
             </div>
+            {contextHolder}
         </div>
     )
 }

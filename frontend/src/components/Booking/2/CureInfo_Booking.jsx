@@ -23,16 +23,18 @@ const CureInfo_Booking = ({ bookingList, addBooking, setCurrent }) => {
   const [radio2, setRadio2] = useState();
   const [clickNext, setClickNext] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-
+  const [specialtyId, setSpecialtyId] = useState(null); // Lưu specialtyId
+  const [scheduleSlotId, setScheduleSlotId] = useState(null); // Lưu scheduleSlotId
   const onSelectDate = (newValue) => {
     setSelectedValue(newValue);
     setStep(3);
   };
 
-  const handleSlotClick = (time, doctorName, room) => {
+  const handleSlotClick = (time, doctorName, room, slotId) => {
     setSelectedTime(time);
     setSelectedDoctor(doctorName);
     setSelectedRoom(room);
+    setScheduleSlotId(slotId); // Lưu scheduleSlotId
   };
 
   const radioOnchange1 = ({ target: { value } }) => {
@@ -57,6 +59,7 @@ const CureInfo_Booking = ({ bookingList, addBooking, setCurrent }) => {
     }
 
     const newBookingElement = {
+      specialtyId,
       specialty,
       price,
       date: selectedValue ? selectedValue.format('DD-MM-YYYY') : null,
@@ -65,8 +68,38 @@ const CureInfo_Booking = ({ bookingList, addBooking, setCurrent }) => {
       doctor: selectedDoctor,
       insurance: radio1 === 1 ? 'Có' : 'Không',
       guarantee: radio2 === 1 ? 'Có' : 'Không',
-      scheduleSlotId: localStorage.getItem('scheduleSlotId'),
+      scheduleSlotId,
     };
+
+    // Lưu booking vào localStorage
+    let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    const existingBookingIndex = bookings.findIndex((booking) => booking.specialtyId === specialtyId);
+
+    if (existingBookingIndex !== -1) {
+      // Cập nhật booking hiện có
+      bookings[existingBookingIndex] = {
+        ...bookings[existingBookingIndex],
+        specialtyName: specialty,
+        dateBooking: localStorage.getItem('dateBooking'),
+        scheduleSlotId: scheduleSlotId.toString(),
+        timeString: selectedTime,
+        doctorName: selectedDoctor,
+        roomName: selectedRoom,
+      };
+    } else {
+      // Thêm booking mới
+      bookings.push({
+        specialtyId,
+        specialtyName: specialty,
+        dateBooking: localStorage.getItem('dateBooking'),
+        scheduleSlotId: scheduleSlotId.toString(),
+        timeString: selectedTime,
+        doctorName: selectedDoctor,
+        roomName: selectedRoom,
+      });
+    }
+
+    localStorage.setItem('bookings', JSON.stringify(bookings));
 
     const success = addBooking(newBookingElement);
     if (success) {
@@ -144,6 +177,7 @@ const CureInfo_Booking = ({ bookingList, addBooking, setCurrent }) => {
           {step === 1 && (
             <Specialty_Booking
               setSpecialty={setSpecialty}
+              setSpecialtyId={setSpecialtyId} // Thêm prop để set specialtyId
               setPrice={setPrice}
               setChoosedSpecialty={setChoosedSpecialty}
               setStep={setStep}

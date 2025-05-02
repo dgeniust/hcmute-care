@@ -1,9 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button, Timeline , Calendar,theme, Collapse  } from 'antd';
 import {ArrowLeftOutlined,ForkOutlined , RightOutlined, ClockCircleOutlined, CalendarOutlined, MedicineBoxOutlined, SyncOutlined, InfoCircleTwoTone, CaretRightOutlined, FileSearchOutlined } from '@ant-design/icons';
-import Specialty_Booking from './Specialty_Booking';
-import Date_Booking from './Date_Booking';
-import TimeADoctor_Booking from './TimeADoctor_Booking';
 
 const Timeline_Booking = ({choosedSpecialty, specialty, step, result, selectedTime, selectedValue, selectedDoctor, ref}) => {
     return (

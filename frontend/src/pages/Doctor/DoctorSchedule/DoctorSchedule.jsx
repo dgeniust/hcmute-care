@@ -150,7 +150,9 @@ const DoctorSchedule = () => {
   const fetchDoctorSchedule = async () => {
     setLoading(true);
     try {
-      const response = await fetch(api, { method: 'GET' });
+      const response = await fetch(api, { method: 'GET',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+       });
       
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
