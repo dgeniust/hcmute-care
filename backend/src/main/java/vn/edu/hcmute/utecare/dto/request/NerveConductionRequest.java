@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 @Getter
 @Setter
@@ -36,5 +37,7 @@ public class NerveConductionRequest {
     private String nerve;
 
     private Float conductionSpeed;
+
+    private EMedicalTest status;
 
 }

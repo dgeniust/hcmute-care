@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,4 +29,8 @@ public class LaboratoryTestsResponse {
     private float gra;
     private float lym;
     private float momo;
+
+    private EMedicalTest status;
+    private LocalDateTime createDate;
+
 }

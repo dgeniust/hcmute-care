@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 @Getter
 @Setter
@@ -33,4 +34,7 @@ public class EMGRequest {
     private String image;
 
     private String muscleGroup;
+
+    private EMedicalTest status;
+
 }
