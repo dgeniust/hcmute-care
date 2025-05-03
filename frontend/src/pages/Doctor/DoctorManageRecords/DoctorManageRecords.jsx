@@ -1,143 +1,173 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Thêm useEffect để gọi API
+import {message} from 'antd';
 import { 
-  SearchOutlined, 
-  FilterOutlined, 
+  WomanOutlined, 
+  ManOutlined, 
   CalendarOutlined, 
   RightOutlined, 
   FileTextOutlined, 
   UserOutlined, 
-  ClockCircleOutlined, 
+  LinkedinOutlined, 
   ExclamationCircleOutlined 
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs'; // Import dayjs
+import {handleHttpStatusCode, notifySuccessWithCustomMessage, notifyErrorWithCustomMessage} from '../../../utils/notificationHelper'; // Import hàm xử lý thông báo dựa trên status code
 const DoctorManageRecords = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [scheduleSlots, setScheduleSlots] = useState([]); // State để lưu danh sách time slots
+  const [selectedSlotId, setSelectedSlotId] = useState(null); // State để lưu scheduleSlotId khi click
+  const [messageApi, contextHolder] = message.useMessage(); // Sử dụng message API từ antd
+  const [schedulePatientData, setSchedulePatientData] = useState([]); // State để lưu dữ liệu bệnh nhân từ API
 
-  const patient = [
-    {
-      "name": "Nguyễn Thành Đạt",
-      "dob": "14/01/2004",
-      "barcode": "W24-0068373",
-      "phoneNumber": "0387***823",
-      "gender": "Nam",
-      "email": "dathiichan141@gmail.com",
-      "career": "Sinh viên",
-      "nation": "Việt Nam",
-      "address": "Số 6 Đường 449 Tăng Nhơn Phú A Quận 9 Thủ Đức",
-      "encounter": [
-        {
-          "id": 1,
-          "treatment": "Vật lý trị liệu",
-          "diagnosis": "Căng cơ",
-          "visitDate": "2025-03-25",
-          "notes": "Bệnh nhân báo cáo đau nhẹ, khuyến nghị bài tập giãn cơ.",
-          "prescription": {
-            "id": 101,
-            "issueDate": "2025-03-25",
-            "status": "ĐÃ DUYỆT",
-            "prescriptionItems": [
-              {
-                "id": 1001,
-                "name": "Ibuprofen",
-                "dosage": "200mg",
-                "quantity": 30,
-                "unit": "viên",
-                "medicine": {
-                  "id": 5001,
-                  "name": "Ibuprofen",
-                  "usage": "Uống sau khi ăn",
-                  "strength": "200mg",
-                  "price": 137000
-                }
-              }
-            ]
-          }
-        },
-        {
-          "id": 2,
-          "treatment": "Điều trị kháng sinh",
-          "diagnosis": "Nhiễm khuẩn",
-          "visitDate": "2025-04-01",
-          "notes": "Kê đơn thuốc kháng sinh trong 7 ngày.",
-          "prescription": {
-            "id": 102,
-            "issueDate": "2025-04-01",
-            "status": "ĐÃ DUYỆT",
-            "prescriptionItems": [
-              {
-                "id": 1002,
-                "name": "Amoxicillin",
-                "dosage": "500mg",
-                "quantity": 21,
-                "unit": "viên nang",
-                "medicine": {
-                  "id": 5002,
-                  "name": "Amoxicillin",
-                  "usage": "Uống 3 lần mỗi ngày",
-                  "strength": "500mg",
-                  "price": 250000
-                }
-              },
-              {
-                "id": 1003,
-                "name": "Paracetamol",
-                "dosage": "500mg",
-                "quantity": 21,
-                "unit": "viên nang",
-                "medicine": {
-                  "id": 5002,
-                  "name": "Amoxicillin",
-                  "usage": "Uống 1 lần mỗi ngày",
-                  "strength": "500mg",
-                  "price": 25000
-                }
-              }
-            ]
-          }
+
+  const doctorId = localStorage.getItem('customerId'); // Lấy doctorId từ localStorage
+  //const formatDate = dayjs().format('YYYY-MM-DD'); // Định dạng ngày hiện tại
+  // Gọi API khi component mount
+  const formatDate = "2025-05-03"
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/v1/doctors/${doctorId}/schedule?date=${formatDate}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        });
+        const data = await response.json();
+        if (data.status === 200) {
+          // Sắp xếp time slot theo thời gian bắt đầu (startTime)
+          const sortedSlots = data.data.scheduleSlots.sort((a, b) => 
+            a.timeSlot.startTime.localeCompare(b.timeSlot.startTime)
+          );
+          setScheduleSlots(sortedSlots); // Lưu time slots vào state
         }
-      ]
-    },
-    // Giả lập thêm một vài bệnh nhân để minh họa giao diện
-    {
-      "name": "Trần Minh Hiếu",
-      "dob": "22/05/1995",
-      "barcode": "W24-0068374",
-      "phoneNumber": "0905***456",
-      "gender": "Nam",
-      "email": "hieutran@gmail.com",
-      "career": "Kỹ sư",
-      "nation": "Việt Nam",
-      "address": "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
-      "encounter": []
-    },
-    {
-      "name": "Phạm Thu Hà",
-      "dob": "10/12/1990",
-      "barcode": "W24-0068375",
-      "phoneNumber": "0913***789",
-      "gender": "Nữ",
-      "email": "hapham@gmail.com",
-      "career": "Giáo viên",
-      "nation": "Việt Nam",
-      "address": "45 Lê Lợi, Quận 1, TP.HCM",
-      "encounter": []
-    }
-  ];
+      } catch (error) {
+        console.error('Error fetching schedule:', error);
+      }
+    };
 
-  const handleSelectPatient = (pat) => {
-    setSelectedPatient(pat);
+    fetchSchedule();
+  }, []); // Gọi API khi component mount
+
+  const handleSelectPatient = async (pat) => {
+    
+    localStorage.setItem('medicalRecordPatientId', pat.medicalRecordId); // Lưu medicalRecordId vào localStorage
+    try{
+      const response = await fetch(`http://localhost:8080/api/v1/medical-records/${pat.medicalRecordId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      })
+      console.log('Selected patient response:', response);
+      if(!response.ok) {
+        const errorText = await response.text();
+        handleHttpStatusCode(response.status, '', errorText, messageApi); // Gọi hàm xử lý thông báo
+        return;
+      }
+      const data = await response.json();
+      if(data.status === 200 && data.data) {
+        setSelectedPatient(data.data); // Cập nhật state với thông tin bệnh nhân
+        notifySuccessWithCustomMessage('Lấy thông tin bệnh nhân thành công', messageApi); // Thông báo thành công
+      }
+    }
+    catch(e){
+      console.error('Error fetching patient data:', e);
+      notifyErrorWithCustomMessage('Lỗi khi lấy thông tin bệnh nhân', messageApi); // Thông báo lỗi
+    }
   };
 
-  const filteredPatients = patient.filter(pat => 
-    pat.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    pat.barcode.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    pat.phoneNumber.includes(searchQuery)
-  );
+  const handleSelectSlot = async (slotId) => {
+    setSelectedSlotId(slotId); // Lưu scheduleSlotId khi click vào time slot
+    localStorage.setItem('scheduleSlotDoctorId', slotId); // Lưu vào localStorage nếu cần thiết
+    console.log('Selected slot ID:', selectedSlotId); // Kiểm tra ID đã được lưu chưa
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/schedule-slots/${slotId}/tickets?status=CONFIRMED`,{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      })
+      if(!response.ok) {
+        const errorText = await response.text();
+        handleHttpStatusCode(response.status, '', errorText, messageApi); // Gọi hàm xử lý thông báo
+        return;
+      }
+      const data = await response.json();
+      console.log('Selected slot data:', data);
+      if(data && data.data.length > 0) {
+        const patients = data.data.map(item => ({
+          id: item.id,
+          ticketCode: item.ticketCode,
+          waitingNumber: item.waitingNumber,
+          patientName: item.patientName,
+          medicalRecordId: item.medicalRecordId,
+          medicalRecordBarcode: item.medicalRecordBarcode,
+          dob: item.patientDob,
+          gender: item.patientGender,
+        })); // Lấy danh sách bệnh nhân từ response
+        setSchedulePatientData(patients); // Cập nhật state với danh sách bệnh nhân
+        console.log('Schedule patient data:', patients);
+        notifySuccessWithCustomMessage('Lấy danh sách bệnh nhân thành công', messageApi); // Thông báo thành công
+      }
+    }
+    catch (error) {
+      setSchedulePatientData([]); // Clear patient list if no data
+      console.error('Error selecting slot:', error);
+      notifyErrorWithCustomMessage('Lỗi khi lấy danh sách bệnh nhân', messageApi); // Thông báo lỗi
+    }
+  };
+
+  
+
   const navigate = useNavigate();
-  const handleOpenRecord = (patient) => {
-    navigate('/doctor/patient', { state: { patient: patient } });
-};
+  const handleOpenRecord = async (patient) => {
+    localStorage.setItem('patientEncounterInfo', JSON.stringify(patient)); // Lưu medicalRecordId vào localStorage
+    const medicalRecordPatientId = localStorage.getItem('medicalRecordPatientId'); // Lấy medicalRecordId từ localStorage
+    const day = dayjs().format('YYYY-MM-DD'); // Ngày khám bệnh
+    const payload = {
+      medicalRecordId: medicalRecordPatientId,
+      prescriptionId: [0],
+      treatment: "string",
+      diagnosis: "string",
+      visitDate: day, // Ngày khám bệnh
+      notes: "string",
+    }
+    console.log('Payload:', payload); // Kiểm tra payload trước khi gửi
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/encounters', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`, // Lấy accessToken từ localStorage
+        },
+        body: JSON.stringify(payload), // Chuyển đổi payload thành chuỗi JSON
+      })
+      console.log('Encounter response:', response);
+      if(!response.ok) {
+        const errorText = await response.text();
+        console.error('Encounter error:', errorText);
+        handleHttpStatusCode(response.status, '', errorText, messageApi); // Gọi hàm xử lý thông báo
+        return;
+      }
+      const data = await response.json();
+      if(data.status === 201 && data.data) {
+        console.log('Encounter data:', data.data.id);
+        localStorage.setItem('encounterId', data.data.id); // Lưu encounterId vào localStorage
+        navigate('/doctor/patient');
+        notifySuccessWithCustomMessage('Lấy thông tin bệnh nhân thành công', messageApi); // Thông báo thành công
+      }
+    }
+    catch(e) {
+      console.error('Error fetching patient data:', e);
+      notifyErrorWithCustomMessage('Lỗi khi lấy thông tin bệnh nhân', messageApi); // Thông báo lỗi
+    }
+  };
+
   return (
     <div className="w-full h-full bg-gray-50">
       {/* Header */}
@@ -155,55 +185,59 @@ const DoctorManageRecords = () => {
                 <FileTextOutlined className="mr-2 text-blue-500" />
                 Danh sách bệnh nhân
               </h2>
-              
-              {/* Search bar */}
-              <div className="mt-3 relative">
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm theo tên, mã hoặc số điện thoại..."
-                  className="w-full px-4 py-2 pl-10 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <span className="absolute left-3 top-3 text-gray-400">
-                  <SearchOutlined />
-                </span>
-              </div>
-              
-              {/* Filter options */}
-              <div className="mt-3 flex gap-2">
-                <button className="flex items-center px-3 py-1 text-sm bg-blue-50 text-blue-600 rounded-full">
-                  <FilterOutlined className="mr-1" />
-                  Mới nhất
-                </button>
-                <button className="flex items-center px-3 py-1 text-sm bg-gray-100 text-gray-600 rounded-full">
-                  <CalendarOutlined className="mr-1" />
-                  Tuần này
-                </button>
+
+              {/* Hiển thị danh sách time slots */}
+              <div className="mt-3 flex flex-wrap gap-2">
+                {scheduleSlots && scheduleSlots.length > 0 ? (
+                  scheduleSlots.map((slot) => (
+                    <button
+                      key={slot.id}
+                      className={`px-3 py-1 text-sm rounded-full ${
+                        selectedSlotId === slot.id
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+                      }`}
+                      onClick={() => handleSelectSlot(slot.id)}
+                    >
+                      {slot.timeSlot.startTime} - {slot.timeSlot.endTime}
+                    </button>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500">Không có lịch trống</p>
+                )}
               </div>
             </div>
             
             {/* Patient list */}
             <div className="overflow-y-auto max-h-[600px]">
-              {filteredPatients.length > 0 ? (
-                filteredPatients.map((pat, index) => (
+              {schedulePatientData && schedulePatientData.length > 0 ? (
+                schedulePatientData.map((pat, index) => (
                   <div 
                     key={index}
                     className={`p-4 border-b border-gray-100 hover:bg-blue-50 cursor-pointer transition duration-150 ${selectedPatient === pat ? 'bg-blue-50' : ''}`}
                     onClick={() => handleSelectPatient(pat)}
                   >
-                    <div className="flex justify-between items-center">
-                      <h3 className="font-medium text-gray-800">{pat.name}</h3>
-                      <RightOutlined className="text-gray-400" />
-                    </div>
-                    <div className="flex mt-2 gap-x-4">
-                      <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded flex items-center">
-                        <UserOutlined className="mr-1" />
-                        {pat.barcode}
-                      </span>
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                        {pat.phoneNumber}
-                      </span>
+                    <div className='flex flex-row space-x-2'>
+                      <div className='flex flex-col w-full'>
+                        <div className="flex justify-between items-center">
+                          <h3 className="font-medium text-gray-800">{pat.patientName}</h3>
+                          <RightOutlined className="text-gray-400" />
+                        </div>
+                        <div className="flex mt-2 gap-x-4">
+                          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded flex items-center">
+                            <UserOutlined className="mr-1" />
+                            {pat.dob}
+                          </span>
+                          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                            {pat.ticketCode}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex mt-2 gap-x-4">
+                        <div className="w-[40px] h-[40px] rounded-full bg-blue-500 flex items-center justify-center">
+                          <span className="text-base font-medium text-white">{pat.waitingNumber}</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))
@@ -223,17 +257,22 @@ const DoctorManageRecords = () => {
                 {/* Patient info header */}
                 <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-white">
                   <div className="flex justify-between items-start">
-                    <div>
-                      <h2 className="text-xl font-bold text-gray-800">{selectedPatient.name}</h2>
-                      <div className="flex gap-4 mt-2 text-sm text-gray-600">
-                        <span className="flex items-center">
+                    <div className='w-full'>
+                      <h2 className="text-xl font-bold text-gray-800">{selectedPatient.patient?.name|| 'Không có tên'}</h2>
+                      <div className="flex gap-4 mt-2 text-sm text-gray-600 w-full">
+                        <span className="flex items-center w-fit">
                           <CalendarOutlined className="mr-1 text-blue-500" />
-                          {selectedPatient.dob}
+                          {selectedPatient.patient?.dob ? dayjs(selectedPatient.patient.dob).format('DD-MM-YYYY') : 'Không có dữ liệu'}
                         </span>
                         <span>|</span>
-                        <span>{selectedPatient.gender}</span>
+                        <span>
+                          {
+                            selectedPatient.patient?.gender ==="FEMALE" ? <WomanOutlined className="mr-1 text-blue-500" /> : <ManOutlined className="mr-1 text-blue-500" />
+                          }
+                          {selectedPatient.patient?.gender === "MALE" ? "Nam" : "Nữ" || 'Không có dữ liệu'}
+                        </span>
                         <span>|</span>
-                        <span>{selectedPatient.career}</span>
+                        <span><LinkedinOutlined className="mr-1 text-blue-500"  />{selectedPatient.patient?.career|| 'Không có dữ liệu'}</span>
                       </div>
                     </div>
                     <div className='w-full flex flex-row justify-end space-x-4'>
@@ -245,7 +284,7 @@ const DoctorManageRecords = () => {
                         Xem chi tiết hồ sơ
                         </div>
                         <div className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-sm cursor-pointer hover:bg-blue-500 transition duration-150">
-                        {selectedPatient.barcode}
+                        {selectedPatient.barcode|| 'Không có dữ liệu'}
                         </div>
                     </div>
                   </div>
@@ -253,25 +292,25 @@ const DoctorManageRecords = () => {
                   <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div className="flex flex-col">
                       <span className="text-gray-500">Địa chỉ</span>
-                      <span className="font-medium">{selectedPatient.address}</span>
+                      <span className="font-medium">{selectedPatient.patient?.address|| 'Không có dữ liệu'}</span>
                     </div>
                     <div className="flex flex-col">
                       <span className="text-gray-500">Email</span>
-                      <span className="font-medium">{selectedPatient.email}</span>
+                      <span className="font-medium">{selectedPatient.patient?.email|| 'Không có dữ liệu'}</span>
                     </div>
                     <div className="flex flex-col">
                       <span className="text-gray-500">Số điện thoại</span>
-                      <span className="font-medium">{selectedPatient.phoneNumber}</span>
+                      <span className="font-medium">{selectedPatient.patient?.phone|| 'Không có dữ liệu'}</span>
                     </div>
                     <div className="flex flex-col">
                       <span className="text-gray-500">Quốc tịch</span>
-                      <span className="font-medium">{selectedPatient.nation}</span>
+                      <span className="font-medium">{selectedPatient.patient?.nation|| 'Không có dữ liệu'}</span>
                     </div>
                   </div>
                 </div>
                 
                 {/* Medical records */}
-                <div className="p-6 overflow-y-auto flex-1">
+                {/* <div className="p-6 overflow-y-auto flex-1">
                   <h3 className="font-bold text-gray-800 mb-4 flex items-center">
                     <ClockCircleOutlined className="mr-2 text-blue-500" />
                     Lịch sử khám bệnh
@@ -307,7 +346,6 @@ const DoctorManageRecords = () => {
                               <p className="text-gray-700 bg-gray-50 p-3 rounded mt-1">{enc.notes}</p>
                             </div>
                             
-                            {/* Prescription */}
                             <div className="mt-4">
                               <h5 className="text-sm font-medium text-gray-500 mb-2">Đơn thuốc ngày {enc.prescription.issueDate}</h5>
                               <div className="bg-blue-50 rounded-lg p-4">
@@ -336,9 +374,9 @@ const DoctorManageRecords = () => {
                       Bệnh nhân chưa có lần khám nào
                     </div>
                   )}
-                </div>
+                </div> */}
               </div>
-            ) : (
+              ) : (
               <div className="h-full flex items-center justify-center p-8 text-center text-gray-500">
                 <div>
                   <FileTextOutlined style={{ fontSize: '64px' }} className="block mx-auto mb-4 text-gray-300" />
@@ -350,6 +388,7 @@ const DoctorManageRecords = () => {
           </div>
         </div>
       </div>
+      {contextHolder}
     </div>
   );
 };

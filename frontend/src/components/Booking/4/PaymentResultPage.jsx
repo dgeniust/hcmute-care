@@ -58,14 +58,18 @@ const PaymentResultPage = () => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           }
         });
   
         const result = await response.json();
-  
+        if(!response.ok) {
+          const errorText = await response.text();
+          console.error("Error fetching payment data:", errorText);
+          return;
+        }
         if (response.ok && result?.status === 200) {
           localStorage.setItem('paymentData', JSON.stringify(result.data));
+          console.log('Chi tiết giao dịch:', result.data);
         } else {
           console.warn('Không tìm thấy chi tiết giao dịch từ API.');
         }

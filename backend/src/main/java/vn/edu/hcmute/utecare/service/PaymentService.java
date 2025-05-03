@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public interface PaymentService {
     String createPaymentUrl(PaymentRequest request, HttpServletRequest httpServletRequest);
 
-    PaymentAppointmentResponse processPaymentReturn(HttpServletRequest request, HttpServletResponse response);
+    PaymentAppointmentResponse processPaymentReturn(HttpServletRequest request);
 
     PaymentAppointmentResponse getPaymentByTransactionId(String transactionId);
 

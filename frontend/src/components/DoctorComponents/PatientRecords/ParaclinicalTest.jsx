@@ -1,44 +1,46 @@
 import React, {useState} from 'react';
-import { Avatar, Card, Badge, Typography, Space, Tag, Tooltip, Button, Table, List  } from 'antd';
+import { Avatar, Card, Badge, Typography, Space, Tag, Tooltip, Button, Table, List, Modal, Input, Select,message, Form } from 'antd';
 import { 
   HeartFilled, 
   CalendarOutlined, MedicineBoxOutlined, FileTextOutlined, PlusOutlined, FileImageOutlined ,EyeOutlined ,DownloadOutlined ,DeleteOutlined ,LineChartOutlined ,FileSearchOutlined ,EditOutlined 
 } from '@ant-design/icons';
 import AddParaclinicalTest from './AddParaclinicalTest';
 import ClinicalReportExporter from './ClinicalReportExporter';
+import { notifyErrorWithCustomMessage, notifySuccessWithCustomMessage, handleHttpStatusCode } from '../../../utils/notificationHelper';
 const {Text } = Typography;
 
 const ParaclinicalTest = () => {
-    const labTests = [
-        {
-          key: '1',
-          name: 'Công thức máu',
-          type: 'Máu',
-          requestDate: '22/03/2025',
-          status: 'Hoàn thành',
-          result: 'https://example.com/results/123',
-          requestedBy: 'Bs. Nguyễn Văn A'
-        },
-        {
-          key: '2',
-          name: 'Sinh hóa máu',
-          type: 'Máu',
-          requestDate: '22/03/2025',
-          status: 'Đang xử lý',
-          result: null,
-          requestedBy: 'Bs. Nguyễn Văn A'
-        },
-        {
-          key: '3',
-          name: 'Tổng phân tích nước tiểu',
-          type: 'Nước tiểu',
-          requestDate: '20/03/2025',
-          status: 'Hoàn thành',
-          result: 'https://example.com/results/124',
-          requestedBy: 'Bs. Nguyễn Văn A'
-        },
-    ];
-      
+    const [messageApi, contextHolder] = message.useMessage();
+    // const labTests = [
+    //     {
+    //       key: '1',
+    //       name: 'Công thức máu',
+    //       type: 'Máu',
+    //       requestDate: '22/03/2025',
+    //       status: 'Hoàn thành',
+    //       result: 'https://example.com/results/123',
+    //       requestedBy: 'Bs. Nguyễn Văn A'
+    //     },
+    //     {
+    //       key: '2',
+    //       name: 'Sinh hóa máu',
+    //       type: 'Máu',
+    //       requestDate: '22/03/2025',
+    //       status: 'Đang xử lý',
+    //       result: null,
+    //       requestedBy: 'Bs. Nguyễn Văn A'
+    //     },
+    //     {
+    //       key: '3',
+    //       name: 'Tổng phân tích nước tiểu',
+    //       type: 'Nước tiểu',
+    //       requestDate: '20/03/2025',
+    //       status: 'Hoàn thành',
+    //       result: 'https://example.com/results/124',
+    //       requestedBy: 'Bs. Nguyễn Văn A'
+    //     },
+    // ];
+    const [labTests, setLabTest] = useState([])
       // Dữ liệu mẫu cho chẩn đoán hình ảnh
     const imagingTests = [
         {
@@ -108,7 +110,7 @@ const ParaclinicalTest = () => {
     ];
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-      
+    const [form] = Form.useForm(); // Khởi tạo Form instance
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -116,12 +118,83 @@ const ParaclinicalTest = () => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-      
+    const patientInfo = JSON.parse(localStorage.getItem('patientEncounterInfo') || '{}');
+    console.log('Patient Info -------------------:', patientInfo);
+    const [isModalLabTestOpen, setIsModalLabTestOpen] = useState(false);
+    const showLabTestModal = () => {
+        setIsModalLabTestOpen(true);
+    };
+    const handleLabTestCancel = () => {
+        setIsModalLabTestOpen(false);
+        form.resetFields(); // Reset form fields when modal is closed
+    };
+
     const handleSubmit = (values) => {
         console.log('Submitted values:', values);
         // Xử lý dữ liệu gửi đi
         // Thêm vào danh sách yêu cầu hoặc gọi API
         setIsModalVisible(false);
+    };
+    // Object ánh xạ từ value sang tên đầy đủ
+    const testTypeNames = {
+        mau: 'Công thức máu',
+        nuoc_tieu: 'Nước tiểu',
+        dom: 'Đờm',
+        phan: 'Phân',
+        khac: 'Sinh hóa máu',
+    };
+    const handleLabTestOk = async () => {
+        const values = form.getFieldsValue(); // Lấy giá trị từ form
+        const payload = {
+            evaluate: "string",
+            notes: testTypeNames[values.testType] || values.testType,
+            encounterId: localStorage.getItem('encounterId'),
+            rbc: 0,
+            hct: 0,
+            hgb: 0,
+            mcv: 0,
+            mch: 0,
+            olt: 0,
+            wbc: 0,
+            gra: 0,
+            lym: 0,
+            momo: 0
+        }
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/laboratory-tests', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            })
+            if(!response.ok) {
+                const errorData = await response.text();
+                console.log('Error data:', errorData);
+                handleHttpStatusCode(response.status,'','Tạo xét nghiệm không thành công', messageApi);
+                return;
+            }
+            const data = await response.json();
+            console.log('Response data:', data);
+            if(data.data && data.status === 201){
+                setLabTest((prevLabTests) => [
+                    ...prevLabTests,
+                    {
+                        id: data.data.id,
+                        notes: data.data.notes,
+                        encounterId: data.data.encounterId,
+                    }
+                ]);
+                console.log('Lab tests:', labTests);
+            }
+            notifySuccessWithCustomMessage('Tạo xét nghiệm thành công', messageApi);
+            setIsModalLabTestOpen(false);
+            form.resetFields();
+        }
+        catch(e) {
+            console.log('Error:', e);
+            notifyErrorWithCustomMessage('Tạo xét nghiệm thất bại', messageApi);
+        }
     };
     return (
         <>
@@ -155,7 +228,7 @@ const ParaclinicalTest = () => {
                 }
                 extra={
                     <Tooltip title="Thêm yêu cầu xét nghiệm mới">
-                    <Button type="primary" icon={<PlusOutlined />}>Thêm</Button>
+                    <Button type="primary" icon={<PlusOutlined />} onClick={showLabTestModal}>Thêm</Button>
                     </Tooltip>
                 }
                 >
@@ -165,12 +238,12 @@ const ParaclinicalTest = () => {
                     {
                         title: 'Tên xét nghiệm',
                         dataIndex: 'name',
-                        key: 'name',
+                        key: 'notes',
                     },
                     {
                         title: 'Loại',
                         dataIndex: 'type',
-                        key: 'type',
+                        key: 'notes',
                         render: (text) => <Tag color="green">{text}</Tag>,
                     },
                     {
@@ -369,6 +442,57 @@ const ParaclinicalTest = () => {
                     />
                 </div>
                 </div>
+                <Modal
+                    title="Tạo Xét Nghiệm Mới"
+                    open={isModalLabTestOpen}
+                    onCancel={handleLabTestCancel}
+                    width={700}
+                    footer={[
+                    <Button key="back" onClick={handleLabTestCancel}>
+                        Hủy
+                    </Button>,
+                    <Button key="submit" type="primary" onClick={handleLabTestOk}>
+                        Tạo Xét Nghiệm
+                    </Button>,
+                    ]}
+                >
+                    <Form form={form} layout="vertical">
+                    <div className="grid grid-cols-2 gap-4">
+                        <Form.Item
+                        name="testName"
+                        label="Tên xét nghiệm"
+                        rules={[{ required: true, message: 'Vui lòng nhập tên xét nghiệm' }]}
+                        >
+                        <Input placeholder="Nhập tên xét nghiệm" />
+                        </Form.Item>
+
+                        <Form.Item
+                        name="testType"
+                        label="Loại xét nghiệm"
+                        rules={[{ required: true, message: 'Vui lòng chọn loại xét nghiệm' }]}
+                        >
+                        <Select placeholder="Chọn loại xét nghiệm" className="w-full">
+                            <Select.Option value="mau">Công thức máu</Select.Option>
+                            <Select.Option value="nuoc_tieu">Nước tiểu</Select.Option>
+                            <Select.Option value="dom">Đờm</Select.Option>
+                            <Select.Option value="phan">Phân</Select.Option>
+                            <Select.Option value="khac">Sinh hóa máu</Select.Option>
+                        </Select>
+                        </Form.Item>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <Form.Item name="patientId" label="Mã bệnh nhân">
+                        <Input placeholder="Nhập mã bệnh nhân" defaultValue={patientInfo?.barcode || ''} disabled />
+                        </Form.Item>
+
+                        <Form.Item name="patientName" label="Tên bệnh nhân">
+                        <Input placeholder="Nhập tên bệnh nhân" defaultValue={patientInfo?.patient?.name || ''} disabled />
+                        </Form.Item>
+                    </div>
+                    </Form>
+                </Modal>
+                {contextHolder}
             </Card>
         </>
     )
