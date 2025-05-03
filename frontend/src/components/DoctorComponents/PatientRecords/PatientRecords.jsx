@@ -1,5 +1,5 @@
-import React from 'react';
-import { Avatar, Collapse, theme, Card, Badge, Divider, Typography, Space, Tag, Tooltip,Progress } from 'antd';
+import React, {useEffect, useState} from 'react';
+import { Avatar, Collapse, theme, Card, Badge, Divider, Typography, Space, Tag, Tooltip,Progress, message } from 'antd';
 import { 
   CaretRightOutlined, UserOutlined, PhoneOutlined, 
   MailOutlined, HomeOutlined, GlobalOutlined, IdcardOutlined,
@@ -9,12 +9,29 @@ import {
 import BloodPresure, { HeartRate, Temperature, BodyHW } from './SVGPatiendRecors';
 import { useLocation } from 'react-router-dom';
 import ParaclinicalTest from './ParaclinicalTest';
+import { notifyErrorWithCustomMessage, notifySuccessWithCustomMessage, handleHttpStatusCode } from '../../../utils/notificationHelper';
 const { Title, Text, Paragraph } = Typography;
-
+import dayjs from 'dayjs';
 const PatientRecords = () => {
   const location = useLocation();
   const patient = location.state?.patient;
   const encounter = patient?.encounter || [];
+  const [messageApi, contextHolder] = message.useMessage();
+  const [patientEncounterInfo, setPatientEncounterInfo] = useState(() => {
+    const storedData = localStorage.getItem('patientEncounterInfo');
+    return storedData ? JSON.parse(storedData) : null;
+  });
+  // useEffect(() => {
+  //   const fetchEncounterData = async () => {
+  //     try {
+  //       const response = await fetch()
+  //     }
+  //     catch(e) {
+  
+  //     }
+  //   }
+  //   fetchEncounterData();
+  // },[])
 
   const { token } = theme.useToken();
   
@@ -27,151 +44,151 @@ const PatientRecords = () => {
     // overflow: 'hidden',
   };
 
-  const getItems = (panelStyle, encounter) =>
-    encounter.map((item) => ({
-      key: item.id.toString(),
-      label: (
-        <div className="flex items-center py-1">
-          <Badge 
-            status="processing" 
-            color={item.prescription.status === 'Hoàn thành' ? 'green' : 'blue'} 
-          />
-          <Space className="ml-2">
-            <Text strong>{`Lần khám ngày ${item.visitDate}`}</Text>
-            <Tag 
-              color={item.prescription.status === 'Hoàn thành' ? 'success' : 'processing'}
-              className="ml-2"
-            >
-              {item.prescription.status}
-            </Tag>
-          </Space>
-        </div>
-      ),
-      children: (
-        <Card 
-          variant={false} 
-          className="w-full shadow-sm bg-white"
-          style={{ padding: '20px' }}
-        >
-          {/* Treatment Information */}
-          <div className="space-y-5 mb-6">
-            <div className="flex flex-col space-y-1">
-              <div className="flex items-center mb-1">
-                <MedicineBoxOutlined className="text-blue-600 mr-2" />
-                <Text strong className="text-gray-800">Phương pháp điều trị</Text>
-              </div>
-              <Card size="small" className="bg-gray-50 border-gray-100">
-                <Text>{item.treatment}</Text>
-              </Card>
-            </div>
+  // const getItems = (panelStyle, encounter) =>
+  //   encounter.map((item) => ({
+  //     key: item.id.toString(),
+  //     label: (
+  //       <div className="flex items-center py-1">
+  //         <Badge 
+  //           status="processing" 
+  //           color={item.prescription.status === 'Hoàn thành' ? 'green' : 'blue'} 
+  //         />
+  //         <Space className="ml-2">
+  //           <Text strong>{`Lần khám ngày ${item.visitDate}`}</Text>
+  //           <Tag 
+  //             color={item.prescription.status === 'Hoàn thành' ? 'success' : 'processing'}
+  //             className="ml-2"
+  //           >
+  //             {item.prescription.status}
+  //           </Tag>
+  //         </Space>
+  //       </div>
+  //     ),
+  //     children: (
+  //       <Card 
+  //         variant={false} 
+  //         className="w-full shadow-sm bg-white"
+  //         style={{ padding: '20px' }}
+  //       >
+  //         {/* Treatment Information */}
+  //         <div className="space-y-5 mb-6">
+  //           <div className="flex flex-col space-y-1">
+  //             <div className="flex items-center mb-1">
+  //               <MedicineBoxOutlined className="text-blue-600 mr-2" />
+  //               <Text strong className="text-gray-800">Phương pháp điều trị</Text>
+  //             </div>
+  //             <Card size="small" className="bg-gray-50 border-gray-100">
+  //               <Text>{item.treatment}</Text>
+  //             </Card>
+  //           </div>
             
-            <div className="flex flex-col space-y-1">
-              <div className="flex items-center mb-1">
-                <FileTextOutlined className="text-green-600 mr-2" />
-                <Text strong className="text-gray-800">Chẩn đoán</Text>
-              </div>
-              <Card size="small" className="bg-gray-50 border-gray-100">
-                <Text>{item.diagnosis}</Text>
-              </Card>
-            </div>
+  //           <div className="flex flex-col space-y-1">
+  //             <div className="flex items-center mb-1">
+  //               <FileTextOutlined className="text-green-600 mr-2" />
+  //               <Text strong className="text-gray-800">Chẩn đoán</Text>
+  //             </div>
+  //             <Card size="small" className="bg-gray-50 border-gray-100">
+  //               <Text>{item.diagnosis}</Text>
+  //             </Card>
+  //           </div>
             
-            <div className="flex flex-col space-y-1">
-              <div className="flex items-center mb-1">
-                <FileTextOutlined className="text-amber-600 mr-2" />
-                <Text strong className="text-gray-800">Ghi chú</Text>
-              </div>
-              <Card size="small" className="bg-gray-50 border-gray-100">
-                <Paragraph ellipsis={{ rows: 3, expandable: true, symbol: 'Xem thêm' }}>
-                  {item.notes}
-                </Paragraph>
-              </Card>
-            </div>
-          </div>
+  //           <div className="flex flex-col space-y-1">
+  //             <div className="flex items-center mb-1">
+  //               <FileTextOutlined className="text-amber-600 mr-2" />
+  //               <Text strong className="text-gray-800">Ghi chú</Text>
+  //             </div>
+  //             <Card size="small" className="bg-gray-50 border-gray-100">
+  //               <Paragraph ellipsis={{ rows: 3, expandable: true, symbol: 'Xem thêm' }}>
+  //                 {item.notes}
+  //               </Paragraph>
+  //             </Card>
+  //           </div>
+  //         </div>
           
-          <Divider className="my-6">
-            <Space>
-              <MedicineBoxOutlined />
-              <span>Đơn thuốc</span>
-            </Space>
-          </Divider>
+  //         <Divider className="my-6">
+  //           <Space>
+  //             <MedicineBoxOutlined />
+  //             <span>Đơn thuốc</span>
+  //           </Space>
+  //         </Divider>
           
-          {/* Đơn thuốc */}
-          <div className="space-y-4">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-100">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                <div className="flex items-center">
-                  <CalendarOutlined className="text-blue-500 mr-2" />
-                  <Text type="secondary">Ngày kê đơn:</Text>
-                  <Text strong className="ml-2">{item.prescription.issueDate}</Text>
-                </div>
+  //         {/* Đơn thuốc */}
+  //         <div className="space-y-4">
+  //           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-100">
+  //             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+  //               <div className="flex items-center">
+  //                 <CalendarOutlined className="text-blue-500 mr-2" />
+  //                 <Text type="secondary">Ngày kê đơn:</Text>
+  //                 <Text strong className="ml-2">{item.prescription.issueDate}</Text>
+  //               </div>
                 
-                <div className="flex items-center">
-                  <ClockCircleOutlined className="text-blue-500 mr-2" />
-                  <Text type="secondary">Trạng thái:</Text>
-                  <Tag 
-                    color={item.prescription.status === 'Hoàn thành' ? 'success' : 'processing'}
-                    className="ml-2"
-                  >
-                    {item.prescription.status}
-                  </Tag>
-                </div>
-              </div>
+  //               <div className="flex items-center">
+  //                 <ClockCircleOutlined className="text-blue-500 mr-2" />
+  //                 <Text type="secondary">Trạng thái:</Text>
+  //                 <Tag 
+  //                   color={item.prescription.status === 'Hoàn thành' ? 'success' : 'processing'}
+  //                   className="ml-2"
+  //                 >
+  //                   {item.prescription.status}
+  //                 </Tag>
+  //               </div>
+  //             </div>
 
-              <Title level={5} className="mb-4 flex items-center">
-                <MedicineBoxOutlined className="mr-2" />
-                Danh sách thuốc
-              </Title>
+  //             <Title level={5} className="mb-4 flex items-center">
+  //               <MedicineBoxOutlined className="mr-2" />
+  //               Danh sách thuốc
+  //             </Title>
               
-              <Space direction="vertical" size="middle" className="w-full">
-                {item.prescription.prescriptionItems.map((presItem) => (
-                  <Card 
-                    key={presItem.id} 
-                    size="small" 
-                    className="border border-blue-100 hover:border-blue-300 shadow-sm hover:shadow-md transition-all duration-300"
-                    styles={{ body: { padding: 20 } }}
-                  >
-                    <div className="flex flex-col space-y-4">
-                      <div className="flex flex-wrap justify-between items-center">
-                        <div className="flex items-center">
-                          <div className="w-2 h-10 bg-blue-600 rounded-full mr-3"></div>
-                          <div>
-                            <Text strong className="text-lg block">{presItem.name}</Text>
-                            <Text type="secondary" className="text-sm">{presItem.medicine.strength}</Text>
-                          </div>
-                        </div>
-                        <Tag color="blue" className="text-sm font-medium px-3 py-1">
-                          {presItem.quantity} {presItem.unit}
-                        </Tag>
-                      </div>
+  //             <Space direction="vertical" size="middle" className="w-full">
+  //               {item.prescription.prescriptionItems.map((presItem) => (
+  //                 <Card 
+  //                   key={presItem.id} 
+  //                   size="small" 
+  //                   className="border border-blue-100 hover:border-blue-300 shadow-sm hover:shadow-md transition-all duration-300"
+  //                   styles={{ body: { padding: 20 } }}
+  //                 >
+  //                   <div className="flex flex-col space-y-4">
+  //                     <div className="flex flex-wrap justify-between items-center">
+  //                       <div className="flex items-center">
+  //                         <div className="w-2 h-10 bg-blue-600 rounded-full mr-3"></div>
+  //                         <div>
+  //                           <Text strong className="text-lg block">{presItem.name}</Text>
+  //                           <Text type="secondary" className="text-sm">{presItem.medicine.strength}</Text>
+  //                         </div>
+  //                       </div>
+  //                       <Tag color="blue" className="text-sm font-medium px-3 py-1">
+  //                         {presItem.quantity} {presItem.unit}
+  //                       </Tag>
+  //                     </div>
                       
-                      <div className="bg-blue-50 p-3 rounded-lg">
-                        <Text className="block mb-2">{presItem.dosage}</Text>
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Tooltip title="Cách sử dụng">
-                            <span className="flex items-center">
-                              <ClockCircleOutlined className="mr-1" />
-                              {presItem.medicine.usage}
-                            </span>
-                          </Tooltip>
-                          <Divider type="vertical" className="mx-2" />
-                          <Tooltip title="Giá">
-                            <span className="flex items-center font-medium text-blue-600">
-                              <DollarOutlined className="mr-1" />
-                              {presItem.medicine.price}đ
-                            </span>
-                          </Tooltip>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </Space>
-            </div>
-          </div>
-        </Card>
-      ),
-      style: panelStyle,
-    }));
+  //                     <div className="bg-blue-50 p-3 rounded-lg">
+  //                       <Text className="block mb-2">{presItem.dosage}</Text>
+  //                       <div className="flex items-center text-sm text-gray-600">
+  //                         <Tooltip title="Cách sử dụng">
+  //                           <span className="flex items-center">
+  //                             <ClockCircleOutlined className="mr-1" />
+  //                             {presItem.medicine.usage}
+  //                           </span>
+  //                         </Tooltip>
+  //                         <Divider type="vertical" className="mx-2" />
+  //                         <Tooltip title="Giá">
+  //                           <span className="flex items-center font-medium text-blue-600">
+  //                             <DollarOutlined className="mr-1" />
+  //                             {presItem.medicine.price}đ
+  //                           </span>
+  //                         </Tooltip>
+  //                       </div>
+  //                     </div>
+  //                   </div>
+  //                 </Card>
+  //               ))}
+  //             </Space>
+  //           </div>
+  //         </div>
+  //       </Card>
+  //     ),
+  //     style: panelStyle,
+  //   }));
 
   // Giả lập thông số sức khỏe
   const vitalSigns = {
@@ -202,7 +219,6 @@ const PatientRecords = () => {
       </div>
     </Card>
   );
-  
   return (
     <div className="w-full h-full p-4 md:p-6 lg:p-8 text-black bg-gradient-to-br from-white to-blue-50">
       <Card 
@@ -223,13 +239,13 @@ const PatientRecords = () => {
                   <div className="relative w-32 h-32 border-4 border-white rounded-full bg-gradient-to-r from-blue-100 to-white flex items-center justify-center shadow-lg">
                     <Avatar 
                       size={112} 
-                      src={<img src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${patient.gender === "Nam" ? "8" : "Brian"}`} alt="avatar" />}
+                      src={<img src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${patientEncounterInfo.patient.gender === "Nam" ? "8" : "Liliana"}`} alt="avatar" />}
                     />
                   </div>
                 </div>
                 
                 <div className="flex flex-col text-left space-y-3 w-full">
-                  <Title level={3} className="mb-0">{patient.name}</Title>
+                  <Title level={3} className="mb-0">{patientEncounterInfo.patient.name}</Title>
                   
                   <div className="bg-green-100 rounded-lg shadow-sm p-1">
                     <div className="flex items-center justify-center">
@@ -237,17 +253,17 @@ const PatientRecords = () => {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-4">
+                  <div className="flex flex-col space-y-2">
                     <div className="flex items-center space-x-2">
                       <UserOutlined className="text-blue-500" />
                       <Text type="secondary">Giới tính:</Text>
-                      <Text strong>{patient.gender}</Text>
+                      <Text strong>{patientEncounterInfo.patient.gender === "MALE" ? "Nam" : "Nữ"}</Text>
                     </div>
                     
                     <div className="flex items-center space-x-2">
                       <CalendarOutlined className="text-blue-500" />
                       <Text type="secondary">Ngày sinh:</Text>
-                      <Text strong>{patient.dob}</Text>
+                      <Text strong>{patientEncounterInfo.patient.dob ? dayjs(patientEncounterInfo.patient.dob).format('DD-MM-YYYY') : 'Không có dữ liệu'}</Text>
                     </div>
                   </div>
                 </div>
@@ -268,31 +284,31 @@ const PatientRecords = () => {
                 <div className="flex items-center space-x-2">
                   <PhoneOutlined className="text-blue-500" />
                   <Text type="secondary">SĐT:</Text>
-                  <Text strong>{patient.phoneNumber}</Text>
+                  <Text strong>{patientEncounterInfo.patient.phone}</Text>
                 </div>
                 
                 <div className="flex items-center space-x-2">
                   <MailOutlined className="text-blue-500" />
                   <Text type="secondary">Email:</Text>
-                  <Text strong>{patient.email}</Text>
+                  <Text strong>{patientEncounterInfo.patient.email}</Text>
                 </div>
                 
                 <div className="flex items-center space-x-2">
                   <IdcardOutlined className="text-blue-500" />
                   <Text type="secondary">Nghề nghiệp:</Text>
-                  <Text strong>{patient.career}</Text>
+                  <Text strong>{patientEncounterInfo.patient.career}</Text>
                 </div>
                 
                 <div className="flex items-center space-x-2">
                   <GlobalOutlined className="text-blue-500" />
                   <Text type="secondary">Quốc tịch:</Text>
-                  <Text strong>{patient.nation}</Text>
+                  <Text strong>{patientEncounterInfo.patient.nation}</Text>
                 </div>
                 
                 <div className="flex items-center space-x-2 col-span-2">
                   <HomeOutlined className="text-blue-500" />
                   <Text type="secondary">Địa chỉ:</Text>
-                  <Text strong>{patient.address}</Text>
+                  <Text strong>{patientEncounterInfo.patient.address}</Text>
                 </div>
               </div>
             </Card>
@@ -348,7 +364,7 @@ const PatientRecords = () => {
           </div>
           
           {/* Medical History Section */}
-          <div className="w-full lg:w-1/2 h-full p-5 overflow-auto">
+          {/* <div className="w-full lg:w-1/2 h-full p-5 overflow-auto">
             <Card 
               variant={false} 
               className="h-full"
@@ -372,12 +388,12 @@ const PatientRecords = () => {
                 items={getItems(panelStyle, encounter)}
               />
             </Card>
-          </div>
+          </div> */}
         </div>
       </Card>
       
       <ParaclinicalTest/>
-      
+      {contextHolder}
     </div>
   );
 };

@@ -43,13 +43,13 @@ public class PaymentController {
 
 
     @GetMapping("/vnpay/return")
-    public ResponseData<PaymentAppointmentResponse> vnpayReturn(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseData<PaymentAppointmentResponse> vnpayReturn(HttpServletRequest request) {
         log.info("VNPay return request: {}", request.getQueryString());
 
         return ResponseData.<PaymentAppointmentResponse>builder()
                 .status(HttpStatus.OK.value())
                 .message("VNPay return request successful")
-                .data(paymentService.processPaymentReturn(request, response))
+                .data(paymentService.processPaymentReturn(request))
                 .build();
     }
 

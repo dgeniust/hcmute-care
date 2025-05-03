@@ -39,8 +39,8 @@ const ProtectedRoute = ({ allowedRoles }) => {
             headers: { 
               'Content-Type': 'application/json',
               Authorization: `Bearer ${accessToken}`,
-             },
-            body: payload,
+            },
+            body: JSON.stringify(payload),
           });
           console.log('Refresh Response Status:', res.status);
 

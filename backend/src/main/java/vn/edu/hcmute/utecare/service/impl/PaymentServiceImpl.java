@@ -101,7 +101,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Transactional
     @Override
-    public PaymentAppointmentResponse processPaymentReturn(HttpServletRequest request, HttpServletResponse response){
+    public PaymentAppointmentResponse processPaymentReturn(HttpServletRequest request){
         log.info("Processing payment return for request: {}", request);
 
         Map<String, String> vnpParams = new HashMap<>();
@@ -131,22 +131,10 @@ public class PaymentServiceImpl implements PaymentService {
             paymentRepository.save(payment);
 
             appointmentService.confirmAppointment(payment.getAppointment().getId());
-            try {
-                response.sendRedirect(redirectUrl + vnpTxnRef);
-            }
-            catch (Exception e) {
-                log.error("Error redirecting to success page: {}", e.getMessage());
-            }
         } else {
             payment.setPaymentStatus(PaymentStatus.FAILED);
             paymentRepository.save(payment);
             appointmentService.cancelAppointment(payment.getAppointment().getId());
-            try {
-                response.sendRedirect(redirectUrl + vnpTxnRef);
-            }
-            catch (Exception e) {
-                log.error("Error redirecting to success page: {}", e.getMessage());
-            }
         }
         return PaymentMapper.INSTANCE.toPaymentAppointmentResponse(payment);
     }
