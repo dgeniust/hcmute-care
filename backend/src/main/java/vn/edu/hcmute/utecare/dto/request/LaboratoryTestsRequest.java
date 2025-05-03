@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 @Getter
 @Setter
@@ -31,4 +32,7 @@ public class LaboratoryTestsRequest {
     private float gra;
     private float lym;
     private float momo;
+
+    private EMedicalTest status;
+
 }

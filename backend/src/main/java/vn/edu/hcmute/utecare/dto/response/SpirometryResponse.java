@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -35,4 +38,8 @@ public class SpirometryResponse {
     private Float fevl;
 
     private Float fvc;
+
+
+    private EMedicalTest status;
+    private LocalDateTime createDate;
 }

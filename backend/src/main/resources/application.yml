@@ -5,7 +5,7 @@ spring:
   application:
     name: UTECare
   profiles:
-    active: @spring.profiles.active@
+    active: dev
 
 management:
   endpoints:

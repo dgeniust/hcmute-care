@@ -159,7 +159,10 @@ create table tbl_medical_test
     evaluate     varchar(255) null,
     notes        varchar(255) null,
     constraint FK7xkfdl55rhuc65a7i1ke4yvbq
-        foreign key (encounter_id) references tbl_encounter (id)
+        foreign key (encounter_id) references tbl_encounter (id),
+    create_date datetime null,
+    medical_status enum ('PENDING', 'COMPLETED', 'NOSHOW') null
+
 );
 
 create table tbl_functional_tests

@@ -7,8 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
+import vn.edu.hcmute.utecare.util.enumeration.PaymentStatus;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
@@ -32,4 +37,11 @@ public abstract class MedicalTest implements Serializable {
     @JoinColumn(name = "encounter_id", nullable = false)
     private Encounter encounter;
 
+    @CreationTimestamp
+    @Column(name = "create_date", updatable = false)
+    private LocalDateTime createDate;
+
+    @Column(name = "medical_status")
+    @Enumerated(EnumType.STRING)
+    private EMedicalTest status;
 }

@@ -14,6 +14,7 @@ import vn.edu.hcmute.utecare.model.LaboratoryTests;
 import vn.edu.hcmute.utecare.repository.LaboratoryTestsRepository;
 import vn.edu.hcmute.utecare.service.LaboratoryTestsService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +30,7 @@ public class LaboratoryTestsServiceImpl implements LaboratoryTestsService {
     public LaboratoryTestsResponse createLaboratoryTests(LaboratoryTestsRequest request) {
         log.info("Tạo LaboratoryTests mới: {}", request);
         LaboratoryTests laboratoryTests = LaboratoryTestsMapper.INSTANCE.toEntity(request);
+        laboratoryTests.setStatus(EMedicalTest.PENDING);
         LaboratoryTests savedLaboratoryTests = laboratoryTestsRepository.save(laboratoryTests);
         return LaboratoryTestsMapper.INSTANCE.toResponse(savedLaboratoryTests);
     }

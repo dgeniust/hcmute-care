@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,4 +24,9 @@ public class MedicalTestRequest {
 
     @NotNull(message = "Encounter ID cannot be null")
     private Long encounterId;
+
+    @NotNull(message = "createDate must not be null")
+    private LocalDateTime createDate;
+
+    private EMedicalTest status;
 }

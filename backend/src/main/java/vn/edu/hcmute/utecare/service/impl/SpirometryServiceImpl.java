@@ -14,6 +14,7 @@ import vn.edu.hcmute.utecare.model.*;
 import vn.edu.hcmute.utecare.repository.SpirometryRepository;
 import vn.edu.hcmute.utecare.service.SpirometryService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class SpirometryServiceImpl implements SpirometryService {
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         spirometry.setEncounter(encounter);
-
+        spirometry.setStatus(EMedicalTest.PENDING);
         Spirometry saved = spirometryRepository.save(spirometry);
         return SpirometryMapper.INSTANCE.toResponse(saved);
     }
