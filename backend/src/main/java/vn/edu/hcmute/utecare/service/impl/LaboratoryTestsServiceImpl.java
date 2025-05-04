@@ -30,18 +30,6 @@ public class LaboratoryTestsServiceImpl implements LaboratoryTestsService {
     public LaboratoryTestsResponse createLaboratoryTests(LaboratoryTestsRequest request) {
         log.info("Tạo LaboratoryTests mới: {}", request);
         LaboratoryTests laboratoryTests = LaboratoryTestsMapper.INSTANCE.toEntity(request);
-        laboratoryTests.setEvaluate(null);
-        laboratoryTests.setNotes(null);
-        laboratoryTests.setRbc(0);
-        laboratoryTests.setHct(0);
-        laboratoryTests.setHgb(0);
-        laboratoryTests.setMcv(0);
-        laboratoryTests.setMch(0);
-        laboratoryTests.setPlt(0);
-        laboratoryTests.setWbc(0);
-        laboratoryTests.setGra(0);
-        laboratoryTests.setLym(0);
-        laboratoryTests.setMomo(0);
         laboratoryTests.setStatus(EMedicalTest.PENDING);
         LaboratoryTests savedLaboratoryTests = laboratoryTestsRepository.save(laboratoryTests);
         return LaboratoryTestsMapper.INSTANCE.toResponse(savedLaboratoryTests);

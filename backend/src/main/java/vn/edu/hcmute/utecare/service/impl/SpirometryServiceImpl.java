@@ -35,6 +35,15 @@ public class SpirometryServiceImpl implements SpirometryService {
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         spirometry.setEncounter(encounter);
+        spirometry.setEvaluate(request.getEvaluate());
+        spirometry.setNotes(request.getNotes());
+        spirometry.setTestName(request.getTestName());
+        spirometry.setOrganSystem(request.getOrganSystem());
+        spirometry.setIsInvasive(request.getIsInvasive());
+        spirometry.setIsQuantitative(request.getIsQuantitative());
+        spirometry.setRecordDuration(request.getRecordDuration());
+        spirometry.setTestEnvironment(request.getTestEnvironment());
+        spirometry.setPatientPosition(request.getPatientPosition());
         spirometry.setStatus(EMedicalTest.PENDING);
         Spirometry saved = spirometryRepository.save(spirometry);
         return SpirometryMapper.INSTANCE.toResponse(saved);

@@ -37,17 +37,19 @@ public class NerveConductionServiceImpl implements NerveConductionService {
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         nerveConduction.setEncounter(encounter);
-        nerveConduction.setEvaluate(null);
-        nerveConduction.setNotes(null);
-        nerveConduction.setTestName(null);
-        nerveConduction.setOrganSystem(null);
-        nerveConduction.setIsInvasive(null);
-        nerveConduction.setIsQuantitative(null);
-        nerveConduction.setRecordDuration(null);
-        nerveConduction.setTestEnvironment(null);
-        nerveConduction.setPatientPosition(null);
-        nerveConduction.setNerve(null);
-        nerveConduction.setConductionSpeed(0);
+        nerveConduction.setEvaluate(request.getEvaluate());
+        nerveConduction.setNotes(request.getNotes());
+        nerveConduction.setTestName(request.getTestName());
+        nerveConduction.setOrganSystem(request.getOrganSystem());
+        nerveConduction.setIsInvasive(request.getIsInvasive());
+        nerveConduction.setIsQuantitative(request.getIsQuantitative());
+        nerveConduction.setRecordDuration(request.getRecordDuration());
+        nerveConduction.setTestEnvironment(request.getTestEnvironment());
+        nerveConduction.setPatientPosition(request.getPatientPosition());
+
+        nerveConduction.setNerve(request.getNerve());
+        nerveConduction.setConductionSpeed(request.getConductionSpeed());
+
         nerveConduction.setStatus(EMedicalTest.PENDING);
 
         NerveConduction saved = nerveConductionRepository.save(nerveConduction);

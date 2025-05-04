@@ -36,9 +36,6 @@ public class ImagingTestServiceImpl implements ImagingTestService {
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy Encounter với id: " + request.getEncounterId()));
         ImagingTest imagingTest = ImagingTestMapper.INSTANCE.toEntity(request);
         imagingTest.setEncounter(encounter);
-        imagingTest.setEvaluate(null);
-        imagingTest.setNotes(null);
-        imagingTest.setPdfResult(null);
         imagingTest.setStatus(EMedicalTest.PENDING);
         ImagingTest savedImagingTest = imagingTestRepository.save(imagingTest);
         return ImagingTestMapper.INSTANCE.toResponse(savedImagingTest);

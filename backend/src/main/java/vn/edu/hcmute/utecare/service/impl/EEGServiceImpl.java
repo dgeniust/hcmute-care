@@ -37,16 +37,16 @@ public class EEGServiceImpl implements EEGService {
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         eeg.setEncounter(encounter);
-        eeg.setEvaluate(null);
-        eeg.setNotes(null);
-        eeg.setTestName(null);
-        eeg.setOrganSystem(null);
-        eeg.setIsInvasive(null);
-        eeg.setIsQuantitative(null);
-        eeg.setRecordDuration(null);
-        eeg.setChannels(null);
-        eeg.setImage(null);
-        eeg.setDetectSeizure(false);
+        eeg.setEvaluate(request.getEvaluate());
+        eeg.setNotes(request.getNotes());
+        eeg.setTestName(request.getTestName());
+        eeg.setOrganSystem(request.getOrganSystem());
+        eeg.setIsInvasive(request.getIsInvasive());
+        eeg.setIsQuantitative(request.getIsQuantitative());
+        eeg.setRecordDuration(request.getRecordDuration());
+        eeg.setImage(request.getImage());
+        eeg.setChannels(request.getChannels());
+        eeg.setDetectSeizure(request.getDetectSeizure());
         eeg.setStatus(EMedicalTest.PENDING);
 
         EEG saved = eegRepository.save(eeg);
