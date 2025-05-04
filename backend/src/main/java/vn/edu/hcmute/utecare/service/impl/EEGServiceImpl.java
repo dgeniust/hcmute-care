@@ -16,6 +16,7 @@ import vn.edu.hcmute.utecare.model.Encounter;
 import vn.edu.hcmute.utecare.repository.EEGRepository;
 import vn.edu.hcmute.utecare.service.EEGService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,7 +47,7 @@ public class EEGServiceImpl implements EEGService {
         eeg.setChannels(null);
         eeg.setImage(null);
         eeg.setDetectSeizure(false);
-
+        eeg.setStatus(EMedicalTest.PENDING);
 
         EEG saved = eegRepository.save(eeg);
 

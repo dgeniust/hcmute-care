@@ -14,6 +14,7 @@ import vn.edu.hcmute.utecare.model.*;
 import vn.edu.hcmute.utecare.repository.NerveConductionRepository;
 import vn.edu.hcmute.utecare.service.NerveConductionService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +48,8 @@ public class NerveConductionServiceImpl implements NerveConductionService {
         nerveConduction.setPatientPosition(null);
         nerveConduction.setNerve(null);
         nerveConduction.setConductionSpeed(0);
-        // Lưu entity vào cơ sở dữ liệu
+        nerveConduction.setStatus(EMedicalTest.PENDING);
+
         NerveConduction saved = nerveConductionRepository.save(nerveConduction);
 
         // Chuyển entity đã lưu sang DTO để trả về

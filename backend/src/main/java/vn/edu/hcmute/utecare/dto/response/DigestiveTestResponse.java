@@ -1,6 +1,9 @@
 package vn.edu.hcmute.utecare.dto.response;
 
 import lombok.Data;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
+
+import java.time.LocalDateTime;
 
 @Data
 public class DigestiveTestResponse {
@@ -15,4 +18,7 @@ public class DigestiveTestResponse {
     private String evaluate; // Từ MedicalTest
     private String notes; // Từ MedicalTest
     private Long encounterId; // Từ MedicalTest
+
+    private EMedicalTest status;
+    private LocalDateTime createDate;
 }

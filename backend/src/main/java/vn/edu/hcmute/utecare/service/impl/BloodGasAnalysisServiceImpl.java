@@ -14,6 +14,7 @@ import vn.edu.hcmute.utecare.model.*;
 import vn.edu.hcmute.utecare.repository.BloodGasAnalysisRepository;
 import vn.edu.hcmute.utecare.service.BloodGasAnalysisService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +35,17 @@ public class BloodGasAnalysisServiceImpl implements BloodGasAnalysisService {
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         bloodGasAnalysis.setEncounter(encounter);
-
+        bloodGasAnalysis.setEvaluate(null);
+        bloodGasAnalysis.setNotes(null);
+        bloodGasAnalysis.setTestName(null);
+        bloodGasAnalysis.setOrganSystem(null);
+        bloodGasAnalysis.setIsInvasive(null);
+        bloodGasAnalysis.setIsQuantitative(null);
+        bloodGasAnalysis.setRecordDuration(null);
+        bloodGasAnalysis.setPCO2(0);
+        bloodGasAnalysis.setPO2(0);
+        bloodGasAnalysis.setPH(0);
+        bloodGasAnalysis.setStatus(EMedicalTest.PENDING);
         BloodGasAnalysis saved = bloodGasAnalysisRepository.save(bloodGasAnalysis);
 
         return BloodGasAnalysisMapper.INSTANCE.toResponse(saved);
