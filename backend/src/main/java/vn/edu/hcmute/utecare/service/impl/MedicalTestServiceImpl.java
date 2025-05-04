@@ -15,6 +15,8 @@ import vn.edu.hcmute.utecare.repository.MedicalTestRepository;
 import vn.edu.hcmute.utecare.service.MedicalTestService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,5 +81,18 @@ public class MedicalTestServiceImpl implements MedicalTestService {
         MedicalTest medicalTest = medicalTestRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy MedicalTest với id: " + id));
         medicalTestRepository.delete(medicalTest);
+    }
+
+    @Override
+    public List<MedicalTestResponse> findByEncounterAndDate(Long encounterId, LocalDate date) {
+        log.info("Tìm MedicalTest theo encounterId: {} và ngày: {}", encounterId, date);
+
+        LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
+
+        List<MedicalTest> tests = medicalTestRepository.findByEncounter_IdAndCreateDateBetween(encounterId, startOfDay, endOfDay);
+        return tests.stream()
+                .map(MedicalTestMapper.INSTANCE::toResponse)
+                .toList();
     }
 }

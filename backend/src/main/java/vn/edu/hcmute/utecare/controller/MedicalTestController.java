@@ -13,6 +13,7 @@ import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.MedicalTestService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -99,4 +100,20 @@ public class MedicalTestController {
                 .message("MedicalTest được xóa thành công")
                 .build();
     }
+
+    @GetMapping("/search-by-encounter-and-date")
+    @Operation(summary = "Tìm MedicalTest theo encounterId và ngày", description = "Tìm tất cả MedicalTest theo encounterId và ngày cụ thể.")
+    public ResponseData<List<MedicalTestResponse>> searchByEncounterAndDate(
+            @RequestParam Long encounterId,
+            @RequestParam @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Yêu cầu tìm MedicalTest theo encounterId={} và date={}", encounterId, date);
+        List<MedicalTestResponse> responses = medicalTestService.findByEncounterAndDate(encounterId, date);
+        return ResponseData.<List<MedicalTestResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách MedicalTest theo ngày và encounterId được trả về thành công")
+                .data(responses)
+                .build();
+    }
+
+
 }

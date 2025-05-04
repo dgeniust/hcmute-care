@@ -5,6 +5,7 @@ import vn.edu.hcmute.utecare.dto.request.MedicalTestRequest;
 import vn.edu.hcmute.utecare.dto.response.MedicalTestResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MedicalTestService {
@@ -20,4 +21,6 @@ public interface MedicalTestService {
     MedicalTestResponse updateMedicalTest(Long id, MedicalTestRequest request);
 
     void deleteMedicalTest(Long id);
+
+    List<MedicalTestResponse> findByEncounterAndDate(Long encounterId, LocalDate date);
 }
