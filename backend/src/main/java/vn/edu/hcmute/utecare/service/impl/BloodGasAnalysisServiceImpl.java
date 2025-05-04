@@ -35,16 +35,18 @@ public class BloodGasAnalysisServiceImpl implements BloodGasAnalysisService {
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         bloodGasAnalysis.setEncounter(encounter);
-        bloodGasAnalysis.setEvaluate(null);
-        bloodGasAnalysis.setNotes(null);
-        bloodGasAnalysis.setTestName(null);
-        bloodGasAnalysis.setOrganSystem(null);
-        bloodGasAnalysis.setIsInvasive(null);
-        bloodGasAnalysis.setIsQuantitative(null);
-        bloodGasAnalysis.setRecordDuration(null);
-        bloodGasAnalysis.setPCO2(0);
-        bloodGasAnalysis.setPO2(0);
-        bloodGasAnalysis.setPH(0);
+        bloodGasAnalysis.setEvaluate(request.getEvaluate());
+        bloodGasAnalysis.setNotes(request.getNotes());
+        bloodGasAnalysis.setTestName(request.getTestName());
+        bloodGasAnalysis.setOrganSystem(request.getOrganSystem());
+        bloodGasAnalysis.setIsInvasive(request.getIsInvasive());
+        bloodGasAnalysis.setIsQuantitative(request.getIsQuantitative());
+        bloodGasAnalysis.setRecordDuration(request.getRecordDuration());
+        bloodGasAnalysis.setTestEnvironment(request.getTestEnvironment());
+        bloodGasAnalysis.setPatientPosition(request.getPatientPosition());
+        bloodGasAnalysis.setPH(request.getPH());
+        bloodGasAnalysis.setPCO2(request.getPCO2());
+        bloodGasAnalysis.setPO2(request.getPO2());
         bloodGasAnalysis.setStatus(EMedicalTest.PENDING);
         BloodGasAnalysis saved = bloodGasAnalysisRepository.save(bloodGasAnalysis);
 

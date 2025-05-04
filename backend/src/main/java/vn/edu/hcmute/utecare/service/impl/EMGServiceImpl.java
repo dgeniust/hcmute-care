@@ -36,15 +36,16 @@ public class EMGServiceImpl implements EMGService {
         Encounter encounter = new Encounter();
         encounter.setId(request.getEncounterId());
         emg.setEncounter(encounter);
-        emg.setEvaluate(null);
-        emg.setNotes(null);
-        emg.setTestName(null);
-        emg.setOrganSystem(null);
-        emg.setIsInvasive(null);
-        emg.setIsQuantitative(null);
-        emg.setRecordDuration(null);
-        emg.setImage(null);
-        emg.setMuscleGroup(null);
+        emg.setEvaluate(request.getEvaluate());
+        emg.setNotes(request.getNotes());
+        emg.setTestName(request.getTestName());
+        emg.setOrganSystem(request.getOrganSystem());
+        emg.setIsInvasive(request.getIsInvasive());
+        emg.setIsQuantitative(request.getIsQuantitative());
+        emg.setRecordDuration(request.getRecordDuration());
+        emg.setImage(request.getImage());
+
+        emg.setMuscleGroup(request.getMuscleGroup());
         emg.setStatus(EMedicalTest.PENDING);
         EMG saved = emgRepository.save(emg);
 
