@@ -17,6 +17,7 @@ import vn.edu.hcmute.utecare.repository.CardiacTestRepository;
 import vn.edu.hcmute.utecare.repository.EncounterRepository;
 import vn.edu.hcmute.utecare.service.CardiacTestService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,15 @@ public class CardiacTestServiceImpl implements CardiacTestService {
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy Encounter với id: " + request.getEncounterId()));
         CardiacTest cardiacTest = CardiacTestMapper.INSTANCE.toEntity(request);
         cardiacTest.setEncounter(encounter);
+        cardiacTest.setEvaluate(null);
+        cardiacTest.setNotes(null);
+        cardiacTest.setTestName(null);
+        cardiacTest.setOrganSystem(null);
+        cardiacTest.setIsInvasive(null);
+        cardiacTest.setIsQuantitative(null);
+        cardiacTest.setRecordDuration(null);
+        cardiacTest.setImage(null);
+        cardiacTest.setStatus(EMedicalTest.PENDING);
         CardiacTest savedCardiacTest = cardiacTestRepository.save(cardiacTest);
         return CardiacTestMapper.INSTANCE.toResponse(savedCardiacTest);
     }

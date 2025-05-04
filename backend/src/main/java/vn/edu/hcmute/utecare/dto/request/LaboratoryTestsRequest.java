@@ -14,7 +14,6 @@ import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 @AllArgsConstructor
 public class LaboratoryTestsRequest {
 
-    @NotBlank(message = "Evaluation cannot be blank")
     private String evaluate;
 
     private String notes;

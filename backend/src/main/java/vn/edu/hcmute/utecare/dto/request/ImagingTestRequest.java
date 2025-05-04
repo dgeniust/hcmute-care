@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 @Getter
 @Setter
@@ -14,7 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ImagingTestRequest {
 
-    @NotBlank(message = "Evaluation cannot be blank")
     private String evaluate;
 
     private String notes;
@@ -23,4 +23,5 @@ public class ImagingTestRequest {
     private Long encounterId;
 
     private String pdfResult;
+    private EMedicalTest status;
 }

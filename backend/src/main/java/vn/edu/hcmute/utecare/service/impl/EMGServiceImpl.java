@@ -15,6 +15,7 @@ import vn.edu.hcmute.utecare.model.Encounter;
 import vn.edu.hcmute.utecare.repository.EMGRepository;
 import vn.edu.hcmute.utecare.service.EMGService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class EMGServiceImpl implements EMGService {
         emg.setRecordDuration(null);
         emg.setImage(null);
         emg.setMuscleGroup(null);
-
+        emg.setStatus(EMedicalTest.PENDING);
         EMG saved = emgRepository.save(emg);
 
         return EMGMapper.INSTANCE.toResponse(saved);

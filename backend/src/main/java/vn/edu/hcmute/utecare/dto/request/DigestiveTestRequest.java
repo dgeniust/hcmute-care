@@ -1,6 +1,7 @@
 package vn.edu.hcmute.utecare.dto.request;
 
 import lombok.Data;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 @Data
 public class DigestiveTestRequest {
@@ -19,4 +20,6 @@ public class DigestiveTestRequest {
     private String evaluate;
     private String notes;
     private Long encounterId; // Để liên kết với Encounter
+
+    private EMedicalTest status;
 }

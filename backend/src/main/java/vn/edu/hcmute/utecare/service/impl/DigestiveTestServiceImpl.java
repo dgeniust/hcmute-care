@@ -17,6 +17,7 @@ import vn.edu.hcmute.utecare.repository.DigestiveTestRepository;
 import vn.edu.hcmute.utecare.repository.EncounterRepository;
 import vn.edu.hcmute.utecare.service.DigestiveTestService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,7 @@ public class DigestiveTestServiceImpl implements DigestiveTestService {
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy Encounter với id: " + request.getEncounterId()));
         DigestiveTest digestiveTest = DigestiveTestMapper.INSTANCE.toEntity(request);
         digestiveTest.setEncounter(encounter);
+        digestiveTest.setStatus(EMedicalTest.PENDING);
         DigestiveTest savedDigestiveTest = digestiveTestRepository.save(digestiveTest);
         return DigestiveTestMapper.INSTANCE.toResponse(savedDigestiveTest);
     }
