@@ -3,7 +3,7 @@ import {Radio, DatePicker, InputNumber, Button, message, notification, Skeleton 
 import { CheckCircleFilled } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import BMIWeight from '../../components/bodies';
-import '../../css/BMIContent.css';
+import '../../css/bmicontent.css';
 import PlanListCalo from './PlanListCalo'
 import BMISVG, {BMRSVG, TDEESVG} from './SVGCalculate';
 import GenerateMeal from './GenerateMeal';
