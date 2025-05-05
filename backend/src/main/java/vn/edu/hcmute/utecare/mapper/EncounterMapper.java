@@ -4,6 +4,7 @@ import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import vn.edu.hcmute.utecare.dto.request.EncounterRequest;
 import vn.edu.hcmute.utecare.dto.response.EncounterResponse;
+import vn.edu.hcmute.utecare.dto.response.PrescriptionItemResponse;
 import vn.edu.hcmute.utecare.model.Encounter;
 import vn.edu.hcmute.utecare.model.Prescription;
 
@@ -18,16 +19,29 @@ public interface EncounterMapper {
 
     Encounter toEntity(EncounterRequest request);
 
+//    @Mapping(target = "medicalRecordId", source = "medicalRecord.id")
+//    @Mapping(target = "prescriptionId", source = "prescriptions", qualifiedByName = "mapPrescriptionIds")
+//    EncounterResponse toResponse(Encounter encounter);
     @Mapping(target = "medicalRecordId", source = "medicalRecord.id")
-    @Mapping(target = "prescriptionId", source = "prescriptions", qualifiedByName = "mapPrescriptionIds")
+    @Mapping(target = "prescriptionItems", source = "prescriptions", qualifiedByName = "mapPrescriptionItems")
     EncounterResponse toResponse(Encounter encounter);
 
     void update(EncounterRequest request, @MappingTarget Encounter encounter);
 
-    @Named("mapPrescriptionIds")
-    default List<Long> mapPrescriptionIds(Collection<Prescription> prescriptions) {
-        if(prescriptions == null || prescriptions.isEmpty())
+//    @Named("mapPrescriptionIds")
+//    default List<Long> mapPrescriptionIds(Collection<Prescription> prescriptions) {
+//        if(prescriptions == null || prescriptions.isEmpty())
+//            return null;
+//        return prescriptions.stream().map(Prescription::getId).collect(Collectors.toList());
+//    }
+    @Named("mapPrescriptionItems")
+    default List<PrescriptionItemResponse> mapPrescriptionItems(Collection<Prescription> prescriptions) {
+        if (prescriptions == null || prescriptions.isEmpty()) {
             return null;
-        return prescriptions.stream().map(Prescription::getId).collect(Collectors.toList());
-    }
+        }
+        return prescriptions.stream()
+                .flatMap(prescription -> prescription.getPrescriptionItems().stream())
+                .map(PrescriptionItemMapper.INSTANCE::toResponse)
+                .collect(Collectors.toList());
+}
 }

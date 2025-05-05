@@ -10,10 +10,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.MedicalRecordRequest;
 import vn.edu.hcmute.utecare.dto.response.*;
+import vn.edu.hcmute.utecare.model.Encounter;
 import vn.edu.hcmute.utecare.service.AppointmentService;
 import vn.edu.hcmute.utecare.service.MedicalRecordService;
 import vn.edu.hcmute.utecare.service.TicketService;
 import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/medical-records")
@@ -121,5 +124,16 @@ public class MedicalRecordController {
                 .data(ticketService.getAllTicketsByMedicalRecordId(medicalRecordId, status, page, size, sort, direction))
                 .build();
     }
+    @GetMapping("/{id}/encounters")
+    @Operation(summary = "Get all encounter by medical record ID", description = "Retrieves all encounters with a medical record id")
+    public ResponseData<List<EncounterResponse>> getEncountersByMedicalRecordId(@PathVariable("id") Long medicalRecordId) {
+        log.info("Get encounters by medical record ID: {}", medicalRecordId);
+        return ResponseData.<List<EncounterResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Encounters retrieved successfully")
+                .data(medicalRecordService.getAllEncounterByMedicalRecordId(medicalRecordId))
+                .build();
+    }
+
 
 }
