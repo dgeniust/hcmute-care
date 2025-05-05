@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, Space } from 'antd';
 import { FilePdfOutlined } from '@ant-design/icons';
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, Font, Image } from '@react-pdf/renderer';
-
+import { formatDate } from '../../../utils/formatDate';
 // Đăng ký font (để hỗ trợ tiếng Việt tốt hơn)
 Font.register({
   family: 'Roboto',
@@ -178,9 +178,9 @@ const styles = StyleSheet.create({
     fontSize: 60,
   },
 });
-
+const doctorFullname = localStorage.getItem('userFullName') || 'Bs. ........................';
 // Tiêu đề quốc gia và bệnh viện tái sử dụng
-const HeaderSection = ({ hospital = "BỆNH VIỆN XYZ", documentNumber = "" }) => {
+const HeaderSection = ({ hospital = "BỆNH VIỆN ĐẠI HỌC Y DƯỢC THÀNH PHỐ HỒ CHÍ MINH", documentNumber = "" }) => {
   const today = new Date();
   const formattedDate = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
   
@@ -202,27 +202,27 @@ const PatientInfoSection = ({ patientInfo }) => (
   <View style={styles.patientInfo}>
     <View style={styles.row}>
       <Text style={styles.label}>Họ và tên:</Text>
-      <Text style={styles.value}>{patientInfo?.name || 'N/A'}</Text>
+      <Text style={styles.value}>{patientInfo?.patient.name || 'N/A'}</Text>
     </View>
     <View style={styles.row}>
       <Text style={styles.label}>Mã bệnh nhân:</Text>
-      <Text style={styles.value}>{patientInfo?.id || 'N/A'}</Text>
+      <Text style={styles.value}>{patientInfo?.barcode || 'N/A'}</Text>
     </View>
     <View style={styles.row}>
       <Text style={styles.label}>Ngày sinh:</Text>
-      <Text style={styles.value}>{patientInfo?.dob || 'N/A'}</Text>
+      <Text style={styles.value}>{patientInfo?.patient?.dob ? formatDate(patientInfo.patient.dob) : 'N/A'}</Text>
     </View>
     <View style={styles.row}>
       <Text style={styles.label}>Giới tính:</Text>
-      <Text style={styles.value}>{patientInfo?.gender || 'N/A'}</Text>
+      <Text style={styles.value}>{patientInfo?.patient.gender ==="MALE" ? "Nam" : "Nữ" || 'N/A'}</Text>
     </View>
     <View style={styles.row}>
       <Text style={styles.label}>Địa chỉ:</Text>
-      <Text style={styles.value}>{patientInfo?.address || 'N/A'}</Text>
+      <Text style={styles.value}>{patientInfo?.patient.address || 'N/A'}</Text>
     </View>
     <View style={styles.row}>
       <Text style={styles.label}>Bác sĩ phụ trách:</Text>
-      <Text style={styles.value}>{patientInfo?.doctor || 'N/A'}</Text>
+      <Text style={styles.value}>{doctorFullname || 'N/A'}</Text>
     </View>
   </View>
 );
@@ -279,37 +279,31 @@ const LabTestsPDF = ({ labTests, patientInfo }) => (
           <View style={[styles.tableCol, { width: '15%' }]}>
             <Text style={styles.tableCell}>Loại</Text>
           </View>
-          <View style={[styles.tableCol, { width: '20%' }]}>
+          <View style={[styles.tableCol, { width: '30%' }]}>
             <Text style={styles.tableCell}>Thời gian yêu cầu</Text>
           </View>
           <View style={[styles.tableCol, { width: '15%' }]}>
             <Text style={styles.tableCell}>Kết quả</Text>
           </View>
           <View style={[styles.tableCol, { width: '15%' }]}>
-            <Text style={styles.tableCell}>Đơn vị</Text>
-          </View>
-          <View style={[styles.tableCol, { width: '10%' }]}>
             <Text style={styles.tableCell}>Trạng thái</Text>
           </View>
         </View>
         {labTests.map((test, index) => (
           <View key={index} style={styles.tableRow}>
             <View style={[styles.tableCol, { width: '25%' }]}>
-              <Text style={styles.tableCell}>{test.name}</Text>
+              <Text style={styles.tableCell}>{test.notes}</Text>
             </View>
             <View style={[styles.tableCol, { width: '15%' }]}>
-              <Text style={styles.tableCell}>{test.type}</Text>
+              <Text style={styles.tableCell}>{test.notes}</Text>
             </View>
-            <View style={[styles.tableCol, { width: '20%' }]}>
-              <Text style={styles.tableCell}>{test.requestDate}</Text>
-            </View>
-            <View style={[styles.tableCol, { width: '15%' }]}>
-              <Text style={styles.tableCell}>{test.status === 'Hoàn thành' ? (test.result || 'Bình thường') : 'Chưa có'}</Text>
+            <View style={[styles.tableCol, { width: '30%' }]}>
+              <Text style={styles.tableCell}>{test.createAt}</Text>
             </View>
             <View style={[styles.tableCol, { width: '15%' }]}>
-              <Text style={styles.tableCell}>{test.unit || '-'}</Text>
+              <Text style={styles.tableCell}>{test.status === 'COMPLETED' ? (test.result || 'Bình thường') : 'Chưa có'}</Text>
             </View>
-            <View style={[styles.tableCol, { width: '10%' }]}>
+            <View style={[styles.tableCol, { width: '15%' }]}>
               <Text style={styles.tableCell}>{test.status}</Text>
             </View>
           </View>
@@ -324,8 +318,8 @@ const LabTestsPDF = ({ labTests, patientInfo }) => (
       </View>
       
       <SignaturesSection 
-        doctorName={patientInfo?.doctor || "Bs. ........................"} 
-        patientName={patientInfo?.name || "........................"} 
+        doctorName={doctorFullname || "Bs. ........................"} 
+        patientName={patientInfo?.patient.name || "........................"} 
       />
       
       <FooterSection />
@@ -347,21 +341,21 @@ const ImagingTestsPDF = ({ imagingTests, patientInfo }) => (
         <View key={index} style={styles.imageCard}>
           <View style={styles.imagePlaceholder}>
             <Text style={{ fontSize: 8, textAlign: 'center' }}>
-              {test.status === 'Hoàn thành' ? 'Đã có hình' : 'Chưa có hình'}
+              {test.status === 'COMPLETED' ? 'Đã có hình' : 'Chưa có hình'}
             </Text>
           </View>
           <View style={styles.imageCardInfo}>
-            <Text style={{ fontWeight: 'bold', fontSize: 10 }}>{test.name}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 10 }}>{test.notes}</Text>
             <View style={styles.row}>
               <Text style={[styles.label, { fontSize: 8 }]}>Ngày yêu cầu:</Text>
-              <Text style={[styles.value, { fontSize: 8 }]}>{test.requestDate}</Text>
+              <Text style={[styles.value, { fontSize: 8 }]}>{test.createDate}</Text>
             </View>
             <View style={styles.row}>
               <Text style={[styles.label, { fontSize: 8 }]}>Bác sĩ chỉ định:</Text>
-              <Text style={[styles.value, { fontSize: 8 }]}>{test.requestedBy || patientInfo?.doctor}</Text>
+              <Text style={[styles.value, { fontSize: 8 }]}>{doctorFullname || "Nguyễn Thành A"}</Text>
             </View>
             <View style={styles.row}>
-              <View style={[styles.statusBadge, { backgroundColor: test.status === 'Hoàn thành' ? '#52c41a' : '#1890ff' }]} />
+              <View style={[styles.statusBadge, { backgroundColor: test.status === 'COMPLETED' ? '#52c41a' : '#1890ff' }]} />
               <Text style={[styles.value, { fontSize: 8 }]}>{test.status}</Text>
             </View>
           </View>
@@ -379,8 +373,8 @@ const ImagingTestsPDF = ({ imagingTests, patientInfo }) => (
       </View>
       
       <SignaturesSection 
-        doctorName={patientInfo?.doctor || "Bs. ........................"} 
-        patientName={patientInfo?.name || "........................"} 
+        doctorName={doctorFullname || "Bs. ........................"} 
+        patientName={patientInfo?.patient.name || "........................"} 
       />
       
       <FooterSection />
@@ -419,16 +413,16 @@ const FunctionalTestsPDF = ({ functionalTests, patientInfo }) => (
         {functionalTests.map((test, index) => (
           <View key={index} style={styles.tableRow}>
             <View style={[styles.tableCol, { width: '30%' }]}>
-              <Text style={styles.tableCell}>{test.name}</Text>
+              <Text style={styles.tableCell}>{test.testName}</Text>
             </View>
             <View style={[styles.tableCol, { width: '15%' }]}>
               <Text style={styles.tableCell}>{test.type}</Text>
             </View>
             <View style={[styles.tableCol, { width: '20%' }]}>
-              <Text style={styles.tableCell}>{test.requestDate}</Text>
+              <Text style={styles.tableCell}>{test.createAt}</Text>
             </View>
             <View style={[styles.tableCol, { width: '15%' }]}>
-              <Text style={styles.tableCell}>{test.requestedBy}</Text>
+              <Text style={styles.tableCell}>{doctorFullname}</Text>
             </View>
             <View style={[styles.tableCol, { width: '20%' }]}>
               <Text style={styles.tableCell}>{test.status}</Text>
@@ -448,8 +442,8 @@ const FunctionalTestsPDF = ({ functionalTests, patientInfo }) => (
       </View>
       
       <SignaturesSection 
-        doctorName={patientInfo?.doctor || "Bs. ........................"} 
-        patientName={patientInfo?.name || "........................"} 
+        doctorName={doctorFullname || "Bs. ........................"} 
+        patientName={patientInfo?.patient.name || "........................"} 
       />
       
       <FooterSection />
@@ -551,8 +545,8 @@ const ComprehensiveReportPDF = ({ labTests, imagingTests, functionalTests, patie
       </View>
       
       <SignaturesSection 
-        doctorName={patientInfo?.doctor || "Bs. ........................"} 
-        patientName={patientInfo?.name || "........................"} 
+        doctorName={doctorFullname || "Bs. ........................"} 
+        patientName={patientInfo?.patient.name || "........................"} 
       />
       
       <FooterSection />
@@ -562,20 +556,58 @@ const ComprehensiveReportPDF = ({ labTests, imagingTests, functionalTests, patie
 
 // Component button xuất từng loại PDF
 const PDFExportButtons = ({ labTests, imagingTests, functionalTests }) => {
-  // Thông tin mẫu về bệnh nhân (bạn có thể thay thế bằng dữ liệu thực tế)
-  const patientInfo = {
-    name: 'Nguyễn Văn A',
-    id: 'BN-123456',
-    dob: '01/01/1980',
-    gender: 'Nam',
-    address: 'Số 123 Đường ABC, Phường XYZ, Quận/Huyện, Tỉnh/Thành phố',
-    doctor: 'Bs. Trần Văn B'
-  };
+  const [patientInfo, setPatientInfo] = useState(null);
+  useEffect(() => {
+    const fetchDoctorInfo = async () => {
+      const patientEncounterInfo = JSON.parse(localStorage.getItem('patientEncounterInfo'));
+      try{
+        const response = await fetch(`http://localhost:8080/api/v1/medical-records/${patientEncounterInfo.id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if(data && data.status === 200) {
+          setPatientInfo(data.data);
+          console.log('Patient info:', data.data);
+        }else {
+          throw new Error('Invalid API response');
+        }
+      } 
+      catch (error) {
+        console.error('Error fetching doctor info:', error);
+      }
+    }
+    fetchDoctorInfo();
+  },[])
+  // Ensure labTests, imagingTests, functionalTests are arrays
+  const safeLabTests = Array.isArray(labTests) ? labTests : [];
+  const safeImagingTests = Array.isArray(imagingTests) ? imagingTests : [];
+  const safeFunctionalTests = Array.isArray(functionalTests) ? functionalTests : [];
+  
+  console.log('Patient Info:', patientInfo);
+  //Thông tin mẫu về bệnh nhân (bạn có thể thay thế bằng dữ liệu thực tế)
+  // const patientInfo = {
+  //   name: 'Nguyễn Văn A',
+  //   id: 'BN-123456',
+  //   dob: '01/01/1980',
+  //   gender: 'Nam',
+  //   address: 'Số 123 Đường ABC, Phường XYZ, Quận/Huyện, Tỉnh/Thành phố',
+  //   doctor: 'Bs. Trần Văn B'
+  // };
+  
+  if (!patientInfo) {
+    return <Button loading>Đang tải...</Button>;
+  }
 
   return (
     <Space>
       <PDFDownloadLink
-        document={<LabTestsPDF labTests={labTests} patientInfo={patientInfo} />}
+        document={<LabTestsPDF labTests={safeLabTests} patientInfo={patientInfo} />}
         fileName={`${patientInfo.id}-bao-cao-xet-nghiem.pdf`}
         style={{ textDecoration: 'none' }}
       >
@@ -591,7 +623,7 @@ const PDFExportButtons = ({ labTests, imagingTests, functionalTests }) => {
       </PDFDownloadLink>
 
       <PDFDownloadLink
-        document={<ImagingTestsPDF imagingTests={imagingTests} patientInfo={patientInfo} />}
+        document={<ImagingTestsPDF imagingTests={safeImagingTests} patientInfo={patientInfo} />}
         fileName={`${patientInfo.id}-bao-cao-chan-doan-hinh-anh.pdf`}
         style={{ textDecoration: 'none' }}
       >
@@ -607,7 +639,7 @@ const PDFExportButtons = ({ labTests, imagingTests, functionalTests }) => {
       </PDFDownloadLink>
 
       <PDFDownloadLink
-        document={<FunctionalTestsPDF functionalTests={functionalTests} patientInfo={patientInfo} />}
+        document={<FunctionalTestsPDF functionalTests={safeFunctionalTests} patientInfo={patientInfo} />}
         fileName={`${patientInfo.id}-bao-cao-tham-do-chuc-nang.pdf`}
         style={{ textDecoration: 'none' }}
       >
@@ -649,6 +681,8 @@ const PDFExportButtons = ({ labTests, imagingTests, functionalTests }) => {
 
 // Component chính để sử dụng trong ứng dụng của bạn
 const ClinicalReportExporter = ({ labTests, imagingTests, functionalTests }) => {
+  console.log('Lab Tests in clinical test:', labTests);
+  console.log('Imaging Tests in clinical test:', imagingTests);
   return (
     <div className="mt-4 flex justify-end">
       <PDFExportButtons 

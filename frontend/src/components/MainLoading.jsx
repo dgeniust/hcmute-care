@@ -3,7 +3,7 @@ import '../css/MainLoading.css';
 const MainLoading = () => {
     return (
         <div className='w-screen h-screen flex justify-center items-center bg-white'>
-            <div class="loader">
+            <div className="loader">
             <div>
                 <ul>
                 <li>

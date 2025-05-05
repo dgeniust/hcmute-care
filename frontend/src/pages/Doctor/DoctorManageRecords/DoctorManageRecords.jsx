@@ -54,6 +54,8 @@ const DoctorManageRecords = () => {
   const handleSelectPatient = async (pat) => {
     
     localStorage.setItem('medicalRecordPatientId', pat.medicalRecordId); // Lưu medicalRecordId vào localStorage
+    localStorage.setItem('ticketId', pat.id); // Lưu tên bệnh nhân vào localStorage
+    localStorage.setItem('waitingNumber', pat.waitingNumber);
     try{
       const response = await fetch(`http://localhost:8080/api/v1/medical-records/${pat.medicalRecordId}`, {
         method: 'GET',

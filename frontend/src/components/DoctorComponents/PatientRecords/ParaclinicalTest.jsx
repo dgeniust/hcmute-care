@@ -1,139 +1,54 @@
-import React, {useState} from 'react';
-import { Avatar, Card, Badge, Typography, Space, Tag, Tooltip, Button, Table, List, Modal, Input, Select,message, Form } from 'antd';
+import React, {useState, useEffect} from 'react';
+import { Avatar, Card, Badge, Typography, Space, Tag, Tooltip, Button, Table, List, Modal, Input, Select,message, Form, Upload } from 'antd';
 import { 
   HeartFilled, 
-  CalendarOutlined, MedicineBoxOutlined, FileTextOutlined, PlusOutlined, FileImageOutlined ,EyeOutlined ,DownloadOutlined ,DeleteOutlined ,LineChartOutlined ,FileSearchOutlined ,EditOutlined 
+  CalendarOutlined, MedicineBoxOutlined, FileTextOutlined, PlusOutlined, FileImageOutlined ,EyeOutlined ,DownloadOutlined ,DeleteOutlined ,LineChartOutlined ,FileSearchOutlined ,EditOutlined, UploadOutlined  
 } from '@ant-design/icons';
-import AddParaclinicalTest from './AddParaclinicalTest';
 import ClinicalReportExporter from './ClinicalReportExporter';
 import { notifyErrorWithCustomMessage, notifySuccessWithCustomMessage, handleHttpStatusCode } from '../../../utils/notificationHelper';
+import { formatDateTime } from '../../../utils/formatDate';
 const {Text } = Typography;
-
 const ParaclinicalTest = () => {
     const [messageApi, contextHolder] = message.useMessage();
-    // const labTests = [
-    //     {
-    //       key: '1',
-    //       name: 'Công thức máu',
-    //       type: 'Máu',
-    //       requestDate: '22/03/2025',
-    //       status: 'Hoàn thành',
-    //       result: 'https://example.com/results/123',
-    //       requestedBy: 'Bs. Nguyễn Văn A'
-    //     },
-    //     {
-    //       key: '2',
-    //       name: 'Sinh hóa máu',
-    //       type: 'Máu',
-    //       requestDate: '22/03/2025',
-    //       status: 'Đang xử lý',
-    //       result: null,
-    //       requestedBy: 'Bs. Nguyễn Văn A'
-    //     },
-    //     {
-    //       key: '3',
-    //       name: 'Tổng phân tích nước tiểu',
-    //       type: 'Nước tiểu',
-    //       requestDate: '20/03/2025',
-    //       status: 'Hoàn thành',
-    //       result: 'https://example.com/results/124',
-    //       requestedBy: 'Bs. Nguyễn Văn A'
-    //     },
-    // ];
+    // Dữ liệu mẫu cho xét nghiệm
     const [labTests, setLabTest] = useState([])
-      // Dữ liệu mẫu cho chẩn đoán hình ảnh
-    const imagingTests = [
-        {
-          id: '1',
-          name: 'X-quang phổi',
-          type: 'X-quang',
-          requestDate: '22/03/2025',
-          status: 'Hoàn thành',
-          imageUrl: 'https://res.cloudinary.com/dujzjcmai/image/upload/v1743740625/imagingTest/lbtvrfbind6leh3tgz6g.jpg',
-          requestedBy: 'Bs. Nguyễn Văn A'
-        },
-        {
-          id: '2',
-          name: 'Siêu âm ổ bụng',
-          type: 'Siêu âm',
-          requestDate: '22/03/2025',
-          status: 'Đang xử lý',
-          imageUrl: "https://res.cloudinary.com/dujzjcmai/image/upload/v1743740625/imagingTest/l5g8xeowfqx2j6rpexvt.jpg",
-          requestedBy: 'Bs. Nguyễn Văn A'
-        },
-        {
-          id: '3',
-          name: 'CT Scan sọ não',
-          type: 'CT Scan',
-          requestDate: '21/03/2025',
-          status: 'Hoàn thành',
-          imageUrl: 'https://res.cloudinary.com/dujzjcmai/image/upload/v1743740625/imagingTest/n3wfcyho3ljvix2qzske.jpg',
-          requestedBy: 'Bs. Trần Thị B'
-        },
-        {
-          id: '4',
-          name: 'MRI cột sống',
-          type: 'MRI',
-          requestDate: '20/03/2025',
-          status: 'Đang xử lý',
-          imageUrl: "https://res.cloudinary.com/dujzjcmai/image/upload/v1743740625/imagingTest/etofariz9jpwjfpbio1o.jpg",
-          requestedBy: 'Bs. Trần Thị B'
-        },
-    ];
-      
-      // Dữ liệu mẫu cho thăm dò chức năng
-    const functionalTests = [
-        {
-          id: '1',
-          name: 'Điện tâm đồ',
-          type: 'Điện tim',
-          requestDate: '22/03/2025',
-          status: 'Hoàn thành',
-          requestedBy: 'Bs. Nguyễn Văn A'
-        },
-        {
-          id: '2',
-          name: 'Điện não đồ',
-          type: 'Điện não',
-          requestDate: '21/03/2025',
-          status: 'Đang xử lý',
-          requestedBy: 'Bs. Trần Thị B'
-        },
-        {
-          id: '3',
-          name: 'Nội soi dạ dày',
-          type: 'Nội soi',
-          requestDate: '20/03/2025',
-          status: 'Hoàn thành',
-          requestedBy: 'Bs. Nguyễn Văn A'
-        },
-    ];
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [form] = Form.useForm(); // Khởi tạo Form instance
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-      
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
+    // Dữ liệu mẫu cho chẩn đoán hình ảnh
+    const [imagingTests, setImagingTests] = useState([])
+    
+    // Dữ liệu mẫu cho thăm dò chức năng
+    const[functionalTests, setFunctionalTests] = useState([])
+
+    const [labTestForm] = Form.useForm();
+    const [imagingTestForm] = Form.useForm();
+    const [functionalTestForm] = Form.useForm();
     const patientInfo = JSON.parse(localStorage.getItem('patientEncounterInfo') || '{}');
-    console.log('Patient Info -------------------:', patientInfo);
     const [isModalLabTestOpen, setIsModalLabTestOpen] = useState(false);
+    const [isModalImagingTestOpen, setIsModalImagingTestOpen] = useState(false);
+    const [isModalFunctionalTestOpen, setIsModalFunctionalTestOpen] = useState(false);
+    const [functionalTestType, setFunctionalTestType] = useState(null);
+    const [isImageDetailModalOpen, setIsImageDetailModalOpen] = useState(false); // Modal xem chi tiết ảnh
+    const [selectedImage, setSelectedImage] = useState(null); // Ảnh được chọn
     const showLabTestModal = () => {
         setIsModalLabTestOpen(true);
     };
     const handleLabTestCancel = () => {
         setIsModalLabTestOpen(false);
-        form.resetFields(); // Reset form fields when modal is closed
+        labTestForm.resetFields(); // Reset form fields when modal is closed
     };
-
-    const handleSubmit = (values) => {
-        console.log('Submitted values:', values);
-        // Xử lý dữ liệu gửi đi
-        // Thêm vào danh sách yêu cầu hoặc gọi API
-        setIsModalVisible(false);
+    const showImagingTestOpen = () => {
+        setIsModalImagingTestOpen(true);
+    };
+    const handleImagingTestCancel = () => {
+        setIsModalImagingTestOpen(false);
+        imagingTestForm.resetFields(); // Reset form fields when modal is closed
+    };
+    const showFunctionalTestOpen = () => {
+        setIsModalFunctionalTestOpen(true);
+    };
+    const handleFunctionalTestCancel = () => {
+        setIsModalFunctionalTestOpen(false);
+        functionalTestForm.resetFields(); // Reset form fields when modal is closed
     };
     // Object ánh xạ từ value sang tên đầy đủ
     const testTypeNames = {
@@ -143,11 +58,39 @@ const ParaclinicalTest = () => {
         phan: 'Phân',
         khac: 'Sinh hóa máu',
     };
+    const testImagingNames = {
+        xq: 'XQuang',
+        sa: 'Siêu âm',
+        ct: 'CT Scan',
+        mri: 'MRI',
+    }
+
+    const functionalTestNames = {
+        spirometry: 'Đo chức năng hô hấp',
+        bloodgasanalysis: 'Phân tích khí máu',
+        nerveconduction: 'Đo dẫn truyền thần kinh',
+        eeg: 'Điện não đồ',
+        emg: 'Điện cơ đồ',
+        cardiactest: 'Xét nghiệm tim mạch',
+        digestive: 'Xét nghiệm tiêu hóa',
+    };
+    
+      // API endpoints for each functional test type
+    const functionalTestEndpoints = {
+    spirometry: 'http://localhost:8080/api/v1/spirometry',
+    bloodgasanalysis: 'http://localhost:8080/api/v1/blood-gas-analysis',
+    nerveconduction: 'http://localhost:8080/api/v1/nerve-conduction',
+    eeg: 'http://localhost:8080/api/v1/eeg',
+    emg: 'http://localhost:8080/api/v1/emg',
+    cardiactest: 'http://localhost:8080/api/v1/cardiac-tests',
+    digestive: 'http://localhost:8080/api/v1/digestive-tests',
+    };
+
     const handleLabTestOk = async () => {
-        const values = form.getFieldsValue(); // Lấy giá trị từ form
+        const values = await labTestForm.validateFields(); // Lấy giá trị từ form
         const payload = {
             evaluate: "string",
-            notes: testTypeNames[values.testType] || values.testType,
+            notes: testTypeNames[values.testType]|| values.testType,
             encounterId: localStorage.getItem('encounterId'),
             rbc: 0,
             hct: 0,
@@ -158,7 +101,8 @@ const ParaclinicalTest = () => {
             wbc: 0,
             gra: 0,
             lym: 0,
-            momo: 0
+            momo: 0,
+            status: "PENDING"
         }
         try {
             const response = await fetch('http://localhost:8080/api/v1/laboratory-tests', {
@@ -183,19 +127,261 @@ const ParaclinicalTest = () => {
                         id: data.data.id,
                         notes: data.data.notes,
                         encounterId: data.data.encounterId,
+                        createAt: formatDateTime(data.data.createDate),
+                        status: data.data.status,
                     }
                 ]);
                 console.log('Lab tests:', labTests);
             }
             notifySuccessWithCustomMessage('Tạo xét nghiệm thành công', messageApi);
             setIsModalLabTestOpen(false);
-            form.resetFields();
+            labTestForm.resetFields();
         }
         catch(e) {
             console.log('Error:', e);
             notifyErrorWithCustomMessage('Tạo xét nghiệm thất bại', messageApi);
         }
     };
+    const handleImagingTestOk = async () => {
+        try {
+            const values = await imagingTestForm.validateFields(); // Lấy giá trị từ form
+            console.log(`values in imaging: ${JSON.stringify(values)}`)
+            console.log('testImagingType:', testImagingNames[values.testImagingType]);
+            const payload = {
+                evaluate: "string",
+                notes: testImagingNames[values.testImagingType]|| values.testImagingType,
+                encounterId: localStorage.getItem('encounterId'),
+                pdfResult: "string",
+                status: "PENDING",
+            }
+            const response = await fetch('http://localhost:8080/api/v1/imaging-tests', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            })
+            console.log('Response imaging tests:', response);
+            console.log('Payload imaging tests:', payload);
+            if(!response.ok) {
+                const errorData = await response.text();
+                console.log('Error data:', errorData);
+                handleHttpStatusCode(response.status,'','Tạo chẩn đoán không thành công', messageApi);
+                return;
+            }
+            const data = await response.json();
+            console.log('Response data:', data);
+            if(data.data && data.status === 201){
+                setImagingTests((prevImagingTests) => [
+                    ...prevImagingTests,
+                    {
+                        id: data.data.id,
+                        evaluate: data.data.evaluate,
+                        notes: data.data.notes,
+                        encounterId: data.data.encounterId,
+                        pdfResult: data.data.pdfResult,
+                        createDate: formatDateTime(data.data.createDate),
+                        status: data.data.status,
+                    }
+                ]);
+                console.log('Imaging tests:', imagingTests);
+            }
+            notifySuccessWithCustomMessage('Tạo chẩn đoán thành công', messageApi);
+            setIsModalImagingTestOpen(false);
+            imagingTestForm.resetFields();
+        }
+        catch(e) {
+            console.log('Error:', e);
+            notifyErrorWithCustomMessage(e, messageApi);
+        }
+    }
+    const handleFunctionalTestOk = async () => {
+        try {
+          const values = await functionalTestForm.validateFields();
+          const encounterId = localStorage.getItem('encounterId');
+          const testType = values.testFunctionalType;
+          const testName = functionalTestNames[testType];
+          let payload = {
+            evaluate: 'string',
+            notes: 'string' ,
+            encounterId: encounterId,
+            testName: testName,
+            organSystem: 'string',
+            isInvasive: true,
+            isQuantitative: true,
+            recordDuration: 0,
+            status: 'PENDING',
+          };
+    
+          // Add type-specific fields
+          switch (values.testFunctionalType) {
+            case 'spirometry':
+              payload = {
+                ...payload,
+                testEnvironment: 'string',
+                patientPosition: 'string',
+                fevl: 0,
+                fvc: 0,
+              };
+              break;
+            case 'bloodgasanalysis':
+              payload = {
+                ...payload,
+                testEnvironment: 'string',
+                patientPosition: 'string',
+                ph: 0,
+                po2: 0,
+                pco2: 0,
+              };
+              break;
+            case 'nerveconduction':
+              payload = {
+                ...payload,
+                testEnvironment:'string',
+                patientPosition: 'string',
+                nerve: 'string',
+                conductionSpeed: 0,
+              };
+              break;
+            case 'eeg':
+              payload = {
+                ...payload,
+                image: 'string',
+                channels: 0,
+                detectSeizure: false,
+              };
+              break;
+            case 'emg':
+              payload = {
+                ...payload,
+                image: 'string',
+                muscleGroup: 'string',
+              };
+              break;
+            case 'cardiactest':
+              payload = {
+                ...payload,
+                type: 'string',
+                image: 'string',
+              };
+              break;
+            case 'digestive':
+              payload = {
+                ...payload,
+                image: 'string',
+                duration: 0,
+              };
+              break;
+            default:
+              throw new Error('Invalid test type');
+          }
+    
+          const response = await fetch(functionalTestEndpoints[testType], {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          console.log('Response:', response);
+          if (!response.ok) {
+            const errorData = await response.text();
+            console.log('Error data:', errorData);
+            handleHttpStatusCode(response.status, '', 'Tạo thăm dò chức năng không thành công', messageApi);
+            return;
+          }
+    
+          const data = await response.json();
+          if (data.data && data.status === 201) {
+            setFunctionalTests((prev) => [
+              ...prev,
+              {
+                id: data.data.id,
+                testName: data.data.testName,
+                type: testType,
+                createAt: formatDateTime(data.data.createAt),
+                status: data.data.status,
+              },
+            ]);
+          }
+          notifySuccessWithCustomMessage('Tạo thăm dò chức năng thành công', messageApi);
+          setIsModalFunctionalTestOpen(false);
+          console.log('Functional tests:', data.data);
+          functionalTestForm.resetFields();
+        } catch (e) {
+          console.log('Error:', e);
+          notifyErrorWithCustomMessage('Tạo thăm dò chức năng thất bại', messageApi);
+        }
+      };
+    // Log labTests khi thay đổi
+    useEffect(() => {
+        console.log('Updated labTests:', labTests);
+    }, [labTests]);
+
+    // Xem chi tiết ảnh
+    const handleViewImage = (imageUrl) => {
+        setSelectedImage(imageUrl);
+        setIsImageDetailModalOpen(true);
+    };
+    // Tải xuống ảnh
+    const handleDownloadImage = (imageUrl, testName) => {
+        if (!imageUrl) {
+        notifyErrorWithCustomMessage('Không có hình ảnh để tải xuống', messageApi);
+        return;
+        }
+        const link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = `${testName || 'image'}.jpg`; // Tên file tải xuống
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    // Xóa Imaging Test
+    // const handleDeleteImagingTest = async (testId) => {
+    //     try {
+    //     const response = await fetch(`http://localhost:8080/api/v1/imaging-tests/${testId}`, {
+    //         method: 'DELETE',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     });
+    //     if (!response.ok) {
+    //         const errorData = await response.text();
+    //         console.log('Error data:', errorData);
+    //         handleHttpStatusCode(response.status, '', 'Xóa chẩn đoán hình ảnh thất bại', messageApi);
+    //         return;
+    //     }
+    //         setImagingTests((prev) => prev.filter((test) => test.id !== testId));
+    //         notifySuccessWithCustomMessage('Xóa chẩn đoán hình ảnh thành công', messageApi);
+    //     } catch (e) {
+    //         console.log('Error:', e);
+    //         notifyErrorWithCustomMessage('Xóa chẩn đoán hình ảnh thất bại', messageApi);
+    //     }
+    // };
+    const handleSubmitPatient = async () => {
+        const ticketId = localStorage.getItem('ticketId');
+        try {   
+            const response = await fetch(`http://localhost:8080/api/v1/tickets/${ticketId}/status?status=COMPLETED`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                const errorData = await response.text();
+                console.log('Error data:', errorData);
+                handleHttpStatusCode(response.status, '', 'Cập nhật thông tin bệnh nhân thất bại', messageApi);
+                return;
+            }
+            notifySuccessWithCustomMessage('Cập nhật thông tin bệnh nhân thành công', messageApi);
+            setTimeout(() => {
+                window.location.href = '/doctor/records';
+            }, 2000); // Chuyển hướng sau 2 giây
+        }
+        catch(e) {
+            console.log('Error:', e);
+            notifyErrorWithCustomMessage('Cập nhật thông tin bệnh nhân thất bại', messageApi);
+        }   
+    }
     return (
         <>
             {/* Yêu cầu cận lâm sàng */}
@@ -237,19 +423,19 @@ const ParaclinicalTest = () => {
                     columns={[
                     {
                         title: 'Tên xét nghiệm',
-                        dataIndex: 'name',
+                        dataIndex: 'notes',
                         key: 'notes',
                     },
                     {
                         title: 'Loại',
-                        dataIndex: 'type',
+                        dataIndex: 'notes',
                         key: 'notes',
                         render: (text) => <Tag color="green">{text}</Tag>,
                     },
                     {
                         title: 'Thời gian yêu cầu',
-                        dataIndex: 'requestDate',
-                        key: 'requestDate',
+                        dataIndex: 'createAt',
+                        key: 'createAt',
                     },
                     {
                         title: 'Trạng thái',
@@ -257,8 +443,8 @@ const ParaclinicalTest = () => {
                         key: 'status',
                         render: (status) => (
                         <Badge 
-                            status={status === 'Hoàn thành' ? 'success' : status === 'Đang xử lý' ? 'processing' : 'default'} 
-                            text={status} 
+                            status={status === 'COMPLETED' ? 'success' : status === 'PENDING' ? 'processing' : 'default'} 
+                            text={status === 'COMPLETED' ? 'Hoàn thành' : status === 'PENDING' ? 'Đang xử lý' : 'Chưa có'} 
                         />
                         ),
                     },
@@ -267,7 +453,7 @@ const ParaclinicalTest = () => {
                         dataIndex: 'result',
                         key: 'result',
                         render: (result, record) => (
-                        record.status === 'Hoàn thành' ? (
+                        record.status === 'COMPLETED' ? (
                             <Button type="link" icon={<FileSearchOutlined />}>Xem kết quả</Button>
                         ) : (
                             <Text type="secondary">Chưa có</Text>
@@ -305,7 +491,7 @@ const ParaclinicalTest = () => {
                 }
                 extra={
                     <Tooltip title="Thêm yêu cầu chẩn đoán hình ảnh mới">
-                    <Button type="primary" icon={<PlusOutlined />}>Thêm</Button>
+                    <Button type="primary" icon={<PlusOutlined />} onClick={showImagingTestOpen}>Thêm</Button>
                     </Tooltip>
                 }
                 >
@@ -317,7 +503,7 @@ const ParaclinicalTest = () => {
                         className="hover:shadow-md transition-all duration-300"
                         cover={
                         <div className="h-40 w-full bg-gray-100 flex items-center justify-center">
-                            {test.status === 'Hoàn thành' ? (
+                            {test.status === 'COMPLETED' ? (
                             <img 
                                 src={test.imageUrl || null} 
                                 alt={test.name} 
@@ -333,27 +519,28 @@ const ParaclinicalTest = () => {
                         }
                         actions={[
                         <Tooltip title="Xem chi tiết">
-                            <EyeOutlined key="view" />
+                            <EyeOutlined key="view"/>
                         </Tooltip>,
                         <Tooltip title="Tải xuống">
-                            <DownloadOutlined key="download" />
+                            <DownloadOutlined key="download"/>
                         </Tooltip>,
                         <Tooltip title="Xóa">
-                            <DeleteOutlined key="delete" />
+                            <DeleteOutlined key="delete"/>
                         </Tooltip>,
                         ]}
                     >
                         <Card.Meta
-                        title={<Text strong>{test.name}</Text>}
+                        title={<Text strong>{test.notes}</Text>}
                         description={
                             <div className="flex flex-col">
-                            <Text type="secondary">{test.requestDate}</Text>
+                            <Text type="secondary">{test.createDate}</Text>
                             <div className="mt-2 flex items-center">
                                 <Badge 
-                                status={test.status === 'Hoàn thành' ? 'success' : 'processing'} 
+                                status={test.status === 'COMPLETED' ? 'success' : 'processing'} 
                                 text={test.status} 
                                 />
                             </div>
+                            <div></div>
                             </div>
                         }
                         />
@@ -373,7 +560,7 @@ const ParaclinicalTest = () => {
                     }
                     extra={
                     <Tooltip title="Thêm yêu cầu thăm dò chức năng mới">
-                        <Button type="primary" icon={<PlusOutlined />}>Thêm</Button>
+                        <Button type="primary" icon={<PlusOutlined />} onClick={showFunctionalTestOpen}>Thêm</Button>
                     </Tooltip>
                     }
                 >
@@ -384,7 +571,7 @@ const ParaclinicalTest = () => {
                         key={item.id}
                         actions={[
                             <Button key="view" type="link" icon={<FileSearchOutlined />}>
-                            {item.status === 'Hoàn thành' ? 'Xem kết quả' : 'Chi tiết'}
+                            {item.status === 'COMPLETED' ? 'Xem kết quả' : 'Chi tiết'}
                             </Button>,
                             <Button key="edit" type="text" icon={<EditOutlined />} />,
                             <Button key="delete" type="text" danger icon={<DeleteOutlined />} />,
@@ -395,29 +582,35 @@ const ParaclinicalTest = () => {
                             <Avatar 
                                 icon={<HeartFilled />} 
                                 style={{ 
-                                backgroundColor: item.type === 'Điện tim' ? '#ff4d4f' : 
-                                            item.type === 'Điện não' ? '#13c2c2' : 
-                                            item.type === 'Nội soi' ? '#722ed1' : '#1890ff' 
+                                    backgroundColor:
+                                    item.type === 'spirometry' ? '#ff4d4f' :
+                                    item.type === 'bloodgasanalysis' ? '#13c2c2' :
+                                    item.type === 'nerveconduction' ? '#722ed1' :
+                                    item.type === 'eeg' ? '#1890ff' :
+                                    item.type === 'emg' ? '#fadb14' :
+                                    item.type === 'cardiactest' ? '#eb2f96' :
+                                    item.type === 'digestive' ? '#52c41a' : '#1890ff',
                                 }} 
                             />
                             }
-                            title={<Text strong>{item.name}</Text>}
+                            title={<Text strong>{functionalTestNames[item.type]}</Text>}
                             description={
                             <div className="flex flex-col md:flex-row md:items-center text-xs">
                                 <Tag color="blue">{item.type}</Tag>
-                                <Text type="secondary" className="md:ml-2">
-                                <CalendarOutlined className="mr-1" />{item.requestDate}
+                                <Text type="secondary" className="mx-6">
+                                    <CalendarOutlined/>
+                                    <span className='ml-2'>{item.createAt}</span>
                                 </Text>
                                 <Badge 
-                                className="md:ml-2 mt-1 md:mt-0"
-                                status={item.status === 'Hoàn thành' ? 'success' : 'processing'} 
+                                className="ml-4"
+                                status={item.status === 'COMPLETED' ? 'success' : 'processing'} 
                                 text={item.status} 
                                 />
                             </div>
                             }
                         />
                         <div>
-                            <Text type="secondary">Bác sĩ chỉ định: {item.requestedBy}</Text>
+                            <Text type="secondary">Bác sĩ chỉ định: {localStorage.getItem('userFullName')}</Text>
                         </div>
                         </List.Item>
                     )}
@@ -425,21 +618,16 @@ const ParaclinicalTest = () => {
                 </Card>
 
                 {/* Nút thêm yêu cầu mới */}
-                <div className="flex justify-center mt-4 flex-row items-center">
-                    <Button 
-                    type="primary" 
-                    size="large"
-                    icon={<PlusOutlined />}
-                    onClick={showModal}
-                    className="bg-gradient-to-r from-blue-500 to-indigo-600 border-0 shadow"
-                    >
-                    Thêm yêu cầu cận lâm sàng mới
-                    </Button>
-                    <AddParaclinicalTest
-                    visible={isModalVisible}
-                    onCancel={handleCancel}
-                    onSubmit={handleSubmit}
-                    />
+                <div className="flex justify-center mt-4 flex-row items-center w-full">
+                    <div className='flex flex-row items-center justify-around w-full'>
+                        <Button 
+                            type="primary" 
+                            size="large"
+                            onClick={handleSubmitPatient}
+                            >
+                            Đã khám xong giai đoạn 1
+                        </Button>
+                    </div>
                 </div>
                 </div>
                 <Modal
@@ -456,7 +644,7 @@ const ParaclinicalTest = () => {
                     </Button>,
                     ]}
                 >
-                    <Form form={form} layout="vertical">
+                    <Form form={labTestForm} layout="vertical">
                     <div className="grid grid-cols-2 gap-4">
                         <Form.Item
                         name="testName"
@@ -491,6 +679,109 @@ const ParaclinicalTest = () => {
                         </Form.Item>
                     </div>
                     </Form>
+                </Modal>
+                <Modal
+                    title="Tạo Chẩn Đoán Hình Ảnh Mới"
+                    open={isModalImagingTestOpen}
+                    onCancel={handleImagingTestCancel}
+                    width={700}
+                    footer={[
+                    <Button key="back" onClick={handleImagingTestCancel}>
+                        Hủy
+                    </Button>,
+                    <Button key="submit" type="primary" onClick={handleImagingTestOk}>
+                        Tạo Xét Nghiệm
+                    </Button>,
+                    ]}
+                >
+                    <Form form={imagingTestForm} layout="vertical">
+                    <div className="grid grid-cols-2 gap-4">
+                        <Form.Item
+                        name="testImagingName"
+                        label="Tên chẩn đoán"
+                        rules={[{ required: true, message: 'Vui lòng nhập tên chẩn đoán' }]}
+                        >
+                        <Input placeholder="Nhập tên xét nghiệm" />
+                        </Form.Item>
+
+                        <Form.Item
+                        name="testImagingType"
+                        label="Loại chẩn đoán"
+                        rules={[{ required: true, message: 'Vui lòng chọn loại chẩn đoán' }]}
+                        >
+                        <Select placeholder="Chọn loại xét nghiệm" className="w-full">
+                            <Select.Option value="xq">XQuang</Select.Option>
+                            <Select.Option value="sa">Siêu âm</Select.Option>
+                            <Select.Option value="ct">CT Scan</Select.Option>
+                            <Select.Option value="mri">MRI</Select.Option>
+                        </Select>
+                        </Form.Item>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <Form.Item name="patientId" label="Mã bệnh nhân">
+                        <Input placeholder="Nhập mã bệnh nhân" defaultValue={patientInfo?.barcode || ''} disabled />
+                        </Form.Item>
+
+                        <Form.Item name="patientName" label="Tên bệnh nhân">
+                        <Input placeholder="Nhập tên bệnh nhân" defaultValue={patientInfo?.patient?.name || ''} disabled />
+                        </Form.Item>
+                    </div>
+                    </Form>
+                </Modal>
+                {/* Modal for Functional Test */}
+                <Modal
+                title="Tạo Thăm Dò Chức Năng Mới"
+                open={isModalFunctionalTestOpen}
+                onCancel={handleFunctionalTestCancel}
+                width={700}
+                footer={[
+                    <Button key="back" onClick={handleFunctionalTestCancel}>
+                    Hủy
+                    </Button>,
+                    <Button key="submit" type="primary" onClick={handleFunctionalTestOk}>
+                    Tạo Thăm Dò
+                    </Button>,
+                ]}
+                >
+                <Form form={functionalTestForm} layout="vertical">
+                    <div className="grid grid-cols-2 gap-4">
+                    <Form.Item
+                        name="testName"
+                        label="Tên xét nghiệm"
+                        rules={[{ required: true, message: 'Vui lòng nhập tên xét nghiệm' }]}
+                    >
+                        <Input placeholder="Nhập tên xét nghiệm" />
+                    </Form.Item>
+                    <Form.Item
+                        name="testFunctionalType"
+                        label="Loại thăm dò"
+                        rules={[{ required: true, message: 'Vui lòng chọn loại thăm dò' }]}
+                    >
+                        <Select
+                        placeholder="Chọn loại thăm dò"
+                        className="w-full"
+                        onChange={(value) => setFunctionalTestType(value)}
+                        >
+                        <Select.Option value="spirometry">Đo chức năng hô hấp</Select.Option>
+                        <Select.Option value="bloodgasanalysis">Phân tích khí máu</Select.Option>
+                        <Select.Option value="nerveconduction">Đo dẫn truyền thần kinh</Select.Option>
+                        <Select.Option value="eeg">Điện não đồ</Select.Option>
+                        <Select.Option value="emg">Điện cơ đồ</Select.Option>
+                        <Select.Option value="cardiactest">Xét nghiệm tim mạch</Select.Option>
+                        <Select.Option value="digestive">Xét nghiệm tiêu hóa</Select.Option>
+                        </Select>
+                    </Form.Item>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                    <Form.Item name="patientId" label="Mã bệnh nhân">
+                        <Input placeholder="Nhập mã bệnh nhân" defaultValue={patientInfo?.barcode || ''} disabled />
+                    </Form.Item>
+                    <Form.Item name="patientName" label="Tên bệnh nhân">
+                        <Input placeholder="Nhập tên bệnh nhân" defaultValue={patientInfo?.patient?.name || ''} disabled />
+                    </Form.Item>
+                    </div>
+                </Form>
                 </Modal>
                 {contextHolder}
             </Card>

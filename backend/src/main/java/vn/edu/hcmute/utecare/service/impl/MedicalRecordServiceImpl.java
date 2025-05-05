@@ -7,14 +7,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import vn.edu.hcmute.utecare.dto.request.MedicalRecordRequest;
+import vn.edu.hcmute.utecare.dto.response.EncounterResponse;
 import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
+import vn.edu.hcmute.utecare.mapper.EncounterMapper;
 import vn.edu.hcmute.utecare.mapper.MedicalRecordMapper;
 import vn.edu.hcmute.utecare.model.Customer;
+import vn.edu.hcmute.utecare.model.Encounter;
 import vn.edu.hcmute.utecare.model.MedicalRecord;
 import vn.edu.hcmute.utecare.repository.CustomerRepository;
+import vn.edu.hcmute.utecare.repository.EncounterRepository;
 import vn.edu.hcmute.utecare.repository.MedicalRecordRepository;
 import vn.edu.hcmute.utecare.service.MedicalRecordService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
@@ -30,6 +34,7 @@ import java.util.stream.Collectors;
 public class MedicalRecordServiceImpl implements MedicalRecordService {
     private final MedicalRecordRepository medicalRecordRepository;
     private final CustomerRepository customerRepository;
+    private final EncounterRepository encounterRepository;
 
 
     @Override
@@ -73,6 +78,12 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         MedicalRecord medicalRecord = medicalRecordRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Medical record not found with id: " + id));
         medicalRecordRepository.delete(medicalRecord);
+    }
+
+    @Override
+    public List<EncounterResponse> getAllEncounterByMedicalRecordId(Long medicalRecordId) {
+        List<Encounter> encounters = encounterRepository.findByMedicalRecord_Id(medicalRecordId);
+        return encounters.stream().map(EncounterMapper.INSTANCE::toResponse).toList();
     }
 
     @Override

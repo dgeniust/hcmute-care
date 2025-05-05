@@ -20,7 +20,7 @@ public class EncounterResponse {
 
     private String notes;
 
-    private List<Long> prescriptionId;
+    private List<PrescriptionItemResponse> prescriptionItems;
 
     private Long medicalRecordId;
 }

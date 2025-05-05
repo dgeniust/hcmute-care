@@ -21,17 +21,7 @@ const PatientRecords = () => {
     const storedData = localStorage.getItem('patientEncounterInfo');
     return storedData ? JSON.parse(storedData) : null;
   });
-  // useEffect(() => {
-  //   const fetchEncounterData = async () => {
-  //     try {
-  //       const response = await fetch()
-  //     }
-  //     catch(e) {
-  
-  //     }
-  //   }
-  //   fetchEncounterData();
-  // },[])
+  const [encounters, setEncounters] = useState([]);
 
   const { token } = theme.useToken();
   
@@ -43,23 +33,53 @@ const PatientRecords = () => {
     // boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
     // overflow: 'hidden',
   };
+  // useEffect(() => {
+  //   const fetchPatientEncounterInfo = async () => {
+  //     try {
+  //       //http://localhost:8080/api/v1/medical-records/${medicalRecordPatientId}/encounters
+  //       const response = await fetch(`http://localhost:8080/api/v1/medical-records/22/encounters`, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         }
+  //       })
+  //       if(!response.ok) {
+  //         const errorText = await response.text();
+  //         console.log("Error",errorText);
+  //         handleHttpStatusCode(response.status,"", errorText, messageApi);
+  //         return;
+  //       }
+  //       const data = await response.json();
+  //       if(data && data.data.length > 0) {
+  //         console.log("Data: ",data.data);
+  //         notifySuccessWithCustomMessage("Lấy lịch sử khám bệnh thành công", messageApi);
+  //         setEncounters(data.data);
+  //       }
+  //     } 
+  //     catch(e) {
+  //       console.error("Error fetching patient encounter info:", e);
+  //       notifyErrorWithCustomMessage("Không thể lấy thông tin bệnh nhân. Vui lòng thử lại sau.", messageApi);
+  //     }
+  //   }
+  //   fetchPatientEncounterInfo();
+  // },[])
 
-  // const getItems = (panelStyle, encounter) =>
-  //   encounter.map((item) => ({
+  // const getItems = (panelStyle, encounters) =>
+  //   encounters.map((item) => ({
   //     key: item.id.toString(),
   //     label: (
   //       <div className="flex items-center py-1">
   //         <Badge 
   //           status="processing" 
-  //           color={item.prescription.status === 'Hoàn thành' ? 'green' : 'blue'} 
+  //           color={'green'} 
   //         />
   //         <Space className="ml-2">
   //           <Text strong>{`Lần khám ngày ${item.visitDate}`}</Text>
   //           <Tag 
-  //             color={item.prescription.status === 'Hoàn thành' ? 'success' : 'processing'}
+  //             color={'success'}
   //             className="ml-2"
   //           >
-  //             {item.prescription.status}
+  //             Đã nhận thuốc
   //           </Tag>
   //         </Space>
   //       </div>
@@ -119,17 +139,17 @@ const PatientRecords = () => {
   //               <div className="flex items-center">
   //                 <CalendarOutlined className="text-blue-500 mr-2" />
   //                 <Text type="secondary">Ngày kê đơn:</Text>
-  //                 <Text strong className="ml-2">{item.prescription.issueDate}</Text>
+  //                 <Text strong className="ml-2">{item.visitDate}</Text>
   //               </div>
                 
   //               <div className="flex items-center">
   //                 <ClockCircleOutlined className="text-blue-500 mr-2" />
   //                 <Text type="secondary">Trạng thái:</Text>
   //                 <Tag 
-  //                   color={item.prescription.status === 'Hoàn thành' ? 'success' : 'processing'}
+  //                   color={'success'}
   //                   className="ml-2"
   //                 >
-  //                   {item.prescription.status}
+  //                   Đã nhận thuốc
   //                 </Tag>
   //               </div>
   //             </div>
@@ -140,7 +160,7 @@ const PatientRecords = () => {
   //             </Title>
               
   //             <Space direction="vertical" size="middle" className="w-full">
-  //               {item.prescription.prescriptionItems.map((presItem) => (
+  //               {item.prescriptionItems.map((presItem) => (
   //                 <Card 
   //                   key={presItem.id} 
   //                   size="small" 
@@ -153,7 +173,6 @@ const PatientRecords = () => {
   //                         <div className="w-2 h-10 bg-blue-600 rounded-full mr-3"></div>
   //                         <div>
   //                           <Text strong className="text-lg block">{presItem.name}</Text>
-  //                           <Text type="secondary" className="text-sm">{presItem.medicine.strength}</Text>
   //                         </div>
   //                       </div>
   //                       <Tag color="blue" className="text-sm font-medium px-3 py-1">
@@ -167,16 +186,10 @@ const PatientRecords = () => {
   //                         <Tooltip title="Cách sử dụng">
   //                           <span className="flex items-center">
   //                             <ClockCircleOutlined className="mr-1" />
-  //                             {presItem.medicine.usage}
+  //                             {presItem.dosage}
   //                           </span>
   //                         </Tooltip>
   //                         <Divider type="vertical" className="mx-2" />
-  //                         <Tooltip title="Giá">
-  //                           <span className="flex items-center font-medium text-blue-600">
-  //                             <DollarOutlined className="mr-1" />
-  //                             {presItem.medicine.price}đ
-  //                           </span>
-  //                         </Tooltip>
   //                       </div>
   //                     </div>
   //                   </div>
@@ -197,7 +210,7 @@ const PatientRecords = () => {
     temperature: { value: "38ºC", normal: false, percentage: 65 },
     bodyMetrics: { value: "177/55", normal: true, percentage: 85 }
   };
-
+  const waitingNumber = localStorage.getItem('waitingNumber') || null;
   const VitalSignCard = ({ icon, title, value, isNormal, percentage, bgClass, progressColor }) => (
     <Card className={`${bgClass} border-0 shadow-sm h-full hover:shadow-md transition-all duration-300`}>
       <div className="flex items-center mb-3">
@@ -239,7 +252,7 @@ const PatientRecords = () => {
                   <div className="relative w-32 h-32 border-4 border-white rounded-full bg-gradient-to-r from-blue-100 to-white flex items-center justify-center shadow-lg">
                     <Avatar 
                       size={112} 
-                      src={<img src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${patientEncounterInfo.patient.gender === "Nam" ? "8" : "Liliana"}`} alt="avatar" />}
+                      src={<img src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${patientEncounterInfo.patient.gender === "MALE" ? "8" : "Liliana"}`} alt="avatar" />}
                     />
                   </div>
                 </div>
@@ -249,7 +262,8 @@ const PatientRecords = () => {
                   
                   <div className="bg-green-100 rounded-lg shadow-sm p-1">
                     <div className="flex items-center justify-center">
-                      <p className='text-lg'>Số thứ tự: <span className="font-bold text-green-800">42</span></p>
+                      <p className='text-lg'>Số thứ tự: <span className="font-bold text-green-800">
+                        {waitingNumber}</span></p>
                     </div>
                   </div>
                   
@@ -385,7 +399,7 @@ const PatientRecords = () => {
                   />
                 )}
                 className="bg-transparent"
-                items={getItems(panelStyle, encounter)}
+                items={getItems(panelStyle, encounters)}
               />
             </Card>
           </div> */}
