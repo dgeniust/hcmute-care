@@ -1,5 +1,7 @@
 package vn.edu.hcmute.utecare.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import vn.edu.hcmute.utecare.model.Medicine;
@@ -10,4 +12,6 @@ import java.util.Optional;
 public interface MedicineRepository extends JpaRepository<Medicine, Long> {
     Optional<Medicine> findByName(String name);
     Medicine findById(long id);
+
+    Page<Medicine> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }

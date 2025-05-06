@@ -2,15 +2,19 @@ package vn.edu.hcmute.utecare.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.MedicineRequest;
 import vn.edu.hcmute.utecare.dto.response.MedicineResponse;
+import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.MedicineMapper;
 import vn.edu.hcmute.utecare.model.Medicine;
 import vn.edu.hcmute.utecare.repository.MedicineRepository;
 import vn.edu.hcmute.utecare.repository.PrescriptionItemRepository;
 import vn.edu.hcmute.utecare.service.MedicineService;
+import vn.edu.hcmute.utecare.util.PaginationUtil;
 
 import java.util.List;
 
@@ -66,6 +70,27 @@ public class MedicineServiceImpl implements MedicineService {
         log.info("Get medicine list");
         List<Medicine> medicines = medicineRepository.findAll();
         return medicines.stream().map(MedicineMapper.INSTANCE::toResponse).toList();
+    }
+
+    @Override
+    public PageResponse<MedicineResponse> searchByName(String name,
+                                                       int page,
+                                                       int size,
+                                                       String sort,
+                                                       String direction) {
+        log.info("Search medicine by name: {} ", name);
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+        Page<Medicine> medicinePage = medicineRepository.findByNameContainingIgnoreCase(name, pageable);
+
+        return PageResponse.<MedicineResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalElements(medicinePage.getTotalElements())
+                .totalPages(medicinePage.getTotalPages())
+                .content(medicinePage.getContent().stream()
+                        .map(MedicineMapper.INSTANCE::toResponse)
+                        .toList())
+                .build();
     }
 
 }
