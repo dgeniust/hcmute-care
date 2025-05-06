@@ -42,9 +42,6 @@ public class PaymentServiceImpl implements PaymentService {
     private final AppointmentService appointmentService;
     private final AppointmentRepository appointmentRepository;
 
-    @Value("${payment.vnPay.redirectUrl}")
-    private String redirectUrl;
-
 
     @Transactional
     @Override

@@ -3,9 +3,9 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3308}/utecare_db
-    username: ${DATABASE_USERNAME:root}
-    password: ${DATABASE_PASSWORD:root}
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3308}/${MYSQL_DB:utecare_db}
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:root}
   jpa:
     hibernate:
       ddl-auto: none
@@ -15,8 +15,8 @@ spring:
         format_sql: true
   data:
     redis:
-      port: ${SPRING_DATA_REDIS_PORT:6379}
-      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${REDIS_HOST:6379}
+      host: ${REDIS_PORT:localhost}
 
 springdoc:
   api-docs:
@@ -54,4 +54,3 @@ payment:
     version: 2.1.0
     command: pay
     orderType: other
-    redirectUrl:  http://localhost:5173/appointment/success?transactionId=
