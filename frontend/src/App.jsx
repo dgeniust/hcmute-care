@@ -6,7 +6,6 @@ import ConfirmPassword from './pages/login signup/ConfirmPassword';
 import GetPhone from './pages/login signup/GetPhone';
 import GetPassword from './pages/login signup/GetPassword';
 import HomePage from './pages/HomePage';
-import Book_Review from '../../frontend/src/pages/Book_Review/Book_Review';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -28,7 +27,7 @@ import ManageRoom from './pages/Admin/ManageEmployees/ManageRoom';
 import ManageNumber_Orders from './pages/Admin/ManageUser/ManageNumber_Orders';
 import AdminHomePage from './pages/Admin/AdminHomepage/AdminHomePage';
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
-import DoctorHomePage from './pages/Doctor/DoctorHomepage/DoctorHomepage';
+import DoctorHomePage from './pages/Doctor/DoctorHomepage/DoctorHomePage';
 import DoctorManageRecords from './pages/Doctor/DoctorManageRecords/DoctorManageRecords';
 import PatientRecords from './components/DoctorComponents/PatientRecords/PatientRecords';
 import DoctorSchedule from './pages/Doctor/DoctorSchedule/DoctorSchedule';
@@ -36,6 +35,7 @@ import ProtectedRoute from './pages/ProtectedRoute';
 import ManageSchedule from './pages/Admin/ManageSchedule/ManageSchedule';
 import ConfirmBill_Booking from './components/Booking/5/ConfirmBill_Booking';
 import PaymentResultPage from './components/Booking/4/PaymentResultPage';
+import Book_Review from './pages/Book_Review/Book_Review';
 function App() {
   return (
     <Router>

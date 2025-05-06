@@ -1,4 +1,4 @@
-import '../css/MainLoading.css';
+import '../css/mainloading.css';
 
 const MainLoading = () => {
     return (
