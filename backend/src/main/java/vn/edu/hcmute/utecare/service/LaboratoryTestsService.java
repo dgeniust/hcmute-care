@@ -3,7 +3,9 @@ package vn.edu.hcmute.utecare.service;
 import vn.edu.hcmute.utecare.dto.request.LaboratoryTestsRequest;
 import vn.edu.hcmute.utecare.dto.response.LaboratoryTestsResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface LaboratoryTestsService {
@@ -19,4 +21,6 @@ public interface LaboratoryTestsService {
     LaboratoryTestsResponse updateLaboratoryTests(Long id, LaboratoryTestsRequest request);
 
     void deleteLaboratoryTests(Long id);
+
+    List<LaboratoryTestsResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
 }

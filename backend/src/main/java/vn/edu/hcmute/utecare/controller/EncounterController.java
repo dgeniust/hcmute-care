@@ -8,11 +8,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.EncounterRequest;
+import vn.edu.hcmute.utecare.dto.response.EncounterPatientSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.EncounterResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.EncounterService;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/encounters")
@@ -76,4 +80,37 @@ public class EncounterController {
                 .message("Encounter deleted successfully")
                 .build();
     }
+
+    @GetMapping("/{id}/detail-patient")
+    @Operation(summary = "Get a detail patient encounter", description = "Get a detail patient encounter by its ID")
+    public ResponseData<EncounterPatientSummaryResponse> getEncounterDetailPatient(@PathVariable("id") Long id) {
+        log.info("Get a detail patient encounter for id: {}", id);
+        return ResponseData.<EncounterPatientSummaryResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("Detail patient encounter retrieved successfully")
+                .data(encounterService.getEncounterPatientSummaryById(id))
+                .build();
+    }
+
+    @GetMapping("/all/detail-patient")
+    @Operation(summary = "Get detailed patient encounters", description = "Get detailed patient encounters by their IDs (comma-separated)")
+    public ResponseData<List<EncounterPatientSummaryResponse>> getAllEncounterDetailPatient(
+            @RequestParam(name = "ids", required = false) String ids) {
+        log.info("Get all detail patient encounters for ids: {}", ids);
+
+        // Handle null or empty input
+        List<Long> idList = (ids == null || ids.isBlank())
+                ? Collections.emptyList()
+                : Arrays.stream(ids.split(","))
+                .map(String::trim)
+                .map(Long::parseLong)
+                .collect(Collectors.toList());
+
+        return ResponseData.<List<EncounterPatientSummaryResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Detail patient encounters retrieved successfully")
+                .data(encounterService.getAllEncounterPatientSummaryById(idList))
+                .build();
+    }
+
 }

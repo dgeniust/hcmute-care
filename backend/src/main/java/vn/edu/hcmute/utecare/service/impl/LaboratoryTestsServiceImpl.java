@@ -16,6 +16,8 @@ import vn.edu.hcmute.utecare.service.LaboratoryTestsService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,5 +86,17 @@ public class LaboratoryTestsServiceImpl implements LaboratoryTestsService {
         LaboratoryTests laboratoryTests = laboratoryTestsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy LaboratoryTests với id: " + id));
         laboratoryTestsRepository.delete(laboratoryTests);
+    }
+
+    @Override
+    public List<LaboratoryTestsResponse> getAllLabTestByDateAndStatus(LocalDate date, String status) {
+        log.info("Lấy danh sách LaboratoryTests theo ngày {} và trạng thái PENDING", date);
+        LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
+        EMedicalTest statusEnum = EMedicalTest.valueOf(String.valueOf(status)); // statusString là "PENDING", "COMPLETED",...
+
+        return laboratoryTestsRepository.findByCreateDateBetweenAndStatus(startOfDay, endOfDay, statusEnum)
+                .stream()
+                .map(LaboratoryTestsMapper.INSTANCE::toResponse).toList();
     }
 }

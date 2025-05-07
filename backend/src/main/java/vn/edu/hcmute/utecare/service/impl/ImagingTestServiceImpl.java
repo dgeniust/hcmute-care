@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.ImagingTestRequest;
 import vn.edu.hcmute.utecare.dto.response.ImagingTestResponse;
+import vn.edu.hcmute.utecare.dto.response.LaboratoryTestsResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
 import vn.edu.hcmute.utecare.mapper.ImagingTestMapper;
@@ -18,6 +19,8 @@ import vn.edu.hcmute.utecare.service.ImagingTestService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,5 +96,16 @@ public class ImagingTestServiceImpl implements ImagingTestService {
         ImagingTest imagingTest = imagingTestRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy ImagingTest với id: " + id));
         imagingTestRepository.delete(imagingTest);
+    }
+
+    @Override
+    public List<ImagingTestResponse> getAllImagingTestByDateAndStatus(LocalDate date, String status) {
+        log.info("Lấy danh sách ImagingTest theo ngày {} và trạng thái PENDING", date);
+        LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
+        EMedicalTest statusEnum = EMedicalTest.valueOf(String.valueOf(status)); // statusString là "PENDING", "COMPLETED",...
+        return imagingTestRepository.findByCreateDateBetweenAndStatus(startOfDay, endOfDay, statusEnum)
+                .stream()
+                .map(ImagingTestMapper.INSTANCE::toResponse).toList();
     }
 }

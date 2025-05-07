@@ -14,6 +14,7 @@ import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.LaboratoryTestsService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -105,6 +106,21 @@ public class LaboratoryTestsController {
         return ResponseData.<Void>builder()
                 .status(HttpStatus.NO_CONTENT.value())
                 .message("LaboratoryTests được xóa thành công")
+                .build();
+    }
+
+    @GetMapping("/by-date")
+    @Operation(summary = "Lấy danh sách LaboratoryTests theo ngày", description = "Lấy danh sách LaboratoryTests của ngày được chỉ định với trạng thái PENDING.")
+    public ResponseData<List<LaboratoryTestsResponse>> getAllLabTestByDateAndStatus(
+            @RequestParam @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam("status") String status
+    ) {
+        log.info("Yêu cầu lấy danh sách LaboratoryTests theo ngày: {}", date);
+        List<LaboratoryTestsResponse> responses = laboratoryTestsService.getAllLabTestByDateAndStatus(date, status);
+        return ResponseData.<List<LaboratoryTestsResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách LaboratoryTests theo ngày được trả về thành công")
+                .data(responses)
                 .build();
     }
 }

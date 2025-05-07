@@ -38,7 +38,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
             method: 'POST',
             headers: { 
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${accessToken}`,
+              //Authorization: `Bearer ${accessToken}`,
             },
             body: JSON.stringify(payload),
           });
@@ -51,8 +51,8 @@ const ProtectedRoute = ({ allowedRoles }) => {
           }
 
           const data = await res.json();
-          localStorage.setItem('accessToken', data.accessToken);
-          console.log('New Access Token:', data.accessToken);
+          localStorage.setItem('accessToken', data.data.accessToken);
+          console.log('New Access Token from refresh token:', data.data.accessToken);
         }
 
         const finalToken = localStorage.getItem('accessToken');
@@ -101,6 +101,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
       ROLE_ADMIN: '/admin',
       ROLE_DOCTOR: '/doctor',
       ROLE_STAFF: '/staff',
+      ROLE_NURSE: '/nurse',
     };
     const redirectPath = redirectMap[userRole] || '/'; // Default to '/'
     return <Navigate to={redirectPath} replace state={{ from: location }} />;

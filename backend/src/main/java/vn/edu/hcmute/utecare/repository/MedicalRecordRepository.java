@@ -12,5 +12,6 @@ public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, Lo
     Optional<MedicalRecord> findByBarcode(String barcode);
     Page<MedicalRecord> findByCustomerId(Long customerId, Pageable pageable);
     MedicalRecord findByBarcodeAndCustomerId(String barcode, Long customerId);
+    MedicalRecord findByEncountersId(Long encounterId);
     long count();
 }

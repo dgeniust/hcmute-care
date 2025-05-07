@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.EncounterRequest;
+import vn.edu.hcmute.utecare.dto.response.EncounterPatientSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.EncounterResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.EncounterMapper;
@@ -22,6 +23,7 @@ import vn.edu.hcmute.utecare.service.EncounterService;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -126,5 +128,35 @@ public class EncounterServiceImpl implements EncounterService {
 
         Encounter updatedEncounter = encounterRepository.save(encounter);
         return EncounterMapper.INSTANCE.toResponse(updatedEncounter);
+    }
+
+    @Override
+    public EncounterPatientSummaryResponse getEncounterPatientSummaryById(Long id) {
+        log.info("Get detail encounter patient summary with id {}", id);
+        Encounter encounter = encounterRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Encounter with id " + id + " not found"));
+        MedicalRecord medicalRecord = medicalRecordRepository.findByEncountersId(encounter.getId());
+        encounter.setMedicalRecord(medicalRecord);
+
+        return EncounterMapper.INSTANCE.toEncounterPatientResponse(encounter);
+    }
+
+    @Override
+    public List<EncounterPatientSummaryResponse> getAllEncounterPatientSummaryById(List<Long> id) {
+        log.info("Get detail encounter patient summaries for ids {}", id);
+
+        List<Encounter> encounters = encounterRepository.findAllById(id);
+        // Check for missing Encounters
+        List<Long> foundIds = encounters.stream().map(Encounter::getId).toList();
+        List<Long> missingIds = id.stream().filter(ids -> !foundIds.contains(ids)).toList();
+        if (!missingIds.isEmpty()) {
+            throw new ResourceNotFoundException("Encounters with ids " + missingIds + " not found");
+        }
+        // Map Encounters to EncounterPatientSummaryResponse
+        // Set MedicalRecord for mapping
+        return encounters.stream().map(encounter -> {
+            MedicalRecord medicalRecord = medicalRecordRepository.findByEncountersId(encounter.getId());
+            encounter.setMedicalRecord(medicalRecord); // Set MedicalRecord for mapping
+            return EncounterMapper.INSTANCE.toEncounterPatientResponse(encounter);
+        }).toList();
     }
 }
