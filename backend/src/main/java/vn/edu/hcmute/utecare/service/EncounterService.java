@@ -1,6 +1,7 @@
 package vn.edu.hcmute.utecare.service;
 
 import vn.edu.hcmute.utecare.dto.request.EncounterRequest;
+import vn.edu.hcmute.utecare.dto.response.EncounterPatientSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.EncounterResponse;
 
 import java.util.List;
@@ -20,4 +21,9 @@ public interface EncounterService {
     EncounterResponse createEncounter(EncounterRequest request);
 
     EncounterResponse updateEncounter(Long id, EncounterRequest request);
+
+    EncounterPatientSummaryResponse getEncounterPatientSummaryById(Long id);
+
+    List<EncounterPatientSummaryResponse> getAllEncounterPatientSummaryById(List<Long> id);
+
 }

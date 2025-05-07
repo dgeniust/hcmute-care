@@ -36,6 +36,8 @@ import ManageSchedule from './pages/Admin/ManageSchedule/ManageSchedule';
 import ConfirmBill_Booking from './components/Booking/5/ConfirmBill_Booking';
 import PaymentResultPage from './components/Booking/4/PaymentResultPage';
 import Book_Review from './pages/Book_Review/Book_Review';
+import NurseDashboard from './pages/Nurse/NurseDashboard';
+import NurseHomePage from './pages/Nurse/NurseHomePage';
 function App() {
   return (
     <Router>
@@ -89,6 +91,12 @@ function App() {
               <Route path="/doctor/patient" element={<PatientRecords />} />
               <Route path="/doctor/schedule" element={<DoctorSchedule />} />
               {/*<Route path="/doctor/manage-posts" element={<ManagePost />} /> */}
+            </Route>
+          </Route>
+          {/* NURSE ROUTE */}
+          <Route element={<ProtectedRoute allowedRoles={['ROLE_NURSE']} />}>
+            <Route path="/nurse" element={<NurseDashboard />} >
+              <Route index element={<NurseHomePage />} />
             </Route>
           </Route>
           {/* STAFF ROUTES */}

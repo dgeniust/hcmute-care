@@ -3,6 +3,7 @@ package vn.edu.hcmute.utecare.mapper;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import vn.edu.hcmute.utecare.dto.request.EncounterRequest;
+import vn.edu.hcmute.utecare.dto.response.EncounterPatientSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.EncounterResponse;
 import vn.edu.hcmute.utecare.dto.response.PrescriptionItemResponse;
 import vn.edu.hcmute.utecare.model.Encounter;
@@ -28,12 +29,10 @@ public interface EncounterMapper {
 
     void update(EncounterRequest request, @MappingTarget Encounter encounter);
 
-//    @Named("mapPrescriptionIds")
-//    default List<Long> mapPrescriptionIds(Collection<Prescription> prescriptions) {
-//        if(prescriptions == null || prescriptions.isEmpty())
-//            return null;
-//        return prescriptions.stream().map(Prescription::getId).collect(Collectors.toList());
-//    }
+    @Mapping(target = "medicalRecord", source = "medicalRecord")
+    @Mapping(target = "prescriptionItems", source = "prescriptions", qualifiedByName = "mapPrescriptionItems")
+    EncounterPatientSummaryResponse toEncounterPatientResponse(Encounter encounter);
+
     @Named("mapPrescriptionItems")
     default List<PrescriptionItemResponse> mapPrescriptionItems(Collection<Prescription> prescriptions) {
         if (prescriptions == null || prescriptions.isEmpty()) {
@@ -43,5 +42,12 @@ public interface EncounterMapper {
                 .flatMap(prescription -> prescription.getPrescriptionItems().stream())
                 .map(PrescriptionItemMapper.INSTANCE::toResponse)
                 .collect(Collectors.toList());
-}
+    }
+
+//    @Named("mapPrescriptionIds")
+//    default List<Long> mapPrescriptionIds(Collection<Prescription> prescriptions) {
+//        if(prescriptions == null || prescriptions.isEmpty())
+//            return null;
+//        return prescriptions.stream().map(Prescription::getId).collect(Collectors.toList());
+//    }
 }
