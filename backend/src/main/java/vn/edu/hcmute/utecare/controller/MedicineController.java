@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.MedicineRequest;
 import vn.edu.hcmute.utecare.dto.response.MedicineResponse;
+import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.MedicineService;
 
@@ -106,6 +107,21 @@ public class MedicineController {
     public void deleteMedicine(@PathVariable("id") Long id) {
         log.info("Delete medicine: {}", id);
         medicineService.deleteMedicine(id);
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "Search medicine by name", description = "Search medicine by name")
+    public ResponseData<PageResponse<MedicineResponse>> searchMedicineByName(@RequestParam("name") String name,
+                                                           @RequestParam(value = "page", defaultValue = "1") int page,
+                                                           @RequestParam(value = "size", defaultValue = "10") int size,
+                                                           @RequestParam(value = "sort", defaultValue = "id") String sort,
+                                                           @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+        log.info("Search medicine by name: {}", name);
+        return ResponseData.<PageResponse<MedicineResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Search medicine by name successfully")
+                .data(medicineService.searchByName(name, page, size, sort, direction))
+                .build();
     }
 
 
