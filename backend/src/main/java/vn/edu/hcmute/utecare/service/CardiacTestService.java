@@ -2,8 +2,10 @@ package vn.edu.hcmute.utecare.service;
 
 import vn.edu.hcmute.utecare.dto.request.CardiacTestRequest;
 import vn.edu.hcmute.utecare.dto.response.CardiacTestResponse;
+import vn.edu.hcmute.utecare.dto.response.LaboratoryTestsResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface CardiacTestService {
@@ -19,4 +21,6 @@ public interface CardiacTestService {
     CardiacTestResponse updateCardiacTest(Long id, CardiacTestRequest request);
 
     void deleteCardiacTest(Long id);
+
+    List<CardiacTestResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
 }

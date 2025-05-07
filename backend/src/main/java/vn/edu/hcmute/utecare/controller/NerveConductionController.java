@@ -8,11 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.NerveConductionRequest;
+import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.dto.response.NerveConductionResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.NerveConductionService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -98,6 +100,21 @@ public class NerveConductionController {
         return ResponseData.<Void>builder()
                 .status(HttpStatus.NO_CONTENT.value())
                 .message("NerveConduction được xóa thành công")
+                .build();
+    }
+
+    @GetMapping("/by-date")
+    @Operation(summary = "Lấy danh sách NerveConduction theo ngày", description = "Lấy danh sách NerveConduction của ngày được chỉ định với trạng thái PENDING.")
+    public ResponseData<List<NerveConductionResponse>> getAllLabTestByDateAndStatus(
+            @RequestParam @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam("status") String status
+    ) {
+        log.info("Yêu cầu lấy danh sách LaboratoryTests theo ngày: {}", date);
+        List<NerveConductionResponse> responses = nerveConductionService.getAllLabTestByDateAndStatus(date, status);
+        return ResponseData.<List<NerveConductionResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách LaboratoryTests theo ngày được trả về thành công")
+                .data(responses)
                 .build();
     }
 }

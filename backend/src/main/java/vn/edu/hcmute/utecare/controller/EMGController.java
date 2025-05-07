@@ -8,11 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.EMGRequest;
+import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.dto.response.EMGResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.EMGService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -98,6 +100,21 @@ public class EMGController {
         return ResponseData.<Void>builder()
                 .status(HttpStatus.NO_CONTENT.value())
                 .message("EMG được xóa thành công")
+                .build();
+    }
+
+    @GetMapping("/by-date")
+    @Operation(summary = "Lấy danh sách emg theo ngày", description = "Lấy danh sách emg của ngày được chỉ định với trạng thái PENDING.")
+    public ResponseData<List<EMGResponse>> getAllLabTestByDateAndStatus(
+            @RequestParam @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam("status") String status
+    ) {
+        log.info("Yêu cầu lấy danh sách emg theo ngày: {}", date);
+        List<EMGResponse> responses = emgService.getAllLabTestByDateAndStatus(date, status);
+        return ResponseData.<List<EMGResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách emg theo ngày được trả về thành công")
+                .data(responses)
                 .build();
     }
 }

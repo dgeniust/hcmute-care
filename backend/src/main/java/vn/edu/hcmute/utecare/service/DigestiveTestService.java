@@ -2,9 +2,11 @@ package vn.edu.hcmute.utecare.service;
 
 
 import vn.edu.hcmute.utecare.dto.request.DigestiveTestRequest;
+import vn.edu.hcmute.utecare.dto.response.CardiacTestResponse;
 import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface DigestiveTestService {
@@ -21,4 +23,7 @@ public interface DigestiveTestService {
     DigestiveTestResponse updateDigestiveTest(Long id, DigestiveTestRequest request);
 
     void deleteDigestiveTest(Long id);
+
+    List<DigestiveTestResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
+
 }

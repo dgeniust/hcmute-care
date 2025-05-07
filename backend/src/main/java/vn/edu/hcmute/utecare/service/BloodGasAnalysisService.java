@@ -2,8 +2,10 @@ package vn.edu.hcmute.utecare.service;
 
 import vn.edu.hcmute.utecare.dto.request.BloodGasAnalysisRequest;
 import vn.edu.hcmute.utecare.dto.response.BloodGasAnalysisResponse;
+import vn.edu.hcmute.utecare.dto.response.CardiacTestResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface BloodGasAnalysisService {
@@ -18,4 +20,7 @@ public interface BloodGasAnalysisService {
     BloodGasAnalysisResponse updateBloodGasAnalysis(Long id, BloodGasAnalysisRequest request);
 
     void deleteBloodGasAnalysis(Long id);
+
+    List<BloodGasAnalysisResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
+
 }
