@@ -1,9 +1,11 @@
 package vn.edu.hcmute.utecare.service;
 
 import vn.edu.hcmute.utecare.dto.request.SpirometryRequest;
+import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.SpirometryResponse;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface SpirometryService {
@@ -18,4 +20,7 @@ public interface SpirometryService {
     SpirometryResponse updateSpirometry(Long id, SpirometryRequest request);
 
     void deleteSpirometry(Long id);
+
+    List<SpirometryResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
+
 }

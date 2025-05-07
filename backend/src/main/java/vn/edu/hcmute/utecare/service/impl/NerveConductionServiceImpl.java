@@ -6,9 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.NerveConductionRequest;
+import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.dto.response.NerveConductionResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
+import vn.edu.hcmute.utecare.mapper.DigestiveTestMapper;
 import vn.edu.hcmute.utecare.mapper.NerveConductionMapper;
 import vn.edu.hcmute.utecare.model.*;
 import vn.edu.hcmute.utecare.repository.NerveConductionRepository;
@@ -16,6 +18,8 @@ import vn.edu.hcmute.utecare.service.NerveConductionService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -114,5 +118,16 @@ public class NerveConductionServiceImpl implements NerveConductionService {
         NerveConduction nerveConduction = nerveConductionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy NerveConduction với id: " + id));
         nerveConductionRepository.delete(nerveConduction);
+    }
+
+    @Override
+    public List<NerveConductionResponse> getAllLabTestByDateAndStatus(LocalDate date, String status) {
+        log.info("Lấy danh sách NerveConduction theo ngày {} và trạng thái PENDING", date);
+        LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
+        EMedicalTest statusEnum = EMedicalTest.valueOf(String.valueOf(status)); // statusString là "PENDING", "COMPLETED",...
+        return nerveConductionRepository.findByCreateDateBetweenAndStatus(startOfDay, endOfDay, statusEnum)
+                .stream()
+                .map(NerveConductionMapper.INSTANCE::toResponse).toList();
     }
 }

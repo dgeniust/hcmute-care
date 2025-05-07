@@ -10,6 +10,7 @@ import vn.edu.hcmute.utecare.dto.request.EEGRequest;
 import vn.edu.hcmute.utecare.dto.response.EEGResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
+import vn.edu.hcmute.utecare.mapper.DigestiveTestMapper;
 import vn.edu.hcmute.utecare.mapper.EEGMapper;
 import vn.edu.hcmute.utecare.model.EEG;
 import vn.edu.hcmute.utecare.model.Encounter;
@@ -18,6 +19,8 @@ import vn.edu.hcmute.utecare.service.EEGService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,5 +113,16 @@ public class EEGServiceImpl implements EEGService {
         EEG eeg = eegRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy EEG với id: " + id));
         eegRepository.delete(eeg);
+    }
+
+    @Override
+    public List<EEGResponse> getAllLabTestByDateAndStatus(LocalDate date, String status) {
+        log.info("Lấy danh sách EEG theo ngày {} và trạng thái PENDING", date);
+        LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
+        EMedicalTest statusEnum = EMedicalTest.valueOf(String.valueOf(status)); // statusString là "PENDING", "COMPLETED",...
+        return eegRepository.findByCreateDateBetweenAndStatus(startOfDay, endOfDay, statusEnum)
+                .stream()
+                .map(EEGMapper.INSTANCE::toResponse).toList();
     }
 }

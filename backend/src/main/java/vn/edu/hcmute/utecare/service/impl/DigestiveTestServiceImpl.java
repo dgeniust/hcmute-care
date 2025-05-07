@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.DigestiveTestRequest;
+import vn.edu.hcmute.utecare.dto.response.CardiacTestResponse;
 import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
+import vn.edu.hcmute.utecare.mapper.CardiacTestMapper;
 import vn.edu.hcmute.utecare.mapper.DigestiveTestMapper;
 import vn.edu.hcmute.utecare.model.DigestiveTest;
 import vn.edu.hcmute.utecare.model.Encounter;
@@ -19,6 +21,8 @@ import vn.edu.hcmute.utecare.service.DigestiveTestService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,5 +99,16 @@ public class DigestiveTestServiceImpl implements DigestiveTestService {
         DigestiveTest digestiveTest = digestiveTestRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy DigestiveTest với id: " + id));
         digestiveTestRepository.delete(digestiveTest);
+    }
+
+    @Override
+    public List<DigestiveTestResponse> getAllLabTestByDateAndStatus(LocalDate date, String status) {
+        log.info("Lấy danh sách DigestiveTest theo ngày {} và trạng thái PENDING", date);
+        LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
+        EMedicalTest statusEnum = EMedicalTest.valueOf(String.valueOf(status)); // statusString là "PENDING", "COMPLETED",...
+        return digestiveTestRepository.findByCreateDateBetweenAndStatus(startOfDay, endOfDay, statusEnum)
+                .stream()
+                .map(DigestiveTestMapper.INSTANCE::toResponse).toList();
     }
 }

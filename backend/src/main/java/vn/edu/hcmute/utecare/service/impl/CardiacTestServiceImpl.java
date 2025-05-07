@@ -7,8 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.CardiacTestRequest;
 import vn.edu.hcmute.utecare.dto.response.CardiacTestResponse;
+import vn.edu.hcmute.utecare.dto.response.LaboratoryTestsResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
 import vn.edu.hcmute.utecare.mapper.CardiacTestMapper;
+import vn.edu.hcmute.utecare.mapper.LaboratoryTestsMapper;
 import vn.edu.hcmute.utecare.model.CardiacTest;
 import vn.edu.hcmute.utecare.model.Encounter;
 
@@ -19,6 +21,8 @@ import vn.edu.hcmute.utecare.service.CardiacTestService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,5 +99,16 @@ public class CardiacTestServiceImpl implements CardiacTestService {
         CardiacTest cardiacTest = cardiacTestRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy CardiacTest với id: " + id));
         cardiacTestRepository.delete(cardiacTest);
+    }
+
+    @Override
+    public List<CardiacTestResponse> getAllLabTestByDateAndStatus(LocalDate date, String status) {
+        log.info("Lấy danh sách LaboratoryTests theo ngày {} và trạng thái PENDING", date);
+        LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
+        EMedicalTest statusEnum = EMedicalTest.valueOf(String.valueOf(status)); // statusString là "PENDING", "COMPLETED",...
+        return cardiacTestRepository.findByCreateDateBetweenAndStatus(startOfDay, endOfDay, statusEnum)
+                .stream()
+                .map(CardiacTestMapper.INSTANCE::toResponse).toList();
     }
 }

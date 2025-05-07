@@ -9,12 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.CardiacTestRequest;
 import vn.edu.hcmute.utecare.dto.response.CardiacTestResponse;
+import vn.edu.hcmute.utecare.dto.response.LaboratoryTestsResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.model.Account;
 
 import vn.edu.hcmute.utecare.service.CardiacTestService;
 import vn.edu.hcmute.utecare.util.SecurityUtil;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/cardiac-tests")
@@ -91,4 +95,20 @@ public class CardiacTestController {
     public Account test() {
         return SecurityUtil.getCurrentUser();
     }
+
+    @GetMapping("/by-date")
+    @Operation(summary = "Lấy danh sách CardiacTests theo ngày", description = "Lấy danh sách CardiacTests của ngày được chỉ định với trạng thái PENDING.")
+    public ResponseData<List<CardiacTestResponse>> getAllLabTestByDateAndStatus(
+            @RequestParam @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam("status") String status
+    ) {
+        log.info("Yêu cầu lấy danh sách LaboratoryTests theo ngày: {}", date);
+        List<CardiacTestResponse> responses = cardiacTestService.getAllLabTestByDateAndStatus(date, status);
+        return ResponseData.<List<CardiacTestResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách LaboratoryTests theo ngày được trả về thành công")
+                .data(responses)
+                .build();
+    }
+
 }

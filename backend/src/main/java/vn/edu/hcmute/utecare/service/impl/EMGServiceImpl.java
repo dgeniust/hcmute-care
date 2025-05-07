@@ -9,6 +9,7 @@ import vn.edu.hcmute.utecare.dto.request.EMGRequest;
 import vn.edu.hcmute.utecare.dto.response.EMGResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
+import vn.edu.hcmute.utecare.mapper.DigestiveTestMapper;
 import vn.edu.hcmute.utecare.mapper.EMGMapper;
 import vn.edu.hcmute.utecare.model.EMG;
 import vn.edu.hcmute.utecare.model.Encounter;
@@ -17,6 +18,8 @@ import vn.edu.hcmute.utecare.service.EMGService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,5 +111,16 @@ public class EMGServiceImpl implements EMGService {
         EMG emg = emgRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy EMG với id: " + id));
         emgRepository.delete(emg);
+    }
+
+    @Override
+    public List<EMGResponse> getAllLabTestByDateAndStatus(LocalDate date, String status) {
+        log.info("Lấy danh sách EMG theo ngày {} và trạng thái PENDING", date);
+        LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
+        EMedicalTest statusEnum = EMedicalTest.valueOf(String.valueOf(status)); // statusString là "PENDING", "COMPLETED",...
+        return emgRepository.findByCreateDateBetweenAndStatus(startOfDay, endOfDay, statusEnum)
+                .stream()
+                .map(EMGMapper.INSTANCE::toResponse).toList();
     }
 }
