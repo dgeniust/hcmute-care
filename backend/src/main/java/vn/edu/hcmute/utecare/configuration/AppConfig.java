@@ -26,7 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableMethodSecurity
 @RequiredArgsConstructor
-@Profile("!prod")
+//@Profile("!prod")
 public class AppConfig {
     private final UserDetailsService userDetailsService;
     private final PreFilter filter;
