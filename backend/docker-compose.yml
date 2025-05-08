@@ -35,7 +35,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - default
+      - utecare-backend-service
 
   mysql:
     image: mysql:8.0
@@ -51,7 +51,7 @@ services:
       - mysql-data:/var/lib/mysql
       - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - default
+      - utecare-backend-service
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -68,7 +68,7 @@ services:
     volumes:
       - redis-data:/data
     networks:
-      - default
+      - utecare-backend-service
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -89,12 +89,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/local/bin/docker:/usr/local/bin/docker
     networks:
-      - default
+      - utecare-backend-service
 
 networks:
-  default:
+  utecare-backend-service:
     driver: bridge
-    name: utecare-backend-service
 
 volumes:
   mysql-data:
