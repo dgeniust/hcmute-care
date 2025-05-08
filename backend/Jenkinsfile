@@ -1,5 +1,27 @@
 pipeline {
     agent any
+    environment {
+        SPRING_PROFILES_ACTIVE = 'prod'
+        MYSQL_HOST = 'mysql'
+        MYSQL_PORT = '3306'
+        MYSQL_DB = 'utecare_db'
+        MYSQL_USER = 'root'
+        MYSQL_PASSWORD = credentials('MYSQL_PASSWORD') 
+        REDIS_HOST = 'redis'
+        REDIS_PORT = '6379'
+        JWT_ACCESS_TOKEN_SECRET_KEY = credentials('JWT_ACCESS_TOKEN_SECRET_KEY')
+        JWT_ACCESS_TOKEN_EXPIRY = '3600'
+        JWT_REFRESH_TOKEN_SECRET_KEY = credentials('JWT_REFRESH_TOKEN_SECRET_KEY')
+        JWT_REFRESH_TOKEN_EXPIRY = '86400'
+        JWT_VERIFICATION_TOKEN_SECRET_KEY = credentials('JWT_VERIFICATION_TOKEN_SECRET_KEY')
+        JWT_VERIFICATION_TOKEN_EXPIRY = '86400'
+        JWT_RESET_TOKEN_SECRET_KEY = credentials('JWT_RESET_TOKEN_SECRET_KEY')
+        JWT_RESET_TOKEN_EXPIRY = '86400'
+        VNPAY_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'
+        VNPAY_TMN_CODE = credentials('VNPAY_TMN_CODE')
+        VNPAY_SECRET_KEY = credentials('VNPAY_SECRET_KEY')
+        VNPAY_RETURN_URL = 'http://localhost:5173/confirm-booking'
+    }
     stages {
         stage('Checkout') {
             steps {
