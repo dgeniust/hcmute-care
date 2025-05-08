@@ -7,6 +7,7 @@ import org.mapstruct.ReportingPolicy;
 import vn.edu.hcmute.utecare.dto.request.ScheduleRequest;
 import vn.edu.hcmute.utecare.dto.response.ScheduleInfoResponse;
 import vn.edu.hcmute.utecare.dto.response.ScheduleResponse;
+import vn.edu.hcmute.utecare.dto.response.TicketScheduleResponse;
 import vn.edu.hcmute.utecare.dto.response.TimeSlotResponse;
 import vn.edu.hcmute.utecare.model.Schedule;
 import vn.edu.hcmute.utecare.model.ScheduleSlot;
@@ -26,4 +27,6 @@ public interface ScheduleMapper {
 
     @Mapping(target = "scheduleSlots", source = "scheduleSlots")
     ScheduleResponse toResponse(Schedule schedule);
+
+    TicketScheduleResponse toTicketScheduleResponse(Schedule schedule);
 }

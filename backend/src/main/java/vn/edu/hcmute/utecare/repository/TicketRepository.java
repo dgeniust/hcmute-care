@@ -49,4 +49,9 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     Integer countByScheduleSlot_IdAndStatus(Long id, TicketStatus ticketStatus);
 
+    @Query("SELECT t FROM Ticket t " +
+            "JOIN t.scheduleSlot ss " +
+            "JOIN ss.schedule s " +
+            "WHERE (:scheduleDate IS NULL OR s.date = :scheduleDate)")
+    Page<Ticket> findAllTicket(@Param("scheduleDate") LocalDate scheduleDate, Pageable pageable);
 }

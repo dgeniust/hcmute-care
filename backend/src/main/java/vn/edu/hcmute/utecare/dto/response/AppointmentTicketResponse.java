@@ -6,7 +6,7 @@ import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
 
 @Getter
 @Setter
-public class TicketResponse {
+public class AppointmentTicketResponse {
     private Long id;
 
     private String ticketCode;
@@ -14,8 +14,6 @@ public class TicketResponse {
     private TicketStatus status;
 
     private Integer waitingNumber;
-
-    private MedicalRecordResponse medicalRecord;
 
     private TicketScheduleResponse schedule;
 }

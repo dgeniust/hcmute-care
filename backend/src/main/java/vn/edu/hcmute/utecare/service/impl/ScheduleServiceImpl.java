@@ -126,16 +126,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public PageResponse<ScheduleResponse> getAllSchedules(
             Long doctorId,
-            Integer roomId,
             LocalDate startDate,
             LocalDate endDate,
             Integer page, Integer size, String sort, String direction) {
-        log.info("Getting all schedules with doctorId: {}, roomId: {}, startDate: {}, endDate: {}, page: {}, size: {}, sort: {}, direction: {}",
-                doctorId, roomId, startDate, endDate, page, size, sort, direction);
+        log.info("Getting all schedules with doctorId: {}, startDate: {}, endDate: {}, page: {}, size: {}, sort: {}, direction: {}",
+                doctorId, startDate, endDate, page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
-        Page<Schedule> schedulePage = scheduleRepository.findAllByDoctorIdAndRoomIdAndDateBetween(
-                doctorId, roomId, startDate, endDate, pageable);
+        Page<Schedule> schedulePage = scheduleRepository.findAllByDoctorIdAndDateBetween(
+                doctorId, startDate, endDate, pageable);
 
         return PageResponse.<ScheduleResponse>builder()
                 .currentPage(page)

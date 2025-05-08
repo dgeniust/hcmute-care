@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.Set;
 
+
 @Getter
 @Setter
 public class AppointmentResponse {
@@ -12,5 +13,5 @@ public class AppointmentResponse {
 
     private MedicalRecordInfoResponse medicalRecord;
 
-    private Set<TicketResponse> tickets;
+    private Set<AppointmentTicketResponse> tickets;
 }

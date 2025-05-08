@@ -24,7 +24,6 @@ public interface ScheduleService {
     @Transactional(readOnly = true)
     PageResponse<ScheduleResponse> getAllSchedules(
             Long doctorId,
-            Integer roomId,
             LocalDate startDate,
             LocalDate endDate,
             Integer page, Integer size, String sort, String direction);

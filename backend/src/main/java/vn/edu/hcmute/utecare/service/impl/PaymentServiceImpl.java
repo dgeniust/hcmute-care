@@ -189,4 +189,22 @@ public class PaymentServiceImpl implements PaymentService {
                         .toList())
                 .build();
     }
+
+    @Override
+    public PageResponse<PaymentResponse> getAllPaymentsByCustomerId(
+            Long customerId,
+            int page, int size, String sort, String direction) {
+        log.info("Fetching all payments by customer");
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+        Page<Payment> paymentPage = paymentRepository.findAllByCustomerId(customerId, pageable);
+        return PageResponse.<PaymentResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalElements(paymentPage.getTotalElements())
+                .totalPages(paymentPage.getTotalPages())
+                .content(paymentPage.getContent().stream()
+                        .map(PaymentMapper.INSTANCE::toResponse)
+                        .toList())
+                .build();
+    }
 }

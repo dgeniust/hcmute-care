@@ -1,19 +1,19 @@
 package vn.edu.hcmute.utecare.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.CreateCustomerRequest;
 import vn.edu.hcmute.utecare.dto.request.CustomerRequest;
-import vn.edu.hcmute.utecare.dto.response.CustomerResponse;
-import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
-import vn.edu.hcmute.utecare.dto.response.PageResponse;
-import vn.edu.hcmute.utecare.dto.response.ResponseData;
+import vn.edu.hcmute.utecare.dto.response.*;
 import vn.edu.hcmute.utecare.service.CustomerService;
+import vn.edu.hcmute.utecare.service.PaymentService;
 import vn.edu.hcmute.utecare.util.enumeration.Membership;
 
 @RestController
@@ -23,6 +23,7 @@ import vn.edu.hcmute.utecare.util.enumeration.Membership;
 @Slf4j(topic = "CUSTOMER_CONTROLLER")
 public class CustomerController {
     private final CustomerService customerService;
+    private final PaymentService paymentService;
 
     @GetMapping("/{id}")
     @Operation(summary = "Get customer by ID", description = "Retrieve a customer by their ID")
@@ -116,6 +117,29 @@ public class CustomerController {
                 .status(HttpStatus.OK.value())
                 .message("Medical records retrieved successfully")
                 .data(customerService.getAllMedicalRecords(customerId, page, size, sort, direction))
+                .build();
+    }
+
+    @GetMapping("/{id}/payments")
+    @Operation(
+            summary = "Lấy danh sách tất cả payments theo customer",
+            description = "Trả về danh sách các giao dịch thanh toán (payments) liên quan đến một customer được chỉ định, hỗ trợ phân trang và sắp xếp theo các trường như paymentDate, amount, hoặc paymentStatus."
+    )
+//    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.principal.id")
+    public ResponseData<PageResponse<PaymentResponse>> getAllPayments(
+            @PathVariable("id") Long customerId,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Trường để sắp xếp (paymentDate, amount)", example = "paymentDate")
+            @RequestParam(defaultValue = "paymentDate") String sort,
+            @RequestParam(defaultValue = "asc") String direction
+    ){
+        log.info("Get all payments request for customerId={}: page={}, size={}, sort={}, direction={}",
+                customerId, page, size, sort, direction);
+        return ResponseData.<PageResponse<PaymentResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Medical records retrieved successfully")
+                .data(paymentService.getAllPaymentsByCustomerId(customerId, page, size, sort, direction))
                 .build();
     }
 }

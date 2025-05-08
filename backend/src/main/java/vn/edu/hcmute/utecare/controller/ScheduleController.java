@@ -82,19 +82,18 @@ public class ScheduleController {
     @Operation(summary = "Get all schedules", description = "Retrieve a paginated list of schedules with optional filters")
     public ResponseData<PageResponse<ScheduleResponse>> getAllSchedules(
             @RequestParam(value = "doctorId", required = false) Long doctorId,
-            @RequestParam(value = "roomId", required = false) Integer roomId,
             @RequestParam(value = "startDate", required = false) LocalDate startDate,
             @RequestParam(value = "endDate", required = false) LocalDate endDate,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "sort", defaultValue = "date") String sort,
             @RequestParam(value = "direction", defaultValue = "asc") String direction) {
-        log.info("Get all schedules request with doctorId: {}, roomId: {}, startDate: {}, endDate: {}, page: {}, size: {}, sort: {}, direction: {}",
-                doctorId, roomId, startDate, endDate, page, size, sort, direction);
+        log.info("Get all schedules request with doctorId: {}, startDate: {}, endDate: {}, page: {}, size: {}, sort: {}, direction: {}",
+                doctorId, startDate, endDate, page, size, sort, direction);
         return ResponseData.<PageResponse<ScheduleResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Schedules retrieved successfully")
-                .data(scheduleService.getAllSchedules(doctorId, roomId, startDate, endDate, page, size, sort, direction))
+                .data(scheduleService.getAllSchedules(doctorId, startDate, endDate, page, size, sort, direction))
                 .build();
     }
 
