@@ -54,7 +54,7 @@ services:
       - default
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -81,8 +81,8 @@ services:
     privileged: true
     user: root
     ports:
-      - '7080:8080'
-      - '50000:50000'
+      - "7080:8080"
+      - "50000:50000"
     container_name: jenkins
     volumes:
       - ~/jenkins-data:/var/jenkins_home

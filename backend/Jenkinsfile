@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'docker build -t utecare-backend:latest .'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'docker-compose down'
+                sh 'docker-compose up -d backend-service'
+            }
+        }
+    }
+    post {
+        success {
+            sh 'echo "Build và Deploy thành công!"'
+        }
+        failure {
+            sh 'echo "Build hoặc Deploy thất bại!"'
+        }
+        always {
+            sh 'echo "Pipeline hoàn tất."'
+        }
+    }
+}
