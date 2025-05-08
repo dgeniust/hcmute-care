@@ -29,4 +29,12 @@ public interface PaymentService {
             String sort,
             String direction
     );
+
+    PageResponse<PaymentResponse> getAllPaymentsByCustomerId(
+            Long customerId,
+            int page,
+            int size,
+            String sort,
+            String direction
+    );
 }

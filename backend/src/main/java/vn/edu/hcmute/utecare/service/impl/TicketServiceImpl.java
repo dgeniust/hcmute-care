@@ -83,4 +83,23 @@ public class TicketServiceImpl implements TicketService {
                 .map(TicketMapper.INSTANCE::toResponse)
                 .toList();
     }
+
+    @Override
+    public PageResponse<TicketResponse> getAllTicket(
+            int page, int size, String sort, String direction,
+            LocalDate scheduleDate
+    ){
+        log.info("Getting all tickets");
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+        Page<Ticket> ticketPage = ticketRepository.findAllTicket(scheduleDate, pageable);
+
+        return PageResponse.<TicketResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalElements(ticketPage.getTotalElements())
+                .totalPages(ticketPage.getTotalPages())
+                .content(ticketPage.getContent().stream().map(TicketMapper.INSTANCE::toResponse).toList())
+                .build();
+
+    }
 }

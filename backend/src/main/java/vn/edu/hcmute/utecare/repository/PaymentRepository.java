@@ -26,4 +26,11 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
             Pageable pageable);
 
     Optional<Payment> findByAppointment_Id(Long id);
+
+    @Query("SELECT p FROM Payment p " +
+            "LEFT JOIN p.appointment a " +
+            "JOIN a.medicalRecord mr " +
+            "JOIN mr.customer c " +
+            "WHERE c.id = :customerId")
+    Page<Payment> findAllByCustomerId(@Param("customerId") Long customerId, Pageable pageable);
 }
