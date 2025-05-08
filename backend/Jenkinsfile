@@ -19,8 +19,8 @@ pipeline {
             steps {
                 dir('backend') { 
                     script {
-                        sh 'docker compose down backend-service'
-                        sh 'docker compose up -d  backend-service'
+                        sh 'docker-compose -f /var/jenkins_home/workspace/UTECare-Backend-Pipeline/backend/docker-compose.yml down backend-service'
+                        sh 'docker-compose -f /var/jenkins_home/workspace/UTECare-Backend-Pipeline/backend/docker-compose.yml up -d backend-service'
                     }
                 }
             }
@@ -34,7 +34,6 @@ pipeline {
             dir('backend') {
                 script {
                     echo 'Build failed, cleaning up resources...'
-                    sh 'docker compose rm -f utecare-backend-service || true'
                     sh 'docker rmi utecare-backend:latest || true'
                     sh 'docker image prune -f || true'
                 }
