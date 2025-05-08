@@ -3,13 +3,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker build -t utecare-backend:latest .'
+                dir('/workspace') {
+                    sh 'docker build -t utecare-backend:latest .'
+                }
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker-compose down'
-                sh 'docker-compose up -d backend-service'
+                dir('/workspace') {
+                    sh 'docker compose down'
+                    sh 'docker compose up -d backend-service'
+                }
             }
         }
     }
