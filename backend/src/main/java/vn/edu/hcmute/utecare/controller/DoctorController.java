@@ -160,4 +160,34 @@ public class DoctorController {
                 .data(ticketService.getAllTicketsByDoctorId(id, date, status))
                 .build();
     }
+
+    @GetMapping("/patient/{patientId}/medical-tests-date")
+    @Operation(summary = "Lấy danh sách MedicalTests của bệnh nhân", description = "Lấy danh sách MedicalTests của bệnh nhân theo patientId và ngày được chỉ định, bao gồm các loại xét nghiệm cụ thể như LaboratoryTests, CardiacTest, ImagingTests, DigestiveTest, EEG, EMG, Spirometry, BloodGasAnalysis, NerveConduction.")
+    public ResponseData<List<MedicalTestDetailResponse>> getMedicalTestsByPatientId(
+            @PathVariable("patientId") Long patientId,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Yêu cầu lấy danh sách MedicalTests cho bệnh nhân với patientId: {} và ngày: {}", patientId, date);
+        List<MedicalTestDetailResponse> responses = doctorService.getMedicalTestsByPatientId(patientId, date);
+        return ResponseData.<List<MedicalTestDetailResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách MedicalTests của bệnh nhân được trả về thành công")
+                .data(responses)
+                .build();
+    }
+
+    @GetMapping("/patient/{patientId}/medical-tests/all")
+    @Operation(summary = "Lấy tất cả MedicalTests của bệnh nhân, theo ngày và ID", description = "Lấy tất cả MedicalTests của bệnh nhân theo patientId, bao gồm các loại xét nghiệm cụ thể như LaboratoryTests, CardiacTest, ImagingTests, DigestiveTest, EEG, EMG, Spirometry, BloodGasAnalysis, NerveConduction.")
+    public ResponseData<List<MedicalTestDetailResponse>> getAllMedicalTestsByPatientId(
+            @PathVariable("patientId") Long patientId) {
+        log.info("Yêu cầu lấy tất cả MedicalTests cho bệnh nhân với patientId: {}", patientId);
+        List<MedicalTestDetailResponse> responses = doctorService.getMedicalTestsByPatientId(patientId);
+        return ResponseData.<List<MedicalTestDetailResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Tất cả MedicalTests của bệnh nhân được trả về thành công")
+                .data(responses)
+                .build();
+    }
+
+
+
 }

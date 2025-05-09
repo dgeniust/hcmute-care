@@ -34,4 +34,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     boolean existsByPhone(String phone);
     long count();
+
 }
+

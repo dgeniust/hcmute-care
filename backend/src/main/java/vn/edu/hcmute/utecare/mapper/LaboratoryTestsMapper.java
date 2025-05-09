@@ -22,4 +22,6 @@ public interface LaboratoryTestsMapper {
 
     @Mapping(source = "encounterId", target = "encounter.id")
     void updateEntity(@MappingTarget LaboratoryTests laboratoryTests, LaboratoryTestsRequest request);
+
+
 }
