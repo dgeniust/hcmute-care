@@ -10,8 +10,6 @@ import vn.edu.hcmute.utecare.dto.response.EncounterPatientSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.EncounterResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.EncounterMapper;
-import vn.edu.hcmute.utecare.mapper.MedicalRecordMapper;
-import vn.edu.hcmute.utecare.mapper.PrescriptionMapper;
 import vn.edu.hcmute.utecare.model.Encounter;
 import vn.edu.hcmute.utecare.model.MedicalRecord;
 import vn.edu.hcmute.utecare.model.Prescription;

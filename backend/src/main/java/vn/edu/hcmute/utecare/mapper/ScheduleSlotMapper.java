@@ -6,11 +6,9 @@ import org.mapstruct.ReportingPolicy;
 import vn.edu.hcmute.utecare.dto.response.ScheduleSlotInfoResponse;
 import vn.edu.hcmute.utecare.dto.response.ScheduleSlotResponse;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
 uses = {TimeSlotMapper.class})
 public interface ScheduleSlotMapper {
-    ScheduleSlotMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(ScheduleSlotMapper.class);
-
     @Mapping(target = "timeSlot", source = "timeSlot")
     ScheduleSlotResponse toResponse(vn.edu.hcmute.utecare.model.ScheduleSlot scheduleSlot);
 

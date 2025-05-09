@@ -8,10 +8,8 @@ import vn.edu.hcmute.utecare.dto.request.TimeSlotRequest;
 import vn.edu.hcmute.utecare.dto.response.TimeSlotResponse;
 import vn.edu.hcmute.utecare.model.TimeSlot;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring",unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TimeSlotMapper {
-    TimeSlotMapper INSTANCE = Mappers.getMapper(TimeSlotMapper.class);
-
     TimeSlot toEntity(TimeSlotRequest request);
 
     TimeSlotResponse toResponse(TimeSlot timeSlot);

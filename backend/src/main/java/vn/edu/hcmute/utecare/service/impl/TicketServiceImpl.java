@@ -24,6 +24,7 @@ import java.util.List;
 @Slf4j
 public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
+    private final TicketMapper ticketMapper;
 
     @Override
     public List<DoctorTicketSummaryResponse> getTicketSummaryByScheduleSlot(Long scheduleSlotId,
@@ -31,14 +32,14 @@ public class TicketServiceImpl implements TicketService {
         log.info("Getting ticket summary for doctor with ID: {}", scheduleSlotId);
 
         List<Ticket> ticketSummary = ticketRepository.getTicketSummaryByScheduleSlotId(scheduleSlotId, status);
-        return ticketSummary.stream().map(TicketMapper.INSTANCE::toDoctorTicketSummaryResponse).toList();
+        return ticketSummary.stream().map(ticketMapper::toDoctorTicketSummaryResponse).toList();
     }
 
     @Override
     public TicketResponse getTicketById(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
-        return TicketMapper.INSTANCE.toResponse(ticket);
+        return ticketMapper.toResponse(ticket);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
         ticket.setStatus(status);
         ticketRepository.save(ticket);
-        return TicketMapper.INSTANCE.toResponse(ticket);
+        return ticketMapper.toResponse(ticket);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class TicketServiceImpl implements TicketService {
                 .totalElements(ticketPage.getTotalElements())
                 .totalPages(ticketPage.getTotalPages())
                 .content(ticketPage.getContent().stream()
-                        .map(TicketMapper.INSTANCE::toResponse)
+                        .map(ticketMapper::toResponse)
                         .toList())
                 .build();
     }
@@ -80,7 +81,7 @@ public class TicketServiceImpl implements TicketService {
         List<Ticket> tickets = ticketRepository.findAllByDoctorIdAndDateAndStatus(doctorId, date, status);
 
         return tickets.stream()
-                .map(TicketMapper.INSTANCE::toResponse)
+                .map(ticketMapper::toResponse)
                 .toList();
     }
 
@@ -98,7 +99,7 @@ public class TicketServiceImpl implements TicketService {
                 .pageSize(size)
                 .totalElements(ticketPage.getTotalElements())
                 .totalPages(ticketPage.getTotalPages())
-                .content(ticketPage.getContent().stream().map(TicketMapper.INSTANCE::toResponse).toList())
+                .content(ticketPage.getContent().stream().map(ticketMapper::toResponse).toList())
                 .build();
 
     }

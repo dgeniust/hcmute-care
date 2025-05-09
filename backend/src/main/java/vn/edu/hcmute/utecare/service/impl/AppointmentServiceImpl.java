@@ -37,6 +37,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final TicketRepository ticketRepository;
     private final MedicalRecordRepository medicalRecordRepository;
     private final ScheduleSlotRepository scheduleSlotRepository;
+    private final AppointmentMapper appointmentMapper;
 
     @Transactional
     @Override
@@ -82,7 +83,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             scheduleSlot.setBookedSlots(scheduleSlot.getBookedSlots() + 1);
         }
         appointment.setTickets(tickets);
-        return AppointmentMapper.INSTANCE.toResponse(appointmentRepository.save(appointment));
+        return appointmentMapper.toResponse(appointmentRepository.save(appointment));
     }
 
     @Transactional(readOnly = true)
@@ -91,7 +92,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         log.info("Fetching appointment with ID: {}", id);
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with ID: " + id));
-        return AppointmentMapper.INSTANCE.toResponse(appointment);
+        return appointmentMapper.toResponse(appointment);
     }
 
     @Transactional(readOnly = true)
@@ -110,7 +111,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .totalElements(appointmentPage.getTotalElements())
                 .totalPages(appointmentPage.getTotalPages())
                 .content(appointmentPage.getContent().stream()
-                        .map(AppointmentMapper.INSTANCE::toResponse)
+                        .map(appointmentMapper::toResponse)
                         .toList())
                 .build();
     }
@@ -124,13 +125,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         for (Ticket ticket : appointment.getTickets()) {
             if (ticket.getStatus() == TicketStatus.PENDING) {
+                ticket.setWaitingNumber(calculateWaitingNumber(ticket));
                 ticket.setStatus(TicketStatus.CONFIRMED);
                 ticket.setTicketCode(generateTicketCode());
-                ticket.setWaitingNumber(calculateWaitingNumber(ticket));
             }
         }
 
-        return AppointmentMapper.INSTANCE.toResponse(appointmentRepository.save(appointment));
+        return appointmentMapper.toResponse(appointmentRepository.save(appointment));
     }
 
     @Transactional
@@ -146,7 +147,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             }
         }
 
-        return AppointmentMapper.INSTANCE.toResponse(appointmentRepository.save(appointment));
+        return appointmentMapper.toResponse(appointmentRepository.save(appointment));
     }
 
     private String generateTicketCode() {

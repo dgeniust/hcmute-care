@@ -15,6 +15,7 @@ import vn.edu.hcmute.utecare.dto.response.*;
 import vn.edu.hcmute.utecare.service.CustomerService;
 import vn.edu.hcmute.utecare.service.PaymentService;
 import vn.edu.hcmute.utecare.util.enumeration.Membership;
+import vn.edu.hcmute.utecare.util.enumeration.PaymentStatus;
 
 @RestController
 @RequestMapping("/api/v1/customers")
@@ -128,18 +129,19 @@ public class CustomerController {
 //    @PreAuthorize("hasRole('ADMIN') or #customerId == authentication.principal.id")
     public ResponseData<PageResponse<PaymentResponse>> getAllPayments(
             @PathVariable("id") Long customerId,
+            @RequestParam(required = false) PaymentStatus paymentStatus,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @Parameter(description = "Trường để sắp xếp (paymentDate, amount)", example = "paymentDate")
             @RequestParam(defaultValue = "paymentDate") String sort,
             @RequestParam(defaultValue = "asc") String direction
     ){
-        log.info("Get all payments request for customerId={}: page={}, size={}, sort={}, direction={}",
-                customerId, page, size, sort, direction);
+        log.info("Get all payments request for customerId={}: paymentStatus={}, page={}, size={}, sort={}, direction={}",
+                customerId, paymentStatus, page, size, sort, direction);
         return ResponseData.<PageResponse<PaymentResponse>>builder()
                 .status(HttpStatus.OK.value())
                 .message("Medical records retrieved successfully")
-                .data(paymentService.getAllPaymentsByCustomerId(customerId, page, size, sort, direction))
+                .data(paymentService.getAllPaymentsByCustomerId(customerId, paymentStatus, page, size, sort, direction))
                 .build();
     }
 }

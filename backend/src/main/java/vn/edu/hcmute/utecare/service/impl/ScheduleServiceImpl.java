@@ -10,6 +10,7 @@ import vn.edu.hcmute.utecare.dto.request.ScheduleRequest;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ScheduleInfoResponse;
 import vn.edu.hcmute.utecare.dto.response.ScheduleResponse;
+import vn.edu.hcmute.utecare.exception.ConflictException;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.ScheduleMapper;
 import vn.edu.hcmute.utecare.model.*;
@@ -27,10 +28,11 @@ import java.util.Set;
 @Slf4j
 public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
-    private final ScheduleSlotRepository scheduleSlotRepository;
     private final TimeSlotRepository timeSlotRepository;
     private final DoctorRepository doctorRepository;
     private final RoomDetailRepository roomDetailRepository;
+    private final ScheduleMapper scheduleMapper;
+
 
     @Override
     @Transactional
@@ -50,10 +52,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
 
         if(scheduleRepository.existsByDoctorIdAndDate(request.getDoctorId(), request.getDate())) {
-            throw new ResourceNotFoundException("Schedule conflict for doctor ID: " + request.getDoctorId() + " on date: " + request.getDate());
+            throw new ConflictException("Schedule conflict for doctor ID: " + request.getDoctorId() + " on date: " + request.getDate());
         }
 
-        Schedule schedule = ScheduleMapper.INSTANCE.toEntity(request);
+        Schedule schedule = scheduleMapper.toEntity(request);
 
         schedule.setDoctor(doctor);
         schedule.setRoomDetail(roomDetail);
@@ -68,7 +70,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         schedule.setScheduleSlots(scheduleSlots);
 
-        return ScheduleMapper.INSTANCE.toResponse(scheduleRepository.save(schedule));
+        return scheduleMapper.toResponse(scheduleRepository.save(schedule));
     }
 
     @Transactional
@@ -101,7 +103,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         schedule.setDate(request.getDate());
         schedule.setMaxSlots(request.getMaxSlots());
         schedule.setScheduleSlots(scheduleSlots);
-        return ScheduleMapper.INSTANCE.toResponse(scheduleRepository.save(schedule));
+        return scheduleMapper.toResponse(scheduleRepository.save(schedule));
     }
 
     @Transactional
@@ -119,7 +121,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         log.info("Getting schedule with ID: {}", id);
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found with ID: " + id));
-        return ScheduleMapper.INSTANCE.toResponse(schedule);
+        return scheduleMapper.toResponse(schedule);
     }
 
     @Transactional(readOnly = true)
@@ -142,7 +144,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .totalElements(schedulePage.getTotalElements())
                 .totalPages(schedulePage.getTotalPages())
                 .content(schedulePage.getContent().stream()
-                        .map(ScheduleMapper.INSTANCE::toResponse)
+                        .map(scheduleMapper::toResponse)
                         .toList())
                 .build();
     }
@@ -157,7 +159,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         List<Schedule> schedules = scheduleRepository.findAllByDoctor_MedicalSpecialty_IdAndDate(medicalSpecialtyId, date);
 
-        return schedules.stream().map(ScheduleMapper.INSTANCE::toInfoResponse).toList();
+        return schedules.stream().map(scheduleMapper::toInfoResponse).toList();
     }
 
     @Transactional(readOnly = true)
@@ -176,7 +178,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .totalElements(schedulePage.getTotalElements())
                 .totalPages(schedulePage.getTotalPages())
                 .content(schedulePage.getContent().stream()
-                        .map(ScheduleMapper.INSTANCE::toResponse)
+                        .map(scheduleMapper::toResponse)
                         .toList())
                 .build();
     }
@@ -187,6 +189,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         log.info("Getting schedule for doctor with ID: {} on date: {}", id, date);
         Schedule schedule = scheduleRepository.findByDoctor_IdAndDate(id, date)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found for doctor ID: " + id + " on date: " + date));
-        return ScheduleMapper.INSTANCE.toResponse(schedule);
+        return scheduleMapper.toResponse(schedule);
     }
 }

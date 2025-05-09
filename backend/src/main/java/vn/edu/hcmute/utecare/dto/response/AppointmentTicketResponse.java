@@ -16,4 +16,6 @@ public class AppointmentTicketResponse {
     private Integer waitingNumber;
 
     private TicketScheduleResponse schedule;
+
+    private TimeSlotResponse timeSlot;
 }

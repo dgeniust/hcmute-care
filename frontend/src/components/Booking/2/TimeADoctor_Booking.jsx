@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Button, theme, Collapse, message } from 'antd';
-import { ForkOutlined, CaretRightOutlined, FileSearchOutlined } from '@ant-design/icons';
-import { handleHttpStatusCode, notifyErrorWithCustomMessage } from '../../../utils/notificationHelper';
+import React, { useState, useEffect } from "react";
+import { Button, theme, Collapse, message } from "antd";
+import {
+  ForkOutlined,
+  CaretRightOutlined,
+  FileSearchOutlined,
+} from "@ant-design/icons";
+import {
+  handleHttpStatusCode,
+  notifyErrorWithCustomMessage,
+} from "../../../utils/notificationHelper";
 
 const TimeADoctor_Booking = ({ handleSlotClick }) => {
-  const specialtyId = localStorage.getItem('specialtyId');
-  const dateBooking = localStorage.getItem('dateBooking');
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  const specialtyId = localStorage.getItem("specialtyId");
+  const dateBooking = localStorage.getItem("dateBooking");
   const [schedule, setSchedule] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -13,12 +21,12 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
     const handleDataTimeADoctor = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/schedules/available?medicalSpecialtyId=${specialtyId}&date=${dateBooking}`,
+          `${apiUrl}v1/schedules/available?medicalSpecialtyId=${specialtyId}&date=${dateBooking}`,
           {
-            method: 'GET',
+            method: "GET",
             headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
           }
         );
@@ -26,14 +34,14 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
           const errorText = await response.text();
           handleHttpStatusCode(
             response.status,
-            '',
+            "",
             `Lấy lịch khám thất bại: ${errorText || response.statusText}`,
             messageApi
           );
           return;
         }
         const data = await response.json();
-        console.log('Raw data time and doctor:', data);
+        console.log("Raw data time and doctor:", data);
         if (data && data.data.length > 0) {
           const scheduleData = data.data.map((item) => ({
             id: item.id,
@@ -41,18 +49,21 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
             roomDetail: item.roomDetail,
             timeSlots: item.scheduleSlots.map((slot) => ({
               id: slot.id,
-              timeString: `${slot.timeSlot.startTime.slice(0, 5)} - ${slot.timeSlot.endTime.slice(0, 5)}`,
+              timeString: `${slot.timeSlot.startTime.slice(
+                0,
+                5
+              )} - ${slot.timeSlot.endTime.slice(0, 5)}`,
               bookedSlots: slot.bookedSlots,
               originalSlot: slot,
             })),
           }));
           setSchedule(scheduleData);
-          console.log('Data time and doctor:', scheduleData);
+          console.log("Data time and doctor:", scheduleData);
         }
       } catch (e) {
-        console.error('Error in time and doctor:', e);
+        console.error("Error in time and doctor:", e);
         notifyErrorWithCustomMessage(
-          'Có lỗi xảy ra trong quá trình lấy lịch khám. Vui lòng thử lại sau.',
+          "Có lỗi xảy ra trong quá trình lấy lịch khám. Vui lòng thử lại sau.",
           messageApi
         );
       }
@@ -66,7 +77,7 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
     marginBottom: 5,
     background: token.colorFillAlter,
     borderRadius: token.borderRadiusLG,
-    border: 'none',
+    border: "none",
   };
 
   const getItems = (panelStyle) => {
@@ -78,10 +89,10 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
             <div className="space-x-4">
               <ForkOutlined
                 style={{
-                  border: '1px solid transparent',
-                  borderRadius: '50%',
-                  padding: '3px',
-                  backgroundColor: '#dfe6e9',
+                  border: "1px solid transparent",
+                  borderRadius: "50%",
+                  padding: "3px",
+                  backgroundColor: "#dfe6e9",
                 }}
               />
               <span>{item.doctor.fullName}</span>
@@ -91,10 +102,10 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
             <div className="space-x-4 text-sm font-normal">
               <FileSearchOutlined
                 style={{
-                  border: '1px solid transparent',
-                  borderRadius: '50%',
-                  padding: '3px',
-                  backgroundColor: '#dfe6e9',
+                  border: "1px solid transparent",
+                  borderRadius: "50%",
+                  padding: "3px",
+                  backgroundColor: "#dfe6e9",
                 }}
               />
               <span>{item.roomDetail.name}</span>
@@ -108,17 +119,22 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
             <Button
               key={slot.id}
               onClick={() => {
-                handleSlotClick(slot.timeString, item.doctor.fullName, item.roomDetail.name, slot.id);
+                handleSlotClick(
+                  slot.timeString,
+                  item.doctor.fullName,
+                  item.roomDetail.name,
+                  slot.id
+                );
               }}
               disabled={slot.bookedSlots > 6}
               style={{
-                padding: '10px 20px',
-                marginRight: '4px',
-                borderRadius: '8px',
-                border: '1px solid #273c75',
-                backgroundColor: slot.bookedSlots > 6 ? '#f5f5f5' : 'white',
-                cursor: slot.bookedSlots > 6 ? 'not-allowed' : 'pointer',
-                color: slot.bookedSlots > 6 ? '#999' : '#273c75',
+                padding: "10px 20px",
+                marginRight: "4px",
+                borderRadius: "8px",
+                border: "1px solid #273c75",
+                backgroundColor: slot.bookedSlots > 6 ? "#f5f5f5" : "white",
+                cursor: slot.bookedSlots > 6 ? "not-allowed" : "pointer",
+                color: slot.bookedSlots > 6 ? "#999" : "#273c75",
               }}
             >
               {slot.timeString}
@@ -138,12 +154,14 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
       <div className="w-full max-h-[460px] h-fit flex flex-col border border-red-600 rounded-xl overflow-y-auto space-y-2">
         <Collapse
           bordered={false}
-          defaultActiveKey={['0']}
-          expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+          defaultActiveKey={["0"]}
+          expandIcon={({ isActive }) => (
+            <CaretRightOutlined rotate={isActive ? 90 : 0} />
+          )}
           expandIconPosition="end"
           style={{
             background: token.colorBgContainer,
-            overflow: 'auto',
+            overflow: "auto",
           }}
           items={getItems(panelStyle)}
         />

@@ -31,6 +31,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
             "LEFT JOIN p.appointment a " +
             "JOIN a.medicalRecord mr " +
             "JOIN mr.customer c " +
-            "WHERE c.id = :customerId")
-    Page<Payment> findAllByCustomerId(@Param("customerId") Long customerId, Pageable pageable);
+            "WHERE c.id = :customerId AND (:paymentStatus IS NULL OR p.paymentStatus = :paymentStatus)")
+    Page<Payment> findAllByCustomerId(@Param("customerId") Long customerId, @Param("paymentStatus") PaymentStatus paymentStatus, Pageable pageable);
 }
