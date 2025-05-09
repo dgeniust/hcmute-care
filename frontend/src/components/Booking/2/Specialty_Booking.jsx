@@ -67,21 +67,21 @@ const Specialty_Booking = ({setSpecialty, setSpecialtyId, setPrice, setChoosedSp
                         specialtyData.map((item) => (
                             <Button key={item.id} style={{width:'100%', height:'70px', padding: '25px', display: 'flex', justifyContent: 'center',flexDirection:'column', alignItems:'center', border: '1px solid black', borderRadius: '5px'}}
                             >
-                            <div className='w-full h-fit flex flex-row items-center justify-between' onClick = {() => handleSpecialty(item.id, item.name, item.price)}>
-                                <div className='flex flex-row items-center space-x-4 justify-start'>
-                                    <InfoCircleTwoTone style={{fontSize: '20px'}}/>
+                                <div className='w-full h-fit flex flex-row items-center justify-between mt-4' onClick = {() => handleSpecialty(item.id, item.name, item.price)}>
+                                <div className='flex flex-row items-center space-x-2 justify-start'>
+                                    <InfoCircleTwoTone style={{ fontSize: '15px' }} />
                                     <p className='text-[#273c75] text-sm font-bold'>{item.name}</p>
                                 </div>
-                                <div className='flex flex-row items-center'>
-                                    <p className='text-black text-sm space-x-4'>
-                                        <span>{item.price}</span><RightOutlined />
-                                    </p>
+                                    <div className='flex flex-row items-center'>
+                                        <p className='text-black text-sm space-x-4'>
+                                            <span>{item.price}</span><RightOutlined />
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='w-full h-fit flex items-center'>
-                                <p className='text-black text-center '>({item.note})</p>
-                            </div>
-                        </Button>
+                                <div className='w-full h-fit flex items-center'>
+                                    <p className='text-black text-center'>({item.note})</p>
+                                </div>
+                            </Button>
                         ))
                     ) : 
                     <div className='flex w-full h-full justify-center items-center'>

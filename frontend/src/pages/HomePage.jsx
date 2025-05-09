@@ -74,7 +74,7 @@ const HomePage = () => {
           style={{
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
-            // minHeight: '300vh',
+            minHeight: '300vh',
             display: 'flex',
             flexDirection: 'row',
           }}
