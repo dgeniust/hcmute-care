@@ -6,11 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.SpirometryRequest;
-import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.dto.response.SpirometryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
-import vn.edu.hcmute.utecare.mapper.DigestiveTestMapper;
 import vn.edu.hcmute.utecare.mapper.SpirometryMapper;
 import vn.edu.hcmute.utecare.model.*;
 import vn.edu.hcmute.utecare.repository.SpirometryRepository;
@@ -120,5 +118,17 @@ public class SpirometryServiceImpl implements SpirometryService {
         return spirometryRepository.findByCreateDateBetweenAndStatus(startOfDay, endOfDay, statusEnum)
                 .stream()
                 .map(SpirometryMapper.INSTANCE::toResponse).toList();
+    }
+
+    @Override
+    public List<SpirometryResponse> getEncounterIDandDate(Long encounterId, LocalDate date) {
+        log.info("Lấy danh sách Spirometry theo encounterId {} và ngày {}", encounterId, date);
+        LocalDate queryDate = (date != null) ? date : LocalDate.now();
+        LocalDateTime startOfDay = queryDate.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = queryDate.atTime(23, 59, 59);
+        return spirometryRepository.findByEncounterIdAndCreateDateBetween(encounterId, startOfDay, endOfDay)
+                .stream()
+                .map(SpirometryMapper.INSTANCE::toResponse)
+                .toList();
     }
 }

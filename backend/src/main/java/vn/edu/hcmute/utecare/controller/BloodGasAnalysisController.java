@@ -117,4 +117,19 @@ public class BloodGasAnalysisController {
                 .data(responses)
                 .build();
     }
+
+    @GetMapping("/by-encounter-and-date")
+    @Operation(summary = "Lấy danh sách BloodGasAnalysis theo Encounter ID và ngày", description = "Lấy danh sách BloodGasAnalysis theo Encounter ID và ngày được chỉ định. Nếu không cung cấp ngày, mặc định là ngày hiện tại.")
+    public ResponseData<List<BloodGasAnalysisResponse>> getBloodGasAnalysisByEncounterIdAndDate(
+            @RequestParam Long encounterId,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Yêu cầu lấy danh sách BloodGasAnalysis theo encounterId: {} và ngày: {}", encounterId, date);
+        List<BloodGasAnalysisResponse> responses = bloodGasAnalysisService.getEncounterIDandDate(encounterId, date);
+        return ResponseData.<List<BloodGasAnalysisResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách BloodGasAnalysis theo Encounter ID và ngày được trả về thành công")
+                .data(responses)
+                .build();
+    }
+
 }

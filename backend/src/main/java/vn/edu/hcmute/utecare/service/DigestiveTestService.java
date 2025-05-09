@@ -26,4 +26,5 @@ public interface DigestiveTestService {
 
     List<DigestiveTestResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
 
+    List<DigestiveTestResponse> getEncounterIdAndDate(Long encounterId, LocalDate date);
 }

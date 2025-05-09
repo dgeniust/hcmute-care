@@ -6,11 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.NerveConductionRequest;
-import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.dto.response.NerveConductionResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
-import vn.edu.hcmute.utecare.mapper.DigestiveTestMapper;
 import vn.edu.hcmute.utecare.mapper.NerveConductionMapper;
 import vn.edu.hcmute.utecare.model.*;
 import vn.edu.hcmute.utecare.repository.NerveConductionRepository;
@@ -130,4 +128,17 @@ public class NerveConductionServiceImpl implements NerveConductionService {
                 .stream()
                 .map(NerveConductionMapper.INSTANCE::toResponse).toList();
     }
+
+    @Override
+    public List<NerveConductionResponse> getEncounterIdAndDate(Long encounterId, LocalDate date) {
+        log.info("Lấy danh sách NerveConduction theo encounterId {} và ngày {}", encounterId, date);
+        LocalDate queryDate = (date != null) ? date : LocalDate.now();
+        LocalDateTime startOfDay = queryDate.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = queryDate.atTime(23, 59, 59); // 23:59:59
+        return nerveConductionRepository.findByEncounterIdAndCreateDateBetween(encounterId, startOfDay, endOfDay)
+                .stream()
+                .map(NerveConductionMapper.INSTANCE::toResponse)
+                .toList();
+    }
+
 }

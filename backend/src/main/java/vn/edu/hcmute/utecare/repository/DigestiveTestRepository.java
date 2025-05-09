@@ -14,5 +14,5 @@ public interface DigestiveTestRepository extends JpaRepository<DigestiveTest, Lo
 
     Page<DigestiveTest> findByTestNameContainingIgnoreCase(String testName, Pageable pageable);
     List<DigestiveTest> findByCreateDateBetweenAndStatus(LocalDateTime start, LocalDateTime end, EMedicalTest status);
-
+    List<DigestiveTest> findByEncounterIdAndCreateDateBetween(Long encounterId, LocalDateTime start, LocalDateTime end);
 }

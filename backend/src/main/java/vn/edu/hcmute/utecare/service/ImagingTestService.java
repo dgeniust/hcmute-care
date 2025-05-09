@@ -24,4 +24,5 @@ public interface ImagingTestService {
 
     List<ImagingTestResponse> getAllImagingTestByDateAndStatus(LocalDate date, String status);
 
+    List<ImagingTestResponse> getEncounterIdAndDate(Long encounterId, LocalDate date);
 }

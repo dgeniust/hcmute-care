@@ -2,7 +2,6 @@ package vn.edu.hcmute.utecare.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,6 @@ import vn.edu.hcmute.utecare.dto.request.EEGRequest;
 import vn.edu.hcmute.utecare.dto.response.EEGResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
-import vn.edu.hcmute.utecare.mapper.DigestiveTestMapper;
 import vn.edu.hcmute.utecare.mapper.EEGMapper;
 import vn.edu.hcmute.utecare.model.EEG;
 import vn.edu.hcmute.utecare.model.Encounter;
@@ -125,4 +123,18 @@ public class EEGServiceImpl implements EEGService {
                 .stream()
                 .map(EEGMapper.INSTANCE::toResponse).toList();
     }
+
+    @Override
+    public List<EEGResponse> getEncounterIdAndDate(Long encounterId, LocalDate date) {
+        log.info("Lấy danh sách EEG theo encounterId {} và ngày {}", encounterId, date);
+        LocalDate queryDate = (date != null) ? date : LocalDate.now();
+        LocalDateTime startOfDay = queryDate.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = queryDate.atTime(23, 59, 59); // 23:59:59
+        return eegRepository.findByEncounterIdAndCreateDateBetween(encounterId, startOfDay, endOfDay)
+                .stream()
+                .map(EEGMapper.INSTANCE::toResponse)
+                .toList();
+    }
+
+
 }

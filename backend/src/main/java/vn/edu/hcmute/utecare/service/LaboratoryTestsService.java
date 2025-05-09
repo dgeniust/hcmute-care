@@ -23,4 +23,6 @@ public interface LaboratoryTestsService {
     void deleteLaboratoryTests(Long id);
 
     List<LaboratoryTestsResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
+
+    List<LaboratoryTestsResponse> getEncounterIdAndDate(Long encounterId, LocalDate date);
 }

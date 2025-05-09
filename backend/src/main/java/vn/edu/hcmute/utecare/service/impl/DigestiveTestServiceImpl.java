@@ -6,10 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.DigestiveTestRequest;
-import vn.edu.hcmute.utecare.dto.response.CardiacTestResponse;
 import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
-import vn.edu.hcmute.utecare.mapper.CardiacTestMapper;
 import vn.edu.hcmute.utecare.mapper.DigestiveTestMapper;
 import vn.edu.hcmute.utecare.model.DigestiveTest;
 import vn.edu.hcmute.utecare.model.Encounter;
@@ -111,4 +109,18 @@ public class DigestiveTestServiceImpl implements DigestiveTestService {
                 .stream()
                 .map(DigestiveTestMapper.INSTANCE::toResponse).toList();
     }
+
+    @Override
+    public List<DigestiveTestResponse> getEncounterIdAndDate(Long encounterId, LocalDate date) {
+        log.info("Lấy danh sách DigestiveTest theo encounterId {} và ngày {}", encounterId, date);
+        LocalDate queryDate = (date != null) ? date : LocalDate.now();
+        LocalDateTime startOfDay = queryDate.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = queryDate.atTime(23, 59, 59); // 23:59:59
+        return digestiveTestRepository.findByEncounterIdAndCreateDateBetween(encounterId, startOfDay, endOfDay)
+                .stream()
+                .map(DigestiveTestMapper.INSTANCE::toResponse)
+                .toList();
+    }
+
+
 }

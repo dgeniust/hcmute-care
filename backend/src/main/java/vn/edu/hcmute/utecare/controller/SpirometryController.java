@@ -117,4 +117,20 @@ public class SpirometryController {
                 .data(responses)
                 .build();
     }
+
+    @GetMapping("/by-encounter-and-date")
+    @Operation(summary = "Lấy danh sách Spirometry theo Encounter ID và ngày", description = "Lấy danh sách Spirometry theo Encounter ID và ngày được chỉ định.")
+    public ResponseData<List<SpirometryResponse>> getSpirometryByEncounterIdAndDate(
+            @RequestParam Long encounterId,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Yêu cầu lấy danh sách Spirometry theo encounterId: {} và ngày: {}", encounterId, date);
+        List<SpirometryResponse> responses = spirometryService.getEncounterIDandDate(encounterId, date);
+        return ResponseData.<List<SpirometryResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách Spirometry theo Encounter ID và ngày được trả về thành công")
+                .data(responses)
+                .build();
+    }
+
+
 }
