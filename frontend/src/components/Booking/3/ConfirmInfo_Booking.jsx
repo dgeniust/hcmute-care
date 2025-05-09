@@ -127,6 +127,7 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
         },
         body: JSON.stringify(payload),
       });
+      console.log('Response in appointment -------------------------:', response);
       if(!response.ok) {
         const errorText = await response.text();
         handleHttpStatusCode(response.status, '', `Đặt khám thất bại: ${errorText || response.statusText}`, messageApi);
