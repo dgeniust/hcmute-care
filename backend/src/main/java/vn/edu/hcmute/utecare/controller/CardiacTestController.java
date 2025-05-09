@@ -111,4 +111,17 @@ public class CardiacTestController {
                 .build();
     }
 
+    @GetMapping("/by-encounter-and-date")
+    @Operation(summary = "Lấy danh sách CardiacTests theo encounterId và ngày", description = "Lấy danh sách CardiacTests theo encounterId và ngày được chỉ định.")
+    public ResponseData<List<CardiacTestResponse>> getEncounterIdAndDate(
+            @RequestParam Long encounterId,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Yêu cầu lấy danh sách CardiacTests theo encounterId: {} và ngày: {}", encounterId, date);
+        List<CardiacTestResponse> responses = cardiacTestService.getEncounterIdAndDate(encounterId, date);
+        return ResponseData.<List<CardiacTestResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách CardiacTests theo encounterId và ngày được trả về thành công")
+                .data(responses)
+                .build();
+    }
 }

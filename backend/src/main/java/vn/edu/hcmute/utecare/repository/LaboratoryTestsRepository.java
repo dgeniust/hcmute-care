@@ -11,4 +11,5 @@ import java.util.List;
 public interface LaboratoryTestsRepository extends JpaRepository<LaboratoryTests, Long> {
 
     List<LaboratoryTests> findByCreateDateBetweenAndStatus(LocalDateTime start, LocalDateTime end, EMedicalTest status);
+    List<LaboratoryTests> findByEncounterIdAndCreateDateBetween(Long encounterId, LocalDateTime start, LocalDateTime end);
 }

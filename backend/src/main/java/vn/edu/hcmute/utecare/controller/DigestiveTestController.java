@@ -111,4 +111,20 @@ public class DigestiveTestController {
                 .data(responses)
                 .build();
     }
+
+    @GetMapping("/by-encounter-and-date")
+    @Operation(summary = "Lấy danh sách DigestiveTests theo encounterId và ngày", description = "Lấy danh sách DigestiveTests theo encounterId và ngày được chỉ định.")
+    public ResponseData<List<DigestiveTestResponse>> getEncounterIdAndDate(
+            @RequestParam Long encounterId,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Yêu cầu lấy danh sách DigestiveTests theo encounterId: {} và ngày: {}", encounterId, date);
+        List<DigestiveTestResponse> responses = digestiveTestService.getEncounterIdAndDate(encounterId, date);
+        return ResponseData.<List<DigestiveTestResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách DigestiveTests theo encounterId và ngày được trả về thành công")
+                .data(responses)
+                .build();
+    }
+
+    
 }

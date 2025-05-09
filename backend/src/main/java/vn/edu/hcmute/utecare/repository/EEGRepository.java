@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface EEGRepository  extends JpaRepository<EEG, Long> {
     List<EEG> findByCreateDateBetweenAndStatus(LocalDateTime start, LocalDateTime end, EMedicalTest status);
-
+    List<EEG> findByEncounterIdAndCreateDateBetween(Long encounterId, LocalDateTime start, LocalDateTime end);
 }

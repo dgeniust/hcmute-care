@@ -117,4 +117,20 @@ public class EEGController {
                 .data(responses)
                 .build();
     }
+
+    @GetMapping("/by-encounter-and-date")
+    @Operation(summary = "Lấy danh sách EEG theo encounterId và ngày", description = "Lấy danh sách EEG theo encounterId và ngày được chỉ định.")
+    public ResponseData<List<EEGResponse>> getEncounterIdAndDate(
+            @RequestParam Long encounterId,
+            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Yêu cầu lấy danh sách EEG theo encounterId: {} và ngày: {}", encounterId, date);
+        List<EEGResponse> responses = eegService.getEncounterIdAndDate(encounterId, date);
+        return ResponseData.<List<EEGResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Danh sách EEG theo encounterId và ngày được trả về thành công")
+                .data(responses)
+                .build();
+    }
+
+
 }

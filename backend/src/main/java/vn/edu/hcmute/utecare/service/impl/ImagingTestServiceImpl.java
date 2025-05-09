@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vn.edu.hcmute.utecare.dto.request.ImagingTestRequest;
 import vn.edu.hcmute.utecare.dto.response.ImagingTestResponse;
-import vn.edu.hcmute.utecare.dto.response.LaboratoryTestsResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
 import vn.edu.hcmute.utecare.mapper.ImagingTestMapper;
@@ -108,4 +107,18 @@ public class ImagingTestServiceImpl implements ImagingTestService {
                 .stream()
                 .map(ImagingTestMapper.INSTANCE::toResponse).toList();
     }
+
+    @Override
+    public List<ImagingTestResponse> getEncounterIdAndDate(Long encounterId, LocalDate date) {
+        log.info("Lấy danh sách ImagingTest theo encounterId {} và ngày {}", encounterId, date);
+        LocalDate queryDate = (date != null) ? date : LocalDate.now();
+        LocalDateTime startOfDay = queryDate.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = queryDate.atTime(23, 59, 59); // 23:59:59
+        return imagingTestRepository.findByEncounterIdAndCreateDateBetween(encounterId, startOfDay, endOfDay)
+                .stream()
+                .map(ImagingTestMapper.INSTANCE::toResponse)
+                .toList();
+    }
+
+
 }

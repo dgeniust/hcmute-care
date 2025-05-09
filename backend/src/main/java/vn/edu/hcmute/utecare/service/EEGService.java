@@ -23,4 +23,5 @@ public interface EEGService {
 
     List<EEGResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
 
+    List<EEGResponse> getEncounterIdAndDate(Long encounterId, LocalDate date);
 }

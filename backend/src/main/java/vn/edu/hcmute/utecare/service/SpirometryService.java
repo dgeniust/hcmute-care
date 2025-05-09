@@ -23,4 +23,5 @@ public interface SpirometryService {
 
     List<SpirometryResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
 
+    List<SpirometryResponse> getEncounterIDandDate(Long encounterId, LocalDate date);
 }

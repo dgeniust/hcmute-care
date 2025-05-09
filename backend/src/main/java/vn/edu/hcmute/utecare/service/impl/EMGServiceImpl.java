@@ -9,7 +9,6 @@ import vn.edu.hcmute.utecare.dto.request.EMGRequest;
 import vn.edu.hcmute.utecare.dto.response.EMGResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.NotFoundException;
-import vn.edu.hcmute.utecare.mapper.DigestiveTestMapper;
 import vn.edu.hcmute.utecare.mapper.EMGMapper;
 import vn.edu.hcmute.utecare.model.EMG;
 import vn.edu.hcmute.utecare.model.Encounter;
@@ -123,4 +122,18 @@ public class EMGServiceImpl implements EMGService {
                 .stream()
                 .map(EMGMapper.INSTANCE::toResponse).toList();
     }
+
+    @Override
+    public List<EMGResponse> getEncounterIdAndDate(Long encounterId, LocalDate date) {
+        log.info("Lấy danh sách EMG theo encounterId {} và ngày {}", encounterId, date);
+        LocalDate queryDate = (date != null) ? date : LocalDate.now();
+        LocalDateTime startOfDay = queryDate.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = queryDate.atTime(23, 59, 59); // 23:59:59
+        return emgRepository.findByEncounterIdAndCreateDateBetween(encounterId, startOfDay, endOfDay)
+                .stream()
+                .map(EMGMapper.INSTANCE::toResponse)
+                .toList();
+    }
+
+
 }

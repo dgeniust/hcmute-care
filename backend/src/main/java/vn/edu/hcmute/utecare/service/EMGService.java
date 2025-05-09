@@ -23,4 +23,5 @@ public interface EMGService {
 
     List<EMGResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
 
+    List<EMGResponse> getEncounterIdAndDate(Long encounterId, LocalDate date);
 }

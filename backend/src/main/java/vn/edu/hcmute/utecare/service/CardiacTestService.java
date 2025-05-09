@@ -23,4 +23,6 @@ public interface CardiacTestService {
     void deleteCardiacTest(Long id);
 
     List<CardiacTestResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
+
+    List<CardiacTestResponse> getEncounterIdAndDate(Long encounterId, LocalDate date);
 }

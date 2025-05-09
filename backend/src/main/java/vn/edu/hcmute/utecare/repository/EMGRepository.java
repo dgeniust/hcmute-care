@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface EMGRepository extends JpaRepository<EMG, Long> {
     List<EMG> findByCreateDateBetweenAndStatus(LocalDateTime start, LocalDateTime end, EMedicalTest status);
-
+    List<EMG> findByEncounterIdAndCreateDateBetween(Long encounterId, LocalDateTime start, LocalDateTime end);
 }

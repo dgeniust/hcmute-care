@@ -12,4 +12,5 @@ import java.util.List;
 public interface SpirometryRepository extends JpaRepository<Spirometry, Long> {
 
     List<Spirometry> findByCreateDateBetweenAndStatus(LocalDateTime start, LocalDateTime end, EMedicalTest status);
+    List<Spirometry> findByEncounterIdAndCreateDateBetween(Long encounterId, LocalDateTime startDate, LocalDateTime endDate);
 }

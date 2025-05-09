@@ -11,5 +11,5 @@ import java.util.List;
 public interface NerveConductionRepository extends JpaRepository<NerveConduction, Long> {
 
     List<NerveConduction> findByCreateDateBetweenAndStatus(LocalDateTime start, LocalDateTime end, EMedicalTest status);
-
+    List<NerveConduction> findByEncounterIdAndCreateDateBetween(Long encounterId, LocalDateTime start, LocalDateTime end);
 }

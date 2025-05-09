@@ -99,4 +99,18 @@ public class LaboratoryTestsServiceImpl implements LaboratoryTestsService {
                 .stream()
                 .map(LaboratoryTestsMapper.INSTANCE::toResponse).toList();
     }
+
+    @Override
+    public List<LaboratoryTestsResponse> getEncounterIdAndDate(Long encounterId, LocalDate date) {
+        log.info("Lấy danh sách LaboratoryTests theo encounterId {} và ngày {}", encounterId, date);
+        LocalDate queryDate = (date != null) ? date : LocalDate.now();
+        LocalDateTime startOfDay = queryDate.atStartOfDay(); // 00:00:00
+        LocalDateTime endOfDay = queryDate.atTime(23, 59, 59); // 23:59:59
+        return laboratoryTestsRepository.findByEncounterIdAndCreateDateBetween(encounterId, startOfDay, endOfDay)
+                .stream()
+                .map(LaboratoryTestsMapper.INSTANCE::toResponse)
+                .toList();
+    }
+
+
 }

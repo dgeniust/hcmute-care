@@ -23,4 +23,5 @@ public interface NerveConductionService {
 
     List<NerveConductionResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
 
+    List<NerveConductionResponse> getEncounterIdAndDate(Long encounterId, LocalDate date);
 }
