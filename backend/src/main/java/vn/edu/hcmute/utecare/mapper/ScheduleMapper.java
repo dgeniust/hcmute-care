@@ -15,10 +15,9 @@ import vn.edu.hcmute.utecare.model.ScheduleSlot;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
 uses = {ScheduleSlotMapper.class, TimeSlotMapper.class})
 public interface ScheduleMapper {
-    ScheduleMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(ScheduleMapper.class);
 
     Schedule toEntity(ScheduleRequest request);
 

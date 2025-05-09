@@ -8,13 +8,12 @@ import vn.edu.hcmute.utecare.dto.response.DoctorTicketSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.TicketResponse;
 import vn.edu.hcmute.utecare.model.Ticket;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
 uses = {ScheduleMapper.class, ScheduleSlotMapper.class, MedicalRecordMapper.class,})
 public interface TicketMapper {
-    TicketMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(TicketMapper.class);
-
     @Mapping(target = "schedule", source = "scheduleSlot.schedule")
     @Mapping(target = "medicalRecord", source = "appointment.medicalRecord")
+    @Mapping(target = "timeSlot", source = "scheduleSlot.timeSlot")
     TicketResponse toResponse(Ticket ticket);
 
     @Mapping(target = "patientName", source = "appointment.medicalRecord.patient.name")
@@ -25,5 +24,6 @@ public interface TicketMapper {
     DoctorTicketSummaryResponse toDoctorTicketSummaryResponse(Ticket ticket);
 
     @Mapping(target = "schedule", source = "scheduleSlot.schedule")
+    @Mapping(target = "timeSlot", source = "scheduleSlot.timeSlot")
     AppointmentTicketResponse toAppointmentTicketResponse(Ticket ticket);
 }

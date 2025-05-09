@@ -35,6 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final MedicalRecordRepository medicalRecordRepository;
+    private final MedicalRecordMapper medicalRecordMapper;
 
 
     @Override
@@ -153,7 +154,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .totalPages(medicalRecordPage.getTotalPages())
                 .totalElements(medicalRecordPage.getTotalElements())
                 .content(medicalRecordPage.getContent().stream()
-                        .map(MedicalRecordMapper.INSTANCE::toResponse)
+                        .map(medicalRecordMapper::toResponse)
                         .toList())
                 .build();
     }

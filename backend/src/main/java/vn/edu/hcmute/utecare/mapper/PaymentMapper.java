@@ -11,12 +11,9 @@ import vn.edu.hcmute.utecare.model.Payment;
 
 import java.util.Map;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
 uses = {AppointmentMapper.class})
 public interface PaymentMapper {
-
-    PaymentMapper INSTANCE = Mappers.getMapper(PaymentMapper.class);
-
     Payment toEntity(PaymentRequest paymentRequest);
 
     @Mapping(target = "appointmentId", source = "appointment.id")

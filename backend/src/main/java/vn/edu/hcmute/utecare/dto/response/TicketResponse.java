@@ -18,4 +18,6 @@ public class TicketResponse {
     private MedicalRecordResponse medicalRecord;
 
     private TicketScheduleResponse schedule;
+
+    private TimeSlotResponse timeSlot;
 }

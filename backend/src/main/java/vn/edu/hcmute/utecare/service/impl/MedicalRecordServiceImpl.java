@@ -35,6 +35,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     private final MedicalRecordRepository medicalRecordRepository;
     private final CustomerRepository customerRepository;
     private final EncounterRepository encounterRepository;
+    private final MedicalRecordMapper medicalRecordMapper;
 
 
     @Override
@@ -42,20 +43,20 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         Customer customer = customerRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new NotFoundException("Customer not found with id: " + request.getCustomerId()));
 
-        MedicalRecord medicalRecord = MedicalRecordMapper.INSTANCE.toEntity(request);
+        MedicalRecord medicalRecord = medicalRecordMapper.toEntity(request);
         medicalRecord.setCustomer(customer);
 
         String barcode = generateUniqueBarcode();
         medicalRecord.setBarcode(barcode);
 
-        return MedicalRecordMapper.INSTANCE.toResponse(medicalRecordRepository.save(medicalRecord));
+        return medicalRecordMapper.toResponse(medicalRecordRepository.save(medicalRecord));
     }
 
     @Override
     public MedicalRecordResponse getById(Long id) {
         MedicalRecord medicalRecord = medicalRecordRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Medical record not found with id: " + id));
-        return MedicalRecordMapper.INSTANCE.toResponse(medicalRecord);
+        return medicalRecordMapper.toResponse(medicalRecord);
     }
 
     @Override
@@ -66,11 +67,11 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         Customer customer = customerRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new NotFoundException("Customer not found with id: " + request.getCustomerId()));
 
-        MedicalRecord updatedRecord = MedicalRecordMapper.INSTANCE.toEntity(request);
+        MedicalRecord updatedRecord = medicalRecordMapper.toEntity(request);
         medicalRecord.setPatient(updatedRecord.getPatient());
         medicalRecord.setCustomer(customer);
 
-        return MedicalRecordMapper.INSTANCE.toResponse(medicalRecordRepository.save(medicalRecord));
+        return medicalRecordMapper.toResponse(medicalRecordRepository.save(medicalRecord));
     }
 
     @Override
@@ -98,14 +99,14 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         if(medicalRecord == null){
             throw new ResourceNotFoundException("No medical record found for barcode: " + barcode + " and customerId: " + customerId);
         }
-        return MedicalRecordMapper.INSTANCE.toResponse(medicalRecord);
+        return medicalRecordMapper.toResponse(medicalRecord);
     }
 
     @Override
     public List<MedicalRecordResponse> getAll() {
         return medicalRecordRepository.findAll()
                 .stream()
-                .map(MedicalRecordMapper.INSTANCE::toResponse)
+                .map(medicalRecordMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
@@ -122,7 +123,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
                 .totalPages(medicalRecordPage.getTotalPages())
                 .totalElements(medicalRecordPage.getTotalElements())
                 .content(medicalRecordPage.getContent().stream()
-                        .map(MedicalRecordMapper.INSTANCE::toResponse)
+                        .map(medicalRecordMapper::toResponse)
                         .toList())
                 .build();
     }

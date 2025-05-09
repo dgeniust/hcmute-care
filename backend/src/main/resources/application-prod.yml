@@ -10,6 +10,32 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+  cors:
+    allowed-origins:
+      - http://localhost:5173
+jwt:
+  accessToken:
+    secretKey: ${JWT_ACCESS_TOKEN_SECRET_KEY}
+    expiry: ${JWT_ACCESS_TOKEN_EXPIRY}
+  refreshToken:
+    secretKey: ${JWT_REFRESH_TOKEN_SECRET_KEY}
+    expiry: ${JWT_REFRESH_TOKEN_EXPIRY}
+  verificationToken:
+    secretKey: ${JWT_VERIFICATION_TOKEN_SECRET_KEY}
+    expiry: ${JWT_VERIFICATION_TOKEN_EXPIRY}
+  resetToken:
+    secretKey: ${JWT_RESET_TOKEN_SECRET_KEY}
+    expiry: ${JWT_RESET_TOKEN_EXPIRY}
+
+payment:
+  vnPay:
+    url: ${VNPAY_URL}
+    tmnCode: ${VNPAY_TMN_CODE}
+    secretKey: ${VNPAY_SECRET_KEY}
+    returnUrl: ${VNPAY_RETURN_URL}
+    version: 2.1.0
+    command: pay
+    orderType: other
 
 springdoc:
   api-docs:

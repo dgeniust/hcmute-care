@@ -41,10 +41,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final VNPayConfig vnpayConfig;
     private final AppointmentService appointmentService;
     private final AppointmentRepository appointmentRepository;
-
-    @Value("${payment.vnPay.redirectUrl}")
-    private String redirectUrl;
-
+    private final PaymentMapper paymentMapper;
 
     @Transactional
     @Override
@@ -136,7 +133,7 @@ public class PaymentServiceImpl implements PaymentService {
             paymentRepository.save(payment);
             appointmentService.cancelAppointment(payment.getAppointment().getId());
         }
-        return PaymentMapper.INSTANCE.toPaymentAppointmentResponse(payment);
+        return paymentMapper.toPaymentAppointmentResponse(payment);
     }
 
     @Override
@@ -145,7 +142,7 @@ public class PaymentServiceImpl implements PaymentService {
         log.info("Fetching payment with transaction ID: {}", transactionId);
         Payment payment = paymentRepository.findByTransactionId(transactionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment not found with transaction ID: " + transactionId));
-        return PaymentMapper.INSTANCE.toPaymentAppointmentResponse(payment);
+        return paymentMapper.toPaymentAppointmentResponse(payment);
     }
 
     @Transactional(readOnly = true)
@@ -154,7 +151,7 @@ public class PaymentServiceImpl implements PaymentService {
         log.info("Fetching payment with appointment ID: {}", appointmentId);
         Payment payment = paymentRepository.findByAppointment_Id(appointmentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment not found with appointment ID: " + appointmentId));
-        return PaymentMapper.INSTANCE.toPaymentAppointmentResponse(payment);
+        return paymentMapper.toPaymentAppointmentResponse(payment);
     }
 
     @Override
@@ -185,7 +182,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .totalElements(paymentPage.getTotalElements())
                 .totalPages(paymentPage.getTotalPages())
                 .content(paymentPage.getContent().stream()
-                        .map(PaymentMapper.INSTANCE::toResponse)
+                        .map(paymentMapper::toResponse)
                         .toList())
                 .build();
     }
@@ -193,17 +190,18 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PageResponse<PaymentResponse> getAllPaymentsByCustomerId(
             Long customerId,
+            PaymentStatus paymentStatus,
             int page, int size, String sort, String direction) {
         log.info("Fetching all payments by customer");
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-        Page<Payment> paymentPage = paymentRepository.findAllByCustomerId(customerId, pageable);
+        Page<Payment> paymentPage = paymentRepository.findAllByCustomerId(customerId, paymentStatus, pageable);
         return PageResponse.<PaymentResponse>builder()
                 .currentPage(page)
                 .pageSize(size)
                 .totalElements(paymentPage.getTotalElements())
                 .totalPages(paymentPage.getTotalPages())
                 .content(paymentPage.getContent().stream()
-                        .map(PaymentMapper.INSTANCE::toResponse)
+                        .map(paymentMapper::toResponse)
                         .toList())
                 .build();
     }

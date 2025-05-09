@@ -1,35 +1,49 @@
 services:
   backend-service:
     container_name: utecare-backend-service
-    image: phamchien04/utecare-backend:latest
+    image: utecare-backend
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
-      SPRING_PROFILES_ACTIVE: dev
-      DATABASE_HOST: mysql
-      DATABASE_PORT: 3306
-      DATABASE_USERNAME: root
-      DATABASE_PASSWORD: root
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      JWT_ACCESS_TOKEN_SECRET_KEY: ${JWT_ACCESS_TOKEN_SECRET_KEY}
+      JWT_ACCESS_TOKEN_EXPIRY: ${JWT_ACCESS_TOKEN_EXPIRY}
+      JWT_REFRESH_TOKEN_SECRET_KEY: ${JWT_REFRESH_TOKEN_SECRET_KEY}
+      JWT_REFRESH_TOKEN_EXPIRY: ${JWT_REFRESH_TOKEN_EXPIRY}
+      JWT_VERIFICATION_TOKEN_SECRET_KEY: ${JWT_VERIFICATION_TOKEN_SECRET_KEY}
+      JWT_VERIFICATION_TOKEN_EXPIRY: ${JWT_VERIFICATION_TOKEN_EXPIRY}
+      JWT_RESET_TOKEN_SECRET_KEY: ${JWT_RESET_TOKEN_SECRET_KEY}
+      JWT_RESET_TOKEN_EXPIRY: ${JWT_RESET_TOKEN_EXPIRY}
+      VNPAY_URL: ${VNPAY_URL}
+      VNPAY_TMN_CODE: ${VNPAY_TMN_CODE}
+      VNPAY_SECRET_KEY: ${VNPAY_SECRET_KEY}
+      VNPAY_RETURN_URL: ${VNPAY_RETURN_URL}
+
     depends_on:
       mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
     networks:
-      - default
+      - utecare-backend-service
 
   mysql:
     image: mysql:8.0
     container_name: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: utecare_db
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       LANG: C.UTF-8
     ports:
       - "3308:3306"
@@ -37,10 +51,10 @@ services:
       - mysql-data:/var/lib/mysql
       - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - default
+      - utecare-backend-service
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -54,7 +68,7 @@ services:
     volumes:
       - redis-data:/data
     networks:
-      - default
+      - utecare-backend-service
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -62,10 +76,27 @@ services:
       retries: 3
       start_period: 10s
 
+  jenkins:
+    image: jenkins/jenkins:lts-jdk21
+    privileged: true
+    user: root
+    ports:
+      - "7080:8080"
+      - "50000:50000"
+    container_name: jenkins
+    volumes:
+      - ~/jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /usr/local/bin/docker:/usr/local/bin/docker
+    networks:
+      - utecare-backend-service
+
 networks:
-  default:
-    name: utecare-backend-service
+  utecare-backend-service:
+    driver: bridge
 
 volumes:
   mysql-data:
   redis-data:
+  jenkins-data:

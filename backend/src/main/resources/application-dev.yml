@@ -3,9 +3,9 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3308}/utecare_db
-    username: ${DATABASE_USERNAME:root}
-    password: ${DATABASE_PASSWORD:root}
+    url: jdbc:mysql://localhost:3308/utecare_db
+    username: root
+    password: ${MYSQL_PASSWORD:root}
   jpa:
     hibernate:
       ddl-auto: none
@@ -15,8 +15,11 @@ spring:
         format_sql: true
   data:
     redis:
-      port: ${SPRING_DATA_REDIS_PORT:6379}
-      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: 6379
+      host: localhost
+  cors:
+    allowed-origins: http://localhost:5173
+
 
 springdoc:
   api-docs:
@@ -27,7 +30,7 @@ springdoc:
 openapi:
   service:
     api-docs: utecare-backend-service
-    server: ${BACKEND_HOST:http://localhost:${server.port}}
+    server: http://localhost:${server.port}
     title: UTECare backend service
     version: 1.0.0
 
@@ -54,4 +57,3 @@ payment:
     version: 2.1.0
     command: pay
     orderType: other
-    redirectUrl:  http://localhost:5173/appointment/success?transactionId=

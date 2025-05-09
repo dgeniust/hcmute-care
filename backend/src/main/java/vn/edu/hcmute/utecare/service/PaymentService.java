@@ -32,6 +32,7 @@ public interface PaymentService {
 
     PageResponse<PaymentResponse> getAllPaymentsByCustomerId(
             Long customerId,
+            PaymentStatus paymentStatus,
             int page,
             int size,
             String sort,

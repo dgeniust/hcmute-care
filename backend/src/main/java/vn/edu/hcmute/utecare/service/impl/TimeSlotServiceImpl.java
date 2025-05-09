@@ -18,12 +18,13 @@ import java.util.List;
 @Slf4j
 public class TimeSlotServiceImpl implements TimeSlotService {
     private final TimeSlotRepository timeSlotRepository;
+    private final TimeSlotMapper TimeSlotMapper;
 
     @Override
     public TimeSlotResponse createTimeSlot(TimeSlotRequest request){
         log.info("Creating time slot with request: {}", request);
-        TimeSlot timeSlot = TimeSlotMapper.INSTANCE.toEntity(request);
-        return TimeSlotMapper.INSTANCE.toResponse(timeSlotRepository.save(timeSlot));
+        TimeSlot timeSlot = TimeSlotMapper.toEntity(request);
+        return TimeSlotMapper.toResponse(timeSlotRepository.save(timeSlot));
     }
 
     @Override
@@ -31,8 +32,8 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         log.info("Updating time slot with ID: {} and request: {}", id, request);
         TimeSlot timeSlot = timeSlotRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Time slot not found with ID: " + id));
-        TimeSlotMapper.INSTANCE.update(request, timeSlot);
-        return TimeSlotMapper.INSTANCE.toResponse(timeSlotRepository.save(timeSlot));
+        TimeSlotMapper.update(request, timeSlot);
+        return TimeSlotMapper.toResponse(timeSlotRepository.save(timeSlot));
     }
 
     @Override
@@ -48,7 +49,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         log.info("Getting time slot with ID: {}", id);
         TimeSlot timeSlot = timeSlotRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Time slot not found with ID: " + id));
-        return TimeSlotMapper.INSTANCE.toResponse(timeSlot);
+        return TimeSlotMapper.toResponse(timeSlot);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         log.info("Getting all time slots");
         List<TimeSlot> timeSlots = timeSlotRepository.findAll();
         return timeSlots.stream()
-                .map(TimeSlotMapper.INSTANCE::toResponse)
+                .map(TimeSlotMapper::toResponse)
                 .toList();
     }
 }

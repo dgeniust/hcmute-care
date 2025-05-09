@@ -1,32 +1,51 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, Collapse, theme, message } from 'antd';
-import { ArrowLeftOutlined, UserAddOutlined, CaretRightOutlined, RestOutlined, ForkOutlined } from '@ant-design/icons';
-import { handleHttpStatusCode, notifyErrorWithCustomMessage, notifySuccessWithCustomMessage } from '../../../utils/notificationHelper';
+import React, { useState, useEffect, useRef } from "react";
+import { Button, Collapse, theme, message } from "antd";
+import {
+  ArrowLeftOutlined,
+  UserAddOutlined,
+  CaretRightOutlined,
+  RestOutlined,
+  ForkOutlined,
+} from "@ant-design/icons";
+import {
+  handleHttpStatusCode,
+  notifyErrorWithCustomMessage,
+  notifySuccessWithCustomMessage,
+} from "../../../utils/notificationHelper";
 
 const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const { token } = theme.useToken();
   const ref1 = useRef(null);
   const [messageApi, contextHolder] = message.useMessage();
-  const medicalRecordId = localStorage.getItem('medicalRecordId');
+  const medicalRecordId = localStorage.getItem("medicalRecordId");
   const [medicalRecordData, setMedicalRecordData] = useState([]);
 
   useEffect(() => {
     const handleMedicalRecord = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/medical-records/${medicalRecordId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-        });
+        const response = await fetch(
+          `${apiUrl}v1/medical-records/${medicalRecordId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
         if (!response.ok) {
           const errorText = await response.text();
-          handleHttpStatusCode(response.status, '', `Lấy hồ sơ bệnh án thất bại: ${errorText || response.statusText}`, messageApi);
+          handleHttpStatusCode(
+            response.status,
+            "",
+            `Lấy hồ sơ bệnh án thất bại: ${errorText || response.statusText}`,
+            messageApi
+          );
           return;
         }
         const data = await response.json();
-        console.log('Medical Records:', data);
+        console.log("Medical Records:", data);
         if (data && data.data) {
           const medicalRecordData = {
             id: data.data.id,
@@ -34,18 +53,18 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
             barcode: data.data.barcode,
           };
           setMedicalRecordData([medicalRecordData]);
-          console.log('Medical Records Data:', medicalRecordData);
+          console.log("Medical Records Data:", medicalRecordData);
         }
       } catch (error) {
-        console.error('Error fetching medical records:', error);
+        console.error("Error fetching medical records:", error);
       }
     };
     handleMedicalRecord();
   }, []);
 
   const resetBooking = () => {
-    localStorage.removeItem('dateBooking');
-    localStorage.removeItem('specialtyId');
+    localStorage.removeItem("dateBooking");
+    localStorage.removeItem("specialtyId");
     setCurrent(1); // Navigate back to CureInfo_Booking
   };
 
@@ -53,12 +72,12 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
     marginBottom: 5,
     background: token.colorFillAlter,
     borderRadius: token.borderRadiusLG,
-    border: 'none',
+    border: "none",
   };
 
   const getItems = (panelStyle) => [
     {
-      key: '1',
+      key: "1",
       label: (
         <div className="flex flex-col items-center w-full space-y-2">
           <div className="flex flex-row justify-between items-center w-full">
@@ -73,14 +92,19 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
         <div className="w-full h-fit">
           {medicalRecordData &&
             medicalRecordData.map((item) => (
-              <div className="grid grid-flow-row grid-cols-2 gap-4" key={item.patient.id}>
+              <div
+                className="grid grid-flow-row grid-cols-2 gap-4"
+                key={item.patient.id}
+              >
                 <div className="grid grid-flow-row grid-cols-[80px_1fr]">
                   <p>Họ tên:</p>
-                  <p className="text-[#273c75] font-bold">{item.patient.name}</p>
+                  <p className="text-[#273c75] font-bold">
+                    {item.patient.name}
+                  </p>
                 </div>
                 <div className="grid grid-flow-row grid-cols-[80px_1fr]">
                   <p>Giới tính:</p>
-                  <p>{item.patient.gender === 'MALE' ? 'Nam' : 'Nữ'}</p>
+                  <p>{item.patient.gender === "MALE" ? "Nam" : "Nữ"}</p>
                 </div>
                 <div className="grid grid-flow-row grid-cols-[80px_1fr]">
                   <p>Điện thoại:</p>
@@ -102,54 +126,69 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
     const updatedBookingList = bookingList.filter((_, i) => i !== index);
     setBookingList(updatedBookingList);
     // Cập nhật bookings trong localStorage
-    let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    let bookings = JSON.parse(localStorage.getItem("bookings") || "[]");
     bookings = bookings.filter((_, i) => i !== index);
-    localStorage.setItem('bookings', JSON.stringify(bookings));
+    localStorage.setItem("bookings", JSON.stringify(bookings));
   };
 
   const handleNextStep = async () => {
     try {
-      const scheduleSlotIds = bookingList.map((booking) => booking.scheduleSlotId);
+      const scheduleSlotIds = bookingList.map(
+        (booking) => booking.scheduleSlotId
+      );
       if (!scheduleSlotIds || scheduleSlotIds.length === 0) {
-        notifyErrorWithCustomMessage('Không có lịch khám nào được chọn.', messageApi);
+        notifyErrorWithCustomMessage(
+          "Không có lịch khám nào được chọn.",
+          messageApi
+        );
         return;
       }
       const payload = {
         medicalRecordId: medicalRecordId,
-        scheduleSlotIds: scheduleSlotIds
-      }
-      console.log('Payload in appointment', payload)
-      const response = await fetch('http://localhost:8080/api/v1/appointments', {
-        method: 'POST',
+        scheduleSlotIds: scheduleSlotIds,
+      };
+      console.log("Payload in appointment", payload);
+      const response = await fetch(`${apiUrl}v1/appointments`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
         body: JSON.stringify(payload),
       });
-      console.log('Response in appointment -------------------------:', response);
-      if(!response.ok) {
+      console.log(
+        "Response in appointment -------------------------:",
+        response
+      );
+      if (!response.ok) {
         const errorText = await response.text();
-        handleHttpStatusCode(response.status, '', `Đặt khám thất bại: ${errorText || response.statusText}`, messageApi);
+        handleHttpStatusCode(
+          response.status,
+          "",
+          `Đặt khám thất bại: ${errorText || response.statusText}`,
+          messageApi
+        );
         return;
       }
       const data = await response.json();
-      console.log('Appointment Data:', data);
-      notifySuccessWithCustomMessage('Đặt khám thành công', messageApi);
-      if(data) {
+      console.log("Appointment Data:", data);
+      notifySuccessWithCustomMessage("Đặt khám thành công", messageApi);
+      if (data) {
         const appointmentId = data.data.id;
-        localStorage.setItem('appointmentId', appointmentId);
+        localStorage.setItem("appointmentId", appointmentId);
       }
       setCurrent(4); // Navigate to Payment_Booking
-    }
-    catch(e) {
-      console.error('Error:', e);
-      notifyErrorWithCustomMessage('Có lỗi xảy ra trong quá trình xử lý yêu cầu.', messageApi);
+    } catch (e) {
+      console.error("Error:", e);
+      notifyErrorWithCustomMessage(
+        "Có lỗi xảy ra trong quá trình xử lý yêu cầu.",
+        messageApi
+      );
     }
     setCurrent(3);
-    localStorage.removeItem('bookings');
-    localStorage.removeItem('dateBooking');
-    localStorage.removeItem('specialtyId');
+    localStorage.removeItem("bookings");
+    localStorage.removeItem("dateBooking");
+    localStorage.removeItem("specialtyId");
   };
 
   return (
@@ -157,26 +196,37 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
       <div className="flex flex-row gap-4 w-full h-full items-center">
         <Button
           icon={<ArrowLeftOutlined />}
-          style={{ backgroundColor: 'transparent', border: 'none', boxShadow: 'none' }}
+          style={{
+            backgroundColor: "transparent",
+            border: "none",
+            boxShadow: "none",
+          }}
         ></Button>
         <h1 className="text-black font-bold text-lg">Thông tin đặt khám</h1>
       </div>
       <div className="flex flex-col space-y-4" ref={ref1}>
-        <p className="text-black">Vui lòng kiểm tra thông tin đặt khám bên dưới. Hoặc "Thêm chuyên khoa" mới</p>
+        <p className="text-black">
+          Vui lòng kiểm tra thông tin đặt khám bên dưới. Hoặc "Thêm chuyên khoa"
+          mới
+        </p>
         <div className="w-full max-h-[460px] h-fit flex flex-col border border-red-600 rounded-xl overflow-y-auto space-y-2">
           <Collapse
             bordered={false}
-            defaultActiveKey={['0']}
-            expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+            defaultActiveKey={["0"]}
+            expandIcon={({ isActive }) => (
+              <CaretRightOutlined rotate={isActive ? 90 : 0} />
+            )}
             expandIconPosition="end"
             style={{
               background: token.colorBgContainer,
-              overflow: 'auto',
+              overflow: "auto",
             }}
             items={getItems(panelStyle)}
           />
         </div>
-        <h1 className="text-black text-lg">Chuyên khoa đã đặt ({bookingList.length})</h1>
+        <h1 className="text-black text-lg">
+          Chuyên khoa đã đặt ({bookingList.length})
+        </h1>
         {bookingList.map((item, index) => (
           <div
             className="w-full h-fit flex flex-row justify-between items-center text-black rounded-xl shadow-lg"
@@ -217,15 +267,15 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
             <div className="w-[5%]">
               <RestOutlined
                 style={{
-                  color: 'red',
-                  border: '1px solid red',
-                  borderRadius: '50%',
-                  width: '20px',
-                  height: '20px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  backgroundColor: 'transparent',
-                  cursor: 'pointer',
+                  color: "red",
+                  border: "1px solid red",
+                  borderRadius: "50%",
+                  width: "20px",
+                  height: "20px",
+                  display: "flex",
+                  justifyContent: "center",
+                  backgroundColor: "transparent",
+                  cursor: "pointer",
                 }}
                 onClick={() => deleteBooking(index)}
               />
@@ -238,13 +288,13 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
             className="w-full h-fit mt-4"
             icon={<ForkOutlined />}
             style={{
-              width: '300px',
-              height: '40px',
-              fontSize: '15px',
-              fontWeight: 'bold',
-              backgroundColor: 'white',
-              color: 'blue',
-              border: '1px solid blue',
+              width: "300px",
+              height: "40px",
+              fontSize: "15px",
+              fontWeight: "bold",
+              backgroundColor: "white",
+              color: "blue",
+              border: "1px solid blue",
             }}
             onClick={resetBooking}
           >
@@ -254,11 +304,11 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
             type="primary"
             className="w-full h-fit mt-4"
             style={{
-              width: '200px',
-              height: '40px',
-              fontSize: '15px',
-              fontWeight: 'bold',
-              backgroundColor: 'blue',
+              width: "200px",
+              height: "40px",
+              fontSize: "15px",
+              fontWeight: "bold",
+              backgroundColor: "blue",
             }}
             onClick={handleNextStep}
           >

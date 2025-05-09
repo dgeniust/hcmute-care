@@ -3,6 +3,7 @@ package vn.edu.hcmute.utecare.configuration;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -26,10 +27,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableMethodSecurity
 @RequiredArgsConstructor
-@Profile("!prod")
 public class AppConfig {
     private final UserDetailsService userDetailsService;
     private final PreFilter filter;
+
+    @Value("${spring.cors.allowed-origins}")
+    private String[] allowedOrigins;
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -39,7 +42,7 @@ public class AppConfig {
                 registry.addMapping("/**")
                         .allowedMethods("*")
                         .allowedHeaders("*")
-                        .allowedOrigins("http://localhost:5173")
+                        .allowedOrigins(allowedOrigins)
                         .allowCredentials(true)
                         .maxAge(3600);
             }

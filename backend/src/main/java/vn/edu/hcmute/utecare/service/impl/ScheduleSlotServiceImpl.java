@@ -17,12 +17,13 @@ import java.util.List;
 @Slf4j
 public class ScheduleSlotServiceImpl implements ScheduleSlotService {
     private final ScheduleSlotRepository scheduleSlotRepository;
+    private final ScheduleSlotMapper scheduleSlotMapper;
 
     @Override
     public List<ScheduleSlotResponse> getAllScheduleSlotsByDoctorIdAndDate(Long doctorId, LocalDate date) {
         log.info("Getting all schedule slots for doctor ID: {} on date: {}", doctorId, date);
         List<ScheduleSlot> scheduleSlots = scheduleSlotRepository.findBySchedule_Doctor_IdAndSchedule_Date(doctorId,date);
 
-        return scheduleSlots.stream().map(ScheduleSlotMapper.INSTANCE::toResponse).toList();
+        return scheduleSlots.stream().map(scheduleSlotMapper::toResponse).toList();
     }
 }

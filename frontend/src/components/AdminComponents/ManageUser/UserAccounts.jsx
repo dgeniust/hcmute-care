@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Pagination, Drawer, Divider, Collapse, theme, Input, message } from "antd";
-import { MenuFoldOutlined, MoreOutlined, CaretRightOutlined } from "@ant-design/icons";
+import {
+  Pagination,
+  Drawer,
+  Divider,
+  Collapse,
+  theme,
+  Input,
+  message,
+} from "antd";
+import {
+  MenuFoldOutlined,
+  MoreOutlined,
+  CaretRightOutlined,
+} from "@ant-design/icons";
 import { notifyErrorWithCustomMessage } from "../../../utils/notificationHelper";
 import MainLoading from "../../../components/MainLoading"; // Adjust path as needed
 
@@ -26,8 +38,9 @@ const UserAccounts = () => {
     const startTime = Date.now();
 
     try {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
       const accessToken = localStorage.getItem("accessToken");
-      const url = `http://localhost:8080/api/v1/customers?page=${page}&size=${size}&sort=${sort}&direction=${direction}${
+      const url = `${apiUrl}v1/customers?page=${page}&size=${size}&sort=${sort}&direction=${direction}${
         search ? `&search=${encodeURIComponent(search)}` : ""
       }`;
       const response = await fetch(url, {
@@ -40,7 +53,12 @@ const UserAccounts = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        notifyErrorWithCustomMessage(`Lỗi khi lấy danh sách người dùng: ${errorText || response.statusText}`, messageApi);
+        notifyErrorWithCustomMessage(
+          `Lỗi khi lấy danh sách người dùng: ${
+            errorText || response.statusText
+          }`,
+          messageApi
+        );
         return;
       }
 
@@ -61,7 +79,10 @@ const UserAccounts = () => {
       setFilteredUsers(userData);
       setTotalItems(total);
     } catch (error) {
-      notifyErrorWithCustomMessage("Lỗi kết nối khi lấy danh sách người dùng", messageApi);
+      notifyErrorWithCustomMessage(
+        "Lỗi kết nối khi lấy danh sách người dùng",
+        messageApi
+      );
       console.error("Error fetching users:", error);
     } finally {
       setLoading(false);
@@ -70,7 +91,13 @@ const UserAccounts = () => {
 
   // Fetch users on mount and when pagination/search/sort changes
   useEffect(() => {
-    fetchUsers(currentPage, itemsPerPage, sortField, sortDirection, searchService);
+    fetchUsers(
+      currentPage,
+      itemsPerPage,
+      sortField,
+      sortDirection,
+      searchService
+    );
   }, [currentPage, itemsPerPage, sortField, sortDirection, searchService]);
 
   // Search handling
@@ -78,8 +105,10 @@ const UserAccounts = () => {
     setSearchService(value);
     setCurrentPage(1);
     // Local filtering (uncomment server-side search if API supports it)
-    const filtered = users.filter((user) =>
-      user.fullName && user.fullName.toLowerCase().includes(value.toLowerCase())
+    const filtered = users.filter(
+      (user) =>
+        user.fullName &&
+        user.fullName.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredUsers(filtered);
     setTotalItems(filtered.length);
@@ -186,10 +215,10 @@ const UserAccounts = () => {
         <tbody className="bg-white divide-y divide-gray-200">
           {loading ? (
             <tr>
-              <td colSpan={headers.length} >
-              <div className="flex justify-center items-center text-center max-w-[140px] max-h-full mx-auto my-auto">
-                <MainLoading />
-              </div>
+              <td colSpan={headers.length}>
+                <div className="flex justify-center items-center text-center max-w-[140px] max-h-full mx-auto my-auto">
+                  <MainLoading />
+                </div>
               </td>
             </tr>
           ) : filteredUsers.length === 0 ? (
@@ -205,7 +234,9 @@ const UserAccounts = () => {
                 <td className="p-3 whitespace-nowrap">{user.fullName}</td>
                 <td className="p-3 whitespace-nowrap">{user.email}</td>
                 <td className="p-3 whitespace-nowrap">{user.phone}</td>
-                <td className="p-3 whitespace-nowrap">{user.gender === "MALE" ? "Nam" : "Nữ"}</td>
+                <td className="p-3 whitespace-nowrap">
+                  {user.gender === "MALE" ? "Nam" : "Nữ"}
+                </td>
                 <td className="p-3 whitespace-nowrap">{user.address}</td>
                 <td
                   className="p-3 whitespace-nowrap cursor-pointer"
@@ -295,17 +326,25 @@ const UserAccounts = () => {
               </div>
             )}
           </div>
-          {dataUser && Array.isArray(dataUser.medicalRecords) && dataUser.medicalRecords.length > 0 && (
-            <div className="w-full h-fit mt-4 p-4 rounded-lg shadow-lg">
-              <h1 className="font-bold text-base p-4">Hồ sơ bệnh án</h1>
-              <Collapse
-                bordered={false}
-                expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
-                style={{ background: token.colorBgContainer }}
-                items={dataUser && dataUser.medicalRecords ? getItems(dataUser.medicalRecords, panelStyle) : []}
-              />
-            </div>
-          )}
+          {dataUser &&
+            Array.isArray(dataUser.medicalRecords) &&
+            dataUser.medicalRecords.length > 0 && (
+              <div className="w-full h-fit mt-4 p-4 rounded-lg shadow-lg">
+                <h1 className="font-bold text-base p-4">Hồ sơ bệnh án</h1>
+                <Collapse
+                  bordered={false}
+                  expandIcon={({ isActive }) => (
+                    <CaretRightOutlined rotate={isActive ? 90 : 0} />
+                  )}
+                  style={{ background: token.colorBgContainer }}
+                  items={
+                    dataUser && dataUser.medicalRecords
+                      ? getItems(dataUser.medicalRecords, panelStyle)
+                      : []
+                  }
+                />
+              </div>
+            )}
         </div>
       </Drawer>
     </>
