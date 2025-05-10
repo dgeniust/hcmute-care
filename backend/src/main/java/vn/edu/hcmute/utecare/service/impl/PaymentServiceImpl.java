@@ -188,6 +188,21 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public PageResponse<PaymentResponse> getAll(int page, int size, String sort, String direction) {
+        log.info("Fetching all payments with page: {}, size: {}, sort: {}, direction: {}",
+                page, size, sort, direction);
+        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
+        Page<Payment> paymentPages = paymentRepository.findAll(pageable);
+        return PageResponse.<PaymentResponse>builder()
+                .currentPage(page)
+                .pageSize(size)
+                .totalElements(paymentPages.getTotalElements())
+                .totalPages(paymentPages.getTotalPages())
+                .content(paymentPages.getContent().stream().map(PaymentMapper.INSTANCE::toResponse).toList())
+                .build();
+    }
+
+    @Override
     public PageResponse<PaymentResponse> getAllPaymentsByCustomerId(
             Long customerId,
             PaymentStatus paymentStatus,

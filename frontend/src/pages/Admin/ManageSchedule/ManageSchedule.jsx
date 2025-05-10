@@ -12,7 +12,7 @@ import '@schedule-x/theme-default/dist/index.css';
 import { 
   Modal, 
   Form, 
-  Input, 
+  InputNumber, 
   DatePicker, 
   Select, 
   Button, 
@@ -27,10 +27,8 @@ import {
 import { 
   PlusOutlined, 
   CalendarOutlined, 
-  ReloadOutlined, 
-  EditOutlined, 
-  DeleteOutlined,
-  InfoCircleOutlined
+  ReloadOutlined,
+  SearchOutlined
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { showData } from '../../../utils/formatData';
@@ -39,44 +37,51 @@ const { Title } = Typography;
 
 const ManageSchedule = () => {
   const [form] = Form.useForm();
+  const [searchForm] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editingEvent, setEditingEvent] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedView, setSelectedView] = useState('week');
   const [messageApi, contextHolder] = message.useMessage();
   
-  // Create events service plugin once with useState
-  const eventsService = useMemo(() => createEventsServicePlugin(), []);
-
   // State for doctor schedule data
   const [doctorScheduleData, setDoctorScheduleData] = useState([]);
+  // State for medical specialties, doctors, and time slots
+  const [specialties, setSpecialties] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [timeSlots, setTimeSlots] = useState([]);
+  const [selectedSpecialty, setSelectedSpecialty] = useState(null);
 
-  // Default example events - can be used as fallback
+  // Create events service plugin
+  const eventsService = useMemo(() => {
+    const service = createEventsServicePlugin();
+    console.log('Initialized eventsService:', Object.getOwnPropertyNames(Object.getPrototypeOf(service)));
+    return service;
+  }, []);
+
+  // Default example events - fallback
   const initialEvents = [
     {
       id: '1',
       title: 'Morning Shift',
-      start: '2025-04-14 06:00',
-      end: '2025-04-14 11:00',
+      start: '2025-05-01 06:00',
+      end: '2025-05-01 11:00',
       description: 'Regular morning checkups',
       calendarId: 'work',
     },
     {
       id: '2',
       title: 'Afternoon Consultations',
-      start: '2025-04-14 13:30',
-      end: '2025-04-14 16:30',
+      start: '2025-05-01 13:30',
+      end: '2025-05-01 16:30',
       description: 'Meeting with surgical team',
       calendarId: 'meeting',
     },
-    // Additional events removed for brevity
   ];
 
   // API configuration
-  const base_url = import.meta.env.VITE_API_BASE_URL || 'https://api.example.com/';
-  const api = `${base_url}schedules?page=1&size=30&sort=id&direction=asc`;
+  const base_url = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1/';
   
-  // Calendar configuration with custom styling
+  // Calendar configuration
   const calendarConfig = useMemo(() => ({
     views: [
       createViewDay(), 
@@ -130,7 +135,6 @@ const ManageSchedule = () => {
         },
       },
     },
-    onEventClick: ({ event }) => showModal(event),
     translations: {
       monthView: 'Month',
       weekView: 'Week',
@@ -146,10 +150,64 @@ const ManageSchedule = () => {
   
   const calendar = useCalendarApp(calendarConfig);
 
-  // Fetch doctor schedule from API
-  const fetchDoctorSchedule = async () => {
+  // Fetch medical specialties
+  const fetchSpecialties = async () => {
+    try {
+      const response = await fetch(`${base_url}medical-specialties?page=1&size=30&sort=id&direction=asc`, {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      const data = await response.json();
+      setSpecialties(data.data.content || []);
+    } catch (error) {
+      console.error("❌ Error fetching specialties:", error);
+      messageApi.error('Failed to load medical specialties');
+    }
+  };
+
+  // Fetch doctors by specialty
+  const fetchDoctorsBySpecialty = async (specialtyId) => {
+    try {
+      const response = await fetch(`${base_url}medical-specialties/${specialtyId}/doctors?page=1&size=20&sort=id&direction=asc`, {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      const data = await response.json();
+      setDoctors(data.data.content || []);
+    } catch (error) {
+      console.error("❌ Error fetching doctors:", error);
+      messageApi.error('Failed to load doctors');
+    }
+  };
+
+  // Fetch time slots
+  const fetchTimeSlots = async () => {
+    try {
+      const response = await fetch(`${base_url}time-slots`, {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+      const data = await response.json();
+      setTimeSlots(data.data || []);
+    } catch (error) {
+      console.error("❌ Error fetching time slots:", error);
+      messageApi.error('Failed to load time slots');
+    }
+  };
+
+  // Fetch doctor schedule
+  const fetchDoctorSchedule = async (doctorId) => {
     setLoading(true);
     try {
+      const startDate = '2025-05-01';
+      const endDate = '2025-05-31';
+      const api = `${base_url}schedules?doctorId=${doctorId}&startDate=${startDate}&endDate=${endDate}&page=1&size=10&sort=date&direction=asc`;
       const response = await fetch(api, { method: 'GET' });
       
       if (!response.ok) {
@@ -157,98 +215,137 @@ const ManageSchedule = () => {
       }
       
       const scheduleData = await response.json();
-      const formattedData = showData(scheduleData);
+      const formattedData = showData(scheduleData, doctors, timeSlots);
       
       console.log('Schedule Data:', formattedData);
       setDoctorScheduleData(formattedData);
       messageApi.success('Schedule data loaded successfully');
     } catch (error) {
-      console.error("❌ Error fetching data:", error);
+      console.error("❌ Error fetching schedule:", error);
       messageApi.error('Failed to load schedule data');
-      
-      // Load initial events as fallback
       setDoctorScheduleData(initialEvents);
     } finally {
       setLoading(false);
     }
   };
 
-  // Load events into calendar whenever doctorScheduleData changes
+  // Load specialties and time slots on component mount
   useEffect(() => {
-    if (doctorScheduleData.length > 0) {
-      eventsService.remove(); // Clear old events
+    fetchSpecialties();
+    fetchTimeSlots();
+  }, []);
+
+  // Load events into calendar
+  useEffect(() => {
+    if (doctorScheduleData.length > 0 && eventsService) {
+      console.log('eventsService methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(eventsService)));
+      
+      if (typeof eventsService.clear === 'function') {
+        eventsService.clear();
+      } else if (typeof eventsService.getAll === 'function' && typeof eventsService.remove === 'function') {
+        const eventIds = eventsService.getAll().map(event => event.id);
+        eventsService.remove(eventIds);
+      } else {
+        console.warn('No clear method available for eventsService');
+      }
+      
       doctorScheduleData.forEach(event => {
         eventsService.add(event);
       });
-      // No longer calling calendar.rerender() as it doesn't exist
     }
   }, [doctorScheduleData, eventsService]);
 
-  // Initial load
-  useEffect(() => {
-    fetchDoctorSchedule();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Handle specialty selection
+  const handleSpecialtyChange = (specialtyId) => {
+    setSelectedSpecialty(specialtyId);
+    setDoctors([]);
+    form.setFieldsValue({ doctorId: null });
+    searchForm.setFieldsValue({ doctorId: null });
+    fetchDoctorsBySpecialty(specialtyId);
+  };
+
+  // Handle search
+  const handleSearch = (values) => {
+    if (values.doctorId) {
+      fetchDoctorSchedule(values.doctorId);
+    } else {
+      messageApi.warning('Please select a doctor');
+    }
+  };
 
   // Handle modal display
-  const showModal = (event = null) => {
-    setEditingEvent(event);
-    
-    if (event) {
-      form.setFieldsValue({
-        title: event.title,
-        start: dayjs(event.start),
-        end: dayjs(event.end),
-        description: event.description,
-        calendarId: event.calendarId,
-      });
-    } else {
-      const now = dayjs();
-      const oneHourLater = dayjs().add(1, 'hour');
-      
-      form.setFieldsValue({
-        title: '',
-        start: now,
-        end: oneHourLater,
-        description: '',
-        calendarId: 'work',
-      });
-    }
-    
+  const showModal = () => {
+    form.setFieldsValue({
+      specialtyId: null,
+      doctorId: null,
+      date: dayjs(),
+      maxSlots: 6,
+      roomId: null,
+      timeSlotIds: [],
+    });
     setIsModalVisible(true);
   };
 
   // Handle form submission
   const handleOk = () => {
     form.validateFields()
-      .then(values => {
-        const newEvent = {
-          id: editingEvent ? editingEvent.id : `event-${Date.now()}`,
-          title: values.title,
-          start: values.start.format('YYYY-MM-DD HH:mm'),
-          end: values.end.format('YYYY-MM-DD HH:mm'),
-          description: values.description,
-          calendarId: values.calendarId,
+      .then(async (values) => {
+        const payload = {
+          date: values.date.format('YYYY-MM-DD'),
+          maxSlots: values.maxSlots,
+          roomId: values.roomId,
+          doctorId: values.doctorId,
+          timeSlotIds: values.timeSlotIds,
         };
+        console.log('Form Values:', payload);
+        console.log('Fetch URL:', `${base_url}schedules`);
+        try {
+          const response = await fetch(`${base_url}schedules`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': '*/*',
+            },
+            body: JSON.stringify(payload),
+          });
 
-        if (editingEvent) {
-          eventsService.update(newEvent);
-          messageApi.success('Event updated successfully');
-        } else {
-          eventsService.add(newEvent);
-          messageApi.success('New event added successfully');
-        }
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error response:', errorText);
+            return;
+          }
 
-        setIsModalVisible(false);
-        form.resetFields();
-        
-        // Update the local state to keep things in sync
-        if (editingEvent) {
-          setDoctorScheduleData(prev => 
-            prev.map(event => event.id === newEvent.id ? newEvent : event)
+          const newSchedule = await response.json();
+          console.log('POST response:', newSchedule);
+          if(newSchedule.status === 40) {
+            messageApi.error('Bác sĩ đã có lịch khám trong khoảng thời gian này');
+            return;
+          }
+          if(newSchedule.status === 404) {
+            messageApi.error('Không tìm thấy giờ làm việc');
+            return;
+          }
+          
+          const formattedData = showData(
+            { data: { content: [newSchedule.data || newSchedule] } },
+            doctors,
+            timeSlots
           );
-        } else {
-          setDoctorScheduleData(prev => [...prev, newEvent]);
+
+          if (formattedData.length > 0) {
+            setDoctorScheduleData(prev => [...prev, ...formattedData]);
+            messageApi.success('Schedule created successfully');
+          } else {
+            messageApi.warning('No events generated from the schedule');
+          }
+
+          setIsModalVisible(false);
+          form.resetFields();
+        } catch (error) {
+          console.error('❌ Error creating schedule:', error);
+          messageApi.error(error.message.includes('409') 
+            ? 'Bác sĩ đã có lịch khám trong khoảng thời gian này' 
+            : 'Failed to create schedule');
         }
       })
       .catch(info => {
@@ -262,35 +359,12 @@ const ManageSchedule = () => {
     form.resetFields();
   };
 
-  // Handle event deletion
-  const handleDeleteEvent = () => {
-    if (editingEvent) {
-      eventsService.remove([editingEvent.id]);
-      setDoctorScheduleData(prev => 
-        prev.filter(event => event.id !== editingEvent.id)
-      );
-      messageApi.success('Event deleted successfully');
-      setIsModalVisible(false);
-      form.resetFields();
-    }
-  };
-
   // Toggle between views
   const handleViewChange = (view) => {
     setSelectedView(view);
     if (calendar && calendar.setView) {
       calendar.setView(view);
     }
-  };
-
-  // Error handling for API connection issues
-  const handleFetchError = () => {
-    messageApi.error({
-      content: 'Cannot connect to the server. Using sample data instead.',
-      duration: 5,
-    });
-    setDoctorScheduleData(initialEvents);
-    setLoading(false);
   };
 
   return (
@@ -302,20 +376,20 @@ const ManageSchedule = () => {
             <CalendarOutlined className="mr-2 text-blue-500" /> Lịch làm việc
           </Title>
           <Space>
-            <Tooltip title="Add new appointment">
+            <Tooltip title="Add new schedule">
               <Button 
                 type="primary"
                 icon={<PlusOutlined />}
-                onClick={() => showModal()}
+                onClick={showModal}
                 className="bg-blue-500 hover:bg-blue-600"
               >
-                New Appointment
+                New Schedule
               </Button>
             </Tooltip>
             <Tooltip title="Refresh schedule data">
               <Button 
                 icon={<ReloadOutlined />} 
-                onClick={fetchDoctorSchedule}
+                onClick={() => searchForm.submit()}
                 loading={loading}
               >
                 Refresh
@@ -324,6 +398,57 @@ const ManageSchedule = () => {
           </Space>
         </div>
         <Divider className="my-4" />
+        <Form
+          form={searchForm}
+          layout="inline"
+          onFinish={handleSearch}
+          className="mb-4"
+        >
+          <Form.Item
+            name="specialtyId"
+            label="Medical Specialty"
+            rules={[{ required: true, message: 'Please select a specialty' }]}
+          >
+            <Select
+              placeholder="Select specialty"
+              onChange={handleSpecialtyChange}
+              className="w-60"
+            >
+              {specialties.map(specialty => (
+                <Select.Option key={specialty.id} value={specialty.id}>
+                  {specialty.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="doctorId"
+            label="Doctor"
+            rules={[{ required: true, message: 'Please select a doctor' }]}
+          >
+            <Select
+              placeholder="Select doctor"
+              className="w-60"
+              disabled={!selectedSpecialty}
+            >
+              {doctors.map(doctor => (
+                <Select.Option key={doctor.id} value={doctor.id}>
+                  {doctor.fullName}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="primary"
+              icon={<SearchOutlined />}
+              htmlType="submit"
+              className="bg-blue-500 hover:bg-blue-600"
+            >
+              Search
+            </Button>
+          </Form.Item>
+        </Form>
       </div>
 
       {loading ? (
@@ -342,8 +467,8 @@ const ManageSchedule = () => {
       <Modal
         title={
           <div className="flex items-center">
-            {editingEvent ? <EditOutlined className="mr-2" /> : <PlusOutlined className="mr-2" />}
-            {editingEvent ? "Edit Appointment" : "Add New Appointment"}
+            <PlusOutlined className="mr-2" />
+            Add New Schedule
           </div>
         }
         open={isModalVisible}
@@ -351,16 +476,6 @@ const ManageSchedule = () => {
         onCancel={handleCancel}
         okButtonProps={{ className: "bg-blue-500 hover:bg-blue-600" }}
         footer={[
-          editingEvent && (
-            <Button 
-              key="delete" 
-              danger 
-              icon={<DeleteOutlined />}
-              onClick={handleDeleteEvent}
-            >
-              Delete
-            </Button>
-          ),
           <Button key="cancel" onClick={handleCancel}>
             Cancel
           </Button>,
@@ -370,7 +485,7 @@ const ManageSchedule = () => {
             onClick={handleOk}
             className="bg-blue-500 hover:bg-blue-600"
           >
-            {editingEvent ? 'Update' : 'Add'}
+            Add
           </Button>,
         ]}
       >
@@ -380,88 +495,80 @@ const ManageSchedule = () => {
           className="mt-4"
         >
           <Form.Item
-            name="title"
-            label="Title"
-            rules={[{ required: true, message: 'Please enter appointment title' }]}
+            name="specialtyId"
+            label="Medical Specialty"
+            rules={[{ required: true, message: 'Please select a specialty' }]}
           >
-            <Input placeholder="E.g., Morning Shift" className="w-full" />
+            <Select
+              placeholder="Select specialty"
+              onChange={handleSpecialtyChange}
+            >
+              {specialties.map(specialty => (
+                <Select.Option key={specialty.id} value={specialty.id}>
+                  {specialty.name}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
-
-          <div className="grid grid-cols-2 gap-4">
-            <Form.Item
-              name="start"
-              label="Start Time"
-              rules={[{ required: true, message: 'Select start time' }]}
-            >
-              <DatePicker 
-                showTime 
-                format="YYYY-MM-DD HH:mm"
-                className="w-full"
-              />
-            </Form.Item>
-
-            <Form.Item
-              name="end"
-              label="End Time"
-              rules={[
-                { required: true, message: 'Select end time' },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue('start').isBefore(value)) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(new Error('End time must be after start time'));
-                  },
-                }),
-              ]}
-            >
-              <DatePicker 
-                showTime 
-                format="YYYY-MM-DD HH:mm"
-                className="w-full"
-              />
-            </Form.Item>
-          </div>
-
           <Form.Item
-            name="description"
-            label="Description"
+            name="doctorId"
+            label="Doctor"
+            rules={[{ required: true, message: 'Please select a doctor' }]}
           >
-            <Input.TextArea 
-              rows={3} 
-              className="w-full" 
-              placeholder="Add details about this appointment..."
+            <Select
+              placeholder="Select doctor"
+              className='w-[400px]'
+              disabled={!doctors.length}
+            >
+              {doctors.map(doctor => (
+                <Select.Option key={doctor.id} value={doctor.id}>
+                  {doctor.fullName}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="date"
+            label="Date"
+            rules={[{ required: true, message: 'Please select a date' }]}
+          >
+            <DatePicker
+              format="YYYY-MM-DD"
+              className="w-full"
             />
           </Form.Item>
-
           <Form.Item
-            name="calendarId"
-            label="Category"
-            rules={[{ required: true, message: 'Please select a category' }]}
-            tooltip={{ 
-              title: 'Categorize your appointment for better organization', 
-              icon: <InfoCircleOutlined /> 
-            }}
+            name="maxSlots"
+            label="Max Slots"
+            rules={[
+              { required: true, message: 'Please enter max slots' },
+              { type: 'number', min: 1, message: 'Max slots must be at least 1' },
+            ]}
           >
-            <Select className="w-full">
-              <Select.Option value="work">
-                <span className="flex items-center">
-                  <span className="w-3 h-3 rounded-full bg-red-500 mr-2"></span>
-                  Work
-                </span>
-              </Select.Option>
-              <Select.Option value="meeting">
-                <span className="flex items-center">
-                  <span className="w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
-                  Meeting
-                </span>
-              </Select.Option>
-              <Select.Option value="leisure">
-                <span className="flex items-center">
-                  <span className="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
-                  Leisure
-                </span>
-              </Select.Option>
+            <InputNumber min={1} className="w-full" />
+          </Form.Item>
+          <Form.Item
+            name="roomId"
+            label="Room ID"
+            rules={[{ required: true, message: 'Please enter room ID' }]}
+          >
+            <InputNumber min={1} className="w-full" />
+          </Form.Item>
+          <Form.Item
+            name="timeSlotIds"
+            label="Time Slots"
+            rules={[{ required: true, message: 'Please select at least one time slot' }]}
+          >
+            <Select
+              mode="multiple"
+              placeholder="Select time slots"
+              className="w-full"
+            >
+              {timeSlots.map(slot => (
+                <Select.Option key={slot.id} value={slot.id}>
+                  {`${slot.startTime.slice(0, 5)} - ${slot.endTime.slice(0, 5)}`}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
         </Form>

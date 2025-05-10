@@ -24,7 +24,7 @@ const DoctorManageRecords = () => {
   const doctorId = localStorage.getItem('customerId'); // Lấy doctorId từ localStorage
   //const formatDate = dayjs().format('YYYY-MM-DD'); // Định dạng ngày hiện tại
   // Gọi API khi component mount
-  const formatDate = "2025-05-03"
+  const formatDate = "2025-05-09"
   useEffect(() => {
     const fetchSchedule = async () => {
       try {

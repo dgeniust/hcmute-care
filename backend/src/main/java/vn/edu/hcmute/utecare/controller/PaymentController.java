@@ -97,5 +97,21 @@ public class PaymentController {
                 .data(paymentService.getAllPayments(transactionId, paymentStatus, startDate, endDate, page, size, sort, direction))
                 .build();
     }
+    @GetMapping("/all")
+    @Operation(summary = "Get all payments for admin", description = "Get all payments with optional filters")
+    public ResponseData<PageResponse<PaymentResponse>> getAll(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        log.info("Get all payments with filters: page={}, size={}, sort={}, direction={}",
+                page, size, sort, direction);
 
+        return ResponseData.<PageResponse<PaymentResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Get all payments successful")
+                .data(paymentService.getAll(page, size, sort, direction))
+                .build();
+    }
 }
