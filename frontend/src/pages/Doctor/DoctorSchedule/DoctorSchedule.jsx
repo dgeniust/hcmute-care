@@ -72,9 +72,19 @@ const DoctorSchedule = () => {
     // Additional events removed for brevity
   ];
 
+  const doctorId = localStorage.getItem('customerId');
+
+  // Lấy ngày hiện tại (giả sử đang ở tháng 5/2025)
+  const currentDate = dayjs(); // Thay bằng dayjs() nếu muốn lấy ngày hệ thống thực tế
+  console.log('Current Date:', currentDate);
+  // Lấy ngày 1 của tháng hiện tại (1-5-2025)
+  const startDate = currentDate.startOf('month').format('YYYY-MM-DD');
+
+  // Lấy ngày cuối của tháng hiện tại (31-5-2025)
+  const endDate = currentDate.endOf('month').format('YYYY-MM-DD');
   // API configuration
   const base_url = import.meta.env.VITE_API_BASE_URL || 'https://api.example.com/';
-  const api = `${base_url}schedules?page=1&size=30&sort=id&direction=asc`;
+  const api = `${base_url}doctors/${doctorId}/schedules?startDate=${startDate}&endDate=${endDate}&page=1&size=10&sort=id&direction=asc`;
   
   // Calendar configuration with custom styling
   const calendarConfig = useMemo(() => ({
@@ -150,8 +160,11 @@ const DoctorSchedule = () => {
   const fetchDoctorSchedule = async () => {
     setLoading(true);
     try {
-      const response = await fetch(api, { method: 'GET',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      const response = await fetch(api, { 
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
        });
       
       if (!response.ok) {

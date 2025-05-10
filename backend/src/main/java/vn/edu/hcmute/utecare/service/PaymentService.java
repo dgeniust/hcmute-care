@@ -1,8 +1,6 @@
 package vn.edu.hcmute.utecare.service;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.transaction.annotation.Transactional;
 import vn.edu.hcmute.utecare.dto.request.PaymentRequest;
 import vn.edu.hcmute.utecare.dto.response.*;
 import vn.edu.hcmute.utecare.util.enumeration.PaymentStatus;
@@ -29,7 +27,12 @@ public interface PaymentService {
             String sort,
             String direction
     );
-
+    PageResponse<PaymentResponse> getAll(
+            int page,
+            int size,
+            String sort,
+            String direction
+    );
     PageResponse<PaymentResponse> getAllPaymentsByCustomerId(
             Long customerId,
             int page,

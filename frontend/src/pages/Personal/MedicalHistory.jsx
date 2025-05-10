@@ -15,7 +15,7 @@ const MedicalHistory = () => {
     const items = [
         {
           key: '1',
-          label: 'Đã thanh toán',
+          label: 'Đã giao dịch',
           children: (
             <MH_1/>
           ),

@@ -48,20 +48,54 @@ export const formatTime = (time) => {
     }
 };
 
-export const showData = (rawData) => {
+export const showData = (rawData, doctors = [], timeSlots = []) => {
   const newData = [];
 
   if (rawData?.data?.content) {
     rawData.data.content.forEach(schedule => {
-      newData.push({
-        id: schedule.id.toString(), // Đảm bảo kiểu string
-        title: schedule.roomName,
-        start: `${schedule.date} ${schedule.startTime.slice(0, 5)}`,
-        end: `${schedule.date} ${schedule.endTime.slice(0, 5)}`,
-        description: `${schedule.doctorName} | ${schedule.doctorGender} | ${schedule.bookedSlots}/${schedule.maxSlots}`,
-        calendarId: 'work'
-      });
+      // For GET API responses with scheduleSlots
+      if (schedule.scheduleSlots) {
+        schedule.scheduleSlots.forEach(slot => {
+          newData.push({
+            id: `${schedule.id}-${slot.id}`,
+            title: schedule.roomDetail?.name || `Room ${schedule.roomId || 'Unknown'}`,
+            start: `${schedule.date} ${slot.timeSlot.startTime.slice(0, 5)}`,
+            end: `${schedule.date} ${slot.timeSlot.endTime.slice(0, 5)}`,
+            description: `${schedule.doctor?.fullName || 'Unknown Doctor'} | ${schedule.doctor?.gender || 'N/A'} | ${slot.bookedSlots}/${schedule.maxSlots}`,
+            calendarId: 'work',
+            doctorId: schedule.doctor?.id,
+            roomId: schedule.roomDetail?.id,
+            timeSlotIds: [slot.timeSlot.id],
+          });
+        });
+      } else {
+        // For POST API responses with timeSlotIds
+        const doctor = doctors.find(d => d.id === schedule.doctorId) || { fullName: 'Unknown Doctor', gender: 'N/A' };
+        // Check if timeSlotIds exists and is an array
+        if (Array.isArray(schedule.timeSlotIds)) {
+          schedule.timeSlotIds.forEach(slotId => {
+            const slot = timeSlots.find(s => s.id === slotId);
+            if (slot) {
+              newData.push({
+                id: `${schedule.id}-${slotId}`,
+                title: `Room ${schedule.roomId || 'Unknown'}`,
+                start: `${schedule.date} ${slot.startTime.slice(0, 5)}`,
+                end: `${schedule.date} ${slot.endTime.slice(0, 5)}`,
+                description: `${doctor.fullName} | ${doctor.gender} | 0/${schedule.maxSlots}`,
+                calendarId: 'work',
+                doctorId: schedule.doctorId,
+                roomId: schedule.roomId,
+                timeSlotIds: [slotId],
+              });
+            }
+          });
+        } else {
+          console.warn('No valid timeSlotIds found in schedule:', schedule);
+        }
+      }
     });
+  } else {
+    console.warn('Invalid rawData structure:', rawData);
   }
 
   return newData;

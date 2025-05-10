@@ -38,6 +38,7 @@ import PaymentResultPage from './components/Booking/4/PaymentResultPage';
 import Book_Review from './pages/Book_Review/Book_Review';
 import NurseDashboard from './pages/Nurse/NurseDashboard';
 import NurseHomePage from './pages/Nurse/NurseHomePage';
+import ChatbotContextMenu from './components/Chatbot/ChatbotContextMenu';
 function App() {
   return (
     <Router>
@@ -110,6 +111,7 @@ function App() {
           <Route path="/book" element={<Book_Review/>}/>
         </Routes>
       </div>
+      <ChatbotContextMenu />
     </Router>
   )
 }
