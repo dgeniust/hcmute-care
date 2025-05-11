@@ -6,6 +6,8 @@ import ChartNumber_Orders from "../../../components/AdminComponents/ManageUser/C
 import NumberOrders from "../../../components/AdminComponents/ManageUser/NumberOrders";
 
 const ManageNumber_Orders = () => {
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const today = dayjs();
@@ -15,7 +17,7 @@ const ManageNumber_Orders = () => {
     const fetchTickets = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/api/v1/tickets?page=1&size=20&sort=scheduleSlot.schedule.date&direction=asc",
+          `${apiUrl}v1/tickets?page=1&size=20&sort=scheduleSlot.schedule.date&direction=asc`,
           {
             method: "GET",
             headers: {
@@ -72,7 +74,10 @@ const ManageNumber_Orders = () => {
             </div>
             <p className="text-xs text-gray-400">
               Your medical records increased{" "}
-              <span className="text-green-500 font-bold">{totalMedicalRecords}</span> by this month
+              <span className="text-green-500 font-bold">
+                {totalMedicalRecords}
+              </span>{" "}
+              by this month
             </p>
           </div>
         </div>
@@ -88,7 +93,8 @@ const ManageNumber_Orders = () => {
             </div>
             <p className="text-xs text-gray-400">
               Your customer increased{" "}
-              <span className="text-green-500 font-bold">{todayTickets}</span> by this month
+              <span className="text-green-500 font-bold">{todayTickets}</span>{" "}
+              by this month
             </p>
           </div>
         </div>
@@ -104,7 +110,10 @@ const ManageNumber_Orders = () => {
             </div>
             <p className="text-xs text-gray-400">
               Your customer increased{" "}
-              <span className="text-green-500 font-bold">{newMedicalRecords}</span> by this month
+              <span className="text-green-500 font-bold">
+                {newMedicalRecords}
+              </span>{" "}
+              by this month
             </p>
           </div>
         </div>

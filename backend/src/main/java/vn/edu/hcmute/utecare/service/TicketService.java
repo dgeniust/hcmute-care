@@ -3,6 +3,7 @@ package vn.edu.hcmute.utecare.service;
 import vn.edu.hcmute.utecare.dto.response.DoctorTicketSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.TicketResponse;
+import vn.edu.hcmute.utecare.model.Ticket;
 import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
 
 import java.time.LocalDate;
@@ -29,6 +30,6 @@ public interface TicketService {
 
     PageResponse<TicketResponse> getAllTicket(
             int page, int size, String sort, String direction,
-            LocalDate scheduleDate
-    );
+            LocalDate scheduleDate, TicketStatus status, Long doctorId, Long patientId);
+
 }

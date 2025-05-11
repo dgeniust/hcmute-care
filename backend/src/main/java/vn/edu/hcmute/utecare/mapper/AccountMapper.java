@@ -8,10 +8,8 @@ import vn.edu.hcmute.utecare.dto.request.AccountRequest;
 import vn.edu.hcmute.utecare.dto.response.AccountResponse;
 import vn.edu.hcmute.utecare.model.Account;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccountMapper {
-    AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
-
     Account toEntity(AccountRequest request);
 
     @Mapping(target = "phone", source = "user.phone")

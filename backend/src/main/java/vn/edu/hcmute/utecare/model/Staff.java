@@ -1,6 +1,7 @@
 
 package vn.edu.hcmute.utecare.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -22,6 +23,7 @@ public class Staff extends User {
     private StaffRole staffRole;
 
     @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     @Builder.Default
     private Set<Post> posts = new HashSet<>();
 

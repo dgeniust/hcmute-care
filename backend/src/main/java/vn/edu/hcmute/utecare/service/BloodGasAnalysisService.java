@@ -23,5 +23,5 @@ public interface BloodGasAnalysisService {
 
     List<BloodGasAnalysisResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
 
-    List<BloodGasAnalysisResponse> getEncounterIDandDate(Long encounterId, LocalDate date);
+    List<BloodGasAnalysisResponse> getEncounterIdAndDate(Long encounterId, LocalDate date);
 }

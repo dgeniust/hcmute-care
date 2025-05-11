@@ -1,6 +1,8 @@
 package vn.edu.hcmute.utecare.repository;
 
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,4 +35,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     Page<Schedule> findAllByDoctorIdAndDateBetween(Long doctorId, LocalDate startDate, LocalDate endDate, Pageable pageable);
 
     Optional<Schedule> findByDoctor_IdAndDate(Long id, LocalDate date);
+
+    boolean existsByDoctorIdAndDateAndIdNot(Long doctorId, LocalDate date, Long id);
 }

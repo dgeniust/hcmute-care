@@ -21,7 +21,7 @@ public class EncounterPatientSummaryResponse {
 
     private String notes;
 
-    private List<PrescriptionItemResponse> prescriptionItems;
+    private List<PrescriptionResponse> prescriptions;
 
     private MedicalRecordResponse medicalRecord;
 }

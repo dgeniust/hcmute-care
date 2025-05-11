@@ -9,10 +9,8 @@ import vn.edu.hcmute.utecare.dto.request.PrescriptionItemRequest;
 import vn.edu.hcmute.utecare.dto.response.PrescriptionItemResponse;
 import vn.edu.hcmute.utecare.model.PrescriptionItem;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PrescriptionItemMapper {
-    PrescriptionItemMapper INSTANCE = Mappers.getMapper(PrescriptionItemMapper.class);
-
     PrescriptionItem toEntity(PrescriptionItemRequest request);
 
     @Mapping(target = "medicineId", source = "medicine.id")

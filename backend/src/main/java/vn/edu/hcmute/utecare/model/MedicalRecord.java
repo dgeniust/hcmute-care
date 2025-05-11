@@ -1,8 +1,10 @@
 package vn.edu.hcmute.utecare.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,7 +27,9 @@ public class MedicalRecord {
     private String barcode;
 
     @OneToMany(mappedBy = "medicalRecord")
-    private Set<Encounter> encounters;
+    @JsonManagedReference
+    @Builder.Default
+    private Set<Encounter> encounters = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")

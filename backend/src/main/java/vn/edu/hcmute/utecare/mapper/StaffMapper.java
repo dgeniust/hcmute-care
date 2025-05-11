@@ -8,10 +8,8 @@ import vn.edu.hcmute.utecare.dto.request.StaffRequest;
 import vn.edu.hcmute.utecare.dto.response.StaffResponse;
 import vn.edu.hcmute.utecare.model.Staff;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface StaffMapper {
-    StaffMapper INSTANCE = Mappers.getMapper(StaffMapper.class);
-
     Staff toEntity(StaffRequest request);
 
     StaffResponse toResponse(Staff staff);

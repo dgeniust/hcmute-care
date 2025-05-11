@@ -3,6 +3,7 @@ package vn.edu.hcmute.utecare.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vn.edu.hcmute.utecare.dto.request.TimeSlotRequest;
 import vn.edu.hcmute.utecare.dto.response.TimeSlotResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
@@ -18,46 +19,57 @@ import java.util.List;
 @Slf4j
 public class TimeSlotServiceImpl implements TimeSlotService {
     private final TimeSlotRepository timeSlotRepository;
-    private final TimeSlotMapper TimeSlotMapper;
+    private final TimeSlotMapper timeSlotMapper;
 
     @Override
-    public TimeSlotResponse createTimeSlot(TimeSlotRequest request){
-        log.info("Creating time slot with request: {}", request);
-        TimeSlot timeSlot = TimeSlotMapper.toEntity(request);
-        return TimeSlotMapper.toResponse(timeSlotRepository.save(timeSlot));
+    @Transactional
+    public TimeSlotResponse createTimeSlot(TimeSlotRequest request) {
+        log.info("Tạo khung giờ mới với thông tin: {}", request);
+        TimeSlot timeSlot = timeSlotMapper.toEntity(request);
+        TimeSlot savedTimeSlot = timeSlotRepository.save(timeSlot);
+        log.info("Tạo khung giờ thành công với ID: {}", savedTimeSlot.getId());
+        return timeSlotMapper.toResponse(savedTimeSlot);
     }
 
     @Override
+    @Transactional
     public TimeSlotResponse updateTimeSlot(Integer id, TimeSlotRequest request) {
-        log.info("Updating time slot with ID: {} and request: {}", id, request);
+        log.info("Cập nhật khung giờ với ID: {} và thông tin: {}", id, request);
         TimeSlot timeSlot = timeSlotRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Time slot not found with ID: " + id));
-        TimeSlotMapper.update(request, timeSlot);
-        return TimeSlotMapper.toResponse(timeSlotRepository.save(timeSlot));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khung giờ với ID: " + id));
+        timeSlotMapper.update(request, timeSlot);
+        TimeSlot updatedTimeSlot = timeSlotRepository.save(timeSlot);
+        log.info("Cập nhật khung giờ thành công với ID: {}", id);
+        return timeSlotMapper.toResponse(updatedTimeSlot);
     }
 
     @Override
+    @Transactional
     public void deleteTimeSlot(Integer id) {
-        log.info("Deleting time slot with ID: {}", id);
+        log.info("Xóa khung giờ với ID: {}", id);
         TimeSlot timeSlot = timeSlotRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Time slot not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khung giờ với ID: " + id));
         timeSlotRepository.delete(timeSlot);
+        log.info("Xóa khung giờ thành công với ID: {}", id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TimeSlotResponse getTimeSlotById(Integer id) {
-        log.info("Getting time slot with ID: {}", id);
+        log.info("Truy xuất khung giờ với ID: {}", id);
         TimeSlot timeSlot = timeSlotRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Time slot not found with ID: " + id));
-        return TimeSlotMapper.toResponse(timeSlot);
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khung giờ với ID: " + id));
+        log.info("Truy xuất khung giờ thành công với ID: {}", id);
+        return timeSlotMapper.toResponse(timeSlot);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<TimeSlotResponse> getAllTimeSlots() {
-        log.info("Getting all time slots");
+        log.info("Truy xuất danh sách tất cả khung giờ");
         List<TimeSlot> timeSlots = timeSlotRepository.findAll();
         return timeSlots.stream()
-                .map(TimeSlotMapper::toResponse)
+                .map(timeSlotMapper::toResponse)
                 .toList();
     }
 }

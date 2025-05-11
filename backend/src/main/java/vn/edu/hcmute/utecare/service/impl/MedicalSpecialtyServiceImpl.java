@@ -11,7 +11,6 @@ import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.MedicalSpecialtyMapper;
 import vn.edu.hcmute.utecare.model.MedicalSpecialty;
-import vn.edu.hcmute.utecare.repository.DoctorRepository;
 import vn.edu.hcmute.utecare.repository.MedicalSpecialtyRepository;
 import vn.edu.hcmute.utecare.service.MedicalSpecialtyService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
@@ -21,46 +20,51 @@ import vn.edu.hcmute.utecare.util.PaginationUtil;
 @Slf4j
 public class MedicalSpecialtyServiceImpl implements MedicalSpecialtyService {
     private final MedicalSpecialtyRepository medicalSpecialtyRepository;
-    private final DoctorRepository doctorRepository;
+    private final MedicalSpecialtyMapper medicalSpecialtyMapper;
 
     @Override
     public MedicalSpecialtyResponse getMedicalSpecialtyById(Integer id) {
-        log.info("Fetching medical specialty with id: {}", id);
+        log.info("Truy xuất chuyên khoa với ID: {}", id);
         MedicalSpecialty medicalSpecialty = medicalSpecialtyRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Medical specialty not found with id: " + id));
-        return MedicalSpecialtyMapper.INSTANCE.toResponse(medicalSpecialty);
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy chuyên khoa với ID: " + id));
+        log.info("Truy xuất chuyên khoa thành công với ID: {}", id);
+        return medicalSpecialtyMapper.toResponse(medicalSpecialty);
     }
 
     @Override
     public MedicalSpecialtyResponse createMedicalSpecialty(MedicalSpecialtyRequest request) {
-        log.info("Creating new medical specialty: {}", request);
-        MedicalSpecialty medicalSpecialty = MedicalSpecialtyMapper.INSTANCE.toEntity(request);
-        return MedicalSpecialtyMapper.INSTANCE.toResponse(medicalSpecialtyRepository.save(medicalSpecialty));
+        log.info("Tạo chuyên khoa mới với thông tin: {}", request);
+        MedicalSpecialty medicalSpecialty = medicalSpecialtyMapper.toEntity(request);
+        MedicalSpecialty savedSpecialty = medicalSpecialtyRepository.save(medicalSpecialty);
+        log.info("Tạo chuyên khoa thành công với ID: {}", savedSpecialty.getId());
+        return medicalSpecialtyMapper.toResponse(savedSpecialty);
     }
 
     @Override
     public MedicalSpecialtyResponse updateMedicalSpecialty(Integer id, MedicalSpecialtyRequest request) {
-        log.info("Updating medical specialty with id: {}", id);
+        log.info("Cập nhật chuyên khoa với ID: {} và thông tin: {}", id, request);
         MedicalSpecialty medicalSpecialty = medicalSpecialtyRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Medical specialty not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy chuyên khoa với ID: " + id));
 
-        MedicalSpecialtyMapper.INSTANCE.update(request, medicalSpecialty);
+        medicalSpecialtyMapper.update(request, medicalSpecialty);
         MedicalSpecialty updatedSpecialty = medicalSpecialtyRepository.save(medicalSpecialty);
-        return MedicalSpecialtyMapper.INSTANCE.toResponse(updatedSpecialty);
+        log.info("Cập nhật chuyên khoa thành công với ID: {}", id);
+        return medicalSpecialtyMapper.toResponse(updatedSpecialty);
     }
 
     @Override
     public void deleteMedicalSpecialty(Integer id) {
-        log.info("Deleting medical specialty with id: {}", id);
+        log.info("Xóa chuyên khoa với ID: {}", id);
         if (!medicalSpecialtyRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Medical specialty not found with id: " + id);
+            throw new ResourceNotFoundException("Không tìm thấy chuyên khoa với ID: " + id);
         }
         medicalSpecialtyRepository.deleteById(id);
+        log.info("Xóa chuyên khoa thành công với ID: {}", id);
     }
 
     @Override
     public PageResponse<MedicalSpecialtyResponse> getAllMedicalSpecialties(int page, int size, String sort, String direction) {
-        log.info("Fetching all medical specialties with pagination: page={}, size={}, sort={}, direction={}", page, size, sort, direction);
+        log.info("Truy xuất danh sách chuyên khoa: trang={}, kích thước={}, sắp xếp={}, hướng={}", page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<MedicalSpecialty> medicalSpecialtyPage = medicalSpecialtyRepository.findAll(pageable);
@@ -69,13 +73,13 @@ public class MedicalSpecialtyServiceImpl implements MedicalSpecialtyService {
                 .pageSize(size)
                 .totalPages(medicalSpecialtyPage.getTotalPages())
                 .totalElements(medicalSpecialtyPage.getTotalElements())
-                .content(medicalSpecialtyPage.getContent().stream().map(MedicalSpecialtyMapper.INSTANCE::toResponse).toList())
+                .content(medicalSpecialtyPage.getContent().stream().map(medicalSpecialtyMapper::toResponse).toList())
                 .build();
     }
 
     @Override
     public PageResponse<MedicalSpecialtyResponse> searchMedicalSpecialties(String keyword, int page, int size, String sort, String direction) {
-        log.info("Searching medical specialties with keyword: {}", keyword);
+        log.info("Tìm kiếm chuyên khoa với từ khóa: {}, trang={}, kích thước={}, sắp xếp={}, hướng={}", keyword, page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<MedicalSpecialty> medicalSpecialtyPage = medicalSpecialtyRepository.searchMedicalSpecialties(keyword, pageable);
@@ -84,7 +88,7 @@ public class MedicalSpecialtyServiceImpl implements MedicalSpecialtyService {
                 .pageSize(size)
                 .totalPages(medicalSpecialtyPage.getTotalPages())
                 .totalElements(medicalSpecialtyPage.getTotalElements())
-                .content(medicalSpecialtyPage.getContent().stream().map(MedicalSpecialtyMapper.INSTANCE::toResponse).toList())
+                .content(medicalSpecialtyPage.getContent().stream().map(medicalSpecialtyMapper::toResponse).toList())
                 .build();
     }
 }

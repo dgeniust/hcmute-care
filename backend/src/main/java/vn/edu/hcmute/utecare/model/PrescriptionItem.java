@@ -1,5 +1,6 @@
 package vn.edu.hcmute.utecare.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,11 +25,12 @@ public class PrescriptionItem {
     @Column(name = "unit")
     private String unit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medicine_id", referencedColumnName = "id")
     private Medicine medicine;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "prescription_id", referencedColumnName = "id")
     private Prescription prescription;
 }

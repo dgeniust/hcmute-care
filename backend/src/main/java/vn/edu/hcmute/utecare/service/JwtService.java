@@ -19,4 +19,6 @@ public interface JwtService {
     boolean isTokenExpired(String token, TokenType type);
 
     long getRemainingTime(String token, TokenType type);
+
+    long getRefreshTokenExpiration();
 }

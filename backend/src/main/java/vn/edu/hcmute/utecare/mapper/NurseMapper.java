@@ -8,10 +8,8 @@ import vn.edu.hcmute.utecare.dto.request.NurseRequest;
 import vn.edu.hcmute.utecare.dto.response.NurseResponse;
 import vn.edu.hcmute.utecare.model.Nurse;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface NurseMapper {
-    NurseMapper INSTANCE = Mappers.getMapper(NurseMapper.class);
-
     Nurse toEntity(NurseRequest request);
 
     NurseResponse toResponse(Nurse nurse);

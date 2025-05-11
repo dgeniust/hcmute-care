@@ -52,6 +52,14 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Query("SELECT t FROM Ticket t " +
             "JOIN t.scheduleSlot ss " +
             "JOIN ss.schedule s " +
-            "WHERE (:scheduleDate IS NULL OR s.date = :scheduleDate)")
-    Page<Ticket> findAllTicket(@Param("scheduleDate") LocalDate scheduleDate, Pageable pageable);
+            "JOIN s.doctor d " +
+            "WHERE (:doctorId IS NULL OR d.id = :doctorId) " +
+            "AND (:patientId IS NULL OR t.appointment.medicalRecord.patient.id = :patientId) " +
+            "AND (:status IS NULL OR t.status = :status) " +
+            "AND (:scheduleDate IS NULL OR s.date = :scheduleDate)")
+    Page<Ticket> findAllTicket(@Param("status") TicketStatus status,
+                               @Param("doctorId") Long doctorId,
+                               @Param("patientId") Long patientId,
+                               @Param("scheduleDate") LocalDate scheduleDate,
+                               Pageable pageable);
 }

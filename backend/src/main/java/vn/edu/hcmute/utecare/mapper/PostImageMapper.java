@@ -9,8 +9,6 @@ import vn.edu.hcmute.utecare.model.PostImage;
 
 @Mapper(componentModel = "spring",unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostImageMapper {
-    PostImageMapper INSTANCE = Mappers.getMapper(PostImageMapper.class);
-
     PostImage toEntity(PostImageRequest request);
     PostImageResponse toResponse(PostImage postImage);
 }

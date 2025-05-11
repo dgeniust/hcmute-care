@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import vn.edu.hcmute.utecare.model.User;
 import vn.edu.hcmute.utecare.util.enumeration.Role;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -24,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             @Param(value = "keyword") String keyword,
             @Param(value = "role") Role role,
             Pageable pageable);
+
+    Optional<User> findByPhone(String username);
 }

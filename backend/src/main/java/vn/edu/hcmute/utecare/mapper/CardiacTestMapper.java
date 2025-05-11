@@ -11,17 +11,12 @@ import vn.edu.hcmute.utecare.dto.response.CardiacTestResponse;
 import vn.edu.hcmute.utecare.model.CardiacTest;
 
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CardiacTestMapper {
-    CardiacTestMapper INSTANCE = Mappers.getMapper(CardiacTestMapper.class);
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "encounter", ignore = true)
     CardiacTest toEntity(CardiacTestRequest request);
 
     @Mapping(source = "encounter.id", target = "encounterId")
     CardiacTestResponse toResponse(CardiacTest entity);
 
-    @Mapping(target = "encounter", ignore = true)
     void updateEntity(@MappingTarget CardiacTest entity, CardiacTestRequest request);
 }

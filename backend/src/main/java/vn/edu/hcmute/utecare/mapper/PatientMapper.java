@@ -2,6 +2,7 @@ package vn.edu.hcmute.utecare.mapper;
 
 import org.mapstruct.Mapper;
 
+import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 import vn.edu.hcmute.utecare.dto.request.PatientRequest;
@@ -14,5 +15,9 @@ public interface PatientMapper {
     PatientResponse toResponse(Patient patient);
     Patient toEntity(PatientRequest request);
 
+    void updateEntity(PatientRequest request,@MappingTarget Patient patient);
+
     PatientInfoResponse toInfoResponse(Patient patient);
+
+
 }

@@ -7,10 +7,7 @@ import org.mapstruct.factory.Mappers;
 import vn.edu.hcmute.utecare.dto.response.UserSummaryResponse;
 import vn.edu.hcmute.utecare.model.User;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-
-//    @Mapping(target = "roleName", source = "account.role")
     UserSummaryResponse toSummaryResponse(User user);
 }

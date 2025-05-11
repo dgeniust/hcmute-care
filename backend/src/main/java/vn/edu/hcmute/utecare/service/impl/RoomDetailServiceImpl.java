@@ -20,20 +20,21 @@ import vn.edu.hcmute.utecare.util.PaginationUtil;
 @Slf4j
 public class RoomDetailServiceImpl implements RoomDetailService {
     private final RoomDetailRepository roomDetailRepository;
+    private final RoomDetailMapper roomDetailMapper;
 
     @Override
     public RoomDetailResponse getRoomDetailById(Integer id) {
         log.info("Fetching room detail with ID: {}", id);
         RoomDetail roomDetail = roomDetailRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Room detail not found with ID: " + id));
-        return RoomDetailMapper.INSTANCE.toResponse(roomDetail);
+        return roomDetailMapper.toResponse(roomDetail);
     }
 
     @Override
     public RoomDetailResponse createRoomDetail(RoomDetailRequest request){
         log.info("Creating room detail with request: {}", request);
-        RoomDetail roomDetail = RoomDetailMapper.INSTANCE.toEntity(request);
-        return RoomDetailMapper.INSTANCE.toResponse(roomDetailRepository.save(roomDetail));
+        RoomDetail roomDetail = roomDetailMapper.toEntity(request);
+        return roomDetailMapper.toResponse(roomDetailRepository.save(roomDetail));
     }
 
     @Override
@@ -41,8 +42,8 @@ public class RoomDetailServiceImpl implements RoomDetailService {
         log.info("Updating room detail with ID: {}", id);
         RoomDetail roomDetail = roomDetailRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Room detail not found with ID: " + id));
-        RoomDetailMapper.INSTANCE.update(request, roomDetail);
-        return RoomDetailMapper.INSTANCE.toResponse(roomDetailRepository.save(roomDetail));
+        roomDetailMapper.update(request, roomDetail);
+        return roomDetailMapper.toResponse(roomDetailRepository.save(roomDetail));
     }
 
     @Override
@@ -67,7 +68,7 @@ public class RoomDetailServiceImpl implements RoomDetailService {
                 .pageSize(size)
                 .totalPages(roomDetailPage.getTotalPages())
                 .totalElements(roomDetailPage.getTotalElements())
-                .content(roomDetailPage.getContent().stream().map(RoomDetailMapper.INSTANCE::toResponse).toList())
+                .content(roomDetailPage.getContent().stream().map(roomDetailMapper::toResponse).toList())
                 .build();
     }
 
@@ -84,7 +85,7 @@ public class RoomDetailServiceImpl implements RoomDetailService {
                 .pageSize(size)
                 .totalPages(roomDetailPage.getTotalPages())
                 .totalElements(roomDetailPage.getTotalElements())
-                .content(roomDetailPage.getContent().stream().map(RoomDetailMapper.INSTANCE::toResponse).toList())
+                .content(roomDetailPage.getContent().stream().map(roomDetailMapper::toResponse).toList())
                 .build();
     }
 

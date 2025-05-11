@@ -1,5 +1,7 @@
 package vn.edu.hcmute.utecare.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import vn.edu.hcmute.utecare.util.enumeration.PrescriptionStatus;
@@ -28,11 +30,13 @@ public class Prescription {
     @Enumerated(EnumType.STRING)
     private PrescriptionStatus status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "encounter_id", referencedColumnName = "id")
     private Encounter encounter;
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
+    @JsonManagedReference
     @Builder.Default
     private Set<PrescriptionItem> prescriptionItems = new HashSet<>();
 

@@ -45,7 +45,7 @@ const FindRecord_Booking = () => {
     }
     try {
       const response = await fetch(
-        `${apiUrl}api/v1/medical-records/${barcode}?customerId=${customerId}`,
+        `${apiUrl}v1/medical-records/${barcode}?customerId=${customerId}`,
         {
           method: "POST",
           headers: {

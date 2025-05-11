@@ -17,5 +17,5 @@ public interface MedicalRecordService {
     PageResponse<MedicalRecordResponse> getAll(int page, int size, String sort, String direction);
     MedicalRecordResponse update(Long id, MedicalRecordRequest request);
     void delete(Long id);
-    List<EncounterResponse> getAllEncounterByMedicalRecordId(Long medicalRecordId);
+    PageResponse<MedicalRecordResponse> getAllMedicalRecordsByCustomer(Long customerId, int page, int size, String sort, String direction);
 }

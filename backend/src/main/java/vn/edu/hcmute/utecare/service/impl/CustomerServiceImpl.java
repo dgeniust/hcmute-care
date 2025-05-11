@@ -36,18 +36,18 @@ public class CustomerServiceImpl implements CustomerService {
     private final PasswordEncoder passwordEncoder;
     private final MedicalRecordRepository medicalRecordRepository;
     private final MedicalRecordMapper medicalRecordMapper;
-
+    private final CustomerMapper customerMapper;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
     public CustomerResponse createCustomer(CustomerRequest request) {
-        log.info("Creating customer with request: {}", request);
+        log.info("Tạo khách hàng mới với thông tin: {}", request);
 
         if (customerRepository.existsByPhone(request.getPhone())) {
-            throw new IllegalArgumentException("Phone number already exists");
+            throw new IllegalArgumentException("Số điện thoại đã tồn tại");
         }
 
-        Customer customer = CustomerMapper.INSTANCE.toEntity(request);
+        Customer customer = customerMapper.toEntity(request);
 
         Account account = Account.builder()
                 .password(passwordEncoder.encode(request.getPhone()))
@@ -60,52 +60,52 @@ public class CustomerServiceImpl implements CustomerService {
         account.setUser(savedCustomer);
         accountRepository.save(account);
 
-        log.info("Customer created successfully with ID: {}", savedCustomer.getId());
-        return CustomerMapper.INSTANCE.toResponse(savedCustomer);
+        log.info("Tạo khách hàng thành công với ID: {}", savedCustomer.getId());
+        return customerMapper.toResponse(savedCustomer);
     }
 
     @Override
     public CustomerResponse getCustomerById(Long id) {
-        log.info("Getting customer by id: {}", id);
+        log.info("Truy xuất khách hàng với ID: {}", id);
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
-        log.info("Successfully retrieved customer with id: {}", id);
-        return CustomerMapper.INSTANCE.toResponse(customer);
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khách hàng với ID: " + id));
+        log.info("Truy xuất khách hàng thành công với ID: {}", id);
+        return customerMapper.toResponse(customer);
     }
 
     @Override
     @Transactional
     public CustomerResponse updateCustomer(Long id, CustomerRequest request) {
-        log.info("Updating customer with id: {} and request: {}", id, request);
+        log.info("Cập nhật khách hàng với ID: {} và thông tin: {}", id, request);
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khách hàng với ID: " + id));
 
         if (!customer.getPhone().equals(request.getPhone()) && customerRepository.existsByPhone(request.getPhone())) {
-            throw new IllegalArgumentException("Phone number already exists");
+            throw new IllegalArgumentException("Số điện thoại đã tồn tại");
         }
 
-        CustomerMapper.INSTANCE.updateEntity(request, customer);
+        customerMapper.updateEntity(request, customer);
         Customer updatedCustomer = customerRepository.save(customer);
-        log.info("Successfully updated customer with id: {}", id);
-        return CustomerMapper.INSTANCE.toResponse(updatedCustomer);
+        log.info("Cập nhật khách hàng thành công với ID: {}", id);
+        return customerMapper.toResponse(updatedCustomer);
     }
 
     @Override
     @Transactional
     public void deleteCustomer(Long id) {
-        log.info("Deleting customer with id: {}", id);
+        log.info("Xóa khách hàng với ID: {}", id);
         Customer customer = customerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khách hàng với ID: " + id));
         Account account = accountRepository.findByUser_Id(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found for customer with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản cho khách hàng với ID: " + id));
         accountRepository.delete(account);
         customerRepository.delete(customer);
-        log.info("Successfully deleted customer with id: {}", id);
+        log.info("Xóa khách hàng thành công với ID: {}", id);
     }
 
     @Override
     public PageResponse<CustomerResponse> getAllCustomers(int page, int size, String sort, String direction) {
-        log.info("Fetching all customers with pagination: page={}, size={}, sort={}, direction={}", page, size, sort, direction);
+        log.info("Truy xuất danh sách khách hàng: trang={}, kích thước={}, sắp xếp={}, hướng={}", page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<Customer> customerPage = customerRepository.findAll(pageable);
@@ -114,13 +114,14 @@ public class CustomerServiceImpl implements CustomerService {
                 .pageSize(size)
                 .totalPages(customerPage.getTotalPages())
                 .totalElements(customerPage.getTotalElements())
-                .content(customerPage.getContent().stream().map(CustomerMapper.INSTANCE::toResponse).toList())
+                .content(customerPage.getContent().stream().map(customerMapper::toResponse).toList())
                 .build();
     }
 
     @Override
     public PageResponse<CustomerResponse> searchCustomers(String keyword, Membership membership, int page, int size, String sort, String direction) {
-        log.info("Searching customers with keyword: {}, page={}, size={}, sort={}, direction={}", keyword, page, size, sort, direction);
+        log.info("Tìm kiếm khách hàng với từ khóa: {}, cấp thành viên: {}, trang={}, kích thước={}, sắp xếp={}, hướng={}",
+                keyword, membership, page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
         Page<Customer> customerPage = customerRepository.searchCustomers(keyword, membership, pageable);
         return PageResponse.<CustomerResponse>builder()
@@ -128,35 +129,9 @@ public class CustomerServiceImpl implements CustomerService {
                 .pageSize(size)
                 .totalPages(customerPage.getTotalPages())
                 .totalElements(customerPage.getTotalElements())
-                .content(customerPage.getContent().stream().map(CustomerMapper.INSTANCE::toResponse).toList())
+                .content(customerPage.getContent().stream().map(customerMapper::toResponse).toList())
                 .build();
     }
 
-    @Override
-    public PageResponse<MedicalRecordResponse> getAllMedicalRecords(Long customerId, int page, int size, String sort, String direction) {
-        log.info("Fetching all medical records for customerId: {} with pagination: page={}, size={}, sort={}, direction={}",
-                customerId, page, size, sort, direction);
-
-        // Kiểm tra xem customer có tồn tại không
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
-
-        // Tạo pageable cho phân trang
-        Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-
-        // Lấy danh sách medical records theo customerId
-        Page<MedicalRecord> medicalRecordPage = medicalRecordRepository.findByCustomerId(customerId, pageable);
-
-        // Chuyển đổi sang response
-        return PageResponse.<MedicalRecordResponse>builder()
-                .currentPage(page)
-                .pageSize(size)
-                .totalPages(medicalRecordPage.getTotalPages())
-                .totalElements(medicalRecordPage.getTotalElements())
-                .content(medicalRecordPage.getContent().stream()
-                        .map(medicalRecordMapper::toResponse)
-                        .toList())
-                .build();
-    }
 
 }
