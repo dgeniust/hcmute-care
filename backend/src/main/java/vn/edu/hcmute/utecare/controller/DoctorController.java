@@ -153,7 +153,7 @@ public class DoctorController {
             @ApiResponse(responseCode = "403", description = "Không có quyền truy cập")
     })
     public ResponseData<PageResponse<DoctorResponse>> searchDoctors(
-            @Parameter(description = "Từ khóa tìm kiếm (ví dụ: tên, chuyên khoa)") @RequestParam String keyword,
+            @Parameter(description = "Từ khóa tìm kiếm (ví dụ: tên, chuyên khoa)") @RequestParam(required = false) String keyword,
             @Parameter(description = "Số trang, bắt đầu từ 1") @RequestParam(defaultValue = "1") int page,
             @Parameter(description = "Số lượng bác sĩ mỗi trang") @RequestParam(defaultValue = "10") int size,
             @Parameter(description = "Trường để sắp xếp (ví dụ: id, createdAt)") @RequestParam(defaultValue = "id") String sort,

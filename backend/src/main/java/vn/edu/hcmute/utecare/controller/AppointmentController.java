@@ -78,7 +78,7 @@ public class AppointmentController {
     })
     public ResponseData<PageResponse<AppointmentResponse>> getAppointmentByMedicalRecordId(
             @Parameter(description = "ID của hồ sơ y tế") @RequestParam Long medicalRecordId,
-            @Parameter(description = "Số trang, bắt đầu từ 0") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Số trang, bắt đầu từ 1") @RequestParam(defaultValue = "1") int page,
             @Parameter(description = "Số lượng lịch hẹn mỗi trang") @RequestParam(defaultValue = "10") int size,
             @Parameter(description = "Trường để sắp xếp (ví dụ: id, createdAt)") @RequestParam(defaultValue = "id") String sort,
             @Parameter(description = "Hướng sắp xếp: asc (tăng dần) hoặc desc (giảm dần)") @RequestParam(defaultValue = "asc") String direction) {
