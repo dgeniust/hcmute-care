@@ -12,12 +12,10 @@ import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.MedicineMapper;
 import vn.edu.hcmute.utecare.model.Medicine;
 import vn.edu.hcmute.utecare.repository.MedicineRepository;
-import vn.edu.hcmute.utecare.repository.PrescriptionItemRepository;
 import vn.edu.hcmute.utecare.service.MedicineService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
@@ -25,60 +23,66 @@ import java.util.List;
 public class MedicineServiceImpl implements MedicineService {
 
     private final MedicineRepository medicineRepository;
-    private final PrescriptionItemRepository prescriptionItemRepository;
+    private final MedicineMapper medicineMapper;
+
     @Override
     public MedicineResponse getMedicineById(Long id) {
-        log.info("Get medicine by id: {} ", id);
-        Medicine medicine = medicineRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Medicine with id: " + id + " not found"));
-        return MedicineMapper.INSTANCE.toResponse(medicine);
+        log.info("Truy xuất thuốc với ID: {}", id);
+        Medicine medicine = medicineRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy thuốc với ID: " + id));
+        log.info("Truy xuất thuốc thành công với ID: {}", id);
+        return medicineMapper.toResponse(medicine);
     }
 
     @Override
     public MedicineResponse getMedicineByMedicineName(String medicineName) {
-        log.info("Get medicine by medicineName: {} ", medicineName);
-        Medicine medicine = medicineRepository.findByName(medicineName).orElseThrow(() -> new ResourceNotFoundException("Medicine with name: " + medicineName + " not found"));
-        return MedicineMapper.INSTANCE.toResponse(medicine);
+        log.info("Truy xuất thuốc với tên: {}", medicineName);
+        Medicine medicine = medicineRepository.findByName(medicineName)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy thuốc với tên: " + medicineName));
+        log.info("Truy xuất thuốc thành công với tên: {}", medicineName);
+        return medicineMapper.toResponse(medicine);
     }
 
     @Override
     public MedicineResponse createMedicine(MedicineRequest request) {
-        log.info("Create medicine with request: {}", request);
-        Medicine medicine = MedicineMapper.INSTANCE.toEntity(request);
-        return MedicineMapper.INSTANCE.toResponse(medicineRepository.save(medicine));
+        log.info("Tạo thuốc mới với thông tin: {}", request);
+        Medicine medicine = medicineMapper.toEntity(request);
+        Medicine savedMedicine = medicineRepository.save(medicine);
+        log.info("Tạo thuốc thành công với ID: {}", savedMedicine.getId());
+        return medicineMapper.toResponse(savedMedicine);
     }
 
     @Override
     public MedicineResponse updateMedicine(Long id, MedicineRequest request) {
-        log.info("Update medicine with id: {} ", id);
-        Medicine medicine = medicineRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Medicine with id: " + id + " not found"));
-        MedicineMapper.INSTANCE.update(request, medicine);
+        log.info("Cập nhật thuốc với ID: {} và thông tin: {}", id, request);
+        Medicine medicine = medicineRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy thuốc với ID: " + id));
+        medicineMapper.update(request, medicine);
         Medicine updatedMedicine = medicineRepository.save(medicine);
-        return MedicineMapper.INSTANCE.toResponse(updatedMedicine);
+        log.info("Cập nhật thuốc thành công với ID: {}", id);
+        return medicineMapper.toResponse(updatedMedicine);
     }
 
     @Override
     public void deleteMedicine(Long id) {
-        log.info("Delete medicine with id: {} ", id);
-        if(!medicineRepository.existsById(id)){
-            throw new ResourceNotFoundException("Medicine with id: " + id + " not found");
+        log.info("Xóa thuốc với ID: {}", id);
+        if (!medicineRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Không tìm thấy thuốc với ID: " + id);
         }
         medicineRepository.deleteById(id);
+        log.info("Xóa thuốc thành công với ID: {}", id);
     }
 
     @Override
     public List<MedicineResponse> getAllMedicine() {
-        log.info("Get medicine list");
+        log.info("Truy xuất danh sách tất cả thuốc");
         List<Medicine> medicines = medicineRepository.findAll();
-        return medicines.stream().map(MedicineMapper.INSTANCE::toResponse).toList();
+        return medicines.stream().map(medicineMapper::toResponse).toList();
     }
 
     @Override
-    public PageResponse<MedicineResponse> searchByName(String name,
-                                                       int page,
-                                                       int size,
-                                                       String sort,
-                                                       String direction) {
-        log.info("Search medicine by name: {} ", name);
+    public PageResponse<MedicineResponse> searchByName(String name, int page, int size, String sort, String direction) {
+        log.info("Tìm kiếm thuốc với tên: {}, trang={}, kích thước={}, sắp xếp={}, hướng={}", name, page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
         Page<Medicine> medicinePage = medicineRepository.findByNameContainingIgnoreCase(name, pageable);
 
@@ -88,9 +92,8 @@ public class MedicineServiceImpl implements MedicineService {
                 .totalElements(medicinePage.getTotalElements())
                 .totalPages(medicinePage.getTotalPages())
                 .content(medicinePage.getContent().stream()
-                        .map(MedicineMapper.INSTANCE::toResponse)
+                        .map(medicineMapper::toResponse)
                         .toList())
                 .build();
     }
-
 }

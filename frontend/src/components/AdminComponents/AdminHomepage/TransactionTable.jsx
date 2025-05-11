@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Tag, Pagination } from 'antd';
-import { formatDateTime } from '../../../utils/formatDate';
+import React, { useState, useEffect } from "react";
+import { Modal, Tag, Pagination } from "antd";
+import { formatDateTime } from "../../../utils/formatDate";
 
 const TransactionTable = ({ isModalOpen, setIsModalOpen }) => {
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const [payments, setPayments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalElements, setTotalElements] = useState(0);
@@ -11,11 +12,11 @@ const TransactionTable = ({ isModalOpen, setIsModalOpen }) => {
   const fetchPayments = async (page) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/payments/all?page=${page}&size=${pageSize}&sort=id&direction=asc`,
+        `${apiUrl}v1/payments/all?page=${page}&size=${pageSize}&sort=id&direction=asc`,
         {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       );
@@ -23,12 +24,12 @@ const TransactionTable = ({ isModalOpen, setIsModalOpen }) => {
       setPayments(data.data.content);
       setTotalElements(data.data.totalElements);
     } catch (error) {
-      console.error('Error fetching payments:', error);
+      console.error("Error fetching payments:", error);
     }
   };
 
   useEffect(() => {
-      fetchPayments(currentPage);
+    fetchPayments(currentPage);
   }, [currentPage]);
 
   const handleOk = () => {
@@ -44,13 +45,13 @@ const TransactionTable = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   const headersModal = [
-    'Số Hiệu',
-    'Phương Thức',
-    'Thời Gian',
-    'Trạng Thái',
-    'Tổng Tiền',
-    'Mã Giao Dịch',
-    'Mã Cuộc Hẹn',
+    "Số Hiệu",
+    "Phương Thức",
+    "Thời Gian",
+    "Trạng Thái",
+    "Tổng Tiền",
+    "Mã Giao Dịch",
+    "Mã Cuộc Hẹn",
   ];
 
   return (
@@ -73,32 +74,42 @@ const TransactionTable = ({ isModalOpen, setIsModalOpen }) => {
             <tr
               key={transaction.id}
               className={`${
-                transaction.paymentStatus === 'COMPLETED'
-                  ? 'bg-green-200'
-                  : transaction.paymentStatus === 'PENDING'
-                  ? 'bg-blue-200'
-                  : transaction.paymentStatus === 'CANCELLED'
-                  ? 'bg-yellow-200'
-                  : 'bg-red-200'
+                transaction.paymentStatus === "COMPLETED"
+                  ? "bg-green-200"
+                  : transaction.paymentStatus === "PENDING"
+                  ? "bg-blue-200"
+                  : transaction.paymentStatus === "CANCELLED"
+                  ? "bg-yellow-200"
+                  : "bg-red-200"
               }`}
             >
               <td className="p-3 whitespace-nowrap">{transaction.id}</td>
-              <td className="p-3 whitespace-nowrap">{transaction.paymentMethod}</td>
-              <td className="p-3 whitespace-nowrap">{formatDateTime(transaction.paymentDate)}</td>
               <td className="p-3 whitespace-nowrap">
-                {transaction.paymentStatus === 'COMPLETED' ? (
+                {transaction.paymentMethod}
+              </td>
+              <td className="p-3 whitespace-nowrap">
+                {formatDateTime(transaction.paymentDate)}
+              </td>
+              <td className="p-3 whitespace-nowrap">
+                {transaction.paymentStatus === "COMPLETED" ? (
                   <Tag color="green">Hoàn Thành</Tag>
-                ) : transaction.paymentStatus === 'PENDING' ? (
+                ) : transaction.paymentStatus === "PENDING" ? (
                   <Tag color="blue">Đang Xử Lý</Tag>
-                ) : transaction.paymentStatus === 'CANCELLED' ? (
+                ) : transaction.paymentStatus === "CANCELLED" ? (
                   <Tag color="gold">Hủy</Tag>
                 ) : (
                   <Tag color="red">Thất Bại</Tag>
                 )}
               </td>
-              <td className="p-3 whitespace-nowrap">{transaction.amount.toLocaleString()} VND</td>
-              <td className="p-3 whitespace-nowrap">{transaction.transactionId}</td>
-              <td className="p-3 whitespace-nowrap">{transaction.appointmentId}</td>
+              <td className="p-3 whitespace-nowrap">
+                {transaction.amount.toLocaleString()} VND
+              </td>
+              <td className="p-3 whitespace-nowrap">
+                {transaction.transactionId}
+              </td>
+              <td className="p-3 whitespace-nowrap">
+                {transaction.appointmentId}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -128,22 +139,32 @@ const TransactionTable = ({ isModalOpen, setIsModalOpen }) => {
             {payments.map((payment) => (
               <tr key={payment.id}>
                 <td className="p-3 whitespace-nowrap">{payment.id}</td>
-                <td className="p-3 whitespace-nowrap">{payment.paymentMethod}</td>
-                <td className="p-3 whitespace-nowrap">{formatDateTime(payment.paymentDate)}</td>
                 <td className="p-3 whitespace-nowrap">
-                  {payment.paymentStatus === 'COMPLETED' ? (
+                  {payment.paymentMethod}
+                </td>
+                <td className="p-3 whitespace-nowrap">
+                  {formatDateTime(payment.paymentDate)}
+                </td>
+                <td className="p-3 whitespace-nowrap">
+                  {payment.paymentStatus === "COMPLETED" ? (
                     <Tag color="green">Hoàn Thành</Tag>
-                  ) : payment.paymentStatus === 'PENDING' ? (
+                  ) : payment.paymentStatus === "PENDING" ? (
                     <Tag color="blue">Đang Xử Lý</Tag>
-                  ) : payment.paymentStatus === 'CANCELLED' ? (
+                  ) : payment.paymentStatus === "CANCELLED" ? (
                     <Tag color="gold">Hủy</Tag>
                   ) : (
                     <Tag color="red">Thất Bại</Tag>
                   )}
                 </td>
-                <td className="p-3 whitespace-nowrap">{payment.amount.toLocaleString()} VND</td>
-                <td className="p-3 whitespace-nowrap">{payment.transactionId}</td>
-                <td className="p-3 whitespace-nowrap">{payment.appointmentId}</td>
+                <td className="p-3 whitespace-nowrap">
+                  {payment.amount.toLocaleString()} VND
+                </td>
+                <td className="p-3 whitespace-nowrap">
+                  {payment.transactionId}
+                </td>
+                <td className="p-3 whitespace-nowrap">
+                  {payment.appointmentId}
+                </td>
               </tr>
             ))}
           </tbody>

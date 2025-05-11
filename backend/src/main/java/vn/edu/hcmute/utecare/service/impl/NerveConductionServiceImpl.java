@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vn.edu.hcmute.utecare.dto.request.NerveConductionRequest;
 import vn.edu.hcmute.utecare.dto.response.NerveConductionResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
-import vn.edu.hcmute.utecare.exception.NotFoundException;
+import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.NerveConductionMapper;
-import vn.edu.hcmute.utecare.model.*;
+import vn.edu.hcmute.utecare.model.Encounter;
+import vn.edu.hcmute.utecare.model.NerveConduction;
+import vn.edu.hcmute.utecare.repository.EncounterRepository;
 import vn.edu.hcmute.utecare.repository.NerveConductionRepository;
 import vn.edu.hcmute.utecare.service.NerveConductionService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
@@ -19,7 +22,6 @@ import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,58 +29,52 @@ import java.util.stream.Collectors;
 public class NerveConductionServiceImpl implements NerveConductionService {
 
     private final NerveConductionRepository nerveConductionRepository;
+    private final EncounterRepository encounterRepository;
+    private final NerveConductionMapper nerveConductionMapper;
 
     @Override
+    @Transactional
     public NerveConductionResponse createNerveConduction(NerveConductionRequest request) {
-        log.info("Tạo NerveConduction mới: {}", request);
+        log.info("Tạo xét nghiệm dẫn truyền thần kinh mới: {}", request);
+
+        // Kiểm tra Encounter tồn tại
+        Long encounterId = request.getEncounterId();
+        Encounter encounter = encounterRepository.findById(encounterId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy cuộc gặp với ID: " + encounterId));
 
         // Chuyển đổi request sang entity
-        NerveConduction nerveConduction = NerveConductionMapper.INSTANCE.toEntity(request);
-
-        // Thiết lập thông tin Encounter
-        Encounter encounter = new Encounter();
-        encounter.setId(request.getEncounterId());
+        NerveConduction nerveConduction = nerveConductionMapper.toEntity(request);
         nerveConduction.setEncounter(encounter);
-        nerveConduction.setEvaluate(request.getEvaluate());
-        nerveConduction.setNotes(request.getNotes());
-        nerveConduction.setTestName(request.getTestName());
-        nerveConduction.setOrganSystem(request.getOrganSystem());
-        nerveConduction.setIsInvasive(request.getIsInvasive());
-        nerveConduction.setIsQuantitative(request.getIsQuantitative());
-        nerveConduction.setRecordDuration(request.getRecordDuration());
-        nerveConduction.setTestEnvironment(request.getTestEnvironment());
-        nerveConduction.setPatientPosition(request.getPatientPosition());
-
-        nerveConduction.setNerve(request.getNerve());
-        nerveConduction.setConductionSpeed(request.getConductionSpeed());
-
         nerveConduction.setStatus(EMedicalTest.PENDING);
 
         NerveConduction saved = nerveConductionRepository.save(nerveConduction);
+        log.info("Tạo xét nghiệm dẫn truyền thần kinh thành công với ID: {}", saved.getId());
 
-        // Chuyển entity đã lưu sang DTO để trả về
-        return NerveConductionMapper.INSTANCE.toResponse(saved);
+        return nerveConductionMapper.toResponse(saved);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public NerveConductionResponse getNerveConductionById(Long id) {
-        log.info("Lấy thông tin NerveConduction với id: {}", id);
+        log.info("Truy xuất xét nghiệm dẫn truyền thần kinh với ID: {}", id);
         NerveConduction nerveConduction = nerveConductionRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Không tìm thấy NerveConduction với id: " + id));
-        return NerveConductionMapper.INSTANCE.toResponse(nerveConduction);
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy xét nghiệm dẫn truyền thần kinh với ID: " + id));
+        return nerveConductionMapper.toResponse(nerveConduction);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<NerveConductionResponse> getAll() {
-        log.info("Lấy danh sách tất cả NerveConduction");
+        log.info("Truy xuất toàn bộ danh sách xét nghiệm dẫn truyền thần kinh");
         return nerveConductionRepository.findAll().stream()
-                .map(NerveConductionMapper.INSTANCE::toResponse)
-                .collect(Collectors.toList());
+                .map(nerveConductionMapper::toResponse)
+                .toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PageResponse<NerveConductionResponse> getAll(int page, int size, String sort, String direction) {
-        log.info("Lấy danh sách NerveConduction với phân trang: page={}, size={}, sort={}, direction={}", page, size, sort, direction);
+        log.info("Truy xuất danh sách xét nghiệm dẫn truyền thần kinh: trang={}, kích thước={}, sắp xếp={}, hướng={}", page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
         Page<NerveConduction> nerveConductionPage = nerveConductionRepository.findAll(pageable);
 
@@ -88,57 +84,73 @@ public class NerveConductionServiceImpl implements NerveConductionService {
                 .totalPages(nerveConductionPage.getTotalPages())
                 .totalElements(nerveConductionPage.getTotalElements())
                 .content(nerveConductionPage.getContent().stream()
-                        .map(NerveConductionMapper.INSTANCE::toResponse)
+                        .map(nerveConductionMapper::toResponse)
                         .toList())
                 .build();
     }
 
     @Override
+    @Transactional
     public NerveConductionResponse updateNerveConduction(Long id, NerveConductionRequest request) {
-        log.info("Cập nhật NerveConduction với id: {}", id);
+        log.info("Cập nhật xét nghiệm dẫn truyền thần kinh với ID: {}", id);
 
         NerveConduction nerveConduction = nerveConductionRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Không tìm thấy NerveConduction với id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy xét nghiệm dẫn truyền thần kinh với ID: " + id));
 
-        NerveConductionMapper.INSTANCE.updateEntity(nerveConduction, request);
+        // Kiểm tra Encounter tồn tại
+        Long encounterId = request.getEncounterId();
+        Encounter encounter = encounterRepository.findById(encounterId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy cuộc gặp với ID: " + encounterId));
 
-        Encounter encounter = new Encounter();
-        encounter.setId(request.getEncounterId());
+        nerveConductionMapper.updateEntity(nerveConduction, request);
         nerveConduction.setEncounter(encounter);
 
-        nerveConductionRepository.save(nerveConduction);
-        return NerveConductionMapper.INSTANCE.toResponse(nerveConduction);
+        NerveConduction updated = nerveConductionRepository.save(nerveConduction);
+        log.info("Cập nhật xét nghiệm dẫn truyền thần kinh thành công với ID: {}", id);
+
+        return nerveConductionMapper.toResponse(updated);
     }
 
     @Override
+    @Transactional
     public void deleteNerveConduction(Long id) {
-        log.info("Xóa NerveConduction với id: {}", id);
+        log.info("Xóa xét nghiệm dẫn truyền thần kinh với ID: {}", id);
         NerveConduction nerveConduction = nerveConductionRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Không tìm thấy NerveConduction với id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy xét nghiệm dẫn truyền thần kinh với ID: " + id));
         nerveConductionRepository.delete(nerveConduction);
+        log.info("Xóa xét nghiệm dẫn truyền thần kinh thành công với ID: {}", id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<NerveConductionResponse> getAllLabTestByDateAndStatus(LocalDate date, String status) {
-        log.info("Lấy danh sách NerveConduction theo ngày {} và trạng thái PENDING", date);
-        LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
-        LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
-        EMedicalTest statusEnum = EMedicalTest.valueOf(String.valueOf(status)); // statusString là "PENDING", "COMPLETED",...
-        return nerveConductionRepository.findByCreateDateBetweenAndStatus(startOfDay, endOfDay, statusEnum)
-                .stream()
-                .map(NerveConductionMapper.INSTANCE::toResponse).toList();
+        log.info("Truy xuất danh sách xét nghiệm dẫn truyền thần kinh theo ngày: {} và trạng thái: {}", date, status);
+        try {
+            EMedicalTest statusEnum = EMedicalTest.valueOf(status.toUpperCase());
+            LocalDateTime startOfDay = date.atStartOfDay();
+            LocalDateTime endOfDay = date.atTime(23, 59, 59);
+            return nerveConductionRepository.findByCreateDateBetweenAndStatus(startOfDay, endOfDay, statusEnum)
+                    .stream()
+                    .map(nerveConductionMapper::toResponse)
+                    .toList();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Trạng thái xét nghiệm không hợp lệ: " + status);
+        }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<NerveConductionResponse> getEncounterIdAndDate(Long encounterId, LocalDate date) {
-        log.info("Lấy danh sách NerveConduction theo encounterId {} và ngày {}", encounterId, date);
+        log.info("Truy xuất danh sách xét nghiệm dẫn truyền thần kinh theo cuộc gặp ID: {} và ngày: {}", encounterId, date);
+        if (!encounterRepository.existsById(encounterId)) {
+            throw new ResourceNotFoundException("Không tìm thấy cuộc gặp với ID: " + encounterId);
+        }
         LocalDate queryDate = (date != null) ? date : LocalDate.now();
-        LocalDateTime startOfDay = queryDate.atStartOfDay(); // 00:00:00
-        LocalDateTime endOfDay = queryDate.atTime(23, 59, 59); // 23:59:59
+        LocalDateTime startOfDay = queryDate.atStartOfDay();
+        LocalDateTime endOfDay = queryDate.atTime(23, 59, 59);
         return nerveConductionRepository.findByEncounterIdAndCreateDateBetween(encounterId, startOfDay, endOfDay)
                 .stream()
-                .map(NerveConductionMapper.INSTANCE::toResponse)
+                .map(nerveConductionMapper::toResponse)
                 .toList();
     }
-
 }

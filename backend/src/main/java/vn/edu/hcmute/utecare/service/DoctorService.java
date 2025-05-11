@@ -26,9 +26,9 @@ public interface DoctorService {
 
     PageResponse<DoctorResponse> searchDoctorsByMedicalSpecialtyId(Integer id, String keyword, int page, int size, String sort, String direction);
 
-    List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId, LocalDate date);
-
-    List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId);
-
-    MedicalTestDetailResponse mapToDetailResponse(MedicalTest medicalTest);
+//    List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId, LocalDate date);
+//
+//    List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId);
+//
+//    MedicalTestDetailResponse mapToDetailResponse(MedicalTest medicalTest);
 }

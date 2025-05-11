@@ -20,5 +20,5 @@ public class PrescriptionResponse {
 
     private Long encounterId;
 
-    private List<Long> prescriptionItemsId;
+    private List<PrescriptionItemResponse> prescriptionItems;
 }

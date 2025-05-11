@@ -1,40 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Table, Tabs, Button, Modal, Form, Input, Select, InputNumber, Typography, Image, Checkbox } from 'antd';
-import { SearchOutlined, EditOutlined, SaveOutlined } from '@ant-design/icons';
-import 'antd/dist/reset.css';
-import {formatDateTime, formatDate} from '../../utils/formatDate';
-import dayjs from 'dayjs';
+import React, { useState, useEffect } from "react";
+import {
+  Layout,
+  Table,
+  Tabs,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Select,
+  InputNumber,
+  Typography,
+  Image,
+  Checkbox,
+} from "antd";
+import { SearchOutlined, EditOutlined, SaveOutlined } from "@ant-design/icons";
+import "antd/dist/reset.css";
+import { formatDateTime, formatDate } from "../../utils/formatDate";
+import dayjs from "dayjs";
 const { Content } = Layout;
 const { TabPane } = Tabs;
 const { Option } = Select;
 const { Title } = Typography;
 
 const NurseHomePage = () => {
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   // API endpoints for different test types
   const API_ENDPOINTS = {
-    lab: 'http://localhost:8080/api/v1/laboratory-tests',
-    imaging: 'http://localhost:8080/api/v1/imaging-tests',
-    cardiac: 'http://localhost:8080/api/v1/cardiac-tests',
-    digestive: 'http://localhost:8080/api/v1/digestive-tests',
-    eeg: 'http://localhost:8080/api/v1/eeg',
-    emg: 'http://localhost:8080/api/v1/emg',
-    bloodgas: 'http://localhost:8080/api/v1/blood-gas-analysis',
-    nerve: 'http://localhost:8080/api/v1/nerve-conduction',
-    spirometry: 'http://localhost:8080/api/v1/spirometry',
+    lab: `${apiUrl}v1/laboratory-tests`,
+    imaging: `${apiUrl}v1/imaging-tests`,
+    cardiac: `${apiUrl}v1/cardiac-tests`,
+    digestive: `${apiUrl}v1/digestive-tests`,
+    eeg: `'${apiUrl}v1/eeg'`,
+    emg: `${apiUrl}v1/emg`,
+    bloodgas: `${apiUrl}v1/blood-gas-analysis`,
+    nerve: `${apiUrl}v1/nerve-conduction`,
+    spirometry: `${apiUrl}v1/spirometry`,
   };
 
   // Test type configurations
   const TEST_TYPES = {
-    labTest: { label: 'Xét nghiệm máu', fetchKey: 'lab', patientKey: 'labPatients', testKey: 'labTest' },
-    imagingTest: { label: 'Chẩn đoán hình ảnh', fetchKey: 'imaging', patientKey: 'imagingPatients', testKey: 'imagingTest' },
-    cardiacTest: { label: 'Tim mạch', fetchKey: 'cardiac', patientKey: 'cardiacPatients', testKey: 'cardiacTest' },
-    digestiveTest: { label: 'Tiêu hóa', fetchKey: 'digestive', patientKey: 'digestivePatients', testKey: 'digestiveTest' },
-    eegTest: { label: 'Điện não đồ', fetchKey: 'eeg', patientKey: 'eegPatients', testKey: 'eegTest' },
-    emgTest: { label: 'Điện cơ', fetchKey: 'emg', patientKey: 'emgPatients', testKey: 'emgTest' },
-    bloodgasTest: { label: 'Khí máu', fetchKey: 'bloodgas', patientKey: 'bloodgasPatients', testKey: 'bloodgasTest' },
-    nerveTest: { label: 'Dẫn truyền thần kinh', fetchKey: 'nerve', patientKey: 'nervePatients', testKey: 'nerveTest' },
-    spirometryTest: { label: 'Phổi', fetchKey: 'spirometry', patientKey: 'spirometryPatients', testKey: 'spirometryTest' },
+    labTest: {
+      label: "Xét nghiệm máu",
+      fetchKey: "lab",
+      patientKey: "labPatients",
+      testKey: "labTest",
+    },
+    imagingTest: {
+      label: "Chẩn đoán hình ảnh",
+      fetchKey: "imaging",
+      patientKey: "imagingPatients",
+      testKey: "imagingTest",
+    },
+    cardiacTest: {
+      label: "Tim mạch",
+      fetchKey: "cardiac",
+      patientKey: "cardiacPatients",
+      testKey: "cardiacTest",
+    },
+    digestiveTest: {
+      label: "Tiêu hóa",
+      fetchKey: "digestive",
+      patientKey: "digestivePatients",
+      testKey: "digestiveTest",
+    },
+    eegTest: {
+      label: "Điện não đồ",
+      fetchKey: "eeg",
+      patientKey: "eegPatients",
+      testKey: "eegTest",
+    },
+    emgTest: {
+      label: "Điện cơ",
+      fetchKey: "emg",
+      patientKey: "emgPatients",
+      testKey: "emgTest",
+    },
+    bloodgasTest: {
+      label: "Khí máu",
+      fetchKey: "bloodgas",
+      patientKey: "bloodgasPatients",
+      testKey: "bloodgasTest",
+    },
+    nerveTest: {
+      label: "Dẫn truyền thần kinh",
+      fetchKey: "nerve",
+      patientKey: "nervePatients",
+      testKey: "nerveTest",
+    },
+    spirometryTest: {
+      label: "Phổi",
+      fetchKey: "spirometry",
+      patientKey: "spirometryPatients",
+      testKey: "spirometryTest",
+    },
   };
   // State management for patients and tests
   const [labPatients, setLabPatients] = useState([]);
@@ -55,12 +114,12 @@ const NurseHomePage = () => {
   const [bloodgasTests, setBloodgasTests] = useState([]);
   const [nerveTests, setNerveTests] = useState([]);
   const [spirometryTests, setSpirometryTests] = useState([]);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [activeTest, setActiveTest] = useState('');
-  const [previewImage, setPreviewImage] = useState('');
+  const [activeTest, setActiveTest] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
   const [selectedPatient, setSelectedPatient] = useState(null);
-  const [storageImg, setStorageImg] = useState('');
+  const [storageImg, setStorageImg] = useState("");
   const [form] = Form.useForm();
   // Map test types to their setters for easier handling
   const testSetters = {
@@ -113,14 +172,14 @@ const NurseHomePage = () => {
   };
   // Patient table columns configuration
   const patientColumns = (testType) => [
-    { title: 'ID', dataIndex: 'id', key: 'id' },
-    { title: 'Họ và tên', dataIndex: 'name', key: 'name' },
-    { title: 'Tuổi', dataIndex: 'age', key: 'age' },
-    { title: 'Giới tính', dataIndex: 'gender', key: 'gender' },
-    { title: 'Số điện thoại', dataIndex: 'phone', key: 'phone' },
+    { title: "ID", dataIndex: "id", key: "id" },
+    { title: "Họ và tên", dataIndex: "name", key: "name" },
+    { title: "Tuổi", dataIndex: "age", key: "age" },
+    { title: "Giới tính", dataIndex: "gender", key: "gender" },
+    { title: "Số điện thoại", dataIndex: "phone", key: "phone" },
     {
-      title: 'Hành động',
-      key: 'action',
+      title: "Hành động",
+      key: "action",
       render: (_, record) => (
         <Button
           type="primary"
@@ -128,14 +187,22 @@ const NurseHomePage = () => {
           onClick={() => {
             setActiveTest(testType);
             setSelectedPatient(record);
-            const test = testDataMap[testType].find(t => t.encounterId === record.id) || {};
+            const test =
+              testDataMap[testType].find((t) => t.encounterId === record.id) ||
+              {};
             form.setFieldsValue({
               ...test,
-              status: 'COMPLETED',
-              pdfResult: testType === 'imagingTest' ? storageImg || test.pdfResult : test.pdfResult,
-              createDate: test.createDate ? dayjs(test.createDate).format('YYYY-MM-DD HH:mm:ss') : undefined,
+              status: "COMPLETED",
+              pdfResult:
+                testType === "imagingTest"
+                  ? storageImg || test.pdfResult
+                  : test.pdfResult,
+              createDate: test.createDate
+                ? dayjs(test.createDate).format("YYYY-MM-DD HH:mm:ss")
+                : undefined,
             });
-            if (testType === 'imagingTest' && test.pdfResult) setPreviewImage(test.pdfResult);
+            if (testType === "imagingTest" && test.pdfResult)
+              setPreviewImage(test.pdfResult);
             setIsModalVisible(true);
           }}
         >
@@ -145,26 +212,41 @@ const NurseHomePage = () => {
     },
   ];
   // Generalized fetch function for test data
-  const fetchTestData = async (testType, setTests, date = dayjs().format('YYYY-MM-DD')) => {
-    console.log('Fetching test data for:', testType, 'on date ---------------:', date);
+  const fetchTestData = async (
+    testType,
+    setTests,
+    date = dayjs().format("YYYY-MM-DD")
+  ) => {
+    console.log(
+      "Fetching test data for:",
+      testType,
+      "on date ---------------:",
+      date
+    );
     try {
-      const response = await fetch(`${API_ENDPOINTS[testType]}/by-date?date=${date}&status=PENDING`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const response = await fetch(
+        `${API_ENDPOINTS[testType]}/by-date?date=${date}&status=PENDING`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       if (!response.ok) {
-        console.error(`Error fetching ${testType} tests:`, await response.text());
+        console.error(
+          `Error fetching ${testType} tests:`,
+          await response.text()
+        );
         return;
       }
 
       const { data } = await response.json();
       if (data?.length) {
-        const formattedData = data.map(item => ({
+        const formattedData = data.map((item) => ({
           id: item.id,
           encounterId: item.encounterId,
           ...item,
-          status: item.status || 'PENDING',
+          status: item.status || "PENDING",
           createDate: formatDateTime(item.createDate),
         }));
         setTests(formattedData);
@@ -177,76 +259,84 @@ const NurseHomePage = () => {
   // Fetch patient details based on encounter IDs
   const fetchPatientDetails = async (encounterIds, setPatients) => {
     if (!encounterIds?.length) {
-      console.warn('No encounter IDs provided');
+      console.warn("No encounter IDs provided");
       return;
     }
 
     try {
-      const idsString = encounterIds.join(',');
-      const response = await fetch(`http://localhost:8080/api/v1/encounters/all/detail-patient?ids=${idsString}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const idsString = encounterIds.join(",");
+      const response = await fetch(
+        `${apiUrl}v1/encounters/all/detail-patient?ids=${idsString}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       if (!response.ok) {
-        console.error('Error fetching patients:', await response.text());
+        console.error("Error fetching patients:", await response.text());
         return;
       }
 
       const { data } = await response.json();
       if (data?.length) {
-        const patients = data.map(item => ({
+        const patients = data.map((item) => ({
           id: item.id,
-          name: item.medicalRecord?.patient?.name || 'Unknown',
+          name: item.medicalRecord?.patient?.name || "Unknown",
           dob: item.medicalRecord?.patient?.dob || null,
           age: item.medicalRecord?.patient?.dob
-            ? Math.floor((new Date() - new Date(item.medicalRecord.patient.dob)) / (1000 * 60 * 60 * 24 * 365))
+            ? Math.floor(
+                (new Date() - new Date(item.medicalRecord.patient.dob)) /
+                  (1000 * 60 * 60 * 24 * 365)
+              )
             : null,
-          gender: item.medicalRecord?.patient?.gender === 'MALE' ? 'Nam' : 'Nữ',
-          phone: item.medicalRecord?.patient?.phone || 'Unknown',
+          gender: item.medicalRecord?.patient?.gender === "MALE" ? "Nam" : "Nữ",
+          phone: item.medicalRecord?.patient?.phone || "Unknown",
         }));
         setPatients(patients);
       } else {
         setPatients([]);
       }
     } catch (error) {
-      console.error('Error fetching patients:', error);
+      console.error("Error fetching patients:", error);
     }
   };
 
   // Save test results to the server
   const handleSaveTest = async (values) => {
-    console.log('Form values -------------------:', values);
+    console.log("Form values -------------------:", values);
     try {
-      const testType = activeTest.replace('Test', '');
+      const testType = activeTest.replace("Test", "");
       const response = await fetch(`${API_ENDPOINTS[testType]}/${values.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
-      console.log('Response handleSaveTest --------------:', response);
+      console.log("Response handleSaveTest --------------:", response);
       if (!response.ok) {
-        console.error('Error saving test:', await response.text());
+        console.error("Error saving test:", await response.text());
         return;
       }
       // Refresh test data after saving
       await fetchTestData(testType, testSetters[testType]);
       setIsModalVisible(false);
       form.resetFields();
-      setPreviewImage('');
+      setPreviewImage("");
       setSelectedPatient(null);
     } catch (error) {
-      console.error('Error saving test:', error);
+      console.error("Error saving test:", error);
     }
   };
   // Filter patients based on search text
   const filterPatients = (patients) =>
-  patients.filter((patient) => patient.name?.toLowerCase().includes(searchText.toLowerCase()));
+    patients.filter((patient) =>
+      patient.name?.toLowerCase().includes(searchText.toLowerCase())
+    );
   // Fetch data when component mounts or tab changes
   // Fetch initial data on component mount
   useEffect(() => {
     Object.keys(API_ENDPOINTS).forEach((testType) => {
-      fetchTestData(testType, testSetters[testType], '2025-05-08');
+      fetchTestData(testType, testSetters[testType], "2025-05-08");
     });
   }, []);
   // Fetch detailed lab patients when labTest changes
@@ -266,32 +356,48 @@ const NurseHomePage = () => {
 
     testPatientMap.forEach(({ tests, setter }) => {
       if (tests.length) {
-        fetchPatientDetails([...new Set(tests.map(test => test.encounterId))], setter);
+        fetchPatientDetails(
+          [...new Set(tests.map((test) => test.encounterId))],
+          setter
+        );
       }
     });
-  }, [labTests, imagingTests, cardiacTests, digestiveTests, eegTests, emgTests, bloodgasTests, nerveTests, spirometryTests]);
+  }, [
+    labTests,
+    imagingTests,
+    cardiacTests,
+    digestiveTests,
+    eegTests,
+    emgTests,
+    bloodgasTests,
+    nerveTests,
+    spirometryTests,
+  ]);
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
     const data = new FormData();
-    data.append('file', file);
-    data.append('upload_preset', 'hcmute-care');
-    data.append('cloud_name', 'dujzjcmai');
+    data.append("file", file);
+    data.append("upload_preset", "hcmute-care");
+    data.append("cloud_name", "dujzjcmai");
 
     try {
-      const res = await fetch('https://api.cloudinary.com/v1_1/dujzjcmai/image/upload', {
-        method: 'POST',
-        body: data,
-      });
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dujzjcmai/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
 
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
       const uploadImageURL = await res.json();
       // const newId = storageImg.length > 0 ? Math.max(...storageImg.map(img => img.id)) + 1 : 1;
-      if(!uploadImageURL || !uploadImageURL.url) {
-        console.error('Invalid image URL:', uploadImageURL);
+      if (!uploadImageURL || !uploadImageURL.url) {
+        console.error("Invalid image URL:", uploadImageURL);
         return;
       }
       const imageUploadSuccess = uploadImageURL.url;
@@ -299,9 +405,9 @@ const NurseHomePage = () => {
       setPreviewImage(uploadImageURL.url);
       // Sync with form
       form.setFieldsValue({ pdfResult: imageUploadSuccess });
-      console.log('storageImg before modal:', storageImg);
+      console.log("storageImg before modal:", storageImg);
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error("Error uploading file:", error);
     }
   };
 
@@ -311,16 +417,31 @@ const NurseHomePage = () => {
         {/* Display patient info outside the form */}
         {selectedPatient && (
           <div style={{ marginBottom: 16 }}>
-            <span>Bệnh nhân: </span>{selectedPatient.name}<br />
-            <span>Ngày sinh: </span>{formatDate(selectedPatient.dob) || 'Unknown'}<br />
-            <span>Giới tính: </span>{selectedPatient.gender || 'Unknown'}
+            <span>Bệnh nhân: </span>
+            {selectedPatient.name}
+            <br />
+            <span>Ngày sinh: </span>
+            {formatDate(selectedPatient.dob) || "Unknown"}
+            <br />
+            <span>Giới tính: </span>
+            {selectedPatient.gender || "Unknown"}
           </div>
         )}
-        <Form.Item name="id" hidden><Input /></Form.Item>
-        <Form.Item name="encounterId" hidden><Input /></Form.Item>
-        <Form.Item name="evaluate" label="Đánh giá"><Input.TextArea rows={3} /></Form.Item>
-        <Form.Item name="notes" label="Ghi chú"><Input.TextArea rows={3} /></Form.Item>
-        <Form.Item name="createDate" label="Ngày tạo"><Input /></Form.Item>
+        <Form.Item name="id" hidden>
+          <Input />
+        </Form.Item>
+        <Form.Item name="encounterId" hidden>
+          <Input />
+        </Form.Item>
+        <Form.Item name="evaluate" label="Đánh giá">
+          <Input.TextArea rows={3} />
+        </Form.Item>
+        <Form.Item name="notes" label="Ghi chú">
+          <Input.TextArea rows={3} />
+        </Form.Item>
+        <Form.Item name="createDate" label="Ngày tạo">
+          <Input />
+        </Form.Item>
         <Form.Item name="status" label="Trạng thái">
           <Select>
             <Option value="PENDING">PENDING</Option>
@@ -331,189 +452,385 @@ const NurseHomePage = () => {
     );
     return (
       <Form form={form} layout="vertical" onFinish={handleSaveTest}>
-      {commonFields}
-      {
-        (() => {
+        {commonFields}
+        {(() => {
           switch (activeTest) {
-            case 'labTest':
+            case "labTest":
               return (
                 <div className="grid grid-flow-row grid-cols-3 gap-4">
-                  {['rbc', 'hct', 'hgb', 'mcv', 'mch', 'olt', 'wbc', 'gra', 'lym', 'momo'].map(field => (
-                    <Form.Item key={field} name={field} label={field.toUpperCase()}>
+                  {[
+                    "rbc",
+                    "hct",
+                    "hgb",
+                    "mcv",
+                    "mch",
+                    "olt",
+                    "wbc",
+                    "gra",
+                    "lym",
+                    "momo",
+                  ].map((field) => (
+                    <Form.Item
+                      key={field}
+                      name={field}
+                      label={field.toUpperCase()}
+                    >
                       <InputNumber step={0.01} className="w-full" />
                     </Form.Item>
                   ))}
                 </div>
               );
-            case 'imagingTest':
+            case "imagingTest":
               return (
                 <>
-                    <Form.Item name="pdfResult" hidden><Input /></Form.Item>
-                    <Form.Item label="Tải ảnh lên">
-                      <Input type="file" accept="image/*" onChange={handleFileUpload} />
+                  <Form.Item name="pdfResult" hidden>
+                    <Input />
+                  </Form.Item>
+                  <Form.Item label="Tải ảnh lên">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                    />
+                  </Form.Item>
+                  {previewImage && (
+                    <Form.Item label="Xem trước ảnh">
+                      <Image src={previewImage} width={200} />
                     </Form.Item>
-                    {previewImage && (
-                      <Form.Item label="Xem trước ảnh">
-                        <Image src={previewImage} width={200} />
-                      </Form.Item>
-                    )}
+                  )}
                 </>
               );
-            case 'cardiacTest':
+            case "cardiacTest":
               return (
                 <>
                   <Form.Item name="type" label="Loại">
                     <Select>
-                      <Option value="StressTest">Kiểm tra căng thẳng (đo phản ứng tim khi gắng sức)</Option>
-                      <Option value="HolterMonitor">Theo dõi Holter (ghi điện tâm liên tục trong 24-48 giờ)</Option>
-                      <Option value="ECG">Điện tâm đồ (ghi hoạt động điện của tim)</Option>
+                      <Option value="StressTest">
+                        Kiểm tra căng thẳng (đo phản ứng tim khi gắng sức)
+                      </Option>
+                      <Option value="HolterMonitor">
+                        Theo dõi Holter (ghi điện tâm liên tục trong 24-48 giờ)
+                      </Option>
+                      <Option value="ECG">
+                        Điện tâm đồ (ghi hoạt động điện của tim)
+                      </Option>
                     </Select>
                   </Form.Item>
                   <Form.Item label="Tải ảnh lên">
-                    <Input type="file" accept="image/*" onChange={handleFileUpload} />
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                    />
                   </Form.Item>
                   {previewImage && (
                     <Form.Item label="Xem trước ảnh">
                       <Image src={previewImage} width={200} />
                     </Form.Item>
                   )}
-                  <Form.Item name="testName" label="Tên kiểm tra"><Input /></Form.Item>
-                  <Form.Item name="organSystem" label="Hệ cơ quan"><Input /></Form.Item>
-                  <Form.Item name="isInvasive" label="Có xâm lấn" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item name="testName" label="Tên kiểm tra">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="organSystem" label="Hệ cơ quan">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name="isInvasive"
+                    label="Có xâm lấn"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="isQuantitative" label="Có định lượng" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item
+                    name="isQuantitative"
+                    label="Có định lượng"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="recordDuration" label="Thời gian ghi"><InputNumber min={0} /></Form.Item>
+                  <Form.Item name="recordDuration" label="Thời gian ghi">
+                    <InputNumber min={0} />
+                  </Form.Item>
                 </>
               );
-            case 'digestiveTest':
+            case "digestiveTest":
               return (
                 <>
-                  <Form.Item name="duration" label="Thời gian diễn ra"><Input /></Form.Item>
+                  <Form.Item name="duration" label="Thời gian diễn ra">
+                    <Input />
+                  </Form.Item>
                   <Form.Item label="Tải ảnh lên">
-                    <Input type="file" accept="image/*" onChange={handleFileUpload} />
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                    />
                   </Form.Item>
                   {previewImage && (
                     <Form.Item label="Xem trước ảnh">
                       <Image src={previewImage} width={200} />
                     </Form.Item>
                   )}
-                  <Form.Item name="testName" label="Tên kiểm tra"><Input /></Form.Item>
-                  <Form.Item name="organSystem" label="Hệ cơ quan"><Input /></Form.Item>
-                  <Form.Item name="isInvasive" label="Có xâm lấn" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item name="testName" label="Tên kiểm tra">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="organSystem" label="Hệ cơ quan">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name="isInvasive"
+                    label="Có xâm lấn"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="isQuantitative" label="Có định lượng" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item
+                    name="isQuantitative"
+                    label="Có định lượng"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="recordDuration" label="Thời gian ghi"><InputNumber min={0} /></Form.Item>
+                  <Form.Item name="recordDuration" label="Thời gian ghi">
+                    <InputNumber min={0} />
+                  </Form.Item>
                 </>
               );
-            case 'eegTest':
+            case "eegTest":
               return (
                 <>
                   <Form.Item label="Tải ảnh lên">
-                    <Input type="file" accept="image/*" onChange={handleFileUpload} />
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                    />
                   </Form.Item>
                   {previewImage && (
                     <Form.Item label="Xem trước ảnh">
                       <Image src={previewImage} width={200} />
                     </Form.Item>
                   )}
-                  <Form.Item name="testName" label="Tên kiểm tra"><Input /></Form.Item>
-                  <Form.Item name="organSystem" label="Hệ cơ quan"><Input /></Form.Item>
-                  <Form.Item name="isInvasive" label="Có xâm lấn" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item name="testName" label="Tên kiểm tra">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="organSystem" label="Hệ cơ quan">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name="isInvasive"
+                    label="Có xâm lấn"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="isQuantitative" label="Có định lượng" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item
+                    name="isQuantitative"
+                    label="Có định lượng"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="detectSeizure" label="Phát hiện cơn co giật" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item
+                    name="detectSeizure"
+                    label="Phát hiện cơn co giật"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="channels" label="Số lượng điện cực"><InputNumber min={0} /></Form.Item>
-                  <Form.Item name="recordDuration" label="Thời gian ghi"><InputNumber min={0} /></Form.Item>
+                  <Form.Item name="channels" label="Số lượng điện cực">
+                    <InputNumber min={0} />
+                  </Form.Item>
+                  <Form.Item name="recordDuration" label="Thời gian ghi">
+                    <InputNumber min={0} />
+                  </Form.Item>
                 </>
               );
-            case 'emgTest':
+            case "emgTest":
               return (
                 <>
                   <Form.Item label="Tải ảnh lên">
-                    <Input type="file" accept="image/*" onChange={handleFileUpload} />
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                    />
                   </Form.Item>
                   {previewImage && (
                     <Form.Item label="Xem trước ảnh">
                       <Image src={previewImage} width={200} />
                     </Form.Item>
                   )}
-                  <Form.Item name="testName" label="Tên kiểm tra"><Input /></Form.Item>
-                  <Form.Item name="organSystem" label="Hệ cơ quan"><Input /></Form.Item>
-                  <Form.Item name="isInvasive" label="Có xâm lấn" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item name="testName" label="Tên kiểm tra">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="organSystem" label="Hệ cơ quan">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name="isInvasive"
+                    label="Có xâm lấn"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="isQuantitative" label="Có định lượng" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item
+                    name="isQuantitative"
+                    label="Có định lượng"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="recordDuration" label="Thời gian ghi"><InputNumber min={0} /></Form.Item>
+                  <Form.Item name="recordDuration" label="Thời gian ghi">
+                    <InputNumber min={0} />
+                  </Form.Item>
                 </>
               );
-            case 'bloodgasTest':
+            case "bloodgasTest":
               return (
                 <>
-                  <Form.Item name="id" hidden><Input /></Form.Item>
-                  <Form.Item name="testName" label="Tên kiểm tra"><Input /></Form.Item>
-                  <Form.Item name="organSystem" label="Hệ cơ quan"><Input /></Form.Item>
-                  <div className='grid grid-flow-row grid-cols-3 gap-4'>
-                      <Form.Item name="ph" label="pH"><InputNumber step={0.01} className="w-full" /></Form.Item>
-                      <Form.Item name="pco2" label="pCO2"><InputNumber step={0.01} className="w-full" /></Form.Item>
-                      <Form.Item name="po2" label="pO2"><InputNumber step={0.01} className="w-full" /></Form.Item>
-                    </div>
-                  <Form.Item name="isInvasive" label="Có xâm lấn" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item name="id" hidden>
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="testName" label="Tên kiểm tra">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="organSystem" label="Hệ cơ quan">
+                    <Input />
+                  </Form.Item>
+                  <div className="grid grid-flow-row grid-cols-3 gap-4">
+                    <Form.Item name="ph" label="pH">
+                      <InputNumber step={0.01} className="w-full" />
+                    </Form.Item>
+                    <Form.Item name="pco2" label="pCO2">
+                      <InputNumber step={0.01} className="w-full" />
+                    </Form.Item>
+                    <Form.Item name="po2" label="pO2">
+                      <InputNumber step={0.01} className="w-full" />
+                    </Form.Item>
+                  </div>
+                  <Form.Item
+                    name="isInvasive"
+                    label="Có xâm lấn"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="isQuantitative" label="Có định lượng" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item
+                    name="isQuantitative"
+                    label="Có định lượng"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
                   <Form.Item name="testEnvironment" label="Môi trường test">
                     <Select>
-                      <Option value="Arterial">Arterial (mẫu máu động mạch)</Option>
+                      <Option value="Arterial">
+                        Arterial (mẫu máu động mạch)
+                      </Option>
                       <Option value="Venous">Venous (mẫu máu tĩnh mạch)</Option>
-                      <Option value="Capillary">Capillary (mẫu máu mao mạch)</Option>
+                      <Option value="Capillary">
+                        Capillary (mẫu máu mao mạch)
+                      </Option>
                     </Select>
                   </Form.Item>
                   <Form.Item name="patientPosition" label="Tư thế bệnh nhân">
@@ -523,10 +840,18 @@ const NurseHomePage = () => {
                       <Option value="Standing">Đứng</Option>
                     </Select>
                   </Form.Item>
-                  <Form.Item name="recordDuration" label="Thời gian ghi"><InputNumber min={0} /></Form.Item>
-                  <Form.Item name="evaluate" label="Đánh giá"><Input.TextArea rows={2}  /></Form.Item>
-                  <Form.Item name="notes" label="Ghi chú"><Input.TextArea rows={3} /></Form.Item>
-                  <Form.Item name="encounterId" label="ID cuộc gặp" hidden><InputNumber min={0} /></Form.Item>
+                  <Form.Item name="recordDuration" label="Thời gian ghi">
+                    <InputNumber min={0} />
+                  </Form.Item>
+                  <Form.Item name="evaluate" label="Đánh giá">
+                    <Input.TextArea rows={2} />
+                  </Form.Item>
+                  <Form.Item name="notes" label="Ghi chú">
+                    <Input.TextArea rows={3} />
+                  </Form.Item>
+                  <Form.Item name="encounterId" label="ID cuộc gặp" hidden>
+                    <InputNumber min={0} />
+                  </Form.Item>
                   <Form.Item name="status" label="Trạng thái">
                     <Select>
                       <Option value="PENDING">PENDING</Option>
@@ -535,26 +860,56 @@ const NurseHomePage = () => {
                   </Form.Item>
                 </>
               );
-              case 'nerveTest':
+            case "nerveTest":
               return (
-                  <>
-                    <Form.Item name="testName" label="Tên kiểm tra"><Input /></Form.Item>
-                  <Form.Item name="organSystem" label="Hệ cơ quan"><Input /></Form.Item>
-                  <Form.Item name="nerve" label="Dây thần kinh"><Input /></Form.Item>
-                  <Form.Item name="conductionSpeed" label="Tốc độ dẫn truyền"><InputNumber step={0.01} className="w-full" /></Form.Item>
-                  <Form.Item name="isInvasive" label="Có xâm lấn" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                <>
+                  <Form.Item name="testName" label="Tên kiểm tra">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="organSystem" label="Hệ cơ quan">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="nerve" label="Dây thần kinh">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="conductionSpeed" label="Tốc độ dẫn truyền">
+                    <InputNumber step={0.01} className="w-full" />
+                  </Form.Item>
+                  <Form.Item
+                    name="isInvasive"
+                    label="Có xâm lấn"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="isQuantitative" label="Có định lượng" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item
+                    name="isQuantitative"
+                    label="Có định lượng"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="testEnvironment" label="Môi trường test"><Input /></Form.Item>
+                  <Form.Item name="testEnvironment" label="Môi trường test">
+                    <Input />
+                  </Form.Item>
                   <Form.Item name="patientPosition" label="Tư thế bệnh nhân">
                     <Select>
                       <Option value="Supine">Nằm ngửa</Option>
@@ -562,35 +917,75 @@ const NurseHomePage = () => {
                       <Option value="Standing">Đứng</Option>
                     </Select>
                   </Form.Item>
-                  <Form.Item name="recordDuration" label="Thời gian ghi"><InputNumber min={0} /></Form.Item>
-                  </>
+                  <Form.Item name="recordDuration" label="Thời gian ghi">
+                    <InputNumber min={0} />
+                  </Form.Item>
+                </>
               );
-            case 'spirometryTest':
+            case "spirometryTest":
               return (
                 <>
-                  <Form.Item name="testName" label="Tên kiểm tra"><Input /></Form.Item>
-                  <Form.Item name="organSystem" label="Hệ cơ quan"><Input /></Form.Item>
-                  <div className='grid grid-flow-row grid-cols-3 gap-4'>
-                      <Form.Item name="fevl" label="Thể tích khí thở ra mạnh trong 1 giây đầu tiên"><InputNumber step={0.01} className="w-full" /></Form.Item>
-                      <Form.Item name="fvc" label="Tổng dung tích khí thở ra mạnh"><InputNumber step={0.01} className="w-full" /></Form.Item>
-                    </div>
-                  <Form.Item name="isInvasive" label="Có xâm lấn" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item name="testName" label="Tên kiểm tra">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="organSystem" label="Hệ cơ quan">
+                    <Input />
+                  </Form.Item>
+                  <div className="grid grid-flow-row grid-cols-3 gap-4">
+                    <Form.Item
+                      name="fevl"
+                      label="Thể tích khí thở ra mạnh trong 1 giây đầu tiên"
+                    >
+                      <InputNumber step={0.01} className="w-full" />
+                    </Form.Item>
+                    <Form.Item
+                      name="fvc"
+                      label="Tổng dung tích khí thở ra mạnh"
+                    >
+                      <InputNumber step={0.01} className="w-full" />
+                    </Form.Item>
+                  </div>
+                  <Form.Item
+                    name="isInvasive"
+                    label="Có xâm lấn"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
-                  <Form.Item name="isQuantitative" label="Có định lượng" valuePropName="checked">
-                    <div className='flex flex-row justify-around items-center sapce-x-4'>
-                      <div><Checkbox /><span>Có</span></div>
-                      <div><Checkbox /><span>Không</span></div>
+                  <Form.Item
+                    name="isQuantitative"
+                    label="Có định lượng"
+                    valuePropName="checked"
+                  >
+                    <div className="flex flex-row justify-around items-center sapce-x-4">
+                      <div>
+                        <Checkbox />
+                        <span>Có</span>
+                      </div>
+                      <div>
+                        <Checkbox />
+                        <span>Không</span>
+                      </div>
                     </div>
                   </Form.Item>
                   <Form.Item name="testEnvironment" label="Môi trường test">
                     <Select>
-                      <Option value="Arterial">Arterial (mẫu máu động mạch)</Option>
+                      <Option value="Arterial">
+                        Arterial (mẫu máu động mạch)
+                      </Option>
                       <Option value="Venous">Venous (mẫu máu tĩnh mạch)</Option>
-                      <Option value="Capillary">Capillary (mẫu máu mao mạch)</Option>
+                      <Option value="Capillary">
+                        Capillary (mẫu máu mao mạch)
+                      </Option>
                     </Select>
                   </Form.Item>
                   <Form.Item name="patientPosition" label="Tư thế bệnh nhân">
@@ -600,22 +995,25 @@ const NurseHomePage = () => {
                       <Option value="Standing">Đứng</Option>
                     </Select>
                   </Form.Item>
-                  <Form.Item name="recordDuration" label="Thời gian ghi"><InputNumber min={0} /></Form.Item>
+                  <Form.Item name="recordDuration" label="Thời gian ghi">
+                    <InputNumber min={0} />
+                  </Form.Item>
                 </>
               );
             default:
               return <div>Chọn loại xét nghiệm</div>;
           }
-        })()
-      }
-    </Form>
-    )
+        })()}
+      </Form>
+    );
   };
 
   return (
     <div className="h-full w-full bg-gray-100">
       <div className="ml-2 p-6 bg-white rounded-lg shadow-lg">
-        <Title level={2} className="mb-6 text-blue-600">Kết quả cận lâm sàng</Title>
+        <Title level={2} className="mb-6 text-blue-600">
+          Kết quả cận lâm sàng
+        </Title>
         <Input
           placeholder="Tìm kiếm bệnh nhân..."
           prefix={<SearchOutlined />}
@@ -625,17 +1023,35 @@ const NurseHomePage = () => {
         />
         <Tabs defaultActiveKey="1">
           <TabPane tab="Xét nghiệm máu" key="1">
-            <Table columns={patientColumns('labTest')} dataSource={filterPatients(labPatients)} rowKey="id" pagination={{ pageSize: 5 }} />
+            <Table
+              columns={patientColumns("labTest")}
+              dataSource={filterPatients(labPatients)}
+              rowKey="id"
+              pagination={{ pageSize: 5 }}
+            />
           </TabPane>
           <TabPane tab="Chẩn đoán hình ảnh" key="2">
-            <Table columns={patientColumns('imagingTest')} dataSource={filterPatients(imagingPatients)} rowKey="id" pagination={{ pageSize: 5 }} />
+            <Table
+              columns={patientColumns("imagingTest")}
+              dataSource={filterPatients(imagingPatients)}
+              rowKey="id"
+              pagination={{ pageSize: 5 }}
+            />
           </TabPane>
           <TabPane tab="Thăm dò chức năng" key="3">
             <Tabs defaultActiveKey="cardiacTest">
               {/* Render all functional test tabs defined in TEST_TYPES */}
               {Object.entries(TEST_TYPES)
-                .filter(([key]) => 
-                  ['cardiacTest', 'digestiveTest', 'eegTest', 'emgTest', 'bloodgasTest', 'nerveTest', 'spirometryTest'].includes(key)
+                .filter(([key]) =>
+                  [
+                    "cardiacTest",
+                    "digestiveTest",
+                    "eegTest",
+                    "emgTest",
+                    "bloodgasTest",
+                    "nerveTest",
+                    "spirometryTest",
+                  ].includes(key)
                 )
                 .map(([key, { label }]) => (
                   <TabPane tab={label} key={key}>
@@ -652,22 +1068,34 @@ const NurseHomePage = () => {
           </TabPane>
         </Tabs>
         <Modal
-          title={`Cập nhật ${activeTest.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}`}
+          title={`Cập nhật ${activeTest
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, (str) => str.toUpperCase())}`}
           open={isModalVisible}
           onCancel={() => {
             setIsModalVisible(false);
             form.resetFields();
-            setPreviewImage('');
+            setPreviewImage("");
             setSelectedPatient(null);
           }}
           footer={[
-            <Button key="cancel" onClick={() => {
-              setIsModalVisible(false);
-              form.resetFields();
-              setPreviewImage('');
-              setSelectedPatient(null);
-            }}>Hủy</Button>,
-            <Button key="submit" type="primary" icon={<SaveOutlined />} onClick={() => form.submit()}>
+            <Button
+              key="cancel"
+              onClick={() => {
+                setIsModalVisible(false);
+                form.resetFields();
+                setPreviewImage("");
+                setSelectedPatient(null);
+              }}
+            >
+              Hủy
+            </Button>,
+            <Button
+              key="submit"
+              type="primary"
+              icon={<SaveOutlined />}
+              onClick={() => form.submit()}
+            >
               Lưu
             </Button>,
           ]}

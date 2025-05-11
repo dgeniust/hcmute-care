@@ -19,7 +19,5 @@ public interface CustomerService {
 
     PageResponse<CustomerResponse> getAllCustomers(int page, int size, String sort, String direction);
 
-    PageResponse<MedicalRecordResponse> getAllMedicalRecords(Long customerId, int page, int size, String sort, String direction);
-
     PageResponse<CustomerResponse> searchCustomers(String keyword, Membership membership, int page, int size, String sort, String direction);
 }

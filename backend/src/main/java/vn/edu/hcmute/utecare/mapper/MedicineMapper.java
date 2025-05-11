@@ -8,10 +8,8 @@ import vn.edu.hcmute.utecare.dto.request.MedicineRequest;
 import vn.edu.hcmute.utecare.dto.response.MedicineResponse;
 import vn.edu.hcmute.utecare.model.Medicine;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MedicineMapper {
-
-    MedicineMapper INSTANCE = Mappers.getMapper(MedicineMapper.class);
 
     Medicine toEntity(MedicineRequest request);
 

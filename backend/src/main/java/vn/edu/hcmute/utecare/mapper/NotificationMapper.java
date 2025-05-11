@@ -7,10 +7,8 @@ import vn.edu.hcmute.utecare.dto.request.NotificationRequest;
 import vn.edu.hcmute.utecare.dto.response.NotificationResponse;
 import vn.edu.hcmute.utecare.model.Notification;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface NotificationMapper {
-    NotificationMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(NotificationMapper.class);
-
     Notification toEntity(NotificationRequest request);
 
     NotificationResponse toResponse(Notification notification);

@@ -1,10 +1,8 @@
 package vn.edu.hcmute.utecare.service.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,7 +29,10 @@ import vn.edu.hcmute.utecare.util.enumeration.PaymentStatus;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
 
 @Service
 @RequiredArgsConstructor
@@ -46,16 +47,16 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public String createPaymentUrl(PaymentRequest request, HttpServletRequest httpServletRequest) {
-        log.info("Creating payment URL for appointment ID: {}", request.getAppointmentId());
+        log.info("Tạo URL thanh toán cho cuộc hẹn ID: {}", request.getAppointmentId());
 
         Appointment appointment = appointmentRepository.findById(request.getAppointmentId())
-                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with ID: " + request.getAppointmentId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy cuộc hẹn với ID: " + request.getAppointmentId()));
 
         BigDecimal amount = BigDecimal.ZERO;
         for (Ticket ticket : appointment.getTickets()) {
             BigDecimal price = ticket.getScheduleSlot().getSchedule().getDoctor().getMedicalSpecialty().getPrice();
             if (price == null) {
-                throw new IllegalStateException("Price is not defined for medical specialty");
+                throw new IllegalStateException("Giá chưa được định nghĩa cho chuyên khoa");
             }
             amount = amount.add(price);
         }
@@ -64,7 +65,7 @@ public class PaymentServiceImpl implements PaymentService {
         String vnp_TxnRef = VNPayUtil.getRandomNumber(8);
         vnpParams.put("vnp_TxnRef", vnp_TxnRef);
         vnpParams.put("vnp_Amount", String.valueOf(amount.multiply(new BigDecimal(100)).longValue()));
-        vnpParams.put("vnp_OrderInfo", "other");
+        vnpParams.put("vnp_OrderInfo", "Thanh toán cuộc hẹn ID: " + request.getAppointmentId());
         vnpParams.put("vnp_IpAddr", VNPayUtil.getIpAddress(httpServletRequest));
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
@@ -91,15 +92,15 @@ public class PaymentServiceImpl implements PaymentService {
                 .paymentDate(LocalDateTime.now())
                 .build();
         paymentRepository.save(payment);
+        log.info("Tạo URL thanh toán thành công cho giao dịch: {}", vnp_TxnRef);
 
         return paymentUrl;
     }
 
-
     @Transactional
     @Override
-    public PaymentAppointmentResponse processPaymentReturn(HttpServletRequest request){
-        log.info("Processing payment return for request: {}", request);
+    public PaymentAppointmentResponse processPaymentReturn(HttpServletRequest request) {
+        log.info("Xử lý phản hồi thanh toán VNPay: {}", request.getQueryString());
 
         Map<String, String> vnpParams = new HashMap<>();
         for (String paramName : request.getParameterMap().keySet()) {
@@ -110,7 +111,7 @@ public class PaymentServiceImpl implements PaymentService {
         String hashData = VNPayUtil.getPaymentURL(vnpParams, false);
         String calculatedHash = VNPayUtil.hmacSHA512(vnpayConfig.getSecretKey(), hashData);
         if (!calculatedHash.equalsIgnoreCase(vnpSecureHash)) {
-            throw new SecurityException("Invalid secure hash");
+            throw new SecurityException("Mã bảo mật không hợp lệ");
         }
 
         String vnpResponseCode = vnpParams.get("vnp_ResponseCode");
@@ -119,19 +120,20 @@ public class PaymentServiceImpl implements PaymentService {
         String vnpTxnRef = vnpParams.get("vnp_TxnRef");
 
         Payment payment = paymentRepository.findByTransactionId(vnpTxnRef)
-                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with transaction ID: " + vnpTxnRef));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy giao dịch thanh toán với mã: " + vnpTxnRef));
 
         if ("00".equals(vnpResponseCode)) {
             payment.setPaymentStatus(PaymentStatus.COMPLETED);
             payment.setTransactionId(vnpTransactionNo);
             payment.setPaymentDate(VNPayUtil.parseVNPayDate(vnpPayDate));
             paymentRepository.save(payment);
-
             appointmentService.confirmAppointment(payment.getAppointment().getId());
+            log.info("Thanh toán thành công cho giao dịch: {}", vnpTransactionNo);
         } else {
             payment.setPaymentStatus(PaymentStatus.FAILED);
             paymentRepository.save(payment);
             appointmentService.cancelAppointment(payment.getAppointment().getId());
+            log.info("Thanh toán thất bại cho giao dịch: {}", vnpTxnRef);
         }
         return paymentMapper.toPaymentAppointmentResponse(payment);
     }
@@ -139,18 +141,20 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional(readOnly = true)
     public PaymentAppointmentResponse getPaymentByTransactionId(String transactionId) {
-        log.info("Fetching payment with transaction ID: {}", transactionId);
+        log.info("Truy xuất thanh toán với mã giao dịch: {}", transactionId);
         Payment payment = paymentRepository.findByTransactionId(transactionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with transaction ID: " + transactionId));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy giao dịch thanh toán với mã: " + transactionId));
+        log.info("Truy xuất thanh toán thành công với mã giao dịch: {}", transactionId);
         return paymentMapper.toPaymentAppointmentResponse(payment);
     }
 
     @Transactional(readOnly = true)
     @Override
     public PaymentAppointmentResponse getPaymentByAppointmentId(Long appointmentId) {
-        log.info("Fetching payment with appointment ID: {}", appointmentId);
+        log.info("Truy xuất thanh toán với ID cuộc hẹn: {}", appointmentId);
         Payment payment = paymentRepository.findByAppointment_Id(appointmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with appointment ID: " + appointmentId));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy giao dịch thanh toán với ID cuộc hẹn: " + appointmentId));
+        log.info("Truy xuất thanh toán thành công với ID cuộc hẹn: {}", appointmentId);
         return paymentMapper.toPaymentAppointmentResponse(payment);
     }
 
@@ -163,9 +167,8 @@ public class PaymentServiceImpl implements PaymentService {
             int page,
             int size,
             String sort,
-            String direction
-    ){
-        log.info("Fetching all payments with transaction ID: {}, payment status: {}, start date: {}, end date: {}, page: {}, size: {}, sort: {}, direction: {}",
+            String direction) {
+        log.info("Truy xuất danh sách giao dịch thanh toán: mã giao dịch={}, trạng thái={}, ngày bắt đầu={}, ngày kết thúc={}, trang={}, kích thước={}, sắp xếp={}, hướng={}",
                 transactionId, paymentStatus, startDate, endDate, page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
         Page<Payment> paymentPage = paymentRepository.findAllByTransactionIdAndPaymentStatusAndPaymentDateBetween(
@@ -173,8 +176,7 @@ public class PaymentServiceImpl implements PaymentService {
                 paymentStatus,
                 startDate,
                 endDate,
-                pageable
-        );
+                pageable);
 
         return PageResponse.<PaymentResponse>builder()
                 .currentPage(page)
@@ -189,7 +191,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PageResponse<PaymentResponse> getAll(int page, int size, String sort, String direction) {
-        log.info("Fetching all payments with page: {}, size: {}, sort: {}, direction: {}",
+        log.info("Truy xuất danh sách tất cả giao dịch thanh toán: trang={}, kích thước={}, sắp xếp={}, hướng={}",
                 page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
         Page<Payment> paymentPages = paymentRepository.findAll(pageable);
@@ -198,7 +200,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .pageSize(size)
                 .totalElements(paymentPages.getTotalElements())
                 .totalPages(paymentPages.getTotalPages())
-                .content(paymentPages.getContent().stream().map(PaymentMapper.INSTANCE::toResponse).toList())
+                .content(paymentPages.getContent().stream().map(paymentMapper::toResponse).toList())
                 .build();
     }
 
@@ -207,7 +209,8 @@ public class PaymentServiceImpl implements PaymentService {
             Long customerId,
             PaymentStatus paymentStatus,
             int page, int size, String sort, String direction) {
-        log.info("Fetching all payments by customer");
+        log.info("Truy xuất danh sách giao dịch thanh toán cho khách hàng ID: {}, trạng thái={}, trang={}, kích thước={}, sắp xếp={}, hướng={}",
+                customerId, paymentStatus, page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
         Page<Payment> paymentPage = paymentRepository.findAllByCustomerId(customerId, paymentStatus, pageable);
         return PageResponse.<PaymentResponse>builder()

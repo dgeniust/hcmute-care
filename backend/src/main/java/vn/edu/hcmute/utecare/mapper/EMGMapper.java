@@ -9,15 +9,12 @@ import vn.edu.hcmute.utecare.dto.request.EMGRequest;
 import vn.edu.hcmute.utecare.dto.response.EMGResponse;
 import vn.edu.hcmute.utecare.model.EMG;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface EMGMapper {
-    EMGMapper INSTANCE = Mappers.getMapper(EMGMapper.class);
-
     EMG toEntity(EMGRequest request);
 
     @Mapping(source = "encounter.id", target = "encounterId")
     EMGResponse toResponse(EMG emg);
 
-    @Mapping(source = "encounterId", target = "encounter.id")
     void updateEntity(@MappingTarget EMG emg, EMGRequest request);
 }

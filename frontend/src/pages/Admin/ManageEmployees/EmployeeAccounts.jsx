@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Pagination, Drawer, Divider, Button, Input, Tag, Select, Tabs, message } from "antd";
+import {
+  Pagination,
+  Drawer,
+  Divider,
+  Button,
+  Input,
+  Tag,
+  Select,
+  Tabs,
+  message,
+} from "antd";
 import { MoreOutlined } from "@ant-design/icons";
-import MedalProfessor, { Medal2, Medal3, Medal4, Medal5, College } from "./SVGEmployee";
+import MedalProfessor, {
+  Medal2,
+  Medal3,
+  Medal4,
+  Medal5,
+  College,
+} from "./SVGEmployee";
 
 const { Search } = Input;
 const { TabPane } = Tabs; // For older versions of antd; use Tabs.TabPane if needed
 
 const EmployeeAccounts = () => {
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const [messageApi, contextHolder] = message.useMessage();
   const [activeRole, setActiveRole] = useState("DOCTOR"); // Default role
   const [users, setUsers] = useState([]);
@@ -26,7 +43,7 @@ const EmployeeAccounts = () => {
     setLoading(true);
     try {
       const accessToken = localStorage.getItem("accessToken");
-      const url = `http://localhost:8080/api/v1/users?role=${role}&page=${page}&size=${size}&sort=${sort}&direction=${direction}`;
+      const url = `${apiUrl}v1/users?role=${role}&page=${page}&size=${size}&sort=${sort}&direction=${direction}`;
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -37,7 +54,9 @@ const EmployeeAccounts = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        messageApi.error(`Lỗi khi lấy danh sách nhân sự: ${errorText || response.statusText}`);
+        messageApi.error(
+          `Lỗi khi lấy danh sách nhân sự: ${errorText || response.statusText}`
+        );
         return;
       }
 
@@ -77,7 +96,10 @@ const EmployeeAccounts = () => {
   };
   const filterUsers = () => {
     let filtered = users.filter((user) => {
-      const searchMatch = !searchService || (user.fullName && user.fullName.toLowerCase().includes(searchService.toLowerCase()));
+      const searchMatch =
+        !searchService ||
+        (user.fullName &&
+          user.fullName.toLowerCase().includes(searchService.toLowerCase()));
 
       return searchMatch;
     });
@@ -110,7 +132,7 @@ const EmployeeAccounts = () => {
     setDataUser(null);
   };
 
-//   const headers = ["Tên nhân sự", "Học vị", "Vai trò", "Số điện thoại", "Email", "Trạng thái", ""];
+  //   const headers = ["Tên nhân sự", "Học vị", "Vai trò", "Số điện thoại", "Email", "Trạng thái", ""];
   const headers = ["Tên nhân sự", "Số điện thoại", "Email", "Trạng thái"];
 
   return (
@@ -226,7 +248,10 @@ const EmployeeAccounts = () => {
                 <td className="p-3 whitespace-nowrap">{user.phone}</td>
                 <td className="p-3 whitespace-nowrap">{user.email}</td>
                 <td className="p-3 whitespace-nowrap cursor-pointer space-x-2">
-                  <Button style={{ borderRadius: "8px" }} onClick={() => showDrawerUser(user)}>
+                  <Button
+                    style={{ borderRadius: "8px" }}
+                    onClick={() => showDrawerUser(user)}
+                  >
                     Profile
                   </Button>
                   <MoreOutlined onClick={() => showDrawerUser(user)} />
@@ -246,10 +271,20 @@ const EmployeeAccounts = () => {
         showSizeChanger
         pageSizeOptions={["10", "20", "50"]}
       />
-      <Drawer title="Thông tin cá nhân" placement="right" size="large" onClose={onClose} open={open}>
+      <Drawer
+        title="Thông tin cá nhân"
+        placement="right"
+        size="large"
+        onClose={onClose}
+        open={open}
+      >
         <div className="w-full h-full">
           <div className="w-full border border-black h-[150px] personal-bg relative">
-            <Divider orientation="left" plain style={{ position: "absolute", bottom: 0, width: "100%" }}>
+            <Divider
+              orientation="left"
+              plain
+              style={{ position: "absolute", bottom: 0, width: "100%" }}
+            >
               <div className="w-[150px] h-[150px] rounded-full bg-white absolute border border-black top-1/2 left-1/6 transform -translate-x-1/2 -translate-y-1/3">
                 <img
                   src={`${

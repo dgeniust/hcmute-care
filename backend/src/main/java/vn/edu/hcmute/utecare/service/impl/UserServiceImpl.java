@@ -19,10 +19,11 @@ import vn.edu.hcmute.utecare.util.enumeration.Role;
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public PageResponse<UserSummaryResponse> findAll(String keyword, Role role, int page, int size, String sort, String direction){
-        log.info("Searching users with keyword: {}", keyword);
+        log.info("Đang tìm kiếm người dùng với từ khóa: {}", keyword);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<User> userPage = userRepository.findAll(keyword, role, pageable);
@@ -32,7 +33,8 @@ public class UserServiceImpl implements UserService {
                 .pageSize(size)
                 .totalPages(userPage.getTotalPages())
                 .totalElements(userPage.getTotalElements())
-                .content(userPage.getContent().stream().map(UserMapper.INSTANCE::toSummaryResponse).toList())
+                .content(userPage.getContent().stream().map(userMapper::toSummaryResponse).toList())
                 .build();
     }
+
 }

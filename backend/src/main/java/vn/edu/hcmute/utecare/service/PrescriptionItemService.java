@@ -16,6 +16,4 @@ public interface PrescriptionItemService {
     void deletePrescriptionItem(Long id);
 
     PrescriptionItemResponse getPrescriptionItemById(Long id);
-
-    List<PrescriptionItemResponse> getAllPrescriptionItems();
 }

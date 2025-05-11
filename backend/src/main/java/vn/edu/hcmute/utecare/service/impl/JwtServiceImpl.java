@@ -127,6 +127,11 @@ public class JwtServiceImpl implements JwtService {
         }
     }
 
+    @Override
+    public long getRefreshTokenExpiration() {
+        return refreshTokenExpiry;
+    }
+
     private String generateToken(Map<String, Object> claims, String subject, TokenType type) {
         long expiryInMillis = getExpiry(type);
         return Jwts.builder()

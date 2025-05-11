@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
 import vn.edu.hcmute.utecare.util.enumeration.Role;
-import vn.edu.hcmute.utecare.util.enumeration.UserStatus;
 
 import java.util.Collection;
 import java.util.Collections;
