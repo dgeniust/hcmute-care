@@ -31,7 +31,7 @@ public class AppConfig {
     private final UserDetailsService userDetailsService;
     private final PreFilter filter;
 
-    @Value("${spring.cors.allowed-origins}")
+    @Value("#{'${spring.cors.allowed-origins}'.split(', ')}")
     private String[] allowedOrigins;
 
     @Bean
