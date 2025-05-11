@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .env
 .vercel
+
+#ssl
+ssl/
