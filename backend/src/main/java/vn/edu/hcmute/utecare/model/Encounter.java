@@ -1,9 +1,12 @@
 package vn.edu.hcmute.utecare.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,9 +34,12 @@ public class Encounter {
     private String notes;
 
     @OneToMany(mappedBy = "encounter")
-    private Set<Prescription> prescriptions;
+    @Builder.Default
+    @JsonManagedReference
+    private Set<Prescription> prescriptions = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medical_record_id", referencedColumnName = "id")
+    @JsonBackReference
     private MedicalRecord medicalRecord;
 }

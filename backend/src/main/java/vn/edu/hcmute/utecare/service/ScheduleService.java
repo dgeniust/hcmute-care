@@ -12,29 +12,23 @@ import java.util.List;
 public interface ScheduleService {
     ScheduleResponse createSchedule(ScheduleRequest request);
 
-    @Transactional
     ScheduleResponse updateSchedule(Long id, ScheduleRequest request);
 
-    @Transactional
     void deleteSchedule(Long id);
 
-    @Transactional(readOnly = true)
     ScheduleResponse getScheduleById(Long id);
 
-    @Transactional(readOnly = true)
     PageResponse<ScheduleResponse> getAllSchedules(
             Long doctorId,
             LocalDate startDate,
             LocalDate endDate,
             Integer page, Integer size, String sort, String direction);
 
-    @Transactional(readOnly = true)
     List<ScheduleInfoResponse> getAvailableSchedules(
             Integer medicalSpecialtyId,
             LocalDate date
     );
 
-    @Transactional(readOnly = true)
     PageResponse<ScheduleResponse> getDoctorSchedules(
             Long doctorId,
             LocalDate startDate,

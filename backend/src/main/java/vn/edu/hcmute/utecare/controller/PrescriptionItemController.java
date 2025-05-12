@@ -1,6 +1,9 @@
 package vn.edu.hcmute.utecare.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,101 +15,91 @@ import vn.edu.hcmute.utecare.dto.response.PrescriptionItemResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.PrescriptionItemService;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/prescription-item")
+@RequestMapping("/api/v1/prescription-items")
 @RequiredArgsConstructor
-@Tag(name="PrescriptionItem", description = "Prescription Item API")
+@Tag(name = "PRESCRIPTION-ITEM", description = "API quản lý các mục thuốc trong đơn thuốc")
 @Slf4j(topic = "PRESCRIPTION_ITEM_CONTROLLER")
 public class PrescriptionItemController {
     private final PrescriptionItemService prescriptionItemService;
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get prescription item by id", description = "Get details prescription item by its id")
-    public ResponseData<PrescriptionItemResponse> getPrescriptionItem(@PathVariable("id") Long id) {
-        log.info("Get prescription item by id: {}", id);
-        try{
-            return ResponseData.<PrescriptionItemResponse>builder()
-                    .status(HttpStatus.OK.value())
-                    .message("Get prescription item by id successfully")
-                    .data(prescriptionItemService.getPrescriptionItemById(id))
-                    .build();
-        } catch (Exception e) {
-            log.error("Error in get prescription item by id: {}", e.getMessage());
-            return ResponseData.<PrescriptionItemResponse>builder()
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                    .message("Failed to get prescription item by id. Please try again later.")
-                    .data(null)
-                    .build();
-        }
+    @Operation(
+            summary = "Lấy thông tin mục thuốc theo ID",
+            description = "Truy xuất thông tin chi tiết của một mục thuốc dựa trên ID duy nhất."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy thông tin mục thuốc thành công"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy mục thuốc với ID được cung cấp")
+    })
+    public ResponseData<PrescriptionItemResponse> getPrescriptionItem(
+            @Parameter(description = "ID của mục thuốc cần truy xuất") @PathVariable("id") Long id) {
+        log.info("Yêu cầu lấy thông tin mục thuốc với ID: {}", id);
+        return ResponseData.<PrescriptionItemResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("Lấy thông tin mục thuốc thành công")
+                .data(prescriptionItemService.getPrescriptionItemById(id))
+                .build();
     }
 
-    @GetMapping
-    @Operation(summary = "Get all prescription items", description = "Get all prescription items")
-    public ResponseData<List<PrescriptionItemResponse>> getAllPrescriptionItems() {
-        log.info("Get all prescription items");
-        try{
-            return ResponseData.<List<PrescriptionItemResponse>>builder()
-                    .status(HttpStatus.OK.value())
-                    .message("Get all prescription items successfully")
-                    .data(prescriptionItemService.getAllPrescriptionItems())
-                    .build();
-        } catch (Exception e) {
-            log.error("Error in get all prescription items: {}", e.getMessage());
-            return  ResponseData.<List<PrescriptionItemResponse>>builder()
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                    .message("Failed to retrieve prescription items. Please try again later.")
-                    .data(null)
-                    .build();
-        }
-    }
 
     @PostMapping
-    @Operation(summary = "Create new prescription item", description = "Create a new prescription item with request")
-    public ResponseData<PrescriptionItemResponse> createPrescriptionItem(@RequestBody @Valid PrescriptionItemRequest request) {
-        log.info("Create prescription item with request: {}", request);
-        try{
-            return ResponseData.<PrescriptionItemResponse>builder()
-                    .status(HttpStatus.OK.value())
-                    .message("Create prescription with request successfully ")
-                    .data(prescriptionItemService.addPrescriptionItem(request))
-                    .build();
-        } catch (Exception e) {
-            log.error("Error in create prescription item: {}", e.getMessage());
-            return ResponseData.<PrescriptionItemResponse>builder()
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                    .message("Failed to create prescription item. Please try again later.")
-                    .data(null)
-                    .build();
-        }
+    @Operation(
+            summary = "Tạo mục thuốc mới",
+            description = "Tạo một mục thuốc mới với thông tin chi tiết được cung cấp."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Tạo mục thuốc thành công"),
+            @ApiResponse(responseCode = "400", description = "Dữ liệu yêu cầu không hợp lệ"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy thuốc hoặc đơn thuốc liên quan")
+    })
+    public ResponseData<PrescriptionItemResponse> createPrescriptionItem(@Valid @RequestBody PrescriptionItemRequest request) {
+        log.info("Yêu cầu tạo mục thuốc mới: {}", request);
+        return ResponseData.<PrescriptionItemResponse>builder()
+                .status(HttpStatus.CREATED.value())
+                .message("Tạo mục thuốc thành công")
+                .data(prescriptionItemService.addPrescriptionItem(request))
+                .build();
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update a prescription item", description = "Update an existing prescription item with its id")
-    public ResponseData<PrescriptionItemResponse> updatePrescriptionItem(@PathVariable("id") Long id ,@RequestBody @Valid PrescriptionItemRequest request) {
-        log.info("Update prescription item with id: {}", id);
-        try{
-            return ResponseData.<PrescriptionItemResponse>builder()
-                    .status(HttpStatus.OK.value())
-                    .message("Update prescription with request successfully ")
-                    .data(prescriptionItemService.updatePrescriptionItem(id,request))
-                    .build();
-        } catch (Exception e) {
-            log.error("Error in create update item: {}", e.getMessage());
-            return ResponseData.<PrescriptionItemResponse>builder()
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                    .message("Failed to update prescription item. Please try again later.")
-                    .data(null)
-                    .build();
-        }
+    @Operation(
+            summary = "Cập nhật mục thuốc",
+            description = "Cập nhật thông tin của một mục thuốc hiện có dựa trên ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Cập nhật mục thuốc thành công"),
+            @ApiResponse(responseCode = "400", description = "Dữ liệu yêu cầu không hợp lệ"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy mục thuốc với ID được cung cấp")
+    })
+    public ResponseData<PrescriptionItemResponse> updatePrescriptionItem(
+            @Parameter(description = "ID của mục thuốc cần cập nhật") @PathVariable("id") Long id,
+            @Valid @RequestBody PrescriptionItemRequest request) {
+        log.info("Yêu cầu cập nhật mục thuốc với ID: {}", id);
+        return ResponseData.<PrescriptionItemResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("Cập nhật mục thuốc thành công")
+                .data(prescriptionItemService.updatePrescriptionItem(id, request))
+                .build();
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a prescription item", description = "Delete an existing prescription item with its id")
-    public void deletePrescriptionItem(@PathVariable("id") Long id) {
-        log.info("Delete prescription item with id: {}", id);
+    @Operation(
+            summary = "Xóa mục thuốc",
+            description = "Xóa một mục thuốc hiện có dựa trên ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Xóa mục thuốc thành công"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy mục thuốc với ID được cung cấp")
+    })
+    public ResponseData<Void> deletePrescriptionItem(
+            @Parameter(description = "ID của mục thuốc cần xóa") @PathVariable("id") Long id) {
+        log.info("Yêu cầu xóa mục thuốc với ID: {}", id);
         prescriptionItemService.deletePrescriptionItem(id);
+        return ResponseData.<Void>builder()
+                .status(HttpStatus.NO_CONTENT.value())
+                .message("Xóa mục thuốc thành công")
+                .build();
     }
-
 }

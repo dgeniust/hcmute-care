@@ -12,16 +12,13 @@ import vn.edu.hcmute.utecare.dto.response.NerveConductionResponse;
 import vn.edu.hcmute.utecare.model.BloodGasAnalysis;
 import vn.edu.hcmute.utecare.model.NerveConduction;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface NerveConductionMapper {
-    NerveConductionMapper INSTANCE = Mappers.getMapper(NerveConductionMapper.class);
-
     NerveConduction toEntity(NerveConductionRequest request);
 
     @Mapping(source = "encounter.id", target = "encounterId")
     NerveConductionResponse toResponse(NerveConduction nerveConduction);
 
-    @Mapping(source = "encounterId", target = "encounter.id")
     void updateEntity(@MappingTarget NerveConduction nerveConduction, NerveConductionRequest request);
 
 }

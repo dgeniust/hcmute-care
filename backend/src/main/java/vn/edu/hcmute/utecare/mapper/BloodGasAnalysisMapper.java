@@ -10,10 +10,8 @@ import vn.edu.hcmute.utecare.dto.response.BloodGasAnalysisResponse;
 import vn.edu.hcmute.utecare.model.BloodGasAnalysis;
 
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BloodGasAnalysisMapper {
-    BloodGasAnalysisMapper INSTANCE = Mappers.getMapper(BloodGasAnalysisMapper.class);
-
     BloodGasAnalysis toEntity(BloodGasAnalysisRequest request);
 
     @Mapping(source = "encounter.id", target = "encounterId")

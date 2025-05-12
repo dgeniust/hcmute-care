@@ -1,10 +1,13 @@
+
 import React, { useEffect, useState } from "react"
 import { Button, Modal, message, Card, Typography, Empty, Spin, Badge, Tabs, Avatar, List } from "antd"
+
 import {
   InfoCircleTwoTone,
   RightOutlined,
   BarcodeOutlined,
   PhoneOutlined,
+
   FileTextOutlined,
   MedicineBoxOutlined,
   PictureOutlined,
@@ -15,10 +18,12 @@ import {
   CalendarOutlined,
 } from "@ant-design/icons"
 import UserDetails from "../../components/Personal/UserDetails"
+
 import {
   handleHttpStatusCode,
   notifySuccessWithCustomMessage,
   notifyErrorWithCustomMessage,
+
 } from "../../utils/notificationHelper"
 
 // Thêm một số icon và component để trang trí
@@ -55,12 +60,14 @@ const MedicalRecord = () => {
         setLoading(true) // Bắt đầu loading
         const response = await fetch(
           `http://localhost:8080/api/v1/customers/${customerId}/medicalRecords?page=1&size=10&sort=id&direction=asc`,
+
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
+
           },
         )
         if (!response.ok) {
@@ -381,11 +388,14 @@ const MedicalRecord = () => {
               </Button>
             ))}
           </div>
+
         </div>
       </Modal>
       {contextHolder}
     </div>
+
   )
 }
 
 export default MedicalRecord
+

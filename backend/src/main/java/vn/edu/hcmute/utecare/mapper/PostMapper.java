@@ -16,9 +16,6 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = PostImageMapper.class)
 public interface PostMapper {
-
-    PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
-
     @Mapping(target = "staffId", source = "staff.id")
     PostResponse toResponse(Post post);
 

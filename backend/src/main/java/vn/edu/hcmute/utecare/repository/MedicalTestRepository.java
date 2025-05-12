@@ -4,9 +4,12 @@ import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import vn.edu.hcmute.utecare.model.MedicalTest;
+import vn.edu.hcmute.utecare.util.enumeration.EMedicalTest;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public interface MedicalTestRepository extends JpaRepository<MedicalTest, Long> {
     List<MedicalTest> findByEncounter_IdAndCreateDateBetween(Long encounterId, LocalDateTime start, LocalDateTime end);
@@ -28,4 +31,7 @@ public interface MedicalTestRepository extends JpaRepository<MedicalTest, Long> 
             @Param("end") LocalDateTime end);
 
 
+    Optional<MedicalTest> findByEncounterIdAndCreateDateBetween(Long encounterId, LocalDateTime startOfDay, LocalDateTime endOfDay);
+
+    Optional<MedicalTest> findByCreateDateBetweenAndStatus(LocalDateTime startOfDay, LocalDateTime endOfDay, EMedicalTest statusEnum);
 }

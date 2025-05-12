@@ -28,30 +28,31 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class DoctorServiceImpl implements DoctorService {
     private final AccountRepository accountRepository;
     private final DoctorRepository doctorRepository;
+    private final DoctorMapper doctorMapper;
     private final MedicalSpecialtyRepository medicalSpecialtyRepository;
     private final PasswordEncoder passwordEncoder;
-    private final MedicalTestRepository medicalTestRepository;
+//    private final MedicalTestRepository medicalTestRepository;
+
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public DoctorResponse createDoctor(DoctorRequest request){
-        log.info("Creating doctor with request: {}", request);
+    public DoctorResponse createDoctor(DoctorRequest request) {
+        log.info("Tạo bác sĩ mới với thông tin: {}", request);
 
         if (doctorRepository.existsByPhone(request.getPhone())) {
-            throw new IllegalArgumentException("Phone number already exists");
+            throw new IllegalArgumentException("Số điện thoại đã tồn tại");
         }
 
-        Doctor doctor = DoctorMapper.INSTANCE.toEntity(request);
+        Doctor doctor = doctorMapper.toEntity(request);
 
         if (request.getMedicalSpecialtyId() != null) {
             MedicalSpecialty specialty = medicalSpecialtyRepository.findById(request.getMedicalSpecialtyId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Medical specialty not found with ID: " + request.getMedicalSpecialtyId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy chuyên khoa với ID: " + request.getMedicalSpecialtyId()));
             doctor.setMedicalSpecialty(specialty);
         }
 
@@ -60,55 +61,61 @@ public class DoctorServiceImpl implements DoctorService {
         Account account = Account.builder()
                 .password(passwordEncoder.encode(request.getPhone()))
                 .user(savedDoctor)
-                .role(Role.NURSE)
+                .role(Role.DOCTOR) // Sửa từ Role.NURSE thành Role.DOCTOR để phù hợp
                 .status(AccountStatus.ACTIVE)
                 .build();
         accountRepository.save(account);
-        log.info("Saved doctor: {}", savedDoctor);
-        return DoctorMapper.INSTANCE.toResponse(savedDoctor);
+        log.info("Tạo bác sĩ thành công với ID: {}", savedDoctor.getId());
+        return doctorMapper.toResponse(savedDoctor);
     }
 
     @Override
     public DoctorResponse getDoctorById(Long id) {
-        log.info("Getting doctor by id: {}", id);
+        log.info("Truy xuất bác sĩ với ID: {}", id);
         Doctor doctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with ID: " + id));
-        return DoctorMapper.INSTANCE.toResponse(doctor);
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bác sĩ với ID: " + id));
+        log.info("Truy xuất bác sĩ thành công với ID: {}", id);
+        return doctorMapper.toResponse(doctor);
     }
 
     @Override
     @Transactional
-    public DoctorResponse updateDoctor(Long id, DoctorRequest request){
-        log.info("Updating doctor with id: {} and request: {}", id, request);
+    public DoctorResponse updateDoctor(Long id, DoctorRequest request) {
+        log.info("Cập nhật bác sĩ với ID: {} và thông tin: {}", id, request);
         Doctor doctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Doctor not found with ID: " + id));
-        DoctorMapper.INSTANCE.updateEntity(request, doctor);
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bác sĩ với ID: " + id));
+        doctorMapper.updateEntity(request, doctor);
 
         if (!doctor.getPhone().equals(request.getPhone()) && doctorRepository.existsByPhone(request.getPhone())) {
-            throw new IllegalArgumentException("Phone number already exists");
+            throw new IllegalArgumentException("Số điện thoại đã tồn tại");
         }
 
         if (request.getMedicalSpecialtyId() != null) {
             MedicalSpecialty specialty = medicalSpecialtyRepository.findById(request.getMedicalSpecialtyId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Medical specialty not found with ID: " + request.getMedicalSpecialtyId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy chuyên khoa với ID: " + request.getMedicalSpecialtyId()));
             doctor.setMedicalSpecialty(specialty);
         }
-        return DoctorMapper.INSTANCE.toResponse(doctorRepository.save(doctor));
+        Doctor updatedDoctor = doctorRepository.save(doctor);
+        log.info("Cập nhật bác sĩ thành công với ID: {}", id);
+        return doctorMapper.toResponse(updatedDoctor);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void deleteDoctor(Long id) {
-        log.info("Deleting doctor with id: {}", id);
+        log.info("Xóa bác sĩ với ID: {}", id);
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bác sĩ với ID: " + id));
         Account account = accountRepository.findByUser_Id(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found for doctor with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản cho bác sĩ với ID: " + id));
         accountRepository.delete(account);
-        log.info("Successfully deleted doctor with id: {}", id);
+        doctorRepository.delete(doctor);
+        log.info("Xóa bác sĩ thành công với ID: {}", id);
     }
 
     @Override
     public PageResponse<DoctorResponse> getAllDoctors(int page, int size, String sort, String direction) {
-        log.info("Fetching all doctors with pagination: page={}, size={}, sort={}, direction={}", page, size, sort, direction);
+        log.info("Truy xuất danh sách bác sĩ: trang={}, kích thước={}, sắp xếp={}, hướng={}", page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<Doctor> doctorPage = doctorRepository.findAll(pageable);
@@ -117,13 +124,13 @@ public class DoctorServiceImpl implements DoctorService {
                 .pageSize(size)
                 .totalPages(doctorPage.getTotalPages())
                 .totalElements(doctorPage.getTotalElements())
-                .content(doctorPage.getContent().stream().map(DoctorMapper.INSTANCE::toResponse).toList())
+                .content(doctorPage.getContent().stream().map(doctorMapper::toResponse).toList())
                 .build();
     }
 
     @Override
     public PageResponse<DoctorResponse> searchDoctors(String keyword, int page, int size, String sort, String direction) {
-        log.info("Searching doctors with keyword: {}, page={}, size={}, sort={}, direction={}", keyword, page, size, sort, direction);
+        log.info("Tìm kiếm bác sĩ với từ khóa: {}, trang={}, kích thước={}, sắp xếp={}, hướng={}", keyword, page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<Doctor> doctorPage = doctorRepository.searchDoctors(keyword, pageable);
@@ -132,13 +139,13 @@ public class DoctorServiceImpl implements DoctorService {
                 .pageSize(size)
                 .totalPages(doctorPage.getTotalPages())
                 .totalElements(doctorPage.getTotalElements())
-                .content(doctorPage.getContent().stream().map(DoctorMapper.INSTANCE::toResponse).toList())
+                .content(doctorPage.getContent().stream().map(doctorMapper::toResponse).toList())
                 .build();
     }
 
     @Override
     public PageResponse<DoctorResponse> getDoctorsByMedicalSpecialtyId(Integer id, int page, int size, String sort, String direction) {
-        log.info("Fetching doctors for medical specialty with id: {}", id);
+        log.info("Truy xuất danh sách bác sĩ theo chuyên khoa với ID: {}", id);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<Doctor> doctorPage = doctorRepository.findByMedicalSpecialty_Id(id, pageable);
@@ -147,13 +154,13 @@ public class DoctorServiceImpl implements DoctorService {
                 .pageSize(size)
                 .totalPages(doctorPage.getTotalPages())
                 .totalElements(doctorPage.getTotalElements())
-                .content(doctorPage.getContent().stream().map(DoctorMapper.INSTANCE::toResponse).toList())
+                .content(doctorPage.getContent().stream().map(doctorMapper::toResponse).toList())
                 .build();
     }
 
     @Override
     public PageResponse<DoctorResponse> searchDoctorsByMedicalSpecialtyId(Integer id, String keyword, int page, int size, String sort, String direction) {
-        log.info("Searching doctors for medical specialty with id: {} and keyword: {}", id, keyword);
+        log.info("Tìm kiếm bác sĩ theo chuyên khoa với ID: {} và từ khóa: {}", id, keyword);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
         Page<Doctor> doctorPage = doctorRepository.searchDoctorsByMedicalSpecialty(id, keyword, pageable);
@@ -162,101 +169,93 @@ public class DoctorServiceImpl implements DoctorService {
                 .pageSize(size)
                 .totalPages(doctorPage.getTotalPages())
                 .totalElements(doctorPage.getTotalElements())
-                .content(doctorPage.getContent().stream().map(DoctorMapper.INSTANCE::toResponse).toList())
+                .content(doctorPage.getContent().stream().map(doctorMapper::toResponse).toList())
                 .build();
     }
 
-
-    @Override
-    public List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId, LocalDate date) {
-        log.info("Lấy danh sách MedicalTest cho bệnh nhân với patientId: {} và ngày: {}", patientId, date);
-
-        List<MedicalTest> tests;
-        if (date != null) {
-            LocalDateTime startOfDay = date.atStartOfDay(); // 00:00:00
-            LocalDateTime endOfDay = date.atTime(23, 59, 59); // 23:59:59
-            tests = medicalTestRepository.findByPatientIdAndCreateDateBetween(patientId, startOfDay, endOfDay);
-        } else {
-            tests = medicalTestRepository.findByPatientId(patientId);
-        }
-
-        return tests.stream()
-                .map(this::mapToDetailResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId) {
-        log.info("Lấy tất cả MedicalTest cho bệnh nhân với patientId: {}", patientId);
-
-        List<MedicalTest> tests = medicalTestRepository.findByPatientId(patientId);
-
-        return tests.stream()
-                .map(this::mapToDetailResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public MedicalTestDetailResponse mapToDetailResponse(MedicalTest medicalTest) {
-        MedicalTestDetailResponse.MedicalTestDetailResponseBuilder builder = MedicalTestDetailResponse.builder()
-                .id(medicalTest.getId())
-                .evaluate(medicalTest.getEvaluate())
-                .notes(medicalTest.getNotes())
-                .encounterId(medicalTest.getEncounter().getId())
-                .createDate(medicalTest.getCreateDate())
-                .status(medicalTest.getStatus());
-        if (medicalTest instanceof LaboratoryTests) {
-            return builder
-                    .type("LaboratoryTests")
-                    .details(LaboratoryTestsMapper.INSTANCE.toResponse((LaboratoryTests) medicalTest))
-                    .build();
-        } else if (medicalTest instanceof CardiacTest) {
-            return builder
-                    .type("CardiacTest")
-                    .details(CardiacTestMapper.INSTANCE.toResponse((CardiacTest) medicalTest))
-                    .build();
-        } else if (medicalTest instanceof ImagingTest) {
-            return builder
-                    .type("ImagingTest")
-                    .details(ImagingTestMapper.INSTANCE.toResponse((ImagingTest) medicalTest))
-                    .build();
-        } else if (medicalTest instanceof DigestiveTest) {
-            return builder
-                    .type("DigestiveTest")
-                    .details(DigestiveTestMapper.INSTANCE.toResponse((DigestiveTest) medicalTest))
-                    .build();
-        } else if (medicalTest instanceof EEG) {
-            return builder
-                    .type("EEG")
-                    .details(EEGMapper.INSTANCE.toResponse((EEG) medicalTest))
-                    .build();
-        } else if (medicalTest instanceof EMG) {
-            return builder
-                    .type("EMG")
-                    .details(EMGMapper.INSTANCE.toResponse((EMG) medicalTest))
-                    .build();
-        } else if (medicalTest instanceof Spirometry) {
-            return builder
-                    .type("Spirometry")
-                    .details(SpirometryMapper.INSTANCE.toResponse((Spirometry) medicalTest))
-                    .build();
-        } else if (medicalTest instanceof BloodGasAnalysis) {
-            return builder
-                    .type("BloodGasAnalysis")
-                    .details(BloodGasAnalysisMapper.INSTANCE.toResponse((BloodGasAnalysis) medicalTest))
-                    .build();
-        } else if (medicalTest instanceof NerveConduction) {
-            return builder
-                    .type("NerveConduction")
-                    .details(NerveConductionMapper.INSTANCE.toResponse((NerveConduction) medicalTest))
-                    .build();
-        } else {
-            return builder
-                    .type("MedicalTest")
-                    .details(MedicalTestMapper.INSTANCE.toResponse(medicalTest))
-                    .build();
-        }
-    }
-
-
+//    @Override
+//    public List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId, LocalDate date) {
+//        log.info("Truy xuất danh sách xét nghiệm y tế cho bệnh nhân với ID: {} và ngày: {}", patientId, date);
+//
+//        List<MedicalTest> tests;
+//        if (date != null) {
+//            LocalDateTime startOfDay = date.atStartOfDay();
+//            LocalDateTime endOfDay = date.atTime(23, 59, 59);
+//            tests = medicalTestRepository.findByPatientIdAndCreateDateBetween(patientId, startOfDay, endOfDay);
+//        } else {
+//            tests = medicalTestRepository.findByPatientId(patientId);
+//        }
+//
+//        return tests.stream()
+//                .map(this::mapToDetailResponse)
+//                .collect(Collectors.toList());
+//    }
+//
+//    @Override
+//    public List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId) {
+//        log.info("Truy xuất tất cả xét nghiệm y tế cho bệnh nhân với ID: {}", patientId);
+//
+//        List<MedicalTest> tests = medicalTestRepository.findByPatientId(patientId);
+//
+//        return tests.stream()
+//                .map(this::mapToDetailResponse)
+//                .collect(Collectors.toList());
+//    }
+//
+//    @Override
+//    public MedicalTestDetailResponse mapToDetailResponse(MedicalTest medicalTest) {
+//        MedicalTestDetailResponse.MedicalTestDetailResponseBuilder builder = MedicalTestDetailResponse.builder()
+//                .id(medicalTest.getId())
+//                .evaluate(medicalTest.getEvaluate())
+//                .notes(medicalTest.getNotes())
+//                .encounterId(medicalTest.getEncounter().getId())
+//                .createDate(medicalTest.getCreateDate())
+//                .status(medicalTest.getStatus());
+//        if (medicalTest instanceof LaboratoryTests) {
+//            return builder
+//                    .type("Xét nghiệm máu")
+//                    .details(LaboratoryTestsMapper.INSTANCE.toResponse((LaboratoryTests) medicalTest))
+//                    .build();
+//        } else if (medicalTest instanceof CardiacTest) {
+//            return builder
+//                    .type("Xét nghiệm tim mạch")
+//                    .details(CardiacTestMapper.INSTANCE.toResponse((CardiacTest) medicalTest))
+//                    .build();
+//        } else if (medicalTest instanceof ImagingTest) {
+//            return builder
+//                    .type("Chụp hình ảnh")
+//                    .details(ImagingTestMapper.INSTANCE.toResponse((ImagingTest) medicalTest))
+//                    .build();
+//        } else if (medicalTest instanceof DigestiveTest) {
+//            return builder
+//                    .type("Xét nghiệm tiêu hóa")
+//                    .details(DigestiveTestMapper.INSTANCE.toResponse((DigestiveTest) medicalTest))
+//                    .build();
+//        } else if (medicalTest instanceof EEG) {
+//            return builder
+//                    .type("Điện não đồ (EEG)")
+//                    .details(EEGMapper.INSTANCE.toResponse((EEG) medicalTest))
+//                    .build();
+//        } else if (medicalTest instanceof EMG) {
+//            return builder
+//                    .type("Điện cơ đồ (EMG)")
+//                    .details(EMGMapper.INSTANCE.toResponse((EMG) medicalTest))
+//                    .build();
+//        } else if (medicalTest instanceof Spirometry) {
+//            return builder
+//                    .type("Đo hô hấp")
+//                    .details(SpirometryMapper.INSTANCE.toResponse((Spirometry) medicalTest))
+//                    .build();
+//        } else if (medicalTest instanceof BloodGasAnalysis) {
+//            return builder
+//                    .type("Phân tích khí máu")
+//                    .details(BloodGasAnalysisMapper.INSTANCE.toResponse((BloodGasAnalysis) medicalTest))
+//                    .build();
+//        } else if (medicalTest instanceof NerveConduction) {
+//            return builder
+//                    .type("Dẫn truyền thần kinh")
+//                    .details(NerveConductionMapper.INSTANCE.toResponse((NerveConduction) medicalTest))
+//                    .build();
+//        }
+//    }
 }

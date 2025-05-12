@@ -1,5 +1,6 @@
 package vn.edu.hcmute.utecare.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import vn.edu.hcmute.utecare.dto.request.SpirometryRequest;
 import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
@@ -23,5 +24,5 @@ public interface SpirometryService {
 
     List<SpirometryResponse> getAllLabTestByDateAndStatus(LocalDate date, String status);
 
-    List<SpirometryResponse> getEncounterIDandDate(Long encounterId, LocalDate date);
+    List<SpirometryResponse> getEncounterIdAndDate(Long encounterId, LocalDate date);
 }

@@ -21,7 +21,6 @@ import vn.edu.hcmute.utecare.service.EncounterService;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,131 +29,127 @@ public class EncounterServiceImpl implements EncounterService {
     private final EncounterRepository encounterRepository;
     private final MedicalRecordRepository medicalRecordRepository;
     private final PrescriptionRepository prescriptionRepository;
-//    @Override
-//    public EncounterResponse getEncounterPrescription(Long prescriptionId) {
-//        log.info("Get encounter prescription with request {}", prescriptionId);
-//        Encounter encounter = encounterRepository.findByPrescription_Id(prescriptionId)
-//                .orElseThrow(() -> new ResourceNotFoundException("Prescription id " + prescriptionId +" not found"));
-//        return EncounterMapper.INSTANCE.toResponse(encounter);
-//    }
+    private final EncounterMapper encounterMapper;
 
-    @Transactional(rollbackOn = Exception.class)
+
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public void deleteEncounter(Long id) {
-        log.info("Delete encounter with id {}", id);
-        if(!encounterRepository.existsById(id))
-            throw new ResourceNotFoundException("Encounter with id " + id + " not found");
+        log.info("Xóa cuộc gặp với ID: {}", id);
+        if (!encounterRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Không tìm thấy cuộc gặp với ID: " + id);
+        }
         encounterRepository.deleteById(id);
+        log.info("Xóa cuộc gặp thành công với ID: {}", id);
     }
 
     @Override
     public List<EncounterResponse> getAllEncounter() {
-        log.info("Get all encounters");
+        log.info("Truy xuất danh sách tất cả cuộc gặp");
         List<Encounter> encounters = encounterRepository.findAll();
-        return encounters.stream().map(EncounterMapper.INSTANCE::toResponse).toList();
+        return encounters.stream().map(encounterMapper::toResponse).toList();
     }
+
 
     @Override
     public List<EncounterResponse> getAllEncounterByMedicalRecordId(Long medicalRecordId) {
-        log.info("Get all encounters by medical record with id {}", medicalRecordId);
+        log.info("Truy xuất danh sách cuộc gặp theo hồ sơ y tế với ID: {}", medicalRecordId);
         List<Encounter> encounters = encounterRepository.findByMedicalRecord_Id(medicalRecordId);
-        return encounters.stream().map(EncounterMapper.INSTANCE::toResponse).toList();
+        return encounters.stream().map(encounterMapper::toResponse).toList();
     }
 
     @Override
     public EncounterResponse getEncounterById(Long id) {
-        log.info("Get encounter with id {}", id);
+        log.info("Truy xuất cuộc gặp với ID: {}", id);
         Encounter encounter = encounterRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Encounter with id " + id + " not found"));
-        return EncounterMapper.INSTANCE.toResponse(encounter);
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy cuộc gặp với ID: " + id));
+        log.info("Truy xuất cuộc gặp thành công với ID: {}", id);
+        return encounterMapper.toResponse(encounter);
     }
 
-    @Transactional(rollbackOn = Exception.class)
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public EncounterResponse createEncounter(EncounterRequest request) {
-        log.info("Create encounter with request {}", request);
-        Encounter encounter = EncounterMapper.INSTANCE.toEntity(request);
+        log.info("Tạo cuộc gặp mới với thông tin: {}", request);
+        Encounter encounter = encounterMapper.toEntity(request);
 
-        MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getMedicalRecordId()).orElseThrow(() -> new ResourceNotFoundException("Medical record with id " + request.getMedicalRecordId() + " not found"));
+        MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getMedicalRecordId())
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy hồ sơ y tế với ID: " + request.getMedicalRecordId()));
         encounter.setMedicalRecord(medicalRecord);
 
         encounter.setPrescriptions(new HashSet<>());
         Encounter savedEncounter = encounterRepository.save(encounter);
-
-        return EncounterMapper.INSTANCE.toResponse(savedEncounter);
+        log.info("Tạo cuộc gặp thành công với ID: {}", savedEncounter.getId());
+        return encounterMapper.toResponse(savedEncounter);
     }
 
-    @Transactional(rollbackOn = Exception.class)
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public EncounterResponse updateEncounter(Long id, EncounterRequest request) {
-        log.info("Update encounters by request {}", request);
+        log.info("Cập nhật cuộc gặp với ID: {} và thông tin: {}", id, request);
         Encounter encounter = encounterRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Encounter not found with id " + id));
-        EncounterMapper.INSTANCE.update(request, encounter);
-        // Update MedicalRecord if provided
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy cuộc gặp với ID: " + id));
+        encounterMapper.update(request, encounter);
+
         if (request.getMedicalRecordId() != null) {
             MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getMedicalRecordId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Medical record with id " + request.getMedicalRecordId() + " not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy hồ sơ y tế với ID: " + request.getMedicalRecordId()));
             encounter.setMedicalRecord(medicalRecord);
         }
 
-        // Update Prescriptions
         Set<Prescription> prescriptions = new HashSet<>();
         if (request.getPrescriptionId() != null && !request.getPrescriptionId().isEmpty()) {
             List<Prescription> prescriptionList = prescriptionRepository.findAllById(request.getPrescriptionId());
             if (prescriptionList.size() != request.getPrescriptionId().size()) {
-                throw new EntityNotFoundException("One or more Prescriptions not found");
+                throw new EntityNotFoundException("Không tìm thấy một hoặc nhiều đơn thuốc");
             }
-            // Clear existing prescriptions (optional, depending on your requirements)
             encounter.getPrescriptions().forEach(prescription -> prescription.setEncounter(null));
             encounter.getPrescriptions().clear();
 
-            // Set new prescriptions
             for (Prescription prescription : prescriptionList) {
                 if (prescription.getEncounter() != null && !prescription.getEncounter().equals(encounter)) {
-                    throw new IllegalStateException("Prescription " + prescription.getId() + " is already associated with another Encounter");
+                    throw new IllegalStateException("Đơn thuốc " + prescription.getId() + " đã được liên kết với một cuộc gặp khác");
                 }
-                prescription.setEncounter(encounter); // Set the owning side
+                prescription.setEncounter(encounter);
                 prescriptions.add(prescription);
             }
         } else {
-            // If prescriptionId is null or empty, clear prescriptions
             encounter.getPrescriptions().forEach(prescription -> prescription.setEncounter(null));
             encounter.getPrescriptions().clear();
         }
         encounter.setPrescriptions(prescriptions);
 
         Encounter updatedEncounter = encounterRepository.save(encounter);
-        return EncounterMapper.INSTANCE.toResponse(updatedEncounter);
+        log.info("Cập nhật cuộc gặp thành công với ID: {}", id);
+        return encounterMapper.toResponse(updatedEncounter);
     }
 
     @Override
     public EncounterPatientSummaryResponse getEncounterPatientSummaryById(Long id) {
-        log.info("Get detail encounter patient summary with id {}", id);
-        Encounter encounter = encounterRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Encounter with id " + id + " not found"));
+        log.info("Truy xuất chi tiết cuộc gặp của bệnh nhân với ID: {}", id);
+        Encounter encounter = encounterRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy cuộc gặp với ID: " + id));
         MedicalRecord medicalRecord = medicalRecordRepository.findByEncountersId(encounter.getId());
         encounter.setMedicalRecord(medicalRecord);
-
-        return EncounterMapper.INSTANCE.toEncounterPatientResponse(encounter);
+        log.info("Truy xuất chi tiết cuộc gặp của bệnh nhân thành công với ID: {}", id);
+        return encounterMapper.toEncounterPatientResponse(encounter);
     }
 
     @Override
     public List<EncounterPatientSummaryResponse> getAllEncounterPatientSummaryById(List<Long> id) {
-        log.info("Get detail encounter patient summaries for ids {}", id);
+        log.info("Truy xuất chi tiết nhiều cuộc gặp của bệnh nhân với ID: {}", id);
 
         List<Encounter> encounters = encounterRepository.findAllById(id);
-        // Check for missing Encounters
         List<Long> foundIds = encounters.stream().map(Encounter::getId).toList();
         List<Long> missingIds = id.stream().filter(ids -> !foundIds.contains(ids)).toList();
         if (!missingIds.isEmpty()) {
-            throw new ResourceNotFoundException("Encounters with ids " + missingIds + " not found");
+            throw new ResourceNotFoundException("Không tìm thấy các cuộc gặp với ID: " + missingIds);
         }
-        // Map Encounters to EncounterPatientSummaryResponse
-        // Set MedicalRecord for mapping
+
         return encounters.stream().map(encounter -> {
             MedicalRecord medicalRecord = medicalRecordRepository.findByEncountersId(encounter.getId());
-            encounter.setMedicalRecord(medicalRecord); // Set MedicalRecord for mapping
-            return EncounterMapper.INSTANCE.toEncounterPatientResponse(encounter);
+            encounter.setMedicalRecord(medicalRecord);
+            return encounterMapper.toEncounterPatientResponse(encounter);
         }).toList();
     }
 }

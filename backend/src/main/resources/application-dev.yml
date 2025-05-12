@@ -20,7 +20,6 @@ spring:
   cors:
     allowed-origins: http://localhost:5173
 
-
 springdoc:
   api-docs:
     enabled: true
@@ -37,22 +36,22 @@ openapi:
 jwt:
   accessToken:
     secretKey: ${JWT_ACCESS_TOKEN_SECRET_KEY:bNg5ITJ8MjZGOlrQPLTOikaJI1WZqnhwrI3eypbGjyQ=}
-    expiry: 3600000  # 1h
+    expiry: 3600000 # 1h
   refreshToken:
     secretKey: ${JWT_REFRESH_TOKEN_SECRET_KEY:9k1jJAWAKQCnCEz1pwcPNegbHoLugf9hgEnn6sz5pFc=}
-    expiry: 1209600000  # 14d
+    expiry: 1209600000 # 14d
   verificationToken:
     secretKey: ${JWT_VERIFICATION_TOKEN_SECRET_KEY:s+E3RRAIKn1Kcb5iWDsKtcV7r6g0omm7wHgdVkIyGtgA}
-    expiry: 1800000  # 30m
+    expiry: 1800000 # 30m
   resetToken:
     secretKey: ${JWT_RESET_TOKEN_SECRET_KEY:FsWyO8iaNYbbs0sPDeSjWpJtL45yVIkmFIcnqC2VUmmB}
-    expiry: 3600000  # 1h
+    expiry: 3600000 # 1h
 
 payment:
   vnPay:
     url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
-    tmnCode: OZBXYTBE
-    secretKey: IKQZSOT3POWN3QECH31Y7P78BLDWZ6XG
+    tmnCode: ${VNPAY_TMN_CODE}
+    secretKey: ${VNPAY_SECRET_KEY}
     returnUrl: http://localhost:5173/confirm-booking
     version: 2.1.0
     command: pay

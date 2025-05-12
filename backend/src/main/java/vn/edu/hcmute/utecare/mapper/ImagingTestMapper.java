@@ -9,11 +9,8 @@ import vn.edu.hcmute.utecare.dto.request.ImagingTestRequest;
 import vn.edu.hcmute.utecare.dto.response.ImagingTestResponse;
 import vn.edu.hcmute.utecare.model.ImagingTest;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ImagingTestMapper {
-
-    ImagingTestMapper INSTANCE = Mappers.getMapper(ImagingTestMapper.class);
-
     ImagingTest toEntity(ImagingTestRequest request);
 
     @Mapping(source = "encounter.id", target = "encounterId")

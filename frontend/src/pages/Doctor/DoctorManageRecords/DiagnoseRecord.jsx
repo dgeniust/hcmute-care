@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { message } from 'antd';
+
 import {
   WomanOutlined,
   ManOutlined,
@@ -9,13 +11,16 @@ import {
   UserOutlined,
   LinkedinOutlined,
   ExclamationCircleOutlined,
+
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { handleHttpStatusCode, notifySuccessWithCustomMessage, notifyErrorWithCustomMessage } from '../../../utils/notificationHelper';
 
 const DiagnoseRecord = () => {
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const [selectedPatient, setSelectedPatient] = useState(null);
+
   const [scheduleSlots, setScheduleSlots] = useState([]);
   const [selectedSlotId, setSelectedSlotId] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
@@ -28,7 +33,7 @@ const DiagnoseRecord = () => {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/doctors/${doctorId}/schedule?date=${formatDate}`, {
+        const response = await fetch(`${apiUrl}v1/doctors/${doctorId}/schedule?date=${formatDate}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -47,17 +52,18 @@ const DiagnoseRecord = () => {
           setScheduleSlots(sortedSlots);
         }
       } catch (error) {
-        console.error('Error fetching schedule:', error);
+        console.error("Error fetching schedule:", error);
       }
     };
     fetchSchedule();
+
   }, []);
   // Lấy danh sách bệnh nhân có trạng thái COMPLETED
   const handleSelectSlot = async (slotId) => {
     setSelectedSlotId(slotId);
     localStorage.setItem('scheduleSlotDoctorId', slotId);
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/schedule-slots/${slotId}/tickets?status=COMPLETED`, {
+      const response = await fetch(`${apiUrl}v1/schedule-slots/${slotId}/tickets?status=COMPLETED`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -70,6 +76,7 @@ const DiagnoseRecord = () => {
         return;
       }
       const data = await response.json();
+
       if (data && data.data.length > 0) {
         const patients = data.data.map((item) => ({
           id: item.id,
@@ -80,6 +87,7 @@ const DiagnoseRecord = () => {
           medicalRecordBarcode: item.medicalRecordBarcode,
           dob: item.patientDob,
           gender: item.patientGender,
+
         }));
         setSchedulePatientData(patients);
         notifySuccessWithCustomMessage('Lấy danh sách bệnh nhân thành công', messageApi);
@@ -118,6 +126,7 @@ const DiagnoseRecord = () => {
     } catch (e) {
       console.error('Error fetching patient data:', e);
       notifyErrorWithCustomMessage('Lỗi khi lấy thông tin bệnh nhân', messageApi);
+
     }
   };
   useEffect(() => {
@@ -163,8 +172,10 @@ const DiagnoseRecord = () => {
   return (
     <div className="w-full h-full bg-gray-50">
       <div className="bg-white p-6 shadow-sm border-b border-gray-200">
+
         <h1 className="text-2xl font-bold text-gray-800">Chẩn đoán bệnh án</h1>
         <p className="text-gray-500 mt-1">Xem và chẩn đoán bệnh nhân đã hoàn thành khám lâm sàng</p>
+
       </div>
 
       <div className="p-6">
@@ -181,7 +192,9 @@ const DiagnoseRecord = () => {
                     <button
                       key={slot.id}
                       className={`px-3 py-1 text-sm rounded-full ${
+
                         selectedSlotId === slot.id ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+
                       }`}
                       onClick={() => handleSelectSlot(slot.id)}
                     >
@@ -193,20 +206,25 @@ const DiagnoseRecord = () => {
                 )}
               </div>
             </div>
+
             <div className="overflow-y-auto max-h-[600px]">
               {schedulePatientData.length > 0 ? (
                 schedulePatientData.map((pat, index) => (
                   <div
                     key={index}
                     className={`p-4 border-b border-gray-100 hover:bg-blue-50 cursor-pointer transition duration-150 ${
+
                       selectedPatient?.medicalRecordId === pat.medicalRecordId ? 'bg-blue-50' : ''
+
                     }`}
                     onClick={() => handleSelectPatient(pat)}
                   >
                     <div className="flex flex-row space-x-2">
                       <div className="flex flex-col w-full">
                         <div className="flex justify-between items-center">
-                          <h3 className="font-medium text-gray-800">{pat.patientName}</h3>
+                          <h3 className="font-medium text-gray-800">
+                            {pat.patientName}
+                          </h3>
                           <RightOutlined className="text-gray-400" />
                         </div>
                         <div className="flex mt-2 gap-x-4">
@@ -219,7 +237,9 @@ const DiagnoseRecord = () => {
                       </div>
                       <div className="flex mt-2 gap-x-4">
                         <div className="w-[40px] h-[40px] rounded-full bg-blue-500 flex items-center justify-center">
-                          <span className="text-base font-medium text-white">{pat.waitingNumber}</span>
+                          <span className="text-base font-medium text-white">
+                            {pat.waitingNumber}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -227,13 +247,15 @@ const DiagnoseRecord = () => {
                 ))
               ) : (
                 <div className="p-8 text-center text-gray-500">
-                  <ExclamationCircleOutlined style={{ fontSize: '40px' }} className="block mx-auto mb-2 text-gray-300" />
+                  <ExclamationCircleOutlined
+                    style={{ fontSize: "40px" }}
+                    className="block mx-auto mb-2 text-gray-300"
+                  />
                   Không tìm thấy bệnh nhân
                 </div>
               )}
             </div>
           </div>
-
           <div className="lg:w-2/3 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden text-black">
             {selectedPatient ? (
               <div className="h-full flex flex-col">
@@ -241,32 +263,40 @@ const DiagnoseRecord = () => {
                   <div className="flex justify-between items-start">
                     <div className="w-full">
                       <h2 className="text-xl font-bold text-gray-800">{selectedPatient.patient?.name || 'Không có tên'}</h2>
+
                       <div className="flex gap-4 mt-2 text-sm text-gray-600 w-full">
                         <span className="flex items-center w-fit">
                           <CalendarOutlined className="mr-1 text-blue-500" />
                           {selectedPatient.patient?.dob
+
                             ? dayjs(selectedPatient.patient.dob).format('DD-MM-YYYY')
                             : 'Không có dữ liệu'}
                         </span>
                         <span>|</span>
                         <span>
                           {selectedPatient.patient?.gender === 'FEMALE' ? (
+
                             <WomanOutlined className="mr-1 text-blue-500" />
                           ) : (
                             <ManOutlined className="mr-1 text-blue-500" />
                           )}
+
                           {selectedPatient.patient?.gender === 'MALE' ? 'Nam' : 'Nữ' || 'Không có dữ liệu'}
+
                         </span>
                         <span>|</span>
                         <span>
                           <LinkedinOutlined className="mr-1 text-blue-500" />
+
                           {selectedPatient.patient?.career || 'Không có dữ liệu'}
+
                         </span>
                       </div>
                     </div>
                     <div className="w-full flex flex-row justify-end space-x-4">
                       <div
                         className="bg-white text-blue-600 px-4 py-2 rounded-lg shadow-sm cursor-pointer hover:bg-blue-50 transition duration-150"
+
                         onClick={() => handleDiagnose(selectedPatient)}
                       >
                         Chẩn đoán và kê đơn
@@ -295,13 +325,16 @@ const DiagnoseRecord = () => {
                     </div>
                   </div>
                 </div>
+
               </div>
             ) : (
               <div className="h-full flex items-center justify-center p-8 text-center text-gray-500">
                 <div>
+
                   <FileTextOutlined style={{ fontSize: '64px' }} className="block mx-auto mb-4 text-gray-300" />
                   <h3 className="text-lg font-medium text-gray-700 mb-2">Chọn bệnh nhân để chẩn đoán</h3>
                   <p className="max-w-md mx-auto">Vui lòng chọn một bệnh nhân từ danh sách bên trái để chẩn đoán và kê đơn</p>
+
                 </div>
               </div>
             )}

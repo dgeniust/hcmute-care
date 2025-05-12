@@ -12,10 +12,8 @@ import vn.edu.hcmute.utecare.dto.response.SpirometryResponse;
 import vn.edu.hcmute.utecare.model.LaboratoryTests;
 import vn.edu.hcmute.utecare.model.Spirometry;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SpirometryMapper {
-    SpirometryMapper INSTANCE = Mappers.getMapper(SpirometryMapper.class);
-
     Spirometry toEntity(SpirometryRequest request);
 
     @Mapping(source = "encounter.id", target = "encounterId")

@@ -150,13 +150,18 @@
 			<artifactId>lettuce-core</artifactId>
 			<version>6.3.2.RELEASE</version>
 		</dependency>
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.redisson/redisson &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.redisson</groupId>-->
+<!--			<artifactId>redisson</artifactId>-->
+<!--			<version>3.46.0</version>-->
+<!--		</dependency>-->
 
 		<!-- websocket -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
-
 	</dependencies>
 
 	<profiles>

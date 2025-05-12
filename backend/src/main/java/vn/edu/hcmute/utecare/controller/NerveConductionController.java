@@ -1,14 +1,18 @@
 package vn.edu.hcmute.utecare.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.NerveConductionRequest;
-import vn.edu.hcmute.utecare.dto.response.DigestiveTestResponse;
 import vn.edu.hcmute.utecare.dto.response.NerveConductionResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
@@ -20,117 +24,188 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/nerve-conduction")
 @RequiredArgsConstructor
-@Tag(name = "NerveConduction", description = "Nerve Conduction API")
+@Tag(name = "NERVE-CONDUCTION", description = "API quản lý các bản ghi xét nghiệm dẫn truyền thần kinh")
 @Slf4j(topic = "NERVE_CONDUCTION_CONTROLLER")
 public class NerveConductionController {
 
     private final NerveConductionService nerveConductionService;
 
     @GetMapping
-    @Operation(summary = "Lấy danh sách NerveConduction có phân trang", description = "Lấy danh sách NerveConduction với các tham số phân trang.")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Lấy danh sách xét nghiệm dẫn truyền thần kinh có phân trang",
+            description = "Truy xuất danh sách các bản ghi xét nghiệm dẫn truyền thần kinh với phân trang và sắp xếp."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy danh sách xét nghiệm dẫn truyền thần kinh thành công"),
+            @ApiResponse(responseCode = "403", description = "Không có quyền truy cập danh sách xét nghiệm")
+    })
     public ResponseData<PageResponse<NerveConductionResponse>> getAllNerveConductionWithPagination(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sort,
-            @RequestParam(defaultValue = "asc") String direction) {
-        log.info("Yêu cầu lấy danh sách NerveConduction có phân trang: page={}, size={}, sort={}, direction={}", page, size, sort, direction);
+            @Parameter(description = "Số trang, bắt đầu từ 1") @RequestParam(defaultValue = "1") int page,
+            @Parameter(description = "Số lượng bản ghi mỗi trang") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Trường để sắp xếp (ví dụ: id, createDate)") @RequestParam(defaultValue = "id") String sort,
+            @Parameter(description = "Hướng sắp xếp: asc (tăng dần) hoặc desc (giảm dần)") @RequestParam(defaultValue = "asc") String direction) {
+        log.info("Yêu cầu lấy danh sách xét nghiệm dẫn truyền thần kinh: trang={}, kích thước={}, sắp xếp={}, hướng={}", page, size, sort, direction);
         PageResponse<NerveConductionResponse> response = nerveConductionService.getAll(page, size, sort, direction);
         return ResponseData.<PageResponse<NerveConductionResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("Danh sách NerveConduction phân trang được trả về thành công")
+                .message("Lấy danh sách xét nghiệm dẫn truyền thần kinh thành công")
                 .data(response)
                 .build();
     }
 
     @GetMapping("/all")
-    @Operation(summary = "Lấy toàn bộ danh sách NerveConduction", description = "Lấy toàn bộ các bản ghi NerveConduction trong hệ thống.")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Lấy toàn bộ danh sách xét nghiệm dẫn truyền thần kinh",
+            description = "Truy xuất toàn bộ các bản ghi xét nghiệm dẫn truyền thần kinh trong hệ thống."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy toàn bộ danh sách xét nghiệm dẫn truyền thần kinh thành công"),
+            @ApiResponse(responseCode = "403", description = "Không có quyền truy cập danh sách xét nghiệm")
+    })
     public ResponseData<List<NerveConductionResponse>> getAllNerveConduction() {
-        log.info("Yêu cầu lấy toàn bộ danh sách NerveConduction");
+        log.info("Yêu cầu lấy toàn bộ danh sách xét nghiệm dẫn truyền thần kinh");
         List<NerveConductionResponse> response = nerveConductionService.getAll();
         return ResponseData.<List<NerveConductionResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("Toàn bộ danh sách NerveConduction được trả về thành công")
+                .message("Lấy toàn bộ danh sách xét nghiệm dẫn truyền thần kinh thành công")
                 .data(response)
                 .build();
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Lấy thông tin NerveConduction theo ID", description = "Truy xuất chi tiết một bản ghi NerveConduction dựa trên ID.")
-    public ResponseData<NerveConductionResponse> getNerveConductionById(@PathVariable("id") Long id) {
-        log.info("Yêu cầu lấy thông tin NerveConduction với id: {}", id);
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Lấy thông tin xét nghiệm dẫn truyền thần kinh theo ID",
+            description = "Truy xuất chi tiết một bản ghi xét nghiệm dẫn truyền thần kinh dựa trên ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy thông tin xét nghiệm dẫn truyền thần kinh thành công"),
+            @ApiResponse(responseCode = "403", description = "Không có quyền truy cập thông tin xét nghiệm"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy xét nghiệm với ID được cung cấp")
+    })
+    public ResponseData<NerveConductionResponse> getNerveConductionById(
+            @Parameter(description = "ID của xét nghiệm cần truy xuất") @PathVariable("id") Long id) {
+        log.info("Yêu cầu lấy thông tin xét nghiệm dẫn truyền thần kinh với ID: {}", id);
         NerveConductionResponse response = nerveConductionService.getNerveConductionById(id);
         return ResponseData.<NerveConductionResponse>builder()
                 .status(HttpStatus.OK.value())
-                .message("Thông tin NerveConduction được lấy thành công")
+                .message("Lấy thông tin xét nghiệm dẫn truyền thần kinh thành công")
                 .data(response)
                 .build();
     }
 
     @PostMapping
-    @Operation(summary = "Tạo mới một NerveConduction", description = "Tạo mới bản ghi NerveConduction với dữ liệu được cung cấp.")
-    public ResponseData<NerveConductionResponse> createNerveConduction(@RequestBody @Valid NerveConductionRequest request) {
-        log.info("Yêu cầu tạo mới NerveConduction: {}", request);
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR')")
+    @Operation(
+            summary = "Tạo mới xét nghiệm dẫn truyền thần kinh",
+            description = "Tạo mới một bản ghi xét nghiệm dẫn truyền thần kinh với dữ liệu được cung cấp."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Tạo xét nghiệm dẫn truyền thần kinh thành công"),
+            @ApiResponse(responseCode = "400", description = "Dữ liệu yêu cầu không hợp lệ"),
+            @ApiResponse(responseCode = "403", description = "Không có quyền tạo xét nghiệm"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy cuộc gặp với ID được cung cấp")
+    })
+    public ResponseData<NerveConductionResponse> createNerveConduction(@Valid @RequestBody NerveConductionRequest request) {
+        log.info("Yêu cầu tạo mới xét nghiệm dẫn truyền thần kinh: {}", request);
         NerveConductionResponse response = nerveConductionService.createNerveConduction(request);
         return ResponseData.<NerveConductionResponse>builder()
                 .status(HttpStatus.CREATED.value())
-                .message("NerveConduction được tạo thành công")
+                .message("Tạo xét nghiệm dẫn truyền thần kinh thành công")
                 .data(response)
                 .build();
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Cập nhật thông tin NerveConduction theo ID", description = "Cập nhật thông tin bản ghi NerveConduction theo ID.")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR')")
+    @Operation(
+            summary = "Cập nhật xét nghiệm dẫn truyền thần kinh theo ID",
+            description = "Cập nhật thông tin một bản ghi xét nghiệm dẫn truyền thần kinh dựa trên ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Cập nhật xét nghiệm dẫn truyền thần kinh thành công"),
+            @ApiResponse(responseCode = "400", description = "Dữ liệu yêu cầu không hợp lệ"),
+            @ApiResponse(responseCode = "403", description = "Không có quyền cập nhật xét nghiệm"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy xét nghiệm hoặc cuộc gặp với ID được cung cấp")
+    })
     public ResponseData<NerveConductionResponse> updateNerveConduction(
-            @PathVariable("id") Long id,
-            @RequestBody @Valid NerveConductionRequest request) {
-        log.info("Yêu cầu cập nhật NerveConduction với id: {}", id);
+            @Parameter(description = "ID của xét nghiệm cần cập nhật") @PathVariable("id") Long id,
+            @Valid @RequestBody NerveConductionRequest request) {
+        log.info("Yêu cầu cập nhật xét nghiệm dẫn truyền thần kinh với ID: {}", id);
         NerveConductionResponse response = nerveConductionService.updateNerveConduction(id, request);
         return ResponseData.<NerveConductionResponse>builder()
                 .status(HttpStatus.OK.value())
-                .message("NerveConduction được cập nhật thành công")
+                .message("Cập nhật xét nghiệm dẫn truyền thần kinh thành công")
                 .data(response)
                 .build();
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Xóa NerveConduction theo ID", description = "Xóa một bản ghi NerveConduction dựa trên ID.")
-    public ResponseData<Void> deleteNerveConduction(@PathVariable("id") Long id) {
-        log.info("Yêu cầu xóa NerveConduction với id: {}", id);
+//    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+            summary = "Xóa xét nghiệm dẫn truyền thần kinh theo ID",
+            description = "Xóa một bản ghi xét nghiệm dẫn truyền thần kinh dựa trên ID. Chỉ quản trị viên được phép thực hiện."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Xóa xét nghiệm dẫn truyền thần kinh thành công"),
+            @ApiResponse(responseCode = "403", description = "Không có quyền xóa xét nghiệm"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy xét nghiệm với ID được cung cấp")
+    })
+    public ResponseData<Void> deleteNerveConduction(
+            @Parameter(description = "ID của xét nghiệm cần xóa") @PathVariable("id") Long id) {
+        log.info("Yêu cầu xóa xét nghiệm dẫn truyền thần kinh với ID: {}", id);
         nerveConductionService.deleteNerveConduction(id);
         return ResponseData.<Void>builder()
                 .status(HttpStatus.NO_CONTENT.value())
-                .message("NerveConduction được xóa thành công")
+                .message("Xóa xét nghiệm dẫn truyền thần kinh thành công")
                 .build();
     }
 
     @GetMapping("/by-date")
-    @Operation(summary = "Lấy danh sách NerveConduction theo ngày", description = "Lấy danh sách NerveConduction của ngày được chỉ định với trạng thái PENDING.")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Lấy danh sách xét nghiệm dẫn truyền thần kinh theo ngày và trạng thái",
+            description = "Truy xuất danh sách các xét nghiệm dẫn truyền thần kinh theo ngày và trạng thái (PENDING, COMPLETED, v.v.)."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy danh sách xét nghiệm dẫn truyền thần kinh theo ngày thành công"),
+            @ApiResponse(responseCode = "400", description = "Trạng thái không hợp lệ"),
+            @ApiResponse(responseCode = "403", description = "Không có quyền truy cập danh sách xét nghiệm")
+    })
     public ResponseData<List<NerveConductionResponse>> getAllLabTestByDateAndStatus(
-            @RequestParam @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date,
-            @RequestParam("status") String status
-    ) {
-        log.info("Yêu cầu lấy danh sách LaboratoryTests theo ngày: {}", date);
+            @Parameter(description = "Ngày cần truy xuất (định dạng yyyy-MM-dd)") @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @Parameter(description = "Trạng thái xét nghiệm (PENDING, COMPLETED, v.v.)") @RequestParam String status) {
+        log.info("Yêu cầu lấy danh sách xét nghiệm dẫn truyền thần kinh theo ngày: {} và trạng thái: {}", date, status);
         List<NerveConductionResponse> responses = nerveConductionService.getAllLabTestByDateAndStatus(date, status);
         return ResponseData.<List<NerveConductionResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("Danh sách LaboratoryTests theo ngày được trả về thành công")
+                .message("Lấy danh sách xét nghiệm dẫn truyền thần kinh theo ngày và trạng thái thành công")
                 .data(responses)
                 .build();
     }
 
     @GetMapping("/by-encounter-and-date")
-    @Operation(summary = "Lấy danh sách NerveConduction theo encounterId và ngày", description = "Lấy danh sách NerveConduction theo encounterId và ngày được chỉ định.")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Lấy danh sách xét nghiệm dẫn truyền thần kinh theo cuộc gặp và ngày",
+            description = "Truy xuất danh sách các xét nghiệm dẫn truyền thần kinh theo ID cuộc gặp và ngày (tùy chọn, mặc định là hôm nay)."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy danh sách xét nghiệm dẫn truyền thần kinh theo cuộc gặp và ngày thành công"),
+            @ApiResponse(responseCode = "403", description = "Không có quyền truy cập danh sách xét nghiệm"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy cuộc gặp với ID được cung cấp")
+    })
     public ResponseData<List<NerveConductionResponse>> getEncounterIdAndDate(
-            @RequestParam Long encounterId,
-            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date) {
-        log.info("Yêu cầu lấy danh sách NerveConduction theo encounterId: {} và ngày: {}", encounterId, date);
+            @Parameter(description = "ID của cuộc gặp") @RequestParam Long encounterId,
+            @Parameter(description = "Ngày cần truy xuất (định dạng yyyy-MM-dd, tùy chọn)") @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Yêu cầu lấy danh sách xét nghiệm dẫn truyền thần kinh theo cuộc gặp ID: {} và ngày: {}", encounterId, date);
         List<NerveConductionResponse> responses = nerveConductionService.getEncounterIdAndDate(encounterId, date);
         return ResponseData.<List<NerveConductionResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("Danh sách NerveConduction theo encounterId và ngày được trả về thành công")
+                .message("Lấy danh sách xét nghiệm dẫn truyền thần kinh theo cuộc gặp và ngày thành công")
                 .data(responses)
                 .build();
     }
-
-
 }

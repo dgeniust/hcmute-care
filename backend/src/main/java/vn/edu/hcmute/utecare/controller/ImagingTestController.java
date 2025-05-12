@@ -1,16 +1,19 @@
 package vn.edu.hcmute.utecare.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.hcmute.utecare.dto.request.ImagingTestRequest;
 import vn.edu.hcmute.utecare.dto.response.ImagingTestResponse;
-import vn.edu.hcmute.utecare.dto.response.LaboratoryTestsResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.ResponseData;
 import vn.edu.hcmute.utecare.service.ImagingTestService;
@@ -21,122 +24,172 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/imaging-tests")
 @RequiredArgsConstructor
-@Tag(name = "Imaging Test", description = "Imaging Test API")
+@Tag(name = "IMAGING-TEST", description = "API quản lý xét nghiệm hình ảnh y khoa trong hệ thống y tế")
 @Slf4j(topic = "IMAGING_TEST_CONTROLLER")
 public class ImagingTestController {
 
     private final ImagingTestService imagingTestService;
 
     @GetMapping
-   // @PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
-    @Operation(summary = "Lấy danh sách ImagingTest với phân trang", description = "Lấy danh sách các ImagingTest với hỗ trợ phân trang, sắp xếp theo các tham số page, size, sort và direction.")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Lấy danh sách xét nghiệm hình ảnh có phân trang",
+            description = "Truy xuất danh sách xét nghiệm hình ảnh với hỗ trợ phân trang và sắp xếp."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy danh sách xét nghiệm hình ảnh thành công")
+    })
     public ResponseData<PageResponse<ImagingTestResponse>> getAllImagingTestsWithPagination(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sort,
-            @RequestParam(defaultValue = "asc") String direction) {
-        log.info("Yêu cầu lấy danh sách ImagingTest với phân trang: page={}, size={}, sort={}, direction={}", page, size, sort, direction);
-        PageResponse<ImagingTestResponse> response = imagingTestService.getAll(page, size, sort, direction);
+            @Parameter(description = "Số trang, bắt đầu từ 1") @RequestParam(defaultValue = "1") int page,
+            @Parameter(description = "Số lượng bản ghi mỗi trang") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Trường để sắp xếp (ví dụ: id, createDate)") @RequestParam(defaultValue = "id") String sort,
+            @Parameter(description = "Hướng sắp xếp: asc (tăng dần) hoặc desc (giảm dần)") @RequestParam(defaultValue = "asc") String direction) {
+        log.info("Yêu cầu lấy danh sách xét nghiệm hình ảnh: trang={}, kích thước={}, sắp xếp={}, hướng={}", page, size, sort, direction);
         return ResponseData.<PageResponse<ImagingTestResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("Danh sách ImagingTest phân trang được trả về thành công")
-                .data(response)
+                .message("Lấy danh sách xét nghiệm hình ảnh thành công")
+                .data(imagingTestService.getAll(page, size, sort, direction))
                 .build();
     }
 
     @GetMapping("/all")
-    //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
-    @Operation(summary = "Lấy toàn bộ danh sách ImagingTest", description = "Lấy toàn bộ danh sách các ImagingTest hiện có trong hệ thống.")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Lấy toàn bộ danh sách xét nghiệm hình ảnh",
+            description = "Truy xuất toàn bộ danh sách xét nghiệm hình ảnh trong hệ thống."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy danh sách xét nghiệm hình ảnh thành công")
+    })
     public ResponseData<List<ImagingTestResponse>> getAllImagingTests() {
-        log.info("Yêu cầu lấy toàn bộ danh sách ImagingTest");
-        List<ImagingTestResponse> responses = imagingTestService.getAll();
+        log.info("Yêu cầu lấy toàn bộ danh sách xét nghiệm hình ảnh");
         return ResponseData.<List<ImagingTestResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("Toàn bộ danh sách ImagingTest được trả về thành công")
-                .data(responses)
+                .message("Lấy danh sách xét nghiệm hình ảnh thành công")
+                .data(imagingTestService.getAll())
                 .build();
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
-    @Operation(summary = "Lấy ImagingTest theo ID", description = "Lấy thông tin chi tiết của một ImagingTest dựa trên ID của nó.")
-    public ResponseData<ImagingTestResponse> getImagingTestById(@PathVariable("id") Long id) {
-        log.info("Yêu cầu lấy ImagingTest với id: {}", id);
-        ImagingTestResponse response = imagingTestService.getImagingTestById(id);
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE', 'CUSTOMER')")
+    @Operation(
+            summary = "Lấy xét nghiệm hình ảnh theo ID",
+            description = "Truy xuất thông tin chi tiết của một xét nghiệm hình ảnh dựa trên ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy thông tin xét nghiệm hình ảnh thành công"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy xét nghiệm hình ảnh với ID được cung cấp")
+    })
+    public ResponseData<ImagingTestResponse> getImagingTestById(
+            @Parameter(description = "ID của xét nghiệm hình ảnh cần truy xuất") @PathVariable("id") Long id) {
+        log.info("Yêu cầu lấy thông tin xét nghiệm hình ảnh với ID: {}", id);
         return ResponseData.<ImagingTestResponse>builder()
                 .status(HttpStatus.OK.value())
-                .message("ImagingTest được lấy thành công")
-                .data(response)
+                .message("Lấy thông tin xét nghiệm hình ảnh thành công")
+                .data(imagingTestService.getImagingTestById(id))
                 .build();
     }
 
     @PostMapping
-   // @PreAuthorize("hasRole('DOCTOR')")
-    @Operation(summary = "Tạo một ImagingTest mới", description = "Tạo một ImagingTest mới với thông tin được cung cấp.")
-    public ResponseData<ImagingTestResponse> createImagingTest(@RequestBody @Valid ImagingTestRequest request) {
-        log.info("Yêu cầu tạo ImagingTest: {}", request);
-        ImagingTestResponse response = imagingTestService.createImagingTest(request);
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Tạo xét nghiệm hình ảnh mới",
+            description = "Tạo một xét nghiệm hình ảnh mới với thông tin được cung cấp."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Tạo xét nghiệm hình ảnh thành công"),
+            @ApiResponse(responseCode = "400", description = "Dữ liệu yêu cầu không hợp lệ"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy cuộc gặp với ID được cung cấp")
+    })
+    public ResponseData<ImagingTestResponse> createImagingTest(@Valid @RequestBody ImagingTestRequest request) {
+        log.info("Yêu cầu tạo xét nghiệm hình ảnh mới: {}", request);
         return ResponseData.<ImagingTestResponse>builder()
                 .status(HttpStatus.CREATED.value())
-                .message("ImagingTest được tạo thành công")
-                .data(response)
+                .message("Tạo xét nghiệm hình ảnh thành công")
+                .data(imagingTestService.createImagingTest(request))
                 .build();
     }
 
     @PutMapping("/{id}")
-    //@PreAuthorize("hasRole('DOCTOR')")
-    @Operation(summary = "Cập nhật ImagingTest theo ID", description = "Cập nhật thông tin của một ImagingTest dựa trên ID của nó.")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Cập nhật xét nghiệm hình ảnh",
+            description = "Cập nhật thông tin của một xét nghiệm hình ảnh hiện có dựa trên ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Cập nhật xét nghiệm hình ảnh thành công"),
+            @ApiResponse(responseCode = "400", description = "Dữ liệu yêu cầu không hợp lệ"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy xét nghiệm hình ảnh hoặc cuộc gặp với ID được cung cấp")
+    })
     public ResponseData<ImagingTestResponse> updateImagingTest(
-            @PathVariable("id") Long id,
-            @RequestBody @Valid ImagingTestRequest request) {
-        log.info("Yêu cầu cập nhật ImagingTest với id: {}", id);
-        ImagingTestResponse response = imagingTestService.updateImagingTest(id, request);
+            @Parameter(description = "ID của xét nghiệm hình ảnh cần cập nhật") @PathVariable("id") Long id,
+            @Valid @RequestBody ImagingTestRequest request) {
+        log.info("Yêu cầu cập nhật xét nghiệm hình ảnh với ID: {}", id);
         return ResponseData.<ImagingTestResponse>builder()
                 .status(HttpStatus.OK.value())
-                .message("ImagingTest được cập nhật thành công")
-                .data(response)
+                .message("Cập nhật xét nghiệm hình ảnh thành công")
+                .data(imagingTestService.updateImagingTest(id, request))
                 .build();
     }
 
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasRole('DOCTOR')")
-    @Operation(summary = "Xóa ImagingTest theo ID", description = "Xóa một ImagingTest dựa trên ID của nó.")
-    public ResponseData<Void> deleteImagingTest(@PathVariable("id") Long id) {
-        log.info("Yêu cầu xóa ImagingTest với id: {}", id);
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Xóa xét nghiệm hình ảnh",
+            description = "Xóa một xét nghiệm hình ảnh hiện có dựa trên ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Xóa xét nghiệm hình ảnh thành công"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy xét nghiệm hình ảnh với ID được cung cấp")
+    })
+    public ResponseData<Void> deleteImagingTest(
+            @Parameter(description = "ID của xét nghiệm hình ảnh cần xóa") @PathVariable("id") Long id) {
+        log.info("Yêu cầu xóa xét nghiệm hình ảnh với ID: {}", id);
         imagingTestService.deleteImagingTest(id);
         return ResponseData.<Void>builder()
                 .status(HttpStatus.NO_CONTENT.value())
-                .message("ImagingTest được xóa thành công")
+                .message("Xóa xét nghiệm hình ảnh thành công")
                 .build();
     }
+
     @GetMapping("/by-date")
-    @Operation(summary = "Lấy danh sách ImagingTest theo ngày", description = "Lấy danh sách ImagingTest của ngày được chỉ định với trạng thái PENDING.")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE')")
+    @Operation(
+            summary = "Lấy danh sách xét nghiệm hình ảnh theo ngày và trạng thái",
+            description = "Truy xuất danh sách xét nghiệm hình ảnh theo ngày và trạng thái (ví dụ: PENDING)."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy danh sách xét nghiệm hình ảnh thành công"),
+            @ApiResponse(responseCode = "400", description = "Trạng thái không hợp lệ")
+    })
     public ResponseData<List<ImagingTestResponse>> getAllLabTestByDateAndStatus(
-            @RequestParam @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date,
-            @RequestParam("status") String status
-    ) {
-        log.info("Yêu cầu lấy danh sách ImagingTest theo ngày: {}", date);
-        List<ImagingTestResponse> responses = imagingTestService.getAllImagingTestByDateAndStatus(date, status);
+            @Parameter(description = "Ngày cần truy xuất (định dạng: yyyy-MM-dd)") @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @Parameter(description = "Trạng thái của xét nghiệm (ví dụ: PENDING, COMPLETED)") @RequestParam String status) {
+        log.info("Yêu cầu lấy danh sách xét nghiệm hình ảnh theo ngày: {} và trạng thái: {}", date, status);
         return ResponseData.<List<ImagingTestResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("Danh sách LaboratoryTests theo ngày được trả về thành công")
-                .data(responses)
+                .message("Lấy danh sách xét nghiệm hình ảnh thành công")
+                .data(imagingTestService.getAllImagingTestByDateAndStatus(date, status))
                 .build();
     }
 
     @GetMapping("/by-encounter-and-date")
-    @Operation(summary = "Lấy danh sách ImagingTests theo encounterId và ngày", description = "Lấy danh sách ImagingTests theo encounterId và ngày được chỉ định.")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR', 'NURSE', 'CUSTOMER')")
+    @Operation(
+            summary = "Lấy danh sách xét nghiệm hình ảnh theo cuộc gặp và ngày",
+            description = "Truy xuất danh sách xét nghiệm hình ảnh theo ID cuộc gặp và ngày (tùy chọn, mặc định là hôm nay)."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy danh sách xét nghiệm hình ảnh thành công")
+    })
     public ResponseData<List<ImagingTestResponse>> getEncounterIdAndDate(
-            @RequestParam Long encounterId,
-            @RequestParam(required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate date) {
-        log.info("Yêu cầu lấy danh sách ImagingTests theo encounterId: {} và ngày: {}", encounterId, date);
-        List<ImagingTestResponse> responses = imagingTestService.getEncounterIdAndDate(encounterId, date);
+            @Parameter(description = "ID của cuộc gặp") @RequestParam Long encounterId,
+            @Parameter(description = "Ngày cần truy xuất (tùy chọn, định dạng: yyyy-MM-dd)") @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        log.info("Yêu cầu lấy danh sách xét nghiệm hình ảnh theo cuộc gặp ID: {} và ngày: {}", encounterId, date);
         return ResponseData.<List<ImagingTestResponse>>builder()
                 .status(HttpStatus.OK.value())
-                .message("Danh sách ImagingTests theo encounterId và ngày được trả về thành công")
-                .data(responses)
+                .message("Lấy danh sách xét nghiệm hình ảnh thành công")
+                .data(imagingTestService.getEncounterIdAndDate(encounterId, date))
                 .build();
     }
-
-
 }

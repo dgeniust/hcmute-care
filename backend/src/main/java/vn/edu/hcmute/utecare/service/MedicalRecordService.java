@@ -20,4 +20,7 @@ public interface MedicalRecordService {
     void delete(Long id);
     List<EncounterResponse> getAllEncounterByMedicalRecordId(Long medicalRecordId);
     List<EncounterResponse> getEncounterByMedicalRecordIdAndDate(Long medicalRecordId, LocalDate date);
+
+    PageResponse<MedicalRecordResponse> getAllMedicalRecordsByCustomer(Long customerId, int page, int size, String sort, String direction);
+
 }

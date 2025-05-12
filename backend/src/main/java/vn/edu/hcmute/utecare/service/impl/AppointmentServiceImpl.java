@@ -41,22 +41,49 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Transactional
     @Override
-    public AppointmentResponse createAppointment(AppointmentRequest request){
+    public AppointmentResponse createAppointment(AppointmentRequest request) {
         log.info("Creating appointment with request: {}", request);
 
-        MedicalRecord medicalRecord = medicalRecordRepository.findById(request.getMedicalRecordId())
-                .orElseThrow(() -> new ResourceNotFoundException("Medical record not found with ID: " + request.getMedicalRecordId()));
+        // Kiểm tra hồ sơ y tế
+        MedicalRecord medicalRecord = validateMedicalRecord(request.getMedicalRecordId());
 
-        //thêm check permission
+        // Kiểm tra các khung giờ lịch
+        List<ScheduleSlot> scheduleSlots = validateScheduleSlots(request.getScheduleSlotIds());
 
-        List<ScheduleSlot> scheduleSlots = scheduleSlotRepository.findAllById(request.getScheduleSlotIds());
-        if (scheduleSlots.size() != request.getScheduleSlotIds().size()) {
-            throw new ResourceNotFoundException("Some schedule slots not found");
+        // Tạo lịch hẹn
+        Appointment appointment = Appointment.builder()
+                .medicalRecord(medicalRecord)
+                .build();
+
+        // Tạo vé và cập nhật khung giờ lịch
+        Set<Ticket> tickets = createTicketsForAppointment(appointment, scheduleSlots);
+        appointment.setTickets(tickets);
+        updateScheduleSlots(scheduleSlots);
+
+        // Lưu và trả về
+        return appointmentMapper.toResponse(appointmentRepository.save(appointment));
+    }
+
+    private MedicalRecord validateMedicalRecord(Long medicalRecordId) {
+        return medicalRecordRepository.findById(medicalRecordId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Không tìm thấy hồ sơ y tế với ID: %d", medicalRecordId)));
+    }
+
+    private List<ScheduleSlot> validateScheduleSlots(List<Long> slotIds) {
+        List<ScheduleSlot> scheduleSlots = scheduleSlotRepository.findByIdsWithScheduleAndDoctor(slotIds);
+        if (scheduleSlots.size() != slotIds.size()) {
+            List<Long> foundIds = scheduleSlots.stream().map(ScheduleSlot::getId).toList();
+            List<Long> missingIds = slotIds.stream().filter(id -> !foundIds.contains(id)).toList();
+            throw new ResourceNotFoundException(
+                    String.format("Không tìm thấy khung giờ lịch với các ID: %s", missingIds));
         }
 
         for (ScheduleSlot scheduleSlot : scheduleSlots) {
-            if (scheduleSlot.getBookedSlots() >= scheduleSlot.getSchedule().getMaxSlots()){
-                throw new ConflictException("Schedule slot is full for ID: " + scheduleSlot.getId());
+            int maxSlots = scheduleSlot.getSchedule().getMaxSlots();
+            if (scheduleSlot.getBookedSlots() >= maxSlots) {
+                throw new ConflictException(
+                        String.format("Khung giờ lịch ID: %d đã đầy (giới hạn %d suất)", scheduleSlot.getId(), maxSlots));
             }
         }
 
@@ -64,14 +91,15 @@ public class AppointmentServiceImpl implements AppointmentService {
         for (ScheduleSlot scheduleSlot : scheduleSlots) {
             Integer specialtyId = scheduleSlot.getSchedule().getDoctor().getMedicalSpecialty().getId();
             if (!medicalSpecialtyIds.add(specialtyId)) {
-                throw new ConflictException("Duplicate medical specialty detected for slot ID: " + scheduleSlot.getId());
+                throw new ConflictException(
+                        String.format("Phát hiện trùng chuyên khoa y tế cho khung giờ ID: %d", scheduleSlot.getId()));
             }
         }
 
-        Appointment appointment = Appointment.builder()
-                .medicalRecord(medicalRecord)
-                .build();
+        return scheduleSlots;
+    }
 
+    private Set<Ticket> createTicketsForAppointment(Appointment appointment, List<ScheduleSlot> scheduleSlots) {
         Set<Ticket> tickets = new HashSet<>();
         for (ScheduleSlot scheduleSlot : scheduleSlots) {
             Ticket ticket = Ticket.builder()
@@ -80,26 +108,30 @@ public class AppointmentServiceImpl implements AppointmentService {
                     .appointment(appointment)
                     .build();
             tickets.add(ticket);
+        }
+        return tickets;
+    }
+
+    private void updateScheduleSlots(List<ScheduleSlot> scheduleSlots) {
+        for (ScheduleSlot scheduleSlot : scheduleSlots) {
             scheduleSlot.setBookedSlots(scheduleSlot.getBookedSlots() + 1);
         }
-        appointment.setTickets(tickets);
-        return appointmentMapper.toResponse(appointmentRepository.save(appointment));
     }
 
     @Transactional(readOnly = true)
     @Override
     public AppointmentResponse getAppointmentById(Long id) {
-        log.info("Fetching appointment with ID: {}", id);
+        log.info("Lấy thông tin lịch hẹn với ID: {}", id);
         Appointment appointment = appointmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Không tìm thấy lịch hẹn với ID: %d", id)));
         return appointmentMapper.toResponse(appointment);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public PageResponse<AppointmentResponse> getAppointmentByMedicalRecordId(Long medicalRecordId
-            , int page, int size, String sort, String direction) {
-        log.info("Fetching appointments for medical record with ID: {} between page: {} and size: {}", medicalRecordId, page, size);
+    public PageResponse<AppointmentResponse> getAppointmentByMedicalRecordId(Long medicalRecordId, int page, int size, String sort, String direction) {
+        log.info("Lấy danh sách lịch hẹn cho hồ sơ y tế ID: {} với trang: {} và kích thước: {}", medicalRecordId, page, size);
 
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
 
@@ -119,16 +151,19 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional
     @Override
     public AppointmentResponse confirmAppointment(Long appointmentId) {
-        log.info("Confirming appointment with ID: {}", appointmentId);
+        log.info("Xác nhận lịch hẹn với ID: {}", appointmentId);
         Appointment appointment = appointmentRepository.findById(appointmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with ID: " + appointmentId));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Không tìm thấy lịch hẹn với ID: %d", appointmentId)));
 
         for (Ticket ticket : appointment.getTickets()) {
-            if (ticket.getStatus() == TicketStatus.PENDING) {
-                ticket.setWaitingNumber(calculateWaitingNumber(ticket));
-                ticket.setStatus(TicketStatus.CONFIRMED);
-                ticket.setTicketCode(generateTicketCode());
+            if (ticket.getStatus() != TicketStatus.PENDING) {
+                throw new ConflictException(
+                        String.format("Vé ID: %d không ở trạng thái CHỜ XÁC NHẬN (trạng thái hiện tại: %s)", ticket.getId(), ticket.getStatus()));
             }
+            ticket.setWaitingNumber(calculateWaitingNumber(ticket));
+            ticket.setTicketCode(generateTicketCode());
+            ticket.setStatus(TicketStatus.CONFIRMED);
         }
 
         return appointmentMapper.toResponse(appointmentRepository.save(appointment));
@@ -137,14 +172,17 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional
     @Override
     public AppointmentResponse cancelAppointment(Long appointmentId) {
-        log.info("Cancelling appointment with ID: {}", appointmentId);
+        log.info("Hủy lịch hẹn với ID: {}", appointmentId);
         Appointment appointment = appointmentRepository.findById(appointmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with ID: " + appointmentId));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Không tìm thấy lịch hẹn với ID: %d", appointmentId)));
 
         for (Ticket ticket : appointment.getTickets()) {
-            if (ticket.getStatus() == TicketStatus.PENDING) {
-                ticket.setStatus(TicketStatus.CANCELLED);
+            if (ticket.getStatus() != TicketStatus.PENDING) {
+                throw new ConflictException(
+                        String.format("Vé ID: %d không ở trạng thái CHỜ XÁC NHẬN (trạng thái hiện tại: %s)", ticket.getId(), ticket.getStatus()));
             }
+            ticket.setStatus(TicketStatus.CANCELLED);
         }
 
         return appointmentMapper.toResponse(appointmentRepository.save(appointment));

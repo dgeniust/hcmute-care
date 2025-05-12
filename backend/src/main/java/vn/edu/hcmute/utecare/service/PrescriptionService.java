@@ -2,6 +2,7 @@ package vn.edu.hcmute.utecare.service;
 
 
 import vn.edu.hcmute.utecare.dto.request.PrescriptionRequest;
+import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.PrescriptionItemResponse;
 import vn.edu.hcmute.utecare.dto.response.PrescriptionResponse;
 
@@ -13,7 +14,7 @@ public interface PrescriptionService {
 
     List<PrescriptionItemResponse> getAllPrescriptionItemsByPrescriptionId(Long prescriptionId);
 
-    List<PrescriptionResponse> getAllPrescriptions();
+    PageResponse<PrescriptionResponse> getAllPrescriptions(int page, int size, String sort, String direction);
 
     PrescriptionResponse addPrescription(PrescriptionRequest request);
 

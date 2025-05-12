@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import vn.edu.hcmute.utecare.dto.response.DoctorTicketSummaryResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.dto.response.TicketResponse;
@@ -27,38 +28,40 @@ public class TicketServiceImpl implements TicketService {
     private final TicketMapper ticketMapper;
 
     @Override
-    public List<DoctorTicketSummaryResponse> getTicketSummaryByScheduleSlot(Long scheduleSlotId,
-                                                                            TicketStatus status) {
-        log.info("Getting ticket summary for doctor with ID: {}", scheduleSlotId);
-
+    @Transactional(readOnly = true)
+    public List<DoctorTicketSummaryResponse> getTicketSummaryByScheduleSlot(Long scheduleSlotId, TicketStatus status) {
+        log.info("Truy xuất danh sách vé khám cho khung lịch với ID: {}, trạng thái: {}", scheduleSlotId, status);
         List<Ticket> ticketSummary = ticketRepository.getTicketSummaryByScheduleSlotId(scheduleSlotId, status);
         return ticketSummary.stream().map(ticketMapper::toDoctorTicketSummaryResponse).toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public TicketResponse getTicketById(Long ticketId) {
+        log.info("Truy xuất vé khám với ID: {}", ticketId);
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy vé khám với ID: " + ticketId));
+        log.info("Truy xuất vé khám thành công với ID: {}", ticketId);
         return ticketMapper.toResponse(ticket);
     }
 
     @Override
+    @Transactional
     public TicketResponse updateTicketStatus(Long ticketId, TicketStatus status) {
+        log.info("Cập nhật trạng thái vé khám với ID: {}, trạng thái: {}", ticketId, status);
         Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy vé khám với ID: " + ticketId));
         ticket.setStatus(status);
-        ticketRepository.save(ticket);
-        return ticketMapper.toResponse(ticket);
+        Ticket updatedTicket = ticketRepository.save(ticket);
+        log.info("Cập nhật trạng thái vé khám thành công với ID: {}", ticketId);
+        return ticketMapper.toResponse(updatedTicket);
     }
 
     @Override
-    public PageResponse<TicketResponse> getAllTicketsByMedicalRecordId(Long medicalRecordId,
-                                                                       TicketStatus status,
-                                                                       int page,
-                                                                       int size,
-                                                                       String sort,
-                                                                       String direction) {
-        log.info("Getting all tickets by medical record ID: {}, status: {}, page: {}, size: {}, sort: {}, direction: {}",
+    @Transactional(readOnly = true)
+    public PageResponse<TicketResponse> getAllTicketsByMedicalRecordId(
+            Long medicalRecordId, TicketStatus status, int page, int size, String sort, String direction) {
+        log.info("Truy xuất danh sách vé khám theo hồ sơ y tế với ID: {}, trạng thái: {}, trang: {}, kích thước: {}, sắp xếp: {}, hướng: {}",
                 medicalRecordId, status, page, size, sort, direction);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
         Page<Ticket> ticketPage = ticketRepository.findAllByMedicalRecordIdAndStatus(medicalRecordId, status, pageable);
@@ -74,33 +77,34 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<TicketResponse> getAllTicketsByDoctorId(Long doctorId,
-                                                        LocalDate date,
-                                                        TicketStatus status) {
-        log.info("Getting all tickets by doctor ID: {}", doctorId);
+    @Transactional(readOnly = true)
+    public List<TicketResponse> getAllTicketsByDoctorId(Long doctorId, LocalDate date, TicketStatus status) {
+        log.info("Truy xuất danh sách vé khám theo bác sĩ với ID: {}, ngày: {}, trạng thái: {}", doctorId, date, status);
         List<Ticket> tickets = ticketRepository.findAllByDoctorIdAndDateAndStatus(doctorId, date, status);
-
         return tickets.stream()
                 .map(ticketMapper::toResponse)
                 .toList();
     }
 
     @Override
-    public PageResponse<TicketResponse> getAllTicket(
-            int page, int size, String sort, String direction,
-            LocalDate scheduleDate
-    ){
-        log.info("Getting all tickets");
+    @Transactional(readOnly = true)
+    public PageResponse<TicketResponse> getAllTicket(int page, int size, String sort, String direction,
+                                                     LocalDate scheduleDate,
+                                                     TicketStatus status,
+                                                     Long doctorId,
+                                                     Long patientId) {
+        log.info("Truy xuất danh sách vé khám: trang={}, kích thước={}, sắp xếp={}, hướng={}, ngày lịch khám={}, trạng thái={}, bác sĩ={}, bệnh nhân={}",
+                page, size, sort, direction, scheduleDate, status, doctorId, patientId);
         Pageable pageable = PaginationUtil.createPageable(page, size, sort, direction);
-        Page<Ticket> ticketPage = ticketRepository.findAllTicket(scheduleDate, pageable);
-
+        Page<Ticket> ticketPage = ticketRepository.findAllTicket(status, doctorId, patientId, scheduleDate, pageable);
         return PageResponse.<TicketResponse>builder()
                 .currentPage(page)
                 .pageSize(size)
                 .totalElements(ticketPage.getTotalElements())
                 .totalPages(ticketPage.getTotalPages())
-                .content(ticketPage.getContent().stream().map(ticketMapper::toResponse).toList())
+                .content(ticketPage.getContent().stream()
+                        .map(ticketMapper::toResponse)
+                        .toList())
                 .build();
-
     }
 }
