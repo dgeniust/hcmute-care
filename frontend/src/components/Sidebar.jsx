@@ -40,38 +40,38 @@ const SideBar = () => {
   const [messageApi, contextHolder] = message.useMessage(); // Để dùng notifyErrorWithCustomMessage
   const role = localStorage.getItem("roles") || "ROLE_CUSTOMER";
 
-  let userDetailsData = null;
-  const fetchUserData = async (accId, accessToken) => {
-    try {
-      const response = await fetch(`${apiUrl}v1/accounts/${accId}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      if (response.status === 400) {
-        localStorage.clear();
-        notifyErrorWithCustomMessage(
-          "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại",
-          messageApi
-        );
-        navigate("/login");
-        return null;
-      }
-      console.log("fetchUserData response status:", response.status); // Debug
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.log("fetchUserData error response:", errorText); // Debug
-        handleHttpStatusCode(
-          response.status,
-          "",
-          `Lấy thông tin người dùng thất bại: ${
-            errorText || response.statusText
-          }`,
-          messageApi
-        );
-        return null;
+    let userDetailsData = null;
+    const fetchUserData = async (accId, accessToken) => {
+      try{
+        const response = await fetch(`${apiUrl}v1/accounts/${accId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          }
+        });
+        if (response.status === 400) {
+          localStorage.clear();
+          notifyErrorWithCustomMessage('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại', messageApi);
+          navigate('/login');
+          return null;
+        }
+        console.log('fetchUserData response status:', response.status); // Debug
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.log('fetchUserData error response:', errorText); // Debug
+          handleHttpStatusCode(
+            response.status,
+            '',
+            `Lấy thông tin người dùng thất bại: ${errorText || response.statusText}`,
+            messageApi
+          );
+          return null;
+        }
+        const {data} = await response.json();
+        console.log('fetchUserData response data:', data); // Debug
+        return data;
+
       }
       const { data } = await response.json();
       console.log("fetchUserData response data:", data); // Debug
@@ -148,6 +148,17 @@ const SideBar = () => {
         return null;
       }
 
+        // Gọi API đầu tiên với accId và accessToken
+        const userData = await fetchUserData(accId, accessToken);
+        if (!userData) {
+          setLoading(false);
+          return;
+        }
+        // Cập nhật state và localStorage từ API đầu tiên
+        setUserFullName(userData.userFullName || `Bệnh nhân ${accId}`);
+        localStorage.setItem('customerId', userData.userId);
+        localStorage.setItem('userFullName', userData.userFullName);
+
       const { data } = await response.json();
       console.log("fetchCustomerDetails response data:", data); // Debug
       if (!data) {
@@ -167,6 +178,7 @@ const SideBar = () => {
       return null;
     }
   };
+
 
   useEffect(() => {
     const handleFetchData = async () => {
@@ -211,6 +223,109 @@ const SideBar = () => {
     localStorage.clear();
   };
 
+
+    const menu_nurse = [
+      {
+        key: 'nurse',
+        label: 'Y tá',
+        icon: <UserSwitchOutlined />,
+        children: [
+          { key: 'nurse-schedule', label: 'Lịch làm việc', icon: <SnippetsOutlined /> },
+          { key: 'patient-care', label: 'Chăm sóc bệnh nhân', icon: <AuditOutlined /> },
+          {
+            key: 'login',
+            label: 'Đăng xuất',
+            icon: <LogoutOutlined />,
+            onClick: ()=>{
+              handleLogout();
+            }
+          }
+        ]
+      }
+    ];
+    const menu_doctor = [
+      {
+        key: '',
+        label: 'Bảng điều khiển',
+        icon: <UserOutlined />,
+      },
+      {
+        key: 'records',
+        label: 'Hồ sơ bệnh án',
+        icon: <UsergroupAddOutlined />,
+      },
+      {
+        key: 'diagnose-patient',
+        label: 'Hồ sơ bệnh nhân',
+        icon: <UsergroupAddOutlined />,
+      },
+      {
+          key: 'schedule',
+          label: 'Lịch làm việc',
+          icon: <UsergroupAddOutlined />,
+      },
+      {
+        key: 'list-service',
+        label: 'Bảng giá dịch vụ',
+        icon: <ForkOutlined />,
+      },
+      {
+        key: 'manage-chat',
+        label: 'Hỗ trợ',
+        icon: <MessageOutlined />,
+      },
+      {
+        key: 'manage-contact',
+        label: 'Liên hệ',
+        icon: <PhoneOutlined />,
+      },
+      {
+        key: 'login',
+        label: 'Đăng xuất',
+        icon: <NotificationOutlined />,
+        onClick: ()=>{
+          handleLogout();
+        }
+      },
+    ];
+    const menu_admin = [
+      {
+        key: '',
+        label: 'Bảng điều khiển',
+        icon: <UserOutlined />,
+      },
+      {
+        key: 'sub2',
+        label: 'Quản lý người dùng',
+        icon: <UsergroupAddOutlined />,
+        children: [
+          {
+            key: 'manage-users',
+            label: 'Danh sách người dùng',
+            icon: <UserSwitchOutlined />
+          },
+          {
+            key: 'manage-numbers',
+            label: 'Quản lý phiếu khám bệnh',
+            icon: <ShakeOutlined />
+          },
+        ]
+      },
+      {
+        key: 'sub3',
+        label: 'Quản lý nhân sự',
+        icon: <ApartmentOutlined />,
+        children: [
+          {
+            key: 'manage-employee',
+            label: 'Danh sách nhân sự',
+            icon: <UserSwitchOutlined />
+          },
+          {
+            key: 'manage-schedule',
+            label: 'Lịch trình làm việc',
+            icon: <TableOutlined />
+
   const menu_customer = [
     {
       key: "sub1",
@@ -248,6 +363,7 @@ const SideBar = () => {
           icon: <LogoutOutlined />,
           onClick: () => {
             handleLogout();
+
           },
         },
       ],

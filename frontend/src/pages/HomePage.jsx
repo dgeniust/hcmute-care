@@ -42,6 +42,7 @@ const HomePage = () => {
     "service-list": "DANH SÁCH DỊCH VỤ",
     "notification-event": "THÔNG BÁO & SỰ KIỆN",
     "booking": "KHÁM THEO CHUYÊN KHOA",
+    "completed-booking" : "LỊCH KHÁM ĐÃ HOÀN TẤT",
   };
 
   const breadcumbItems = [
@@ -74,7 +75,8 @@ const HomePage = () => {
           style={{
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
-            minHeight: '300vh',
+            height: 'screen',
+            minHeight: '100vh',
             display: 'flex',
             flexDirection: 'row',
           }}

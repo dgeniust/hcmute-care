@@ -64,20 +64,21 @@ const ManageSchedule = () => {
   // Default example events - fallback
   const initialEvents = [
     {
-      id: "1",
-      title: "Morning Shift",
-      start: "2025-05-01 06:00",
-      end: "2025-05-01 11:00",
-      description: "Regular morning checkups",
-      calendarId: "work",
+
+      id: '1',
+      title: 'Morning Shift',
+      start: '2020-05-01 06:00',
+      end: '2020-05-01 11:00',
+      description: 'Regular morning checkups',
+      calendarId: 'work',
     },
     {
-      id: "2",
-      title: "Afternoon Consultations",
-      start: "2025-05-01 13:30",
-      end: "2025-05-01 16:30",
-      description: "Meeting with surgical team",
-      calendarId: "meeting",
+      id: '2',
+      title: 'Afternoon Consultations',
+      start: '2020-05-01 13:30',
+      end: '2020-05-01 16:30',
+      description: 'Meeting with surgical team',
+      calendarId: 'meeting',
     },
   ];
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
@@ -155,12 +156,9 @@ const ManageSchedule = () => {
   // Fetch medical specialties
   const fetchSpecialties = async () => {
     try {
-      const response = await fetch(
-        `${base_url}medical-specialties?page=1&size=30&sort=id&direction=asc`,
-        {
-          method: "GET",
-        }
-      );
+      const response = await fetch(`${base_url}/medical-specialties?page=1&size=30&sort=id&direction=asc`, {
+        method: 'GET',
+      });
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -175,12 +173,9 @@ const ManageSchedule = () => {
   // Fetch doctors by specialty
   const fetchDoctorsBySpecialty = async (specialtyId) => {
     try {
-      const response = await fetch(
-        `${base_url}medical-specialties/${specialtyId}/doctors?page=1&size=20&sort=id&direction=asc`,
-        {
-          method: "GET",
-        }
-      );
+      const response = await fetch(`${base_url}/medical-specialties/${specialtyId}/doctors?page=1&size=20&sort=id&direction=asc`, {
+        method: 'GET',
+      });
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -195,9 +190,8 @@ const ManageSchedule = () => {
   // Fetch time slots
   const fetchTimeSlots = async () => {
     try {
-      const response = await fetch(`${base_url}time-slots`, {
-        method: "GET",
-      });
+      const response = await fetch(`${base_url}/time-slots`, {
+        method: 'GET',
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -213,10 +207,11 @@ const ManageSchedule = () => {
   const fetchDoctorSchedule = async (doctorId) => {
     setLoading(true);
     try {
-      const startDate = "2025-05-01";
-      const endDate = "2025-05-31";
-      const api = `${base_url}schedules?doctorId=${doctorId}&startDate=${startDate}&endDate=${endDate}&page=1&size=10&sort=date&direction=asc`;
-      const response = await fetch(api, { method: "GET" });
+
+      const startDate = '2025-05-01';
+      const endDate = '2025-05-31';
+      const api = `${base_url}/schedules?doctorId=${doctorId}&startDate=${startDate}&endDate=${endDate}&page=1&size=10&sort=date&direction=asc`;
+      const response = await fetch(api, { method: 'GET' });
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
@@ -243,32 +238,6 @@ const ManageSchedule = () => {
     fetchTimeSlots();
   }, []);
 
-  // Load events into calendar
-  useEffect(() => {
-    if (doctorScheduleData.length > 0 && eventsService) {
-      console.log(
-        "eventsService methods:",
-        Object.getOwnPropertyNames(Object.getPrototypeOf(eventsService))
-      );
-
-      if (typeof eventsService.clear === "function") {
-        eventsService.clear();
-      } else if (
-        typeof eventsService.getAll === "function" &&
-        typeof eventsService.remove === "function"
-      ) {
-        const eventIds = eventsService.getAll().map((event) => event.id);
-        eventsService.remove(eventIds);
-      } else {
-        console.warn("No clear method available for eventsService");
-      }
-
-      doctorScheduleData.forEach((event) => {
-        eventsService.add(event);
-      });
-    }
-  }, [doctorScheduleData, eventsService]);
-
   // Handle specialty selection
   const handleSpecialtyChange = (specialtyId) => {
     setSelectedSpecialty(specialtyId);
@@ -281,11 +250,32 @@ const ManageSchedule = () => {
   // Handle search
   const handleSearch = (values) => {
     if (values.doctorId) {
+      setDoctorScheduleData([]); // Reset state
+      if (eventsService && typeof eventsService.clear === 'function') {
+        eventsService.clear(); // Clear events in calendar
+      } else if (
+        typeof eventsService.getAll === 'function' &&
+        typeof eventsService.remove === 'function'
+      ) {
+        const eventIds = eventsService.getAll().map((event) => event.id);
+        eventsService.remove(eventIds);
+      } else {
+        console.warn('No clear method available for eventsService');
+      }
       fetchDoctorSchedule(values.doctorId);
     } else {
       messageApi.warning("Please select a doctor");
     }
   };
+  // Load events into calendar
+  useEffect(() => {
+    if (doctorScheduleData.length > 0 && eventsService) {
+      console.log('Doctor Schedule Data ------------------:', doctorScheduleData);
+      doctorScheduleData.forEach((event) => {
+        eventsService.add(event);
+      });
+    }
+  }, [doctorScheduleData, eventsService]);
 
   // Handle modal display
   const showModal = () => {
@@ -315,8 +305,8 @@ const ManageSchedule = () => {
         console.log("Form Values:", payload);
         console.log("Fetch URL:", `${base_url}schedules`);
         try {
-          const response = await fetch(`${base_url}schedules`, {
-            method: "POST",
+          const response = await fetch(`${base_url}/schedules`, {
+            method: 'POST',
             headers: {
               "Content-Type": "application/json",
               Accept: "*/*",
@@ -385,7 +375,10 @@ const ManageSchedule = () => {
       calendar.setView(view);
     }
   };
-
+  // Handle refresh
+  const handleRefresh = () => {
+    window.location.reload()
+  };
   return (
     <Card className="w-full shadow-md">
       {contextHolder}
@@ -406,9 +399,9 @@ const ManageSchedule = () => {
               </Button>
             </Tooltip>
             <Tooltip title="Refresh schedule data">
-              <Button
-                icon={<ReloadOutlined />}
-                onClick={() => searchForm.submit()}
+              <Button 
+                icon={<ReloadOutlined />} 
+                onClick={handleRefresh}
                 loading={loading}
               >
                 Refresh

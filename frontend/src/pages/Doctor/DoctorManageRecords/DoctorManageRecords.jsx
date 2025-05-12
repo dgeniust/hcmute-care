@@ -25,23 +25,26 @@ const DoctorManageRecords = () => {
   const [messageApi, contextHolder] = message.useMessage(); // Sử dụng message API từ antd
   const [schedulePatientData, setSchedulePatientData] = useState([]); // State để lưu dữ liệu bệnh nhân từ API
 
-  const doctorId = localStorage.getItem("customerId"); // Lấy doctorId từ localStorage
-  //const formatDate = dayjs().format('YYYY-MM-DD'); // Định dạng ngày hiện tại
+
+
+  const doctorId = localStorage.getItem('customerId'); // Lấy doctorId từ localStorage
+  const formatDate = dayjs().format('YYYY-MM-DD'); // Định dạng ngày hiện tại
   // Gọi API khi component mount
-  const formatDate = "2025-05-09";
+  //const formatDate = "2025-05-09"
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch(
-          `${apiUrl}v1/doctors/${doctorId}/schedule?date=${formatDate}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
+        const response = await fetch(`http://localhost:8080/api/v1/doctors/${doctorId}/schedule?date=${formatDate}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        });
+        if(!response.ok) {
+          handleHttpStatusCode(response.status, '', "Hôm nay bác sĩ không có lịch làm việc", messageApi); // Gọi hàm xử lý thông báo
+          return;
+        }
         const data = await response.json();
         if (data.status === 200) {
           // Sắp xếp time slot theo thời gian bắt đầu (startTime)

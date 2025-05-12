@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { message } from "antd";
+import { message, Typography } from "antd";
 import {
   notifyErrorWithCustomMessage,
   notifySuccessWithCustomMessage,
 } from "../../../utils/notificationHelper";
-
+const {Text} = Typography;
 const ConfirmBill_Booking = () => {
   const [paymentData, setPaymentData] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
@@ -55,17 +55,25 @@ const ConfirmBill_Booking = () => {
             {ticket.schedule?.roomDetail?.name ||
               "Phòng 33 - Khám Nội Lầu 1 Khu A"}
           </p>
-          <p className="flex flex-row space-x-1">
+          <div className="flex flex-row space-x-1">
             <h1>Ngày khám:</h1>
-            <p className="font-bold">
+            <span className="font-bold">
               {ticket.schedule?.date || "Phòng 33 - Khám Nội Lầu 1 Khu A"}
-            </p>
-          </p>
-          <div className="w-[80px] h-[80px] border border-[#2ecc71] rounded-full flex flex-col justify-center items-center p-4 text-[#2ecc71]">
+            </span>
+          </div>
+          {/* <div className="w-[80px] h-[80px] border border-[#2ecc71] rounded-full flex flex-col justify-center items-center p-4 text-[#2ecc71]">
             <p className="text-4xl font-bold text-[#009432]">
               {ticket.waitingNumber || "--"}
             </p>
             <span>STT</span>
+          </div> */}
+          <div className="flex justify-center mb-4">
+              <div className="text-center p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <Text type="secondary">Số thứ tự</Text>
+              <div className="font-bold text-3xl text-blue-600">
+                  {ticket.waitingNumber|| "--"}
+              </div>
+              </div>
           </div>
         </div>
         <div className="flex flex-row items-center space-x-20 justify-center w-full text-center text-black">
