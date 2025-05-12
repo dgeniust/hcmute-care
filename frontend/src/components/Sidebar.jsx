@@ -48,15 +48,15 @@ const SideBar = () => {
         }
         const {data} = await response.json();
         console.log('fetchUserData response data:', data); // Debug
-        if (
-          !data ||
-          !data.userId ||
-          !Number.isInteger(Number(data.userId)) ||
-          !data.userFullName
-        ){
-          notifyErrorWithCustomMessage("Dữ liệu người dùng không hợp lệ hoặc thiếu thông tin", messageApi);
-          return null;
-        }
+        // if (
+        //   !data ||
+        //   !data.userId ||
+        //   !Number.isInteger(Number(data.userId)) ||
+        //   !data.userFullName
+        // ){
+        //   notifyErrorWithCustomMessage("Dữ liệu người dùng không hợp lệ hoặc thiếu thông tin", messageApi);
+        //   return null;
+        // }
         return data;
       }
       catch (error) {
@@ -143,7 +143,7 @@ const SideBar = () => {
           return;
         }
         // Cập nhật state và localStorage từ API đầu tiên
-        setUserFullName(userData.userFullName);
+        setUserFullName(userData.userFullName || `Bệnh nhân ${accId}`);
         localStorage.setItem('customerId', userData.userId);
         localStorage.setItem('userFullName', userData.userFullName);
 
@@ -240,7 +240,7 @@ const SideBar = () => {
         icon: <UsergroupAddOutlined />,
       },
       {
-        key: 'patient',
+        key: 'diagnose-patient',
         label: 'Hồ sơ bệnh nhân',
         icon: <UsergroupAddOutlined />,
       },

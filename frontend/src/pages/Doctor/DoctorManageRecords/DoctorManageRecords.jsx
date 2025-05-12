@@ -22,9 +22,9 @@ const DoctorManageRecords = () => {
 
 
   const doctorId = localStorage.getItem('customerId'); // Lấy doctorId từ localStorage
-  //const formatDate = dayjs().format('YYYY-MM-DD'); // Định dạng ngày hiện tại
+  const formatDate = dayjs().format('YYYY-MM-DD'); // Định dạng ngày hiện tại
   // Gọi API khi component mount
-  const formatDate = "2025-05-09"
+  //const formatDate = "2025-05-09"
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
@@ -35,6 +35,10 @@ const DoctorManageRecords = () => {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
         });
+        if(!response.ok) {
+          handleHttpStatusCode(response.status, '', "Hôm nay bác sĩ không có lịch làm việc", messageApi); // Gọi hàm xử lý thông báo
+          return;
+        }
         const data = await response.json();
         if (data.status === 200) {
           // Sắp xếp time slot theo thời gian bắt đầu (startTime)
@@ -123,9 +127,6 @@ const DoctorManageRecords = () => {
       notifyErrorWithCustomMessage('Lỗi khi lấy danh sách bệnh nhân', messageApi); // Thông báo lỗi
     }
   };
-
-  
-
   const navigate = useNavigate();
   const handleOpenRecord = async (patient) => {
     localStorage.setItem('patientEncounterInfo', JSON.stringify(patient)); // Lưu medicalRecordId vào localStorage

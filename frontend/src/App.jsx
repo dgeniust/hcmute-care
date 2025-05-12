@@ -39,6 +39,8 @@ import Book_Review from './pages/Book_Review/Book_Review';
 import NurseDashboard from './pages/Nurse/NurseDashboard';
 import NurseHomePage from './pages/Nurse/NurseHomePage';
 import ChatbotContextMenu from './components/Chatbot/ChatbotContextMenu';
+import DiagnoseRecord from './pages/Doctor/DoctorManageRecords/DiagnoseRecord';
+import DiagnosePatient from './components/DoctorComponents/DiagnoseRecords/DiagnosePatient';
 function App() {
   return (
     <Router>
@@ -91,6 +93,8 @@ function App() {
               <Route path="/doctor/records" element={<DoctorManageRecords />} />
               <Route path="/doctor/patient" element={<PatientRecords />} />
               <Route path="/doctor/schedule" element={<DoctorSchedule />} />
+              <Route path="/doctor/diagnose-patient" element={<DiagnoseRecord />} />
+              <Route path='/doctor/detail-diagnose' element={<DiagnosePatient/>}/>
               {/*<Route path="/doctor/manage-posts" element={<ManagePost />} /> */}
             </Route>
           </Route>

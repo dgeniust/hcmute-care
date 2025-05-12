@@ -1,18 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import { Avatar, Collapse, theme, Card, Badge, Divider, Typography, Space, Tag, Tooltip,Progress, message } from 'antd';
 import { 
-  CaretRightOutlined, UserOutlined, PhoneOutlined, 
+  UserOutlined, PhoneOutlined, 
   MailOutlined, HomeOutlined, GlobalOutlined, IdcardOutlined,
-  CalendarOutlined, MedicineBoxOutlined, FileTextOutlined, 
-  DollarOutlined, ClockCircleOutlined
+  CalendarOutlined
 } from '@ant-design/icons';
-import BloodPresure, { HeartRate, Temperature, BodyHW } from './SVGPatiendRecors';
 import { useLocation } from 'react-router-dom';
-import ParaclinicalTest from './ParaclinicalTest';
+import DiagnoseEncounter from './DiagnoseEncounter';
 import { notifyErrorWithCustomMessage, notifySuccessWithCustomMessage, handleHttpStatusCode } from '../../../utils/notificationHelper';
 const { Title, Text, Paragraph } = Typography;
 import dayjs from 'dayjs';
-const PatientRecords = () => {
+const DiagnosePatient = () => {
   const location = useLocation();
   const patient = location.state?.patient;
   const encounter = patient?.encounter || [];
@@ -65,7 +63,6 @@ const PatientRecords = () => {
   },[])
   
   const waitingNumber = localStorage.getItem('waitingNumber') || null;
-  
   return (
     <div className="w-full h-full p-4 md:p-6 lg:p-8 text-black bg-gradient-to-br from-white to-blue-50">
       <Card 
@@ -96,11 +93,8 @@ const PatientRecords = () => {
                   
                   <div className="bg-green-100 rounded-lg shadow-sm h-[30px]">
                     <div className="flex items-center justify-center m-auto">
-                      <p className='text-lg'>Số thứ tự: 
-                        <span className="font-bold text-green-800">
-                        {waitingNumber}
-                        </span>
-                      </p>
+                      <p className='text-lg'>Số thứ tự: <span className="font-bold text-green-800">
+                        {waitingNumber}</span></p>
                     </div>
                   </div>
                   
@@ -164,40 +158,13 @@ const PatientRecords = () => {
               </div>
             </Card>
           </div>
-          
-          {/* Medical History Section */}
-          {/* <div className="w-full lg:w-1/2 h-full p-5 overflow-auto">
-            <Card 
-              variant={false} 
-              className="h-full"
-              title={
-                <div className="flex items-center justify-center">
-                  <FileTextOutlined className="mr-2 text-blue-500" />
-                  <span>Lịch sử khám bệnh</span>
-                </div>
-              }
-            >
-              <Collapse
-                bordered={false}
-                // defaultActiveKey={['1']}
-                expandIcon={({ isActive }) => (
-                  <CaretRightOutlined 
-                    rotate={isActive ? 90 : 0} 
-                    className="text-blue-600" 
-                  />
-                )}
-                className="bg-transparent"
-                items={getItems(panelStyle, encounters)}
-              />
-            </Card>
-          </div> */}
         </div>
       </Card>
       
-      <ParaclinicalTest/>
+      <DiagnoseEncounter/>
       {contextHolder}
     </div>
   );
 };
 
-export default PatientRecords;
+export default DiagnosePatient;

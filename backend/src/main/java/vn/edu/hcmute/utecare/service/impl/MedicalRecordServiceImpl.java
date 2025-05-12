@@ -23,6 +23,7 @@ import vn.edu.hcmute.utecare.repository.MedicalRecordRepository;
 import vn.edu.hcmute.utecare.service.MedicalRecordService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 
+import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
 import java.util.Random;
@@ -84,6 +85,12 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     @Override
     public List<EncounterResponse> getAllEncounterByMedicalRecordId(Long medicalRecordId) {
         List<Encounter> encounters = encounterRepository.findByMedicalRecord_Id(medicalRecordId);
+        return encounters.stream().map(EncounterMapper.INSTANCE::toResponse).toList();
+    }
+
+    @Override
+    public List<EncounterResponse> getEncounterByMedicalRecordIdAndDate(Long medicalRecordId, LocalDate date) {
+        List<Encounter> encounters = encounterRepository.findByMedicalRecord_IdAndVisitDate(medicalRecordId, date);
         return encounters.stream().map(EncounterMapper.INSTANCE::toResponse).toList();
     }
 

@@ -72,7 +72,7 @@ const BodyContent = () => {
     return (
         <div className='w-full h-full flex flex-col'>
             <div className='mb-8 w-full text-center'>
-                <h1 className='font-bold text-black text-2xl'>CÁC NHÓM CƠ Ở CƠ THỂ NGƯỜI</h1>
+                <h1 className='font-bold text-black text-3xl'>Các nhóm cơ ở cơ thể người</h1>
             </div>
             <Radio.Group defaultValue="front" style={{width: '100%', textAlign: 'center'}} onChange={(e) => setFace(e.target.value)}>
                 <Radio.Button value="front">Front</Radio.Button>

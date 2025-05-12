@@ -25,7 +25,7 @@ import {
   EnvironmentOutlined,
   SearchOutlined
 } from '@ant-design/icons';
-
+import { handleHttpStatusCode, notifyErrorWithCustomMessage, notifySuccessWithCustomMessage } from '../../../utils/notificationHelper';
 const { Title, Text } = Typography;
 
 /**
@@ -40,12 +40,13 @@ const TransactionHistory = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
   
   // Get customer ID from local storage
   const customerId = localStorage.getItem('customerId');
   
   // Constants
-  const API_BASE_URL = 'http://localhost:8080/api/v1';
+  const API_BASE_URL = 'http://localhost:8080/api/';
 
   // Fetch transactions data
   useEffect(() => {
@@ -59,7 +60,7 @@ const TransactionHistory = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${API_BASE_URL}/customers/${customerId}/payments?page=1&size=10&sort=paymentDate&direction=desc`, 
+        `${API_BASE_URL}v1/customers/${customerId}/payments?paymentStatus=COMPLETED&page=1&size=10&sort=paymentDate&direction=desc`, 
         {
           method: 'GET',
           headers: {
@@ -71,7 +72,7 @@ const TransactionHistory = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Error fetching transaction data:', errorText);
-        message.error('Không thể tải dữ liệu giao dịch');
+        notifyErrorWithCustomMessage('Không thể tải dữ liệu giao dịch', messageApi);
         setLoading(false);
         return;
       }
@@ -81,11 +82,11 @@ const TransactionHistory = () => {
       if (data && data.data.content.length > 0) {
         setTransactions(data.data.content);
       } else {
-        console.log('No transaction data found');
+        notifyErrorWithCustomMessage('No transaction data found', messageApi);
       }
     } catch (error) {
       console.error('Error fetching transaction data:', error);
-      message.error('Đã xảy ra lỗi khi tải dữ liệu giao dịch');
+      notifyErrorWithCustomMessage('Đã xảy ra lỗi khi tải dữ liệu giao dịch', messageApi);
     } finally {
       setLoading(false);
     }
@@ -96,9 +97,11 @@ const TransactionHistory = () => {
    * @param {string} appointmentId - The ID of the appointment
    */
   const fetchAppointmentDetails = async (appointmentId) => {
+    console.log('Fetching appointment details for ID:', appointmentId);
+    localStorage.setItem('appointmentId', appointmentId);
     try {
       setModalLoading(true);
-      const response = await fetch(`${API_BASE_URL}/appointments/${appointmentId}`, {
+      const response = await fetch(`${API_BASE_URL}v1/appointments/${appointmentId}`, {
         method: 'GET',                  
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +111,7 @@ const TransactionHistory = () => {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Error fetching appointment data:', errorText);
-        message.error('Không thể tải thông tin lịch khám');
+        notifyErrorWithCustomMessage('Không thể tải thông tin lịch khám', messageApi);
         setModalLoading(false);
         return;
       }
@@ -124,12 +127,11 @@ const TransactionHistory = () => {
       }
     } catch (error) {
       console.error('Error fetching appointment data:', error);
-      message.error('Đã xảy ra lỗi khi tải thông tin lịch khám');
+      notifyErrorWithCustomMessage('Đã xảy ra lỗi khi tải thông tin lịch khám', messageApi);
     } finally {
       setModalLoading(false);
     }
   };
-
   /**
    * Handle transaction selection
    * @param {Object} transaction - The selected transaction
@@ -547,6 +549,7 @@ const TransactionHistory = () => {
           />
         )}
       </Modal>
+      {contextHolder}
     </div>
   );
 };

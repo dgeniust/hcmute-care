@@ -16,6 +16,7 @@ import vn.edu.hcmute.utecare.service.MedicalRecordService;
 import vn.edu.hcmute.utecare.service.TicketService;
 import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -134,6 +135,16 @@ public class MedicalRecordController {
                 .data(medicalRecordService.getAllEncounterByMedicalRecordId(medicalRecordId))
                 .build();
     }
-
-
+    @GetMapping("/{id}/date/encounters")
+    @Operation(summary = "Get all encounter by medical record ID", description = "Retrieves all encounters with a medical record id")
+    public ResponseData<List<EncounterResponse>> getEncountersByMedicalRecordIdAndDate(
+            @PathVariable("id") Long medicalRecordId,
+            @RequestParam("date")LocalDate date) {
+        log.info("Get encounters by medical record ID: {}", medicalRecordId);
+        return ResponseData.<List<EncounterResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Encounters retrieved successfully")
+                .data(medicalRecordService.getEncounterByMedicalRecordIdAndDate(medicalRecordId, date))
+                .build();
+    }
 }

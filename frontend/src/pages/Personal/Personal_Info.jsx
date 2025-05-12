@@ -216,6 +216,25 @@ const Personal_Info = () => {
                             <span className='font-bold'>Email</span>
                             <Input value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)}/>
                         </div>
+                        <div className='text-black space-y-2 flex flex-col'>
+                            <span className='font-bold'>Quốc gia</span>
+                            <Input value={formData.nation} 
+                                onChange={(e) => handleInputChange('nation', e.target.value)}
+                            />
+                        </div>
+                        <div className='text-black space-y-2 flex flex-col'>
+                            <span className='font-bold'>Địa chỉ</span>
+                            <Input value={formData.address} 
+                                onChange={(e) => handleInputChange('address', e.target.value)}
+                            />
+                        </div>
+                        <div className='text-black space-y-2 flex flex-col'>
+                            <span className='font-bold'>Membership</span>
+                            <Input value={formData.membership} 
+                            disabled
+                                onChange={(e) => handleInputChange('membership', e.target.value)}
+                            />
+                        </div>
                     </div>
                     <div className='w-full flex justify-center mt-8'>
                         <Button type="primary" style={{padding: '20px'}} onClick={handleSubmitUpdate}>Cập nhật thông tin</Button>

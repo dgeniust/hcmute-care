@@ -17,7 +17,8 @@ export default defineConfig({
     ],
     esbuildOptions: {
       target: 'es2020'
-    }
+    },
+    exclude: ["@emailjs/browser"],
   },
   build: {
     target: 'es2020'

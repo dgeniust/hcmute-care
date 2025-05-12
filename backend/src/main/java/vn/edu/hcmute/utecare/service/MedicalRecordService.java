@@ -5,6 +5,7 @@ import vn.edu.hcmute.utecare.dto.response.EncounterResponse;
 import vn.edu.hcmute.utecare.dto.response.MedicalRecordResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MedicalRecordService {
@@ -18,4 +19,5 @@ public interface MedicalRecordService {
     MedicalRecordResponse update(Long id, MedicalRecordRequest request);
     void delete(Long id);
     List<EncounterResponse> getAllEncounterByMedicalRecordId(Long medicalRecordId);
+    List<EncounterResponse> getEncounterByMedicalRecordIdAndDate(Long medicalRecordId, LocalDate date);
 }
