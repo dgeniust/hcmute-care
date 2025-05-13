@@ -39,10 +39,10 @@ public class PrescriptionItemServiceImpl implements PrescriptionItemService {
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy thuốc với ID: " + request.getMedicineId()));
         prescriptionItem.setMedicine(medicine);
 
-        // Kiểm tra và thiết lập đơn thuốc
-        Prescription prescription = prescriptionRepository.findById(request.getPrescriptionId())
-                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đơn thuốc với ID: " + request.getPrescriptionId()));
-        prescriptionItem.setPrescription(prescription);
+//        // Kiểm tra và thiết lập đơn thuốc
+//        Prescription prescription = prescriptionRepository.findById(request.getPrescriptionId())
+//                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đơn thuốc với ID: " + request.getPrescriptionId()));
+//        prescriptionItem.setPrescription(prescription);
 
         PrescriptionItem savedItem = prescriptionItemRepository.save(prescriptionItem);
         log.info("Tạo mục thuốc thành công với ID: {}", savedItem.getId());
@@ -67,11 +67,11 @@ public class PrescriptionItemServiceImpl implements PrescriptionItemService {
         }
 
         // Kiểm tra và cập nhật đơn thuốc nếu có
-        if (request.getPrescriptionId() != null) {
-            Prescription prescription = prescriptionRepository.findById(request.getPrescriptionId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đơn thuốc với ID: " + request.getPrescriptionId()));
-            prescriptionItem.setPrescription(prescription);
-        }
+//        if (request.getPrescriptionId() != null) {
+//            Prescription prescription = prescriptionRepository.findById(request.getPrescriptionId())
+//                    .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy đơn thuốc với ID: " + request.getPrescriptionId()));
+//            prescriptionItem.setPrescription(prescription);
+//        }
 
         PrescriptionItem updatedItem = prescriptionItemRepository.save(prescriptionItem);
         log.info("Cập nhật mục thuốc thành công với ID: {}", id);
