@@ -6,6 +6,8 @@ import vn.edu.hcmute.utecare.dto.response.AppointmentResponse;
 import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.model.Appointment;
 
+import java.math.BigDecimal;
+
 public interface AppointmentService {
     AppointmentResponse createAppointment(AppointmentRequest request);
 
@@ -17,4 +19,6 @@ public interface AppointmentService {
     AppointmentResponse confirmAppointment(Long appointmentId);
 
     AppointmentResponse cancelAppointment(Long appointmentId);
+
+    BigDecimal calculateTotalPrice(Appointment appointment);
 }

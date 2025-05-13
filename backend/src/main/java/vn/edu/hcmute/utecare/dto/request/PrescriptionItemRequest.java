@@ -17,7 +17,4 @@ public class PrescriptionItemRequest {
     @NotNull(message = "Medicine ID is required")
     private Long medicineId;
 
-    @NotNull(message = "Prescription ID is required")
-    private Long prescriptionId;
-
 }

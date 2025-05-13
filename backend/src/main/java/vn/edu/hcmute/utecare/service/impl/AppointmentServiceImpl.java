@@ -24,6 +24,7 @@ import vn.edu.hcmute.utecare.service.AppointmentService;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
 import vn.edu.hcmute.utecare.util.enumeration.TicketStatus;
 
+import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.List;
@@ -116,6 +117,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         for (ScheduleSlot scheduleSlot : scheduleSlots) {
             scheduleSlot.setBookedSlots(scheduleSlot.getBookedSlots() + 1);
         }
+        scheduleSlotRepository.saveAll(scheduleSlots);
     }
 
     @Transactional(readOnly = true)
@@ -183,9 +185,25 @@ public class AppointmentServiceImpl implements AppointmentService {
                         String.format("Vé ID: %d không ở trạng thái CHỜ XÁC NHẬN (trạng thái hiện tại: %s)", ticket.getId(), ticket.getStatus()));
             }
             ticket.setStatus(TicketStatus.CANCELLED);
+            ScheduleSlot slot = ticket.getScheduleSlot();
+            slot.setBookedSlots(slot.getBookedSlots() - 1);
+            scheduleSlotRepository.save(slot);
         }
 
         return appointmentMapper.toResponse(appointmentRepository.save(appointment));
+    }
+
+    @Override
+    public BigDecimal calculateTotalPrice(Appointment appointment) {
+        BigDecimal amount = BigDecimal.ZERO;
+        for (Ticket ticket : appointment.getTickets()) {
+            BigDecimal price = ticket.getScheduleSlot().getSchedule().getDoctor().getMedicalSpecialty().getPrice();
+            if (price == null) {
+                throw new IllegalStateException("Giá chưa được định nghĩa cho chuyên khoa");
+            }
+            amount = amount.add(price);
+        }
+        return amount;
     }
 
     private String generateTicketCode() {

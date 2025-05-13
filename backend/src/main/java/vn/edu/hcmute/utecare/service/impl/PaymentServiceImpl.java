@@ -51,14 +51,8 @@ public class PaymentServiceImpl implements PaymentService {
         Appointment appointment = appointmentRepository.findById(request.getAppointmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy cuộc hẹn với ID: " + request.getAppointmentId()));
 
-        BigDecimal amount = BigDecimal.ZERO;
-        for (Ticket ticket : appointment.getTickets()) {
-            BigDecimal price = ticket.getScheduleSlot().getSchedule().getDoctor().getMedicalSpecialty().getPrice();
-            if (price == null) {
-                throw new IllegalStateException("Giá chưa được định nghĩa cho chuyên khoa");
-            }
-            amount = amount.add(price);
-        }
+        BigDecimal amount = appointmentService.calculateTotalPrice(appointment);
+
 
         Map<String, String> vnpParams = vnpayConfig.getVNPayConfig();
         String vnp_TxnRef = VNPayUtil.getRandomNumber(8);
