@@ -180,7 +180,7 @@ const ChooseProfile_Booking = forwardRef(
               )}
             </div>
             {/* Profile details section */}
-            <div className="flex flex-col space-y-2 w-2/3 h-fit">
+            <div className="flex flex-col w-2/3 h-fit">
               {medicalRecords && medicalRecords.length > 0 ? (
                 medicalRecords.map((record) => (
                   <Button
@@ -194,6 +194,7 @@ const ChooseProfile_Booking = forwardRef(
                       backgroundColor: "transparent",
                       color: "#273c75",
                       border: "1px solid #273c75",
+                      marginBottom: "8px",
                     }}
                     type="primary"
                     size="large"

@@ -77,7 +77,7 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
     marginBottom: 5,
     background: token.colorFillAlter,
     borderRadius: token.borderRadiusLG,
-    border: "none",
+    border: "1px solid black",
   };
 
   const getItems = (panelStyle) => {
@@ -151,7 +151,7 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
       <div className="flex w-full justify-center">
         <h1 className="text-black font-bold text-base">Chọn giờ khám</h1>
       </div>
-      <div className="w-full max-h-[460px] h-fit flex flex-col border border-red-600 rounded-xl overflow-y-auto space-y-2">
+      <div className="w-full max-h-[460px] h-fit flex flex-col border rounded-xl overflow-y-auto space-y-2">
         <Collapse
           bordered={false}
           defaultActiveKey={["0"]}

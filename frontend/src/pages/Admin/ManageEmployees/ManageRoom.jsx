@@ -31,6 +31,7 @@ export default function ManageRoom() {
   const [totalPages, setTotalPages] = useState(1);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingRoom, setEditingRoom] = useState(null);
+  const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
 
   const fetchRooms = async (page = 1) => {
@@ -49,7 +50,7 @@ export default function ManageRoom() {
       setCurrentPage(data.data.currentPage);
       setTotalPages(data.data.totalPages);
     } catch (error) {
-      message.error("Failed to fetch rooms: " + error.message);
+      messageApi.error("Failed to fetch rooms: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -96,10 +97,10 @@ export default function ManageRoom() {
         throw new Error("Failed to delete room");
       }
 
-      message.success("Room deleted successfully");
+      messageApi.success("Room deleted successfully");
       fetchRooms(currentPage);
     } catch (error) {
-      message.error("Error deleting room: " + error.message);
+      messageApi.error("Error deleting room: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -123,12 +124,12 @@ export default function ManageRoom() {
       if (!response.ok) {
         throw new Error(`Failed to ${editingRoom ? "update" : "add"} room`);
       }
-
-      message.success(`Room ${editingRoom ? "updated" : "added"} successfully`);
+      const data = await response.json();
+      messageApi.success(`Phòng ${editingRoom ? "updated" : "added"} thành công`);
       setIsModalVisible(false);
       fetchRooms(currentPage);
     } catch (error) {
-      message.error("Error saving room: " + error.message);
+      messageApi.error("Error saving room: " + error.message);
     } finally {
       setLoading(false);
     }

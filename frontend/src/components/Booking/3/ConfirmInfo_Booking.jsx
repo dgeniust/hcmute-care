@@ -192,7 +192,7 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
   };
 
   return (
-    <div className="w-full h-fit min-h-[460px] border border-red-600 p-8">
+    <div className="w-full h-fit min-h-[460px] border p-8">
       <div className="flex flex-row gap-4 w-full h-full items-center">
         <Button
           icon={<ArrowLeftOutlined />}
@@ -209,7 +209,7 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
           Vui lòng kiểm tra thông tin đặt khám bên dưới. Hoặc "Thêm chuyên khoa"
           mới
         </p>
-        <div className="w-full max-h-[460px] h-fit flex flex-col border border-red-600 rounded-xl overflow-y-auto space-y-2">
+        <div className="w-full max-h-[460px] h-fit flex flex-col border rounded-xl overflow-y-auto space-y-2">
           <Collapse
             bordered={false}
             defaultActiveKey={["0"]}
@@ -282,7 +282,7 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
             </div>
           </div>
         ))}
-        <div className="flex flex-row justify-center items-center w-full h-fit space-x-4">
+        <div className="flex flex-row justify-center items-center w-full h-fit gap-12">
           <Button
             type="primary"
             className="w-full h-fit mt-4"

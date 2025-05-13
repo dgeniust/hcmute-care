@@ -318,7 +318,7 @@ const ManageSchedule = () => {
 
           const newSchedule = await response.json();
           console.log('POST response:', newSchedule);
-          if(newSchedule.status === 40) {
+          if(newSchedule.status === 401) {
             messageApi.error('Bác sĩ đã có lịch khám trong khoảng thời gian này');
             return;
           }
@@ -335,7 +335,7 @@ const ManageSchedule = () => {
 
           if (formattedData.length > 0) {
             setDoctorScheduleData(prev => [...prev, ...formattedData]);
-            messageApi.success('Schedule created successfully');
+            messageApi.success('Tạo lịch làm việc thành công');
           } else {
             messageApi.warning('No events generated from the schedule');
           }
