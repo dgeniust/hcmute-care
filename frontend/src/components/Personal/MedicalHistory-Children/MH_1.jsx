@@ -23,14 +23,9 @@ import {
   MedicineBoxOutlined,
   NumberOutlined,
   EnvironmentOutlined,
-
   SearchOutlined
 } from '@ant-design/icons';
 import { handleHttpStatusCode, notifyErrorWithCustomMessage, notifySuccessWithCustomMessage } from '../../../utils/notificationHelper';
-
-  SearchOutlined,
-} from "@ant-design/icons";
-
 
 const { Title, Text } = Typography;
 
@@ -53,9 +48,6 @@ const TransactionHistory = () => {
   const customerId = localStorage.getItem('customerId');
   
   // Constants
-  const API_BASE_URL = 'http://localhost:8080/api/';
-
-  // Constants
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const API_BASE_URL = `${apiUrl}v1`;
   // Fetch transactions data
@@ -70,7 +62,7 @@ const TransactionHistory = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${API_BASE_URL}v1/customers/${customerId}/payments?paymentStatus=COMPLETED&page=1&size=10&sort=paymentDate&direction=desc`, 
+        `${API_BASE_URL}/customers/${customerId}/payments?paymentStatus=COMPLETED&page=1&size=10&sort=paymentDate&direction=desc`, 
 
         {
           method: "GET",
@@ -116,11 +108,11 @@ const TransactionHistory = () => {
     try {
       setModalLoading(true);
 
-      const response = await fetch(`${API_BASE_URL}v1/appointments/${appointmentId}`, {
+      const response = await fetch(`${API_BASE_URL}/appointments/${appointmentId}`, {
         method: 'GET',                  
         headers: {
           'Content-Type': 'application/json',
-        }
+        }}
       );
 
       if (!response.ok) {

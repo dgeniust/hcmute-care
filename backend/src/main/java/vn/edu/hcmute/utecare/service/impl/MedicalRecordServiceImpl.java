@@ -91,12 +91,16 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         log.info("Xóa hồ sơ y tế thành công với ID: {}", id);
     }
 
+    @Override
+    public List<EncounterResponse> getAllEncounterByMedicalRecordId(Long medicalRecordId) {
+        return List.of();
+    }
 
 
     @Override
     public List<EncounterResponse> getEncounterByMedicalRecordIdAndDate(Long medicalRecordId, LocalDate date) {
         List<Encounter> encounters = encounterRepository.findByMedicalRecord_IdAndVisitDate(medicalRecordId, date);
-        return encounters.stream().map(EncounterMapper.INSTANCE::toResponse).toList();
+        return encounters.stream().map(encounterMapper::toResponse).toList();
     }
 
     @Override

@@ -247,86 +247,29 @@ const Personal_Info = () => {
                 />
               </div>
             </div>
-
-            <div className='w-full h-fit mt-[140px] px-8 py-4'>
-                <form className='w-full h-full'>
-                    <div className='grid grid-flow-row grid-cols-2 gap-4'>
-                        <div className='text-black space-y-2 flex flex-col'>
-                            <span className='font-bold'>Số điện thoại</span>
-                            <Input value={formData.phone} disabled style={{color: 'black'}}
-                                onChange={(e) => handleInputChange('phone', e.target.value)}
-                            />
-                        </div>
-                        <div className='text-black space-y-2 flex flex-col'>
-                            <span className='font-bold'>Họ và tên lót</span>
-                            <Input value={formData.lastName} 
-                                onChange={(e) => handleInputChange('lastName', e.target.value)}
-                            />
-                        </div>
-                        <div className='text-black space-y-2 flex flex-col'>
-                            <span className='font-bold'>Tên</span>
-                            <Input value={formData.firstName} 
-                                onChange={(e) => handleInputChange('firstName', e.target.value)}
-                            />
-                        </div>
-                        <div className='flex flex-row w-full space-x-2'>
-                            <div className='text-black space-y-2 flex flex-col w-full'>
-                                <span className='font-bold'>Ngày sinh</span>
-                                <DatePicker value={formData.dob && dayjs(formData.dob, dateFormat).isValid() ? dayjs(formData.dob, dateFormat) : null} format={dateFormat} 
-                                    onChange={(date, dateString) => handleInputChange('dob', dateString)}
-                                />
-                            </div>
-                            <div className='text-black space-y-2 flex flex-col w-full'>
-                                <span className='font-bold'>Giới tính</span>
-                                <Select
-                                value={formData.gender}
-                                defaultValue="nam"
-                                style={{
-                                    width: '100%',
-                                }}
-                                onChange={(value) => handleInputChange('gender', value)}
-                                options={[
-                                    {
-                                    value: 'nam',
-                                    label: 'Nam',
-                                    },
-                                    {
-                                    value: 'nu',
-                                    label: 'Nữ',
-                                    },
-                                ]}
-                                />
-                            </div>
-                        </div>
-                        <div className='text-black space-y-2 flex flex-col'>
-                            <span className='font-bold'>Email</span>
-                            <Input value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)}/>
-                        </div>
-                        <div className='text-black space-y-2 flex flex-col'>
-                            <span className='font-bold'>Quốc gia</span>
-                            <Input value={formData.nation} 
-                                onChange={(e) => handleInputChange('nation', e.target.value)}
-                            />
-                        </div>
-                        <div className='text-black space-y-2 flex flex-col'>
-                            <span className='font-bold'>Địa chỉ</span>
-                            <Input value={formData.address} 
-                                onChange={(e) => handleInputChange('address', e.target.value)}
-                            />
-                        </div>
-                        <div className='text-black space-y-2 flex flex-col'>
-                            <span className='font-bold'>Membership</span>
-                            <Input value={formData.membership} 
-                            disabled
-                                onChange={(e) => handleInputChange('membership', e.target.value)}
-                            />
-                        </div>
-                    </div>
-                    <div className='w-full flex justify-center mt-8'>
-                        <Button type="primary" style={{padding: '20px'}} onClick={handleSubmitUpdate}>Cập nhật thông tin</Button>
-                    </div>
-                </form>
-            </div>
+            <div className='text-black space-y-2 flex flex-col'>
+                    <span className='font-bold'>Email</span>
+                    <Input value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)}/>
+                </div>
+                <div className='text-black space-y-2 flex flex-col'>
+                    <span className='font-bold'>Quốc gia</span>
+                    <Input value={formData.nation} 
+                        onChange={(e) => handleInputChange('nation', e.target.value)}
+                    />
+                </div>
+                <div className='text-black space-y-2 flex flex-col'>
+                    <span className='font-bold'>Địa chỉ</span>
+                    <Input value={formData.address} 
+                        onChange={(e) => handleInputChange('address', e.target.value)}
+                    />
+                </div>
+                <div className='text-black space-y-2 flex flex-col'>
+                    <span className='font-bold'>Membership</span>
+                    <Input value={formData.membership} 
+                    disabled
+                        onChange={(e) => handleInputChange('membership', e.target.value)}
+                    />
+                </div>
           </div>
           <div className="w-full flex justify-center mt-8">
             <Button

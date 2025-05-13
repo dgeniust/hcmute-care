@@ -41,6 +41,9 @@ import NurseHomePage from './pages/Nurse/NurseHomePage';
 import ChatbotContextMenu from './components/Chatbot/ChatbotContextMenu';
 import DiagnoseRecord from './pages/Doctor/DoctorManageRecords/DiagnoseRecord';
 import DiagnosePatient from './components/DoctorComponents/DiagnoseRecords/DiagnosePatient';
+import PrivacyPolicy from './pages/Personal/PrivacyPolicy';
+import ContactService from './pages/Personal/ContactService';
+import ChatbotService from './pages/Personal/ChatbotService';
 function App() {
   return (
     <Router>
@@ -63,7 +66,10 @@ function App() {
               <Route path="medical-records" element={<MedicalRecord />} />
               <Route path="medical-history" element={<MedicalHistory />} />
               <Route path="regulation-use" element={<RegulationUse />} />
+              <Route path="contact-service" element={<ContactService />} />
+              <Route path="chatbot" element={<ChatbotService />} />
               <Route path="terms-service" element={<TermsService />} />
+              <Route path="privacy-policy" element={<PrivacyPolicy />} />
               <Route path="service-list" element={<ServiceList />} />
               <Route path="notification-event" element={<Notification_Event />} />
               <Route path="booking" element={<BookingContent />} />
