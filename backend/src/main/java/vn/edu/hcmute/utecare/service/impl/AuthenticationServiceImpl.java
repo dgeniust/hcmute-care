@@ -143,7 +143,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional
-    public TokenResponse registerSetPassword(String verificationToken, SetPasswordRequest request) {
+    public void registerSetPassword(String verificationToken, SetPasswordRequest request) {
         String phone;
         try {
             phone = jwtService.extractUsername(verificationToken, TokenType.VERIFICATION_TOKEN);
@@ -177,16 +177,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         account.setStatus(AccountStatus.ACTIVE);
         Account savedAccount = accountRepository.save(account);
 
-        String accessToken = jwtService.generateAccessToken(savedAccount);
-        String refreshToken = jwtService.generateRefreshToken(savedAccount);
-        redisService.set("refresh:" + phone, refreshToken, jwtService.getRefreshTokenExpiration(), TimeUnit.SECONDS);
         log.info("Đăng ký tài khoản thành công cho số điện thoại: {}, ID: {}", phone, savedAccount.getId());
-
-        return TokenResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .userId(savedAccount.getId())
-                .build();
     }
 
     @Override

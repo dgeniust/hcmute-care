@@ -56,3 +56,8 @@ payment:
     version: 2.1.0
     command: pay
     orderType: other
+
+SMS:
+  api-key: ${SMS_KEY}
+  base-url: ${SMS_BASE_URL}
+  sender-id: ${SMS_SENDER_ID}

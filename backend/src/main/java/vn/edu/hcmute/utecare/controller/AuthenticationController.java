@@ -112,14 +112,15 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "400", description = "Dữ liệu yêu cầu không hợp lệ hoặc token xác minh không hợp lệ"),
             @ApiResponse(responseCode = "403", description = "Token xác minh đã hết hạn")
     })
-    public ResponseData<TokenResponse> registerSetPassword(
+    public ResponseData<String> registerSetPassword(
             @Parameter(description = "Token xác minh từ bước xác minh OTP") @RequestHeader("X-Verification-Token") String verificationToken,
             @Valid @RequestBody SetPasswordRequest request) {
         log.info("Yêu cầu thiết lập mật khẩu để đăng ký với token: {}", verificationToken);
-        return ResponseData.<TokenResponse>builder()
+        authenticationService.registerSetPassword(verificationToken, request);
+        return ResponseData.<String>builder()
                 .status(HttpStatus.CREATED.value())
                 .message("Đăng ký tài khoản thành công")
-                .data(authenticationService.registerSetPassword(verificationToken, request))
+                .data("Đăng ký tài khoản thành công")
                 .build();
     }
 

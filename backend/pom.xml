@@ -162,7 +162,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+
+		<!-- SMS infobip -->
+		<dependency>
+			<groupId>com.infobip</groupId>
+			<artifactId>infobip-api-java-client</artifactId>
+			<version>6.1.0</version>
+		</dependency>
 	</dependencies>
+
+
 
 	<profiles>
 		<profile>
