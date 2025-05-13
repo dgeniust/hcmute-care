@@ -37,7 +37,7 @@ const ConfirmBill_Booking = () => {
   return (
     <>
       {contextHolder}
-      {paymentData.length > 0 ? (
+      {paymentData && paymentData.length > 0 ? (
         paymentData.map((paymentItem, index) => {
           const patientInfo = paymentItem?.appointment?.medicalRecord || {};
           const tickets = paymentItem?.appointment?.tickets || [];
@@ -148,12 +148,11 @@ const ConfirmBill_Booking = () => {
                     </div>
                   </div>
                 ))}
-
               </div>
             </div>
-          ))
-        ) : null}
-      </div>
+          );
+        })
+      ) : null}
     </>
   );
 };
