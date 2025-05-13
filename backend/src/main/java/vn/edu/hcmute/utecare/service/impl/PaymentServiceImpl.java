@@ -27,12 +27,11 @@ import vn.edu.hcmute.utecare.util.enumeration.PaymentMethod;
 import vn.edu.hcmute.utecare.util.enumeration.PaymentStatus;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 
 @Service
 @RequiredArgsConstructor
@@ -68,13 +67,12 @@ public class PaymentServiceImpl implements PaymentService {
         vnpParams.put("vnp_OrderInfo", "Thanh toán cuộc hẹn ID: " + request.getAppointmentId());
         vnpParams.put("vnp_IpAddr", VNPayUtil.getIpAddress(httpServletRequest));
 
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        String vnp_CreateDate = formatter.format(calendar.getTime());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("GMT+7"));
+        String vnp_CreateDate = now.format(formatter);
         vnpParams.put("vnp_CreateDate", vnp_CreateDate);
 
-        calendar.add(Calendar.MINUTE, 10);
-        String vnp_ExpireDate = formatter.format(calendar.getTime());
+        String vnp_ExpireDate = now.plusMinutes(10).format(formatter);
         vnpParams.put("vnp_ExpireDate", vnp_ExpireDate);
 
         String hashData = VNPayUtil.getPaymentURL(vnpParams, false);

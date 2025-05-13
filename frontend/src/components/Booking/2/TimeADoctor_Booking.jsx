@@ -55,7 +55,7 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
               )} - ${slot.timeSlot.endTime.slice(0, 5)}`,
               bookedSlots: slot.bookedSlots,
               originalSlot: slot,
-            })),
+            })).sort((a, b) => a.id - b.id),
           }));
           setSchedule(scheduleData);
           console.log("Data time and doctor:", scheduleData);
