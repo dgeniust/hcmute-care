@@ -12,9 +12,6 @@ import {
   CopyOutlined,
   MenuOutlined,
   PlusOutlined,
-  CloseOutlined,
-  BulbOutlined,
-  GlobalOutlined
 } from '@ant-design/icons';
 import axios from 'axios';
 import moment from 'moment';
@@ -64,7 +61,6 @@ const ChatbotService = () => {
     moment.locale(language);
   }, [language]);
 
-  // Initialize language based on browser settings
   useEffect(() => {
     const browserLang = navigator.language.includes('vi') ? 'vi' : 'en';
     setLanguage(browserLang);
@@ -122,14 +118,12 @@ const ChatbotService = () => {
       };
       setMessages((prev) => [...prev, botMessage]);
       
-      // Text-to-speech if enabled
       if (speechEnabled) {
         const speech = new SpeechSynthesisUtterance(response);
         speech.lang = language === 'vi' ? 'vi-VN' : 'en-US';
         window.speechSynthesis.speak(speech);
       }
       
-      // Generate new suggested questions based on context
       generateSuggestedQuestions(response);
     } catch (error) {
       notification.error({
@@ -180,7 +174,7 @@ const ChatbotService = () => {
           'UTECARE will read responses aloud',
       });
     } else {
-      window.speechSynthesis.cancel(); // Stop any ongoing speech
+      window.speechSynthesis.cancel();
     }
   };
 
@@ -219,8 +213,6 @@ const ChatbotService = () => {
   const changeLanguage = (value) => {
     setLanguage(value);
     moment.locale(value);
-    
-    // Update welcome message based on language
     if (messages.length === 1 && messages[0].type === 'bot') {
       setMessages([{
         type: 'bot',
@@ -233,8 +225,6 @@ const ChatbotService = () => {
   };
 
   const generateSuggestedQuestions = (response) => {
-    // In a real app, this would be based on context and AI analysis
-    // For this demo, we'll just rotate through predefined questions
     const rotatedQuestions = [...suggestedQuestions.slice(1), suggestedQuestions[0]];
     setSuggestedQuestions(rotatedQuestions);
   };
@@ -246,57 +236,59 @@ const ChatbotService = () => {
     }, 100);
   };
 
-  // Render
   return (
-    <div className={`flex flex-col h-screen w-full ${theme === 'dark' ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100'}`}>
+    <div className={`flex flex-col h-screen w-full p-4 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
       {/* Header */}
-      <Card className={`flex items-center justify-between p-4 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'} shadow-md rounded-none`}>
-        <div className="flex items-center space-x-3">
+      <div className={`flex items-center justify-between p-4 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-md`}>
+        <div className="flex items-center w-full">
           <Button 
             icon={<MenuOutlined />} 
             type="text" 
             onClick={() => setDrawerVisible(true)}
-            className={theme === 'dark' ? 'text-gray-300 hover:text-white' : ''}
+            className={theme === 'dark' ? 'text-gray-300 hover:text-white' : 'text-gray-600'}
+            style={{ marginRight: 16, display: 'flex', justifyContent:'space-around', alignItems:'center' }} // Hide for now
           />
           <Badge dot status="success">
             <Avatar 
-              size={48} 
+              size={40} 
               icon={<RobotOutlined />} 
-              className="bg-gradient-to-r from-blue-500 to-purple-600" 
+              className="bg-indigo-600" 
             />
           </Badge>
-          <div>
+          <div className='flex flex-row items-center justify-around gap-8'>
             <Title level={4} className={`m-0 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
               UTECARE
             </Title>
-            <Text type="secondary" className={theme === 'dark' ? 'text-gray-400' : ''}>
+            <Text className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
               {language === 'vi' ? 'Trợ lý ảo thông minh' : 'Smart Virtual Assistant'}
             </Text>
           </div>
         </div>
         <div className="flex space-x-2">
-          <Select 
-            defaultValue={language} 
-            onChange={changeLanguage} 
-            className="w-24"
-            dropdownMatchSelectWidth={false}
-          >
-            <Option value="vi">Tiếng Việt</Option>
-            <Option value="en">English</Option>
-          </Select>
+          <Tooltip title={language === 'vi' ? 'Ngôn ngữ' : 'Language'}>
+            <Select 
+              value={language} 
+              onChange={changeLanguage} 
+              className="w-24"
+              variant={false}
+            >
+              <Option value="vi">Tiếng Việt</Option>
+              <Option value="en">English</Option>
+            </Select>
+          </Tooltip>
           <Tooltip title={language === 'vi' ? 'Đọc văn bản' : 'Text to speech'}>
             <Button 
               icon={<SoundOutlined />} 
               type={speechEnabled ? "primary" : "text"} 
-              onClick={toggleSpeech} 
+              onClick={toggleSpeech}
               className={theme === 'dark' && !speechEnabled ? 'text-gray-300 hover:text-white' : ''}
             />
           </Tooltip>
-          <Tooltip title={language === 'vi' ? 'Cài đặt' : 'Settings'}>
+          <Tooltip title={language === 'vi' ? 'Giao diện tối' : 'Dark mode'}>
             <Button 
               icon={<SettingOutlined />} 
               type="text" 
-              onClick={toggleTheme} 
+              onClick={toggleTheme}
               className={theme === 'dark' ? 'text-gray-300 hover:text-white' : ''}
             />
           </Tooltip>
@@ -304,69 +296,65 @@ const ChatbotService = () => {
             <Button 
               icon={<DeleteOutlined />} 
               type="text" 
-              onClick={clearChat} 
+              onClick={clearChat}
               className={theme === 'dark' ? 'text-gray-300 hover:text-white' : ''}
             />
           </Tooltip>
         </div>
-      </Card>
+      </div>
 
       {/* Chat Messages */}
-      <div className={`flex-1 p-4 md:p-6 overflow-y-auto ${theme === 'dark' ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 to-indigo-100'}`}>
-        <div className="max-w-4xl mx-auto space-y-4">
+      <div className={`flex-1 p-4 overflow-y-auto ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'}`}>
+        <div className="w-full mx-auto space-y-3">
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
+              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              <div className={`flex ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'} items-start max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg`}>
+              <div className={`flex ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'} items-start max-w-[70%]`}>
                 <Avatar
-                  size={40}
+                  size={36}
                   icon={message.type === 'user' ? <UserOutlined /> : <RobotOutlined />}
-                  className={message.type === 'user' ? 'bg-blue-500 ml-3' : 'bg-gradient-to-r from-blue-500 to-purple-600 mr-3'}
+                  className={message.type === 'user' ? 'bg-blue-500 ml-2' : 'bg-indigo-600 mr-2'}
                 />
                 <div className="group relative">
-                  <Card
+                  <div
                     className={`p-3 rounded-2xl ${
                       message.type === 'user'
-                        ? `${theme === 'dark' ? 'bg-blue-700' : 'bg-blue-500'} text-white border-none`
-                        : `${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} ${theme === 'dark' ? 'text-white' : 'text-gray-800'} border-gray-200`
+                        ? 'bg-blue-500 text-white'
+                        : theme === 'dark' ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
                     } shadow-sm`}
                   >
-                    <Paragraph className={`text-sm mb-2 ${message.type === 'user' ? 'text-white' : theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
+                    <Paragraph className={`text-sm mb-1 ${message.type === 'user' ? 'text-white' : theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
                       {message.content}
                     </Paragraph>
-                    <div className={`text-xs ${message.type === 'user' ? 'text-blue-100' : theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <Text className={`text-xs ${message.type === 'user' ? 'text-blue-100' : theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                       {formatTime(message.time)}
-                    </div>
-                  </Card>
+                    </Text>
+                  </div>
                   {message.type === 'bot' && (
-                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                      <Button 
-                        type="text" 
-                        size="small" 
-                        icon={<CopyOutlined />} 
-                        onClick={() => copyToClipboard(message.content)}
-                        className="text-gray-400 hover:text-gray-600"
-                      />
-                    </div>
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={<CopyOutlined />}
+                      onClick={() => copyToClipboard(message.content)}
+                      className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600"
+                    />
                   )}
                 </div>
               </div>
             </div>
           ))}
           {isTyping && (
-            <div className="flex justify-start animate-fade-in">
-              <div className="flex flex-row items-start max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
-                <Avatar size={40} icon={<RobotOutlined />} className="bg-gradient-to-r from-blue-500 to-purple-600 mr-3" />
-                <Card className={`p-3 rounded-2xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm border-gray-200`}>
-                  <div className="flex items-center">
-                    <Spin size="small" />
-                    <Text className={`ml-2 text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
-                      {language === 'vi' ? 'UTECARE đang nhập...' : 'UTECARE is typing...'}
-                    </Text>
-                  </div>
-                </Card>
+            <div className="flex justify-start">
+              <div className="flex items-start max-w-[70%]">
+                <Avatar size={36} icon={<RobotOutlined />} className="bg-indigo-600 mr-2" />
+                <div className={`p-3 rounded-2xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-sm`}>
+                  <Spin size="small" />
+                  <Text className={`ml-2 text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                    {language === 'vi' ? 'UTECARE đang nhập...' : 'UTECARE is typing...'}
+                  </Text>
+                </div>
               </div>
             </div>
           )}
@@ -376,8 +364,8 @@ const ChatbotService = () => {
 
       {/* Suggested Questions */}
       {suggestedQuestions.length > 0 && messages.length > 0 && !isTyping && (
-        <div className={`px-4 py-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
-          <div className="max-w-4xl mx-auto">
+        <div className={`px-4 py-2 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} border-t`}>
+          <div className="w-full mx-auto">
             <Text className={`text-xs font-medium ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
               {language === 'vi' ? 'Gợi ý:' : 'Suggestions:'}
             </Text>
@@ -386,7 +374,7 @@ const ChatbotService = () => {
                 <Button 
                   key={index} 
                   size="small" 
-                  className={`rounded-full ${theme === 'dark' ? 'bg-gray-700 text-gray-300 border-gray-600' : 'bg-gray-100 text-gray-700'}`}
+                  className={`rounded-full ${theme === 'dark' ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`}
                   onClick={() => askSuggestedQuestion(question)}
                 >
                   {question}
@@ -397,9 +385,9 @@ const ChatbotService = () => {
         </div>
       )}
 
-      {/* Footer with Input */}
-      <Card className={`p-4 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t rounded-none shadow-md`}>
-        <div className="max-w-4xl mx-auto">
+      {/* Input Area */}
+      <div className={`p-4 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} border-t shadow-md`}>
+        <div className="w-full mx-auto">
           <div className="flex items-center space-x-3">
             <Input.TextArea
               ref={inputRef}
@@ -408,35 +396,35 @@ const ChatbotService = () => {
               onKeyDown={handleKeyDown}
               placeholder={language === 'vi' ? "Nhập tin nhắn của bạn..." : "Type your message..."}
               autoSize={{ minRows: 1, maxRows: 3 }}
-              className={`rounded-full py-2 px-4 ${theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-100 border-gray-300'} focus:border-blue-500`}
+              className={`rounded-lg py-2 px-4 ${theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-100 border-gray-300 text-gray-800'} focus:border-indigo-500`}
             />
             <Button
               type="primary"
               shape="circle"
               icon={<SendOutlined />}
               onClick={handleSend}
-              className="flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+              className="bg-indigo-600 hover:bg-indigo-700"
               disabled={!inputValue.trim() || isTyping}
               size="large"
             />
           </div>
-          <div className="flex justify-between mt-2">
-            <Text type="secondary" className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          <div className="flex justify-between mt-2 text-xs">
+            <Text className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}>
               {language === 'vi' ? 'UTECARE sử dụng công nghệ Gemini 1.5 Flash' : 'UTECARE is powered by Gemini 1.5 Flash'}
             </Text>
             <Button 
-              type="link" 
-              size="small" 
-              className={`text-xs px-0 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}
+              type="link"
+              size="small"
               onClick={saveConversation}
+              className={theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}
             >
               {language === 'vi' ? 'Lưu cuộc trò chuyện' : 'Save conversation'}
             </Button>
           </div>
         </div>
-      </Card>
+      </div>
 
-      {/* Settings & History Drawer */}
+      {/* Drawer for Settings & History */}
       <Drawer
         title={
           <div className="flex items-center">
@@ -447,73 +435,67 @@ const ChatbotService = () => {
         placement="left"
         onClose={() => setDrawerVisible(false)}
         open={drawerVisible}
-        width={320}
+        width={300}
         bodyStyle={{ padding: 0 }}
-        headerStyle={{ borderBottom: `1px solid ${theme === 'dark' ? '#303030' : '#f0f0f0'}` }}
-        className={theme === 'dark' ? 'bg-gray-800 text-white' : ''}
+        className={theme === 'dark' ? 'bg-gray-800' : ''}
       >
-        <div className={`p-4 ${theme === 'dark' ? 'bg-gray-800 text-white' : ''}`}>
-          <Title level={5} className={theme === 'dark' ? 'text-white' : ''}>
+        <div className={`p-4 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          <Title level={5} className={theme === 'dark' ? 'text-white' : 'text-gray-800'}>
             {language === 'vi' ? 'Cài đặt' : 'Settings'}
           </Title>
-          
-          <div className="flex justify-between items-center mt-4">
-            <Text className={theme === 'dark' ? 'text-gray-300' : ''}>
-              {language === 'vi' ? 'Giao diện tối' : 'Dark mode'}
-            </Text>
-            <Switch checked={theme === 'dark'} onChange={toggleTheme} />
-          </div>
-          
-          <div className="flex justify-between items-center mt-3">
-            <Text className={theme === 'dark' ? 'text-gray-300' : ''}>
-              {language === 'vi' ? 'Đọc văn bản' : 'Text to speech'}
-            </Text>
-            <Switch checked={speechEnabled} onChange={toggleSpeech} />
-          </div>
-          
-          <div className="flex justify-between items-center mt-3">
-            <Text className={theme === 'dark' ? 'text-gray-300' : ''}>
-              {language === 'vi' ? 'Ngôn ngữ' : 'Language'}
-            </Text>
-            <Select 
-              value={language} 
-              onChange={changeLanguage} 
-              className="w-24"
-              dropdownMatchSelectWidth={false}
-            >
-              <Option value="vi">Tiếng Việt</Option>
-              <Option value="en">English</Option>
-            </Select>
+          <div className="space-y-4 mt-4">
+            <div className="flex justify-between items-center">
+              <Text className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+                {language === 'vi' ? 'Giao diện tối' : 'Dark mode'}
+              </Text>
+              <Switch checked={theme === 'dark'} onChange={toggleTheme} />
+            </div>
+            <div className="flex justify-between items-center">
+              <Text className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+                {language === 'vi' ? 'Đọc văn bản' : 'Text to speech'}
+              </Text>
+              <Switch checked={speechEnabled} onChange={toggleSpeech} />
+            </div>
+            <div className="flex justify-between items-center">
+              <Text className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+                {language === 'vi' ? 'Ngôn ngữ' : 'Language'}
+              </Text>
+              <Select 
+                value={language} 
+                onChange={changeLanguage} 
+                className="w-24"
+                bordered={false}
+              >
+                <Option value="vi">Tiếng Việt</Option>
+                <Option value="en">English</Option>
+              </Select>
+            </div>
           </div>
         </div>
-        
-        <Divider className={theme === 'dark' ? 'bg-gray-700' : ''} />
-        
-        <div className={`px-4 ${theme === 'dark' ? 'bg-gray-800' : ''}`}>
+        <Divider className={theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} />
+        <div className={`p-4 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           <div className="flex justify-between items-center">
-            <Title level={5} className={theme === 'dark' ? 'text-white' : ''}>
+            <Title level={5} className={theme === 'dark' ? 'text-white' : 'text-gray-800'}>
               {language === 'vi' ? 'Cuộc trò chuyện đã lưu' : 'Saved conversations'}
             </Title>
             <Button 
               type="text" 
               icon={<PlusOutlined />} 
               onClick={saveConversation}
-              className={theme === 'dark' ? 'text-gray-300' : ''}
+              className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}
             />
           </div>
-          
           <List
-            className={`mt-2 ${theme === 'dark' ? 'text-gray-300' : ''}`}
             dataSource={conversationHistory}
             locale={{ emptyText: language === 'vi' ? 'Chưa có cuộc trò chuyện nào' : 'No saved conversations' }}
             renderItem={item => (
               <List.Item 
-                className={`px-2 py-2 rounded-md cursor-pointer hover:${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}
+                className={`p-2 rounded-md cursor-pointer hover:${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}
                 onClick={() => loadConversation(item)}
               >
                 <div className="flex items-center justify-between w-full">
-                  <div className="flex-1 mr-2">
-                    <Text className={theme === 'dark' ? 'text-white' : ''} ellipsis>{item.title}</Text>
+                  <div className="flex-1">
+                    <Text className={theme === 'dark' ? 'text-white' : 'text-gray-800'} ellipsis>{item.title}</Text>
                     <Text type="secondary" className="block text-xs">
                       {moment(item.date).format('LLL')}
                     </Text>
@@ -522,25 +504,22 @@ const ChatbotService = () => {
                     type="text" 
                     size="small" 
                     icon={<DeleteOutlined />} 
-                    className={theme === 'dark' ? 'text-gray-400 hover:text-gray-200' : ''}
                     onClick={(e) => {
                       e.stopPropagation();
                       setConversationHistory(conversationHistory.filter(conv => conv.id !== item.id));
                     }}
+                    className={theme === 'dark' ? 'text-gray-400 hover:text-gray-200' : 'text-gray-600'}
                   />
                 </div>
               </List.Item>
             )}
           />
         </div>
-        
-        <div className={`absolute bottom-0 left-0 right-0 p-4 ${theme === 'dark' ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-500'}`}>
-          <div className="flex items-center justify-center">
-            <InfoCircleOutlined className="mr-2" />
-            <Text className={`text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-              {language === 'vi' ? 'UTECARE v2.0 - 2025' : 'UTECARE v2.0 - 2025'}
-            </Text>
-          </div>
+        <div className={`p-4 text-center ${theme === 'dark' ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-500'}`}>
+          <InfoCircleOutlined className="mr-1" />
+          <Text className="text-xs">
+            {language === 'vi' ? 'UTECARE v2.0 - 2025' : 'UTECARE v2.0 - 2025'}
+          </Text>
         </div>
       </Drawer>
     </div>

@@ -58,7 +58,8 @@ const AdminDashboard = () => {
           style={{
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
-            minHeight: '300vh',
+            minHeight: '100vh',
+            height: '100%',
             display: 'flex',
             flexDirection: 'row',
           }}

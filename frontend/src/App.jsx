@@ -44,6 +44,7 @@ import DiagnosePatient from './components/DoctorComponents/DiagnoseRecords/Diagn
 import PrivacyPolicy from './pages/Personal/PrivacyPolicy';
 import ContactService from './pages/Personal/ContactService';
 import ChatbotService from './pages/Personal/ChatbotService';
+import ServiceCost from './components/ServiceCost';
 function App() {
   return (
     <Router>
@@ -100,6 +101,7 @@ function App() {
               <Route path="/doctor/patient" element={<PatientRecords />} />
               <Route path="/doctor/schedule" element={<DoctorSchedule />} />
               <Route path="/doctor/diagnose-patient" element={<DiagnoseRecord />} />
+              <Route path="/doctor/list-service" element={<ServiceCost />} />
               <Route path='/doctor/detail-diagnose' element={<DiagnosePatient/>}/>
               {/*<Route path="/doctor/manage-posts" element={<ManagePost />} /> */}
             </Route>

@@ -112,7 +112,7 @@ const CureInfo_Booking = ({ bookingList, addBooking, setCurrent }) => {
   localStorage.setItem('dateBooking', result);
 
   return (
-    <div className="w-full h-fit min-h-[460px] border border-red-600 p-8">
+    <div className="w-full h-fit min-h-[460px] border p-8">
       <div className="flex flex-row gap-4 w-full h-full items-center">
         <Button
           icon={<ArrowLeftOutlined />}

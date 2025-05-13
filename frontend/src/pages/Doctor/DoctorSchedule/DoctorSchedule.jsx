@@ -187,7 +187,9 @@ const DoctorSchedule = () => {
       setLoading(false);
     }
   };
-
+  const refreshDoctorSchedule = () => {
+    window.location.reload();
+  }
   // Load events into calendar whenever doctorScheduleData changes
   useEffect(() => {
     if (doctorScheduleData.length > 0) {
@@ -331,7 +333,7 @@ const DoctorSchedule = () => {
             <Tooltip title="Refresh schedule data">
               <Button
                 icon={<ReloadOutlined />}
-                onClick={fetchDoctorSchedule}
+                onClick={refreshDoctorSchedule}
                 loading={loading}
               >
                 Refresh

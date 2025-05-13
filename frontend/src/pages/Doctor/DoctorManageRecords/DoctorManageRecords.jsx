@@ -42,7 +42,7 @@ const DoctorManageRecords = () => {
           },
         });
         if(!response.ok) {
-          handleHttpStatusCode(response.status, '', "Hôm nay bác sĩ không có lịch làm việc", messageApi); // Gọi hàm xử lý thông báo
+          handleHttpStatusCode(response.status, '', "Lấy lịch làm việc thất bại", messageApi); // Gọi hàm xử lý thông báo
           return;
         }
         const data = await response.json();
@@ -52,6 +52,8 @@ const DoctorManageRecords = () => {
             a.timeSlot.startTime.localeCompare(b.timeSlot.startTime)
           );
           setScheduleSlots(sortedSlots); // Lưu time slots vào state
+          messageApi.success("Lấy lịch làm việc thành công"); // Thông báo thành công
+          //"Hôm nay bác sĩ không có lịch làm việc"
         }
       } catch (error) {
         console.error("Error fetching schedule:", error);
