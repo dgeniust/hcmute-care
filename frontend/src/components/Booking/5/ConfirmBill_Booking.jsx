@@ -7,7 +7,7 @@ import {
 const { Text } = Typography;
 
 const ConfirmBill_Booking = () => {
-  const [paymentData, setPaymentData] = useState([]);
+  const [paymentData, setPaymentData] = useState(null); // Initialize as null for a single object
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
@@ -17,6 +17,7 @@ const ConfirmBill_Booking = () => {
         const parsedData = JSON.parse(storedData);
         console.log("Stored paymentData -----------:", parsedData);
         setPaymentData(Array.isArray(parsedData) ? parsedData : [parsedData]);
+
         console.log("Parsed paymentData:", parsedData);
         notifySuccessWithCustomMessage(
           "Vui lòng kiểm tra thông tin đặt lịch khám của bạn tại đây!",
@@ -147,11 +148,12 @@ const ConfirmBill_Booking = () => {
                     </div>
                   </div>
                 ))}
+
               </div>
             </div>
-          );
-        })
-      ) : null}
+          ))
+        ) : null}
+      </div>
     </>
   );
 };

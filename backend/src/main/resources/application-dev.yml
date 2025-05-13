@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:mysql://localhost:3308/utecare_db
+    url: jdbc:mysql://localhost:3308/utecare_db?serverTimezone=Asia/Ho_Chi_Minh
     username: root
     password: ${MYSQL_PASSWORD:root}
   jpa:
@@ -56,3 +56,8 @@ payment:
     version: 2.1.0
     command: pay
     orderType: other
+
+SMS:
+  api-key: ${SMS_KEY}
+  base-url: ${SMS_BASE_URL}
+  sender-id: ${SMS_SENDER_ID}
