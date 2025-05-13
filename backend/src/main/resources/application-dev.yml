@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:mysql://localhost:3308/utecare_db
+    url: jdbc:mysql://localhost:3308/utecare_db?serverTimezone=Asia/Ho_Chi_Minh
     username: root
     password: ${MYSQL_PASSWORD:root}
   jpa:
