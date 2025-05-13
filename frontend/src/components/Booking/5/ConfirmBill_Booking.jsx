@@ -7,7 +7,7 @@ import {
 const { Text } = Typography;
 
 const ConfirmBill_Booking = () => {
-  const [paymentData, setPaymentData] = useState([]);
+  const [paymentData, setPaymentData] = useState(null); // Initialize as null for a single object
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const ConfirmBill_Booking = () => {
       const storedData = localStorage.getItem("paymentData");
       if (storedData) {
         const parsedData = JSON.parse(storedData);
-        setPaymentData(Array.isArray(parsedData) ? parsedData : [parsedData]);
+        setPaymentData(parsedData); // Set directly as a single object
         console.log("Parsed paymentData:", parsedData);
         notifySuccessWithCustomMessage(
           "Vui lòng kiểm tra thông tin đặt lịch khám của bạn tại đây!",
@@ -31,13 +31,12 @@ const ConfirmBill_Booking = () => {
   return (
     <>
       {contextHolder}
-      {paymentData.length > 0 ? (
-        paymentData.map((paymentItem, index) => {
-          const patientInfo = paymentItem?.appointment?.medicalRecord || {};
-          const ticket = paymentItem?.appointment?.tickets?.[0] || {};
-          return (
+      <div className="flex flex-col items-center justify-center min-h-screen my-6 space-y-6 mx-auto">
+        {paymentData ? (
+          // Handle single paymentData object
+          (paymentData?.appointment?.tickets || []).map((ticket, ticketIndex) => (
             <div
-              key={index}
+              key={ticketIndex}
               className="w-fit h-fit min-h-[460px] border border-sky-600 px-8 py-4 space-y-8 rounded-lg flex flex-col m-auto mb-4"
             >
               <div className="flex flex-col text-black justify-center items-center space-y-4 text-center">
@@ -51,7 +50,7 @@ const ConfirmBill_Booking = () => {
                   <h1 className="text-xl text-[#273c75] font-bold">PHIẾU KHÁM BỆNH</h1>
                   <span>(Mã phiếu: {ticket.ticketCode || "Đang tải..."})</span>
                   <span>
-                    (Mã giao dịch: {paymentItem?.transactionId || "Đang tải..."})
+                    (Mã giao dịch: {paymentData?.transactionId || "Đang tải..."})
                   </span>
                 </div>
               </div>
@@ -62,16 +61,10 @@ const ConfirmBill_Booking = () => {
                     {ticket.schedule?.roomDetail?.name ||
                       "Phòng 33 - Khám Nội Lầu 1 Khu A"}
                   </p>
-                  <div className="flex flex-row space-x-1">
-                    <h1>Ngày khám:</h1>
-                    <span className="font-bold">
-                      {ticket.schedule?.date || "Phòng 33 - Khám Nội Lầu 1 Khu A"}
-                    </span>
-                  </div>
                   <div className="flex justify-center mb-4">
-                    <div className="text-center p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="text-center p-4 bg-blue-50 border border-blue-100 rounded-xl">
                       <Text type="secondary">Số thứ tự</Text>
-                      <div className="font-bold text-3xl text-blue-600">
+                      <div className="font-bold text-4xl text-blue-600">
                         {ticket.waitingNumber || "--"}
                       </div>
                     </div>
@@ -82,19 +75,23 @@ const ConfirmBill_Booking = () => {
                     <div className="flex flex-row space-x-4">
                       <h1>Họ tên:</h1>
                       <p className="font-bold">
-                        {patientInfo.patientName || "Đang tải..."}
+                        {paymentData?.appointment?.medicalRecord?.patientName ||
+                          "Đang tải..."}
                       </p>
                     </div>
                     <div className="flex flex-row space-x-4">
                       <h1>Ngày sinh:</h1>
-                      <p className="font-bold">{patientInfo.dob || "--"}</p>
+                      <p className="font-bold">
+                        {paymentData?.appointment?.medicalRecord?.dob || "--"}
+                      </p>
                     </div>
                     <div className="flex flex-row space-x-4">
                       <h1>Giới tính:</h1>
                       <p className="font-bold">
-                        {patientInfo.gender === "MALE"
+                        {paymentData?.appointment?.medicalRecord?.gender === "MALE"
                           ? "Nam"
-                          : patientInfo.gender === "FEMALE"
+                          : paymentData?.appointment?.medicalRecord?.gender ===
+                            "FEMALE"
                           ? "Nữ"
                           : "--"}
                       </p>
@@ -110,16 +107,14 @@ const ConfirmBill_Booking = () => {
                       </p>
                     </div>
                     <div className="flex flex-row space-x-4 items-center">
-                      <h1>Tiền khám:</h1>
-                      <p className="font-bold text-[#009432] text-lg">
-                        {paymentItem?.amount
-                          ? `${paymentItem.amount.toLocaleString()}đ`
-                          : "---.000đ"}
+                      <h1>Ngày khám:</h1>
+                      <p className="font-bold text-[#009432] ">
+                        {ticket.schedule?.date || "2025-05-17"}
                       </p>
                     </div>
                     <div className="flex flex-row space-x-4">
                       <h1>Đối tượng:</h1>
-                      <p className="font-bold">Thu phí</p>
+                      <p className="font-bold">Đã thu phí</p>
                     </div>
                   </div>
                 </div>
@@ -131,7 +126,9 @@ const ConfirmBill_Booking = () => {
                 <div>
                   <p>
                     Số hồ sơ (Mã bệnh nhân):{" "}
-                    <span className="font-bold">{patientInfo.barcode || "--"}</span>
+                    <span className="font-bold">
+                      {paymentData?.appointment?.medicalRecord?.barcode || "--"}
+                    </span>
                   </p>
                   <span className="text-xs">
                     Ghi chú: Số thứ tự này chỉ có giá trị trong ngày khám
@@ -139,9 +136,9 @@ const ConfirmBill_Booking = () => {
                 </div>
               </div>
             </div>
-          );
-        })
-      ) : null}
+          ))
+        ) : null}
+      </div>
     </>
   );
 };
