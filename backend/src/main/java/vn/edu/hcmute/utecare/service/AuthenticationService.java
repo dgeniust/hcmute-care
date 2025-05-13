@@ -14,7 +14,7 @@ public interface AuthenticationService {
 
     VerifyOtpResponse verifyOtpForRegistration(VerifyOtpRequest request);
 
-    TokenResponse registerSetPassword(String verificationToken, SetPasswordRequest request);
+    void registerSetPassword(String verificationToken, SetPasswordRequest request);
 
     SendOtpResponse sendOtpForForgotPassword(SendOtpRequest request);
 
