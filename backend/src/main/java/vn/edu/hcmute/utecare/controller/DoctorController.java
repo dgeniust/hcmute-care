@@ -258,6 +258,26 @@ public class DoctorController {
                 .data(ticketService.getAllTicketsByDoctorId(id, date, status))
                 .build();
     }
+    @GetMapping("/patient/{patientId}/medical-tests/all")
+    //@PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR')")
+    @Operation(
+            summary = "Lấy tất cả xét nghiệm y tế",
+            description = "Truy xuất toàn bộ danh sách xét nghiệm y tế của một bệnh nhân dựa trên ID, bao gồm các loại như xét nghiệm máu, xét nghiệm tim mạch, chụp hình ảnh, xét nghiệm tiêu hóa, EEG, EMG, đo hô hấp, phân tích khí máu, dẫn truyền thần kinh."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lấy tất cả xét nghiệm y tế thành công"),
+            @ApiResponse(responseCode = "403", description = "Không có quyền truy cập"),
+            @ApiResponse(responseCode = "404", description = "Không tìm thấy xét nghiệm y tế cho bệnh nhân")
+    })
+    public ResponseData<List<MedicalTestDetailResponse>> getAllMedicalTestsByPatientId(
+            @Parameter(description = "ID của bệnh nhân") @PathVariable("patientId") Long patientId) {
+        log.info("Yêu cầu lấy tất cả xét nghiệm y tế cho bệnh nhân với ID: {}", patientId);
+        return ResponseData.<List<MedicalTestDetailResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .message("Lấy tất cả xét nghiệm y tế thành công")
+                .data(doctorService.getMedicalTestsByPatientId(patientId))
+                .build();
+    }
 
 //    @GetMapping("/patient/{patientId}/medical-tests-date")
 //    @PreAuthorize("hasAnyRole('ADMIN', 'STAFF', 'DOCTOR')")

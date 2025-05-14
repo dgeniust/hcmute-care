@@ -31,8 +31,7 @@ const MainPage = () => {
   const [quote, setQuote] = useState("");
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-
-  // Ánh xạ mood với từ khóa tích cực
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;  // Ánh xạ mood với từ khóa tích cực
   const moodKeywords = {
     happy: "happiness",
     tired: "motivational",
@@ -42,7 +41,7 @@ const MainPage = () => {
   useEffect(() => {
     const handlePost = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/v1/posts?page=0&size=6&sort=doc&direction=desc', {
+        const response = await fetch(`${apiUrl}/v1/posts?page=0&size=6&sort=doc&direction=desc`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -335,9 +335,10 @@ const NurseHomePage = () => {
     );
   // Fetch data when component mounts or tab changes
   // Fetch initial data on component mount
+  const date = dayjs().format("YYYY-MM-DD");
   useEffect(() => {
     Object.keys(API_ENDPOINTS).forEach((testType) => {
-      fetchTestData(testType, testSetters[testType], "2025-05-14");
+      fetchTestData(testType, testSetters[testType], date);
     });
   }, []);
   // Fetch detailed lab patients when labTest changes

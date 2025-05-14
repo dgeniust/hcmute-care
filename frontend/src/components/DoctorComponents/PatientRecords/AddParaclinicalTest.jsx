@@ -61,14 +61,6 @@ const AddParaclinicalTest = ({ visible, onCancel, onSubmit }) => {
     { value: 'holter', label: 'Holter' },
   ];
 
-  // Danh sách các bác sĩ
-  const danhSachBacSi = [
-    { value: 'bs001', label: 'BS. Nguyễn Văn A' },
-    { value: 'bs002', label: 'BS. Trần Thị B' },
-    { value: 'bs003', label: 'BS. Lê Văn C' },
-    { value: 'bs004', label: 'BS. Phạm Thị D' },
-  ];
-
   const handleLoaiYeuCauChange = (e) => {
     setLoaiYeuCau(e.target.value);
     form.resetFields(['tenYeuCau', 'loai', 'moTa', 'taiLieuDinhKem']);

@@ -113,7 +113,7 @@ const DiagnoseEncounter = () => {
   // Hoàn thiện hàm handleSubmitPatient
   const handleSubmitPatient = async () => {
     try {
-      const encounterId = localStorage.getItem('encounterId');
+      const encounterId = patientInfo?.id;;
       const medicalRecordId = localStorage.getItem('medicalRecordPatientId');
       const diagnosisValues = await diagnosisForm.validateFields();
       const prescriptionValues = await prescriptionForm.validateFields();
@@ -133,7 +133,7 @@ const DiagnoseEncounter = () => {
       };
       console.log('Prescription Payload -----------------:', prescriptionPayload);
 
-      const prescriptionResponse = await fetch(`${apiUrl}v1/prescription`, {
+      const prescriptionResponse = await fetch(`${apiUrl}v1/prescriptions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

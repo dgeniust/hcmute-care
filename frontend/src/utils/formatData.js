@@ -13,24 +13,66 @@ export const parseRArray = (rString) => {
       return [];
     }
 }
-export const cleanRecipeData = (rawData) => {
-    const newData = {};
-    Object.entries(rawData).forEach(([mealName, mealDetails]) => {
-      newData[mealName] = mealDetails.map(meal => {
-        const cleanedRecipes = meal.Recipes.map(recipe => ({
-          ...recipe,
-          RecipeIngredientParts: parseRArray(recipe.RecipeIngredientParts),
-          RecipeIngredientQuantities: parseRArray(recipe.RecipeIngredientQuantities),
-          Images: parseRArray(recipe.Images)?.[0] || recipe.Images,
-        }));
-        return {
-          ...meal,
-          Recipes: cleanedRecipes,
-        };
-      })
-    })
-    return newData;
-}
+export const cleanRecipeData = (data) => {
+  if (!data || typeof data !== 'object') return {};
+
+  // Handle each meal in the data
+  const cleanedData = {};
+  Object.entries(data).forEach(([mealName, mealArray]) => {
+    cleanedData[mealName] = mealArray.map(meal => ({
+      TotalCalories: meal.TotalCalories || 0,
+      Recipes: meal.Recipes ? meal.Recipes.map(recipe => ({
+        RecipeId: recipe.RecipeId || null,
+        Name: recipe.Name || '',
+        Images: recipe.Images || 'h', // Fallback to 'h' as seen in GenerateMeal
+        Calories: recipe.Calories || 0,
+        ProteinContent: recipe.ProteinContent || 0,
+        CarbohydrateContent: recipe.CarbohydrateContent || 0,
+        FatContent: recipe.FatContent || 0,
+        FiberContent: recipe.FiberContent || 0,
+        SugarContent: recipe.SugarContent || 0,
+        CholesterolContent: recipe.CholesterolContent || 0,
+        SodiumContent: recipe.SodiumContent || 0,
+        PrepTime: recipe.PrepTime || null,
+        CookTime: recipe.CookTime || null,
+        TotalTime: recipe.TotalTime || null,
+        RecipeCategory: recipe.RecipeCategory || '',
+        ReviewCount: recipe.ReviewCount || 0,
+        RecipeInstructions: cleanArrayField(recipe.RecipeInstructions),
+        RecipeIngredientParts: cleanArrayField(recipe.RecipeIngredientParts),
+        RecipeIngredientQuantities: cleanArrayField(recipe.RecipeIngredientQuantities),
+      })) : [],
+    }));
+  });
+
+  return cleanedData;
+};
+// Helper function to clean array fields
+const cleanArrayField = (field) => {
+  if (!field) return [];
+  if (Array.isArray(field)) return field.map(item => item || '');
+  if (typeof field !== 'string') return [field || ''];
+
+  // Handle strings that look like arrays (e.g., "[NA, NA]")
+  if (field.startsWith('[') && field.endsWith(']')) {
+    try {
+      // Attempt to parse as JSON
+      return JSON.parse(field).map(item => item || '');
+    } catch (e) {
+      // If parsing fails, manually clean the string
+      return field
+        .slice(1, -1) // Remove [ and ]
+        .split(',')
+        .map(item => {
+          const trimmed = item.trim();
+          // Convert "NA" or invalid values to empty string or null
+          return trimmed === 'NA' || trimmed === '' ? '' : trimmed.replace(/^"|"$/g, '');
+        });
+    }
+  }
+
+  return [field];
+};
 export const formatTime = (time) => {
     if (!time) return "N/A";
     

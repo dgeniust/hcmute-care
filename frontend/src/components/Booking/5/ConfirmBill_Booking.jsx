@@ -42,7 +42,7 @@ const ConfirmBill_Booking = () => {
           const patientInfo = paymentItem?.appointment?.medicalRecord || {};
           const tickets = paymentItem?.appointment?.tickets || [];
           // Limit to first two tickets
-          const displayTickets = tickets.slice(0, 2);
+          const displayTickets = tickets.slice(0, 5);
 
           return (
             <div

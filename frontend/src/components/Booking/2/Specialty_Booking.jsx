@@ -56,6 +56,9 @@ const Specialty_Booking = ({
       setStep(2);
     }, 300);
   };
+ const handleBack = () => {
+    alert("Quay lại");
+  }
 
   useEffect(() => {
     const handleDataSpecialty = async () => {
@@ -128,7 +131,7 @@ const Specialty_Booking = ({
       
       <div className="mb-6 text-center">
         <Space align="center">
-          <MedicineBoxOutlined className="text-blue-500 text-2xl" />
+          <MedicineBoxOutlined className="text-blue-500 text-2xl"/>
           <Title level={3} className="m-0">Chọn Chuyên Khoa</Title>
         </Space>
         <Text type="secondary" className="mt-2 block">

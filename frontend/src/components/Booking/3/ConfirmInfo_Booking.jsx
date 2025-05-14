@@ -201,6 +201,7 @@ const ConfirmInfo_Booking = ({ bookingList, setBookingList, setCurrent }) => {
             border: "none",
             boxShadow: "none",
           }}
+          onClick={() => setCurrent((prev) => Math.max(0, prev - 1))}
         ></Button>
         <h1 className="text-black font-bold text-lg">Thông tin đặt khám</h1>
       </div>

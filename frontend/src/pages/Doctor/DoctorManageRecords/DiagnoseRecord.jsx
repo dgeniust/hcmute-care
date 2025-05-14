@@ -106,7 +106,7 @@ const DiagnoseRecord = () => {
     localStorage.setItem('ticketId', pat.id);
     localStorage.setItem('waitingNumber', pat.waitingNumber);
     try {
-      const response = await fetch(`${apiUrl}api/v1/medical-records/${pat.medicalRecordId}`, {
+      const response = await fetch(`${apiUrl}v1/medical-records/${pat.medicalRecordId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ const DiagnoseRecord = () => {
     localStorage.setItem('patientEncounterInfo', JSON.stringify(patient)); // Lưu medicalRecordId vào localStorage
       try {
         const encounterResponse = await fetch(
-          `${apiUrl}api/v1/medical-records/${patient.id}/date/encounters?date=2025-05-14`,
+          `${apiUrl}v1/medical-records/${patient.id}/date/encounters?date=2025-05-14`,
           {
             method: 'GET',
             headers: {

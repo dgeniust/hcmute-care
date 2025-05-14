@@ -11,6 +11,7 @@ import { notifyErrorWithCustomMessage, handleHttpStatusCode } from '../utils/not
 const {Sider} = Layout
 const SideBar = () => { 
     const navigate = useNavigate();
+    const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
     const [userFullName, setUserFullName] = useState(localStorage.getItem('userFullName') || 'User');
     const [userDetails, setUserDetails] = useState(null); // State cho dữ liệu từ API thứ hai
@@ -21,7 +22,7 @@ const SideBar = () => {
     let userDetailsData = null;
     const fetchUserData = async (accId, accessToken) => {
       try{
-        const response = await fetch(`http://localhost:8080/api/v1/accounts/${accId}`, {
+        const response = await fetch(`${apiUrl}v1/accounts/${accId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -73,16 +74,16 @@ const SideBar = () => {
         }
         switch (role) {
           case 'ROLE_DOCTOR':
-            url = `http://localhost:8080/api/v1/doctors/${customerId}`;
+            url = `${apiUrl}v1/doctors/${customerId}`;
             break;
           case 'ROLE_NURSE':
-            url = `http://localhost:8080/api/v1/nurses/${customerId}`;
+            url = `${apiUrl}v1/nurses/${customerId}`;
             break;
           case 'ROLE_STAFF':
-            url = `http://localhost:8080/api/v1/staff/${customerId}`;
+            url = `${apiUrl}v1/staff/${customerId}`;
             break;
           default:
-            url = `http://localhost:8080/api/v1/customers/${customerId}`;
+            url = `${apiUrl}v1/customers/${customerId}`;
         }
 
         const response = await fetch(url, {

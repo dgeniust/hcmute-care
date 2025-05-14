@@ -117,6 +117,8 @@ const CureInfo_Booking = ({ bookingList, addBooking, setCurrent }) => {
         <Button
           icon={<ArrowLeftOutlined />}
           style={{ backgroundColor: 'transparent', border: 'none', boxShadow: 'none' }}
+          onClick={
+            () => setCurrent((prev) => Math.max(0, prev - 1))}
         ></Button>
         <h1 className="text-black font-bold text-lg">Chọn thông tin khám</h1>
       </div>

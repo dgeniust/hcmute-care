@@ -12,7 +12,7 @@ const GenerateMeal = ({tdee}) => {
   const [data, setData] = useState()
   const fetchMeal = async () => {
     try {
-      const response = await fetch(`${meal_api}${tdee}?num_options=1`,
+      const response = await fetch(`http://${meal_api}/${tdee}?num_options=1`,
         {
           method: 'POST',
         }

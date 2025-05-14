@@ -14,10 +14,7 @@ import vn.edu.hcmute.utecare.dto.response.PageResponse;
 import vn.edu.hcmute.utecare.exception.ResourceNotFoundException;
 import vn.edu.hcmute.utecare.mapper.*;
 import vn.edu.hcmute.utecare.model.*;
-import vn.edu.hcmute.utecare.repository.AccountRepository;
-import vn.edu.hcmute.utecare.repository.DoctorRepository;
-import vn.edu.hcmute.utecare.repository.MedicalSpecialtyRepository;
-import vn.edu.hcmute.utecare.repository.MedicalTestRepository;
+import vn.edu.hcmute.utecare.repository.*;
 import vn.edu.hcmute.utecare.service.DoctorService;
 import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
 import vn.edu.hcmute.utecare.util.PaginationUtil;
@@ -37,7 +34,17 @@ public class DoctorServiceImpl implements DoctorService {
     private final DoctorMapper doctorMapper;
     private final MedicalSpecialtyRepository medicalSpecialtyRepository;
     private final PasswordEncoder passwordEncoder;
-//    private final MedicalTestRepository medicalTestRepository;
+    private final MedicalTestRepository medicalTestRepository;
+    private final LaboratoryTestsRepository laboratoryTestsRepository;
+    private final ImagingTestMapper imagingTestMapper;
+    private final CardiacTestMapper cardiacTestMapper;
+    private final DigestiveTestMapper digestiveTestMapper;
+    private final SpirometryMapper spirometryMapper;
+    private final BloodGasAnalysisMapper bloodGasAnalysisMapper;
+    private final NerveConductionMapper nerveConductionMapper;
+    private final EEGMapper eegMapper;
+    private final EMGMapper emgMapper;
+    private final LaboratoryTestsMapper laboratoryTestsMapper;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -191,71 +198,72 @@ public class DoctorServiceImpl implements DoctorService {
 //                .collect(Collectors.toList());
 //    }
 //
-//    @Override
-//    public List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId) {
-//        log.info("Truy xuất tất cả xét nghiệm y tế cho bệnh nhân với ID: {}", patientId);
-//
-//        List<MedicalTest> tests = medicalTestRepository.findByPatientId(patientId);
-//
-//        return tests.stream()
-//                .map(this::mapToDetailResponse)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public MedicalTestDetailResponse mapToDetailResponse(MedicalTest medicalTest) {
-//        MedicalTestDetailResponse.MedicalTestDetailResponseBuilder builder = MedicalTestDetailResponse.builder()
-//                .id(medicalTest.getId())
-//                .evaluate(medicalTest.getEvaluate())
-//                .notes(medicalTest.getNotes())
-//                .encounterId(medicalTest.getEncounter().getId())
-//                .createDate(medicalTest.getCreateDate())
-//                .status(medicalTest.getStatus());
-//        if (medicalTest instanceof LaboratoryTests) {
-//            return builder
-//                    .type("Xét nghiệm máu")
-//                    .details(LaboratoryTestsMapper.INSTANCE.toResponse((LaboratoryTests) medicalTest))
-//                    .build();
-//        } else if (medicalTest instanceof CardiacTest) {
-//            return builder
-//                    .type("Xét nghiệm tim mạch")
-//                    .details(CardiacTestMapper.INSTANCE.toResponse((CardiacTest) medicalTest))
-//                    .build();
-//        } else if (medicalTest instanceof ImagingTest) {
-//            return builder
-//                    .type("Chụp hình ảnh")
-//                    .details(ImagingTestMapper.INSTANCE.toResponse((ImagingTest) medicalTest))
-//                    .build();
-//        } else if (medicalTest instanceof DigestiveTest) {
-//            return builder
-//                    .type("Xét nghiệm tiêu hóa")
-//                    .details(DigestiveTestMapper.INSTANCE.toResponse((DigestiveTest) medicalTest))
-//                    .build();
-//        } else if (medicalTest instanceof EEG) {
-//            return builder
-//                    .type("Điện não đồ (EEG)")
-//                    .details(EEGMapper.INSTANCE.toResponse((EEG) medicalTest))
-//                    .build();
-//        } else if (medicalTest instanceof EMG) {
-//            return builder
-//                    .type("Điện cơ đồ (EMG)")
-//                    .details(EMGMapper.INSTANCE.toResponse((EMG) medicalTest))
-//                    .build();
-//        } else if (medicalTest instanceof Spirometry) {
-//            return builder
-//                    .type("Đo hô hấp")
-//                    .details(SpirometryMapper.INSTANCE.toResponse((Spirometry) medicalTest))
-//                    .build();
-//        } else if (medicalTest instanceof BloodGasAnalysis) {
-//            return builder
-//                    .type("Phân tích khí máu")
-//                    .details(BloodGasAnalysisMapper.INSTANCE.toResponse((BloodGasAnalysis) medicalTest))
-//                    .build();
-//        } else if (medicalTest instanceof NerveConduction) {
-//            return builder
-//                    .type("Dẫn truyền thần kinh")
-//                    .details(NerveConductionMapper.INSTANCE.toResponse((NerveConduction) medicalTest))
-//                    .build();
-//        }
-//    }
+    @Override
+    public List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId) {
+        log.info("Truy xuất tất cả xét nghiệm y tế cho bệnh nhân với ID: {}", patientId);
+
+        List<MedicalTest> tests = medicalTestRepository.findByPatientId(patientId);
+
+        return tests.stream()
+                .map(this::mapToDetailResponse)
+                .collect(Collectors.toList());
+    }
+
+
+    public MedicalTestDetailResponse mapToDetailResponse(MedicalTest medicalTest) {
+        MedicalTestDetailResponse.MedicalTestDetailResponseBuilder builder = MedicalTestDetailResponse.builder()
+                .id(medicalTest.getId())
+                .evaluate(medicalTest.getEvaluate())
+                .notes(medicalTest.getNotes())
+                .encounterId(medicalTest.getEncounter().getId())
+                .createDate(medicalTest.getCreateDate())
+                .status(medicalTest.getStatus());
+        if (medicalTest instanceof LaboratoryTests) {
+            return builder
+                    .type("Xét nghiệm máu")
+                    .details(laboratoryTestsMapper.toResponse((LaboratoryTests) medicalTest))
+                    .build();
+        } else if (medicalTest instanceof CardiacTest) {
+            return builder
+                    .type("Xét nghiệm tim mạch")
+                    .details(cardiacTestMapper.toResponse((CardiacTest) medicalTest))
+                    .build();
+        } else if (medicalTest instanceof ImagingTest) {
+            return builder
+                    .type("Chụp hình ảnh")
+                    .details(imagingTestMapper.toResponse((ImagingTest) medicalTest))
+                    .build();
+        } else if (medicalTest instanceof DigestiveTest) {
+            return builder
+                    .type("Xét nghiệm tiêu hóa")
+                    .details(digestiveTestMapper.toResponse((DigestiveTest) medicalTest))
+                    .build();
+        } else if (medicalTest instanceof EEG) {
+            return builder
+                    .type("Điện não đồ (EEG)")
+                    .details(eegMapper.toResponse((EEG) medicalTest))
+                    .build();
+        } else if (medicalTest instanceof EMG) {
+            return builder
+                    .type("Điện cơ đồ (EMG)")
+                    .details(emgMapper.toResponse((EMG) medicalTest))
+                    .build();
+        } else if (medicalTest instanceof Spirometry) {
+            return builder
+                    .type("Đo hô hấp")
+                    .details(spirometryMapper.toResponse((Spirometry) medicalTest))
+                    .build();
+        } else if (medicalTest instanceof BloodGasAnalysis) {
+            return builder
+                    .type("Phân tích khí máu")
+                    .details(bloodGasAnalysisMapper.toResponse((BloodGasAnalysis) medicalTest))
+                    .build();
+        } else if (medicalTest instanceof NerveConduction) {
+            return builder
+                    .type("Dẫn truyền thần kinh")
+                    .details(nerveConductionMapper.toResponse((NerveConduction) medicalTest))
+                    .build();
+        }
+        throw new ResourceNotFoundException("Not found");
+    }
 }

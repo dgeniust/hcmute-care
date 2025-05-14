@@ -28,7 +28,7 @@ public interface DoctorService {
 
 //    List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId, LocalDate date);
 //
-//    List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId);
+    List<MedicalTestDetailResponse> getMedicalTestsByPatientId(Long patientId);
 //
 //    MedicalTestDetailResponse mapToDetailResponse(MedicalTest medicalTest);
 }
