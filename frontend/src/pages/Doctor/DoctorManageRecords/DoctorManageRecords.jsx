@@ -34,7 +34,7 @@ const DoctorManageRecords = () => {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/doctors/${doctorId}/schedule?date=${formatDate}`, {
+        const response = await fetch(`${apiUrl}api/v1/doctors/${doctorId}/schedule?date=${formatDate}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

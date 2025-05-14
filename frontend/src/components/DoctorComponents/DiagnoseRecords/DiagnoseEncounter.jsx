@@ -20,7 +20,9 @@ import dayjs from 'dayjs';
 const { Text } = Typography;
 const { Option } = Select;
 
+
 const DiagnoseEncounter = () => {
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const [messageApi, contextHolder] = message.useMessage();
   const [labTests, setLabTest] = useState([]);
   const [imagingTests, setImagingTests] = useState([]);
@@ -45,7 +47,7 @@ const DiagnoseEncounter = () => {
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/v1/medicine', {
+        const response = await fetch(`${apiUrl}v1/medicines`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -70,7 +72,7 @@ const DiagnoseEncounter = () => {
   useEffect(() => {
     const handleDataMedicalTest = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/doctors/patient/${patientInfo?.id}/medical-tests/all`, {
+        const response = await fetch(`${apiUrl}v1/doctors/patient/${patientInfo?.id}/medical-tests/all`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -125,12 +127,13 @@ const DiagnoseEncounter = () => {
           quantity: item.quantity,
           unit: item.unit,
           medicineId: item.medicineId,
+
         })),
         encounterId: parseInt(encounterId),
       };
       console.log('Prescription Payload -----------------:', prescriptionPayload);
 
-      const prescriptionResponse = await fetch('http://localhost:8080/api/v1/prescription', {
+      const prescriptionResponse = await fetch(`${apiUrl}v1/prescription`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +161,7 @@ const DiagnoseEncounter = () => {
       };
       console.log('Encounter Payload -----------------:', encounterPayload);
 
-      const encounterResponse = await fetch(`http://localhost:8080/api/v1/encounters/${encounterId}`, {
+      const encounterResponse = await fetch(`${apiUrl}v1/encounters/${encounterId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
