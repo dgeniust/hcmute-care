@@ -30,7 +30,9 @@ import {
 const { Title, Text } = Typography
 const { TabPane } = Tabs
 
+
 const MedicalRecord = () => {
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const [isModalInfoOpen, setIsModalInfoOpen] = useState(false)
   const [modalContent, setModalContent] = useState(null)
   const [modalButton, setmodalButton] = useState(false)
@@ -59,7 +61,7 @@ const MedicalRecord = () => {
       try {
         setLoading(true) // Bắt đầu loading
         const response = await fetch(
-          `http://localhost:8080/api/v1/customers/${customerId}/medicalRecords?page=1&size=10&sort=id&direction=asc`,
+          `${apiUrl}v1/customers/${customerId}/medicalRecords?page=1&size=10&sort=id&direction=asc`,
 
           {
             method: "GET",
