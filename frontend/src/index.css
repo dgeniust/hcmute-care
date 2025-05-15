@@ -20,7 +20,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --login-background: url(../img/bg-login.jpg); /* Đảm bảo hình ảnh đúng đường dẫn */
+  --login-background: url(../public/img/bg-login.jpg); /* Đảm bảo hình ảnh đúng đường dẫn */
 }
 
 
