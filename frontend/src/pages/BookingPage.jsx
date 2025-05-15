@@ -50,7 +50,6 @@ const BookingPage = () => {
           style={{
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
-            minHeight: '300vh',
             display: 'flex',
             flexDirection: 'row',
           }}

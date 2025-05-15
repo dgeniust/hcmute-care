@@ -1,73 +1,160 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Collapse, Divider, Radio  } from 'antd';
-import {HeartTwoTone, CreditCardTwoTone, RestOutlined, ForkOutlined } from '@ant-design/icons';
+import React, { useState, useEffect } from "react";
+import { message, Typography } from "antd";
+import {
+  notifyErrorWithCustomMessage,
+  notifySuccessWithCustomMessage,
+} from "../../../utils/notificationHelper";
+const { Text } = Typography;
 
 const ConfirmBill_Booking = () => {
-    return (
-        <div className='w-fit h-fit min-h-[460px] border border-sky-600 px-8 py-4 space-y-8 rounded-lg justify-center items-center flex flex-col m-auto'>
-            <div className='flex flex-col text-black justify-center items-center space-y-4 text-center'>
-                <div className='flex flex-col'>
-                    <h1 className='font-bold text-base'>Bệnh viện đại học Y Dược TPHCM</h1>
-                    <span>215 Hồng Bàng, P.11, Q5, TPHCM</span>
-                </div>
-                <div className='flex flex-col'>
-                    <h1 className='text-xl text-[#273c75] font-bold'>PHIẾU KHÁM BỆNH</h1>
-                    <span>(Mã phiếu: U2408131234)</span>
-                    <span>(Mã giao dịch: MOMO_64579989441)</span>
-                </div>
-            </div>
-            <div className='flex flex-col space-y-4 flex items-center justify-center text-center'>
-                <div className='flex flex-col space-y-1 text-black items-center justify-center text-center'>
-                    <h1 className='text-lg font-bold'>TỔNG QUÁT</h1>
-                    <p>Phòng 33 - Khám Nội Lầu 1 Khu A</p>
-                    <div className='w-[80px] h-[80px] border border-[#2ecc71] rounded-full flex flex-col justify-center items-center p-4 text-[#2ecc71]'>
-                        <p className='text-4xl font-bold text-[#009432]'>42</p>
-                        <span>STT</span>
+  const [paymentData, setPaymentData] = useState(null); // Initialize as null for a single object
+  const [messageApi, contextHolder] = message.useMessage();
+
+  useEffect(() => {
+    try {
+      const storedData = localStorage.getItem("paymentData");
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        console.log("Stored paymentData -----------:", parsedData);
+        setPaymentData(Array.isArray(parsedData) ? parsedData : [parsedData]);
+
+        console.log("Parsed paymentData:", parsedData);
+        notifySuccessWithCustomMessage(
+          "Vui lòng kiểm tra thông tin đặt lịch khám của bạn tại đây!",
+          messageApi
+        );
+      }
+    } catch (error) {
+      console.error("Error parsing paymentData from localStorage:", error);
+      notifyErrorWithCustomMessage("Lỗi khi tải dữ liệu đặt lịch!", messageApi);
+    }
+  }, [messageApi]);
+
+  useEffect(() => {
+    console.log("Payment data -----------------------:", paymentData);
+  }, [paymentData]);
+
+  return (
+    <>
+      {contextHolder}
+      {paymentData && paymentData.length > 0 ? (
+        paymentData.map((paymentItem, index) => {
+          const patientInfo = paymentItem?.appointment?.medicalRecord || {};
+          const tickets = paymentItem?.appointment?.tickets || [];
+          // Limit to first two tickets
+          const displayTickets = tickets.slice(0, 5);
+
+          return (
+            <div
+              key={index}
+              className="w-full max-w-5xl mx-auto my-6"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {displayTickets.map((ticket, ticketIndex) => (
+                  <div
+                    key={ticketIndex}
+                    className="bg-white border border-gray-200 rounded-xl shadow-lg p-6"
+                  >
+                    {/* Header Section */}
+                    <div className="text-center space-y-2">
+                      <h1 className="text-2xl font-bold text-gray-800">
+                        Bệnh viện Đại học Y Dược TPHCM
+                      </h1>
+                      <p className="text-sm text-gray-600">
+                        215 Hồng Bàng, P.11, Q5, TPHCM
+                      </p>
+                      <h2 className="text-xl font-semibold text-blue-700">
+                        PHIẾU KHÁM BỆNH
+                      </h2>
+                      <p className="text-sm text-gray-500">
+                        Mã phiếu: {ticket.ticketCode || "Đang tải..."}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Booking ID: {paymentItem?.transactionId || "Đang tải..."}
+                      </p>
                     </div>
-                </div>
-            <div className='flex flex-row items-center space-x-20 justify-center w-full text-center text-black'>
-                    <div className='space-y-4'>
-                        <div className='flex flex-row space-x-4'>
-                            <h1>Họ tên:</h1>
-                            <p className='font-bold'>NGUYỄN THÀNH ĐẠT</p>
+
+                    {/* General Info Section */}
+                    <div className="text-center space-y-4 mt-4">
+                      <h3 className="text-lg font-semibold text-gray-800">TỔNG QUÁT</h3>
+                      <p className="font-medium text-gray-700">
+                        {ticket.schedule?.roomDetail?.name ||
+                          "Phòng 33 - Khám Nội Lầu 1 Khu A"}
+                      </p>
+                      <p className="text-gray-600">
+                        Ngày khám: <span className="font-semibold">{ticket.schedule?.date || "Đang tải..."}</span>
+                      </p>
+                      <div className="inline-block bg-blue-50 border border-blue-200 rounded-lg px-6 py-3">
+                        <Text type="secondary" className="text-sm">Số thứ tự</Text>
+                        <div className="text-3xl font-bold text-blue-600">
+                          {ticket.waitingNumber || "--"}
                         </div>
-                        <div className='flex flex-row space-x-4'>
-                            <h1>Ngày sinh:</h1>
-                            <p className='font-bold'>14/01/2004</p>
-                        </div>
-                        <div className='flex flex-row space-x-4'>
-                            <h1>Giới tính:</h1>
-                            <p className='font-bold'>Nam</p>
-                        </div>
-                        <div className='flex flex-row space-x-4'>
-                            <h1>Tỉnh/TP:</h1>
-                            <p className='font-bold'>Bà Rịa - Vũng Tàu</p>
-                        </div>
+                      </div>
                     </div>
-                    <div className='space-y-4'>
-                        <div className='flex flex-row space-x-4'>
-                            <h1>Giờ khám dự kiến:</h1>
-                            <p className='font-bold'>8:00 - 9:00</p>
-                        </div>
-                        <div className='flex flex-row space-x-4 items-center'>
-                            <h1>Tiền khám:</h1>
-                            <p className='font-bold text-[#009432] text-lg '>150.000đ</p>
-                        </div>
-                        <div className='flex flex-row space-x-4'>
-                            <h1>Đối tượng:</h1>
-                            <p className='font-bold '>Thu phí</p>
-                        </div>
+
+                    {/* Patient and Appointment Details */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700 mt-4">
+                      <div className="space-y-2">
+                        <p>
+                          <span className="font-semibold">Họ tên:</span>{" "}
+                          {patientInfo.patientName || "Đang tải..."}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Ngày sinh:</span>{" "}
+                          {patientInfo.dob || "--"}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Giới tính:</span>{" "}
+                          {patientInfo.gender === "MALE"
+                            ? "Nam"
+                            : patientInfo.gender === "FEMALE"
+                            ? "Nữ"
+                            : "--"}
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <p>
+                          <span className="font-semibold">Giờ khám dự kiến:</span>{" "}
+                          {ticket.timeSlot?.startTime && ticket.timeSlot?.endTime
+                            ? `${ticket.timeSlot.startTime} - ${ticket.timeSlot.endTime}`
+                            : "-:00 - -:00"}
+                        </p>
+                        {/* <p>
+                          <span className="font-semibold">Tiền khám:</span>{" "}
+                          <span className="text-green-600 font-semibold">
+                            {paymentItem?.amount
+                              ? `${paymentItem.amount.toLocaleString()}đ`
+                              : "---.000đ"}
+                          </span>
+                        </p> */}
+                        <p>
+                          <span className="font-semibold">Đối tượng:</span> Thu phí
+                        </p>
+                      </div>
                     </div>
-                </div>
+
+                    {/* Footer Section */}
+                    <div className="text-center space-y-2 text-gray-600 mt-4">
+                      <p>
+                        Vui lòng đến phòng khám trước giờ hẹn 15-30 phút để khám bệnh.
+                      </p>
+                      <p>
+                        Số hồ sơ (Mã bệnh nhân):{" "}
+                        <span className="font-semibold">{patientInfo.barcode || "--"}</span>
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Ghi chú: Số thứ tự chỉ có giá trị trong ngày khám.
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className='text-black space-y-4 flex justify-center flex-col items-center text-center'>
-                <p>Vui lòng đến trực tiếp phòng khám trước hẹn 15-30 phút để khám bệnh</p>
-                <div>
-                    <p>Số hồ sơ (Mã bệnh nhân): <span className='font-bold'>W24-0068373</span></p>
-                    <span className='text-xs'>Ghi chú: Số thứ tự này chỉ có giá trị trong ngày khám</span>
-                </div>
-            </div>
-        </div>
-    )
-}
-export default ConfirmBill_Booking
+          );
+        })
+      ) : null}
+    </>
+  );
+};
+
+export default ConfirmBill_Booking;

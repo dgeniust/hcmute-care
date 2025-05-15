@@ -2,7 +2,7 @@ import React from 'react';
 import { Tabs } from 'antd';
 import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
-import MH_1 from '../../components/Personal/MedicalHistory-Children/MH_1';
+import TransactionHistory from '../../components/Personal/MedicalHistory-Children/MH_1';
 import MH_2 from '../../components/Personal/MedicalHistory-Children/MH_2';
 import MH_3 from '../../components/Personal/MedicalHistory-Children/MH_3';
 import MH_4 from '../../components/Personal/MedicalHistory-Children/MH_4';
@@ -15,9 +15,9 @@ const MedicalHistory = () => {
     const items = [
         {
           key: '1',
-          label: 'Đã thanh toán',
+          label: 'Đã giao dịch',
           children: (
-            <MH_1/>
+            <TransactionHistory/>
           ),
         },
         {

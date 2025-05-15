@@ -5,8 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class SetPasswordRequest {
-    @NotBlank(message = "verification token must not be blank")
-    private String verificationToken;
 
     @NotBlank(message = "password must not be blank")
     private String password;

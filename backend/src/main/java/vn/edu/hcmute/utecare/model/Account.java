@@ -2,13 +2,11 @@ package vn.edu.hcmute.utecare.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import vn.edu.hcmute.utecare.util.Role;
-import vn.edu.hcmute.utecare.util.UserStatus;
+import vn.edu.hcmute.utecare.util.enumeration.AccountStatus;
+import vn.edu.hcmute.utecare.util.enumeration.Role;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,7 +19,7 @@ import java.util.Collections;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account extends User implements UserDetails {
+public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,8 +34,11 @@ public class Account extends User implements UserDetails {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private UserStatus status = UserStatus.INACTIVE;
+    private AccountStatus status;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -51,7 +52,7 @@ public class Account extends User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return super.getPhone();
+        return this.user.getPhone();
     }
 
     @Override
@@ -71,6 +72,6 @@ public class Account extends User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserStatus.ACTIVE.equals(status);
+        return status.equals(AccountStatus.ACTIVE);
     }
 }

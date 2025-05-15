@@ -150,15 +150,28 @@
 			<artifactId>lettuce-core</artifactId>
 			<version>6.3.2.RELEASE</version>
 		</dependency>
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.redisson/redisson &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.redisson</groupId>-->
+<!--			<artifactId>redisson</artifactId>-->
+<!--			<version>3.46.0</version>-->
+<!--		</dependency>-->
 
-		<!-- Cloudinary -->
+		<!-- websocket -->
 		<dependency>
-			<groupId>com.cloudinary</groupId>
-			<artifactId>cloudinary-http44</artifactId>
-			<version>1.39.0</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 
+		<!-- SMS infobip -->
+		<dependency>
+			<groupId>com.infobip</groupId>
+			<artifactId>infobip-api-java-client</artifactId>
+			<version>6.1.0</version>
+		</dependency>
 	</dependencies>
+
+
 
 	<profiles>
 		<profile>

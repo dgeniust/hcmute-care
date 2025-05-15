@@ -1,0 +1,46 @@
+package vn.edu.hcmute.utecare.model;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "tbl_post")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "header")
+    private String header;
+
+    @Column(name = "content")
+    private String content;
+
+
+    @Column(name = "date_of_create")
+    @Temporal(TemporalType.DATE)
+    private LocalDate doc;
+
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @Builder.Default
+    private Set<PostImage> postImages = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "staff_id", referencedColumnName = "id")
+    @JsonBackReference
+    private Staff staff;
+}
+

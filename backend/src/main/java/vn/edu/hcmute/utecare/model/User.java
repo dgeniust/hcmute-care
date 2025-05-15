@@ -1,17 +1,30 @@
 package vn.edu.hcmute.utecare.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import vn.edu.hcmute.utecare.util.Gender;
+import lombok.experimental.SuperBuilder;
+import vn.edu.hcmute.utecare.util.enumeration.Gender;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
-@MappedSuperclass
+@Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "tbl_user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "phone", unique = true)
     private String phone;
 
@@ -27,5 +40,11 @@ public abstract class User implements Serializable {
 
     @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE)
-    private Date birthday;
+    private LocalDate dob;
+
+    @Column(name = "nation")
+    private String nation;
+
+    @Column(name = "address")
+    private String address;
 }

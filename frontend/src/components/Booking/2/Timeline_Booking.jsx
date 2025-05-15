@@ -1,127 +1,201 @@
-import React, { useState, useRef } from 'react';
-import { Button, Timeline , Calendar,theme, Collapse  } from 'antd';
-import {ArrowLeftOutlined,ForkOutlined , RightOutlined, ClockCircleOutlined, CalendarOutlined, MedicineBoxOutlined, SyncOutlined, InfoCircleTwoTone, CaretRightOutlined, FileSearchOutlined } from '@ant-design/icons';
-import Specialty_Booking from './Specialty_Booking';
-import Date_Booking from './Date_Booking';
-import TimeADoctor_Booking from './TimeADoctor_Booking';
+import React from 'react';
+import { 
+  Button, 
+  Timeline, 
+  Card, 
+  Typography, 
+  Badge, 
+  Space,
+  Divider
+} from 'antd';
+import {
+  ArrowLeftOutlined,
+  ForkOutlined,
+  RightOutlined, 
+  ClockCircleOutlined, 
+  CalendarOutlined, 
+  MedicineBoxOutlined, 
+  SyncOutlined, 
+  CheckCircleFilled,
+  FileSearchOutlined
+} from '@ant-design/icons';
 
-const Timeline_Booking = ({choosedSpecialty, specialty, step, result, selectedTime, selectedValue, selectedDoctor, ref}) => {
+const { Title, Text } = Typography;
+
+const Timeline_Booking = ({
+  choosedSpecialty, 
+  specialty, 
+  step, 
+  result, 
+  selectedTime, 
+  selectedValue, 
+  selectedDoctor, 
+  ref
+}) => {
+  
+  // Helper function for rendering timeline item content
+  const renderTimelineItem = (icon, label, value, isActive, isCompleted) => {
     return (
-        <div className='flex justify-center items-center w-full h-full' ref={ref}>
-            <Timeline style={{width: '100%', height: '100%'}}
-                items={[
-                {
-                    dot: (
-                        step === 1 ? (<SyncOutlined 
-                            style={{
-                                fontSize: '16px',
-                            }}
-                            spin/>) : null
-                    ),
-                    children: <Button style={{width:'100%', justifyContent: 'start' }} icon={<ForkOutlined/>} iconPosition='start'>
-                        {
-                            !choosedSpecialty ? (<p className='text-sm space-x-14'>
-                                    <span>Chuyên khoa</span>
-                                    <RightOutlined />
-                                </p>) : (<p className='text-sm space-x-14'>
-
-                                    <span>{specialty}</span>
-                                </p>
-                                )
-                            
-                        }
-                        </Button>,
-                },
-                {
-                    dot: (
-                        step === 2 && result == null ? (<SyncOutlined 
-                            style={{
-                                fontSize: '16px',
-                                color: 'blue'
-                            }}
-                            spin/>) : null
-                    ),
-                    color: selectedValue == null ? 'gray' : undefined,
-                    children: step !== 2  && step !== 3? (
-                        <Button style={{ width: '100%', justifyContent: 'start' }} icon={<CalendarOutlined />} iconPosition='start' disabled>
-                            <p className='text-sm space-x-14'>
-                                <span>Ngày khám</span>
-                            </p>
-                        </Button>
-                    ) : result ?  (
-                        <Button style={{ width: '100%', justifyContent: 'start' }} icon={<CalendarOutlined />} iconPosition='start'>
-                            <p className='text-sm space-x-14'>
-                                <span>{result}</span>
-                            </p>
-                        </Button>
-                    ) : (<Button style={{ width: '100%', justifyContent: 'start' }} icon={<CalendarOutlined />} iconPosition='start'>
-                        <p className='text-sm space-x-14'>
-                            <span>Ngày khám</span>
-                        </p>
-                    </Button>)
-                },
-                {
-                    dot: (
-                        !selectedTime && step == 3 ? (<SyncOutlined 
-                            style={{
-                                fontSize: '16px',
-                            }}
-                            spin/>) : null
-                    ),
-                    color: result == null ? 'gray' : undefined,
-                    children: step !== 3 ? (
-                        <Button style={{width:'100%', justifyContent: 'start'}} icon={<ClockCircleOutlined />} iconPosition='start' disabled>
-                        <p className='text-sm space-x-14'>
-                            <span>Giờ khám</span>
-                        </p>
-                        </Button>
-                    ) : selectedTime ? (
-                        <Button style={{width:'100%', justifyContent: 'start'}} icon={<ClockCircleOutlined />} iconPosition='start'>
-                            <p className='text-sm space-x-14'>
-                                <span>{selectedTime}</span>
-                            </p>
-                        </Button>
-                    ) : (
-                        <Button style={{width:'100%', justifyContent: 'start'}} icon={<ClockCircleOutlined />} iconPosition='start'>
-                        <p className='text-sm space-x-14'>
-                            <span>Giờ khám</span>
-                        </p>
-                        </Button>
-                    )
-                },
-                {
-                    dot: (
-                        !selectedDoctor && step == 3 ? (<SyncOutlined 
-                            style={{
-                                fontSize: '16px',
-                            }}
-                            spin/>) : null
-                    ),
-                    color: result == null ? 'gray' : undefined,
-                    children: step !== 3 ? (
-                        <Button style={{width:'100%', justifyContent: 'start'}} icon={<MedicineBoxOutlined />} iconPosition='start' disabled>
-                        <p className='text-sm space-x-14'>
-                            <span>Bác sĩ</span>
-                        </p>
-                        </Button>
-                    ) : selectedDoctor ? (
-                        <Button style={{width:'100%', justifyContent: 'start'}} icon={<MedicineBoxOutlined />} iconPosition='start'>
-                            <p className='text-sm space-x-14'>
-                                <span>{selectedDoctor}</span>
-                            </p>
-                        </Button>
-                    ) : (
-                        <Button style={{width:'100%', justifyContent: 'start'}} icon={<MedicineBoxOutlined />} iconPosition='start'>
-                        <p className='text-sm space-x-14'>
-                            <span>Bác sĩ</span>
-                        </p>
-                        </Button>
-                    )
-                },
-                ]}
-            />
+      <Card 
+        className={`w-full border transition-all duration-300 ${
+          isActive ? 'border-blue-500 shadow-md' : 
+          isCompleted ? 'border-green-400' : 'border-gray-200'
+        }`}
+        bodyStyle={{ padding: '12px 16px' }}
+      >
+        <div className="flex items-center justify-between">
+          <Space>
+            <span className={`flex items-center justify-center h-8 w-8 rounded-full ${
+              isActive ? 'bg-blue-100 text-blue-600' : 
+              isCompleted ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-500'
+            }`}>
+              {icon}
+            </span>
+            <div>
+              <Text strong className={
+                isActive ? 'text-blue-600' : 
+                isCompleted ? 'text-green-700' : 'text-gray-500'
+              }>
+                {label}
+              </Text>
+              {value && (
+                <>
+                  <Divider type="vertical" className="mx-2" />
+                  <Text className="font-medium">
+                    {value}
+                  </Text>
+                </>
+              )}
+            </div>
+          </Space>
+          
+          {isCompleted && (
+            <CheckCircleFilled className="text-green-500 text-lg" />
+          )}
+          {isActive && !isCompleted && (
+            <Badge status="processing" className="animate-pulse" />
+          )}
         </div>
-    )
-}
+      </Card>
+    );
+  };
+
+  return (
+    <div className="w-full bg-white p-4 rounded-lg shadow-sm" ref={ref}>
+      <div className="mb-4">
+        <Title level={4} className="text-gray-700 flex items-center">
+          <FileSearchOutlined className="mr-2 text-blue-500" />
+          Quá trình đặt lịch
+        </Title>
+      </div>
+      
+      <Timeline
+        className="px-2"
+        items={[
+          {
+            dot: step === 1 ? (
+              <div className="bg-blue-500 flex items-center justify-center rounded-full h-8 w-8">
+                <SyncOutlined spin className="text-white" />
+              </div>
+            ) : choosedSpecialty ? (
+              <div className="bg-green-500 flex items-center justify-center rounded-full h-8 w-8">
+                <Text className="text-white font-bold">1</Text>
+              </div>
+            ) : (
+              <div className="bg-gray-300 flex items-center justify-center rounded-full h-8 w-8">
+                <Text className="text-white font-bold">1</Text>
+              </div>
+            ),
+            children: renderTimelineItem(
+              <ForkOutlined />,
+              "Chuyên khoa",
+              choosedSpecialty ? specialty : null,
+              step === 1,
+              choosedSpecialty && step !== 1
+            )
+          },
+          {
+            dot: step === 2 && result == null ? (
+              <div className="bg-blue-500 flex items-center justify-center rounded-full h-8 w-8">
+                <SyncOutlined spin className="text-white" />
+              </div>
+            ) : result ? (
+              <div className="bg-green-500 flex items-center justify-center rounded-full h-8 w-8">
+                <Text className="text-white font-bold">2</Text>
+              </div>
+            ) : (
+              <div className={`${step >= 2 ? 'bg-gray-500' : 'bg-gray-300'} flex items-center justify-center rounded-full h-8 w-8`}>
+                <Text className="text-white font-bold">2</Text>
+              </div>
+            ),
+            children: renderTimelineItem(
+              <CalendarOutlined />,
+              "Ngày khám",
+              result || null,
+              step === 2 && !result,
+              result != null
+            )
+          },
+          {
+            dot: step === 3 && !selectedTime ? (
+              <div className="bg-blue-500 flex items-center justify-center rounded-full h-8 w-8">
+                <SyncOutlined spin className="text-white" />
+              </div>
+            ) : selectedTime ? (
+              <div className="bg-green-500 flex items-center justify-center rounded-full h-8 w-8">
+                <Text className="text-white font-bold">3</Text>
+              </div>
+            ) : (
+              <div className={`${step >= 3 ? 'bg-gray-500' : 'bg-gray-300'} flex items-center justify-center rounded-full h-8 w-8`}>
+                <Text className="text-white font-bold">3</Text>
+              </div>
+            ),
+            children: renderTimelineItem(
+              <ClockCircleOutlined />,
+              "Giờ khám",
+              selectedTime || null,
+              step === 3 && !selectedTime,
+              selectedTime != null
+            )
+          },
+          {
+            dot: step === 3 && !selectedDoctor ? (
+              <div className="bg-blue-500 flex items-center justify-center rounded-full h-8 w-8">
+                <SyncOutlined spin className="text-white" />
+              </div>
+            ) : selectedDoctor ? (
+              <div className="bg-green-500 flex items-center justify-center rounded-full h-8 w-8">
+                <Text className="text-white font-bold">4</Text>
+              </div>
+            ) : (
+              <div className={`${step >= 3 ? 'bg-gray-500' : 'bg-gray-300'} flex items-center justify-center rounded-full h-8 w-8`}>
+                <Text className="text-white font-bold">4</Text>
+              </div>
+            ),
+            children: renderTimelineItem(
+              <MedicineBoxOutlined />,
+              "Bác sĩ",
+              selectedDoctor || null,
+              step === 3 && !selectedDoctor,
+              selectedDoctor != null
+            )
+          },
+        ]}
+      />
+      
+      <div className="mt-6 p-3 bg-blue-50 rounded-lg border border-blue-100">
+        <Space align="start">
+          <SyncOutlined className="text-blue-500 mt-1" />
+          <div>
+            <Text strong className="text-blue-700">Tiến trình đặt lịch</Text>
+            <Text className="block text-gray-600 text-sm mt-1">
+              Vui lòng hoàn thành các bước để đặt lịch khám bệnh
+            </Text>
+          </div>
+        </Space>
+      </div>
+    </div>
+  );
+};
 
 export default Timeline_Booking;

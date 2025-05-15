@@ -3,7 +3,6 @@ import { Tabs } from "antd";
 import { Collapse, theme } from "antd";
 
 const InfoChildren = ({ infoBodyData, label }) => {
-  console.log(infoBodyData);
   const { token } = theme.useToken();
   const panelStyle = {
     marginBottom: 12,
@@ -53,7 +52,7 @@ const InfoChildren = ({ infoBodyData, label }) => {
                       background: token.colorBgContainer,
                   }}
                   defaultActiveKey={['0']}
-                  expandIconPosition="right"  
+                  expandIconPosition="end"  
                   />
               </div>
               <div className="w-full h-full flex flex-row space-x-2">
@@ -66,7 +65,7 @@ const InfoChildren = ({ infoBodyData, label }) => {
                           background: token.colorBgContainer,
                       }}
                       defaultActiveKey={['0']}
-                      expandIconPosition="right"  
+                      expandIconPosition="end"  
                       />
                   </div>
                   <div className="w-1/2 h-full text-center items-center flex flex-col space-y-2 p-2">
@@ -98,7 +97,6 @@ const InfomationBody = ({ infoBodyData, activeTab, setActiveTab, infoBodyDataBac
     const onChange = (key) => {
         setActiveTab(key);
     };
-    console.log(infoBodyDataBack);
     const items = useMemo(() => {
       if (displayBack && infoBodyDataBack) {
           // Trả về items dựa trên infoBodyDataBack

@@ -1,65 +1,127 @@
 services:
   backend-service:
-    container_name: backend-container
+    container_name: utecare-backend-service
+    image: utecare-backend
     build:
       context: .
       dockerfile: Dockerfile
-    image: backend-app-image
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL= ${SPRING_DB_URL}
-      - SPRING_DATASOURCE_USERNAME= ${SPRING_DB_USERNAME}
-      - SPRING_DATASOURCE_PASSWORD= ${SPRING_DB_PASSWORD}
-      - SPRING_REDIS_HOST=redis
-      - SPRING_REDIS_PORT=6379
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      JWT_ACCESS_TOKEN_SECRET_KEY: ${JWT_ACCESS_TOKEN_SECRET_KEY}
+      JWT_ACCESS_TOKEN_EXPIRY: ${JWT_ACCESS_TOKEN_EXPIRY}
+      JWT_REFRESH_TOKEN_SECRET_KEY: ${JWT_REFRESH_TOKEN_SECRET_KEY}
+      JWT_REFRESH_TOKEN_EXPIRY: ${JWT_REFRESH_TOKEN_EXPIRY}
+      JWT_VERIFICATION_TOKEN_SECRET_KEY: ${JWT_VERIFICATION_TOKEN_SECRET_KEY}
+      JWT_VERIFICATION_TOKEN_EXPIRY: ${JWT_VERIFICATION_TOKEN_EXPIRY}
+      JWT_RESET_TOKEN_SECRET_KEY: ${JWT_RESET_TOKEN_SECRET_KEY}
+      JWT_RESET_TOKEN_EXPIRY: ${JWT_RESET_TOKEN_EXPIRY}
+      VNPAY_URL: ${VNPAY_URL}
+      VNPAY_TMN_CODE: ${VNPAY_TMN_CODE}
+      VNPAY_SECRET_KEY: ${VNPAY_SECRET_KEY}
+      VNPAY_RETURN_URL: ${VNPAY_RETURN_URL}
+      SMS_KEY: ${SMS_KEY}
+      SMS_BASE_URL: ${SMS_BASE_URL}
+      SMS_SENDER_ID: ${SMS_SENDER_ID}
+      VITE_SERVICE_ID: ${VITE_SERVICE_ID}
+      VITE_TEMPLATE_ID: ${VITE_TEMPLATE_ID}
+      VITE_PUBLIC_KEY: ${VITE_PUBLIC_KEY}
+      VITE_GEMINI_API_KEY: ${VITE_GEMINI_API_KEY}
+      VITE_STABILITY_API_KEY: ${VITE_STABILITY_API_KEY}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
     depends_on:
-      db:
+      mysql:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
     networks:
-      - ute-care-network
+      - utecare-backend-service
 
-  db:
-    image: mysql:8.4.4
-    container_name: mysql-container-1
+  frontend-service:
+    container_name: utecare-frontend-service
+    image: utecare-frontend
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      VITE_API_MEAL_GENERATION: ${VITE_API_MEAL_GENERATION}
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+    depends_on:
+      - backend-service
+    networks:
+      - utecare-backend-service
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASS}
-      MYSQL_DATABASE: ${MYSQL_DB_NAME}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      LANG: C.UTF-8
     ports:
-      - "3307:3306"
+      - "3308:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - ute-care-network
+      - utecare-backend-service
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 3
 
   redis:
     image: redis:7.4
-    container_name: redis-container
+    container_name: redis
+    restart: always
     ports:
       - "6379:6379"
     volumes:
       - redis-data:/data
     networks:
-      - ute-care-network
+      - utecare-backend-service
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 3
+      start_period: 10s
+
+  jenkins:
+    image: jenkins/jenkins:lts-jdk21
+    privileged: true
+    user: root
+    ports:
+      - "7080:8080"
+      - "50000:50000"
+    container_name: jenkins
+    volumes:
+      - ~/jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /usr/local/bin/docker:/usr/local/bin/docker
+    networks:
+      - utecare-backend-service
+
 networks:
-  ute-care-network:
+  utecare-backend-service:
     driver: bridge
 
 volumes:
   mysql-data:
   redis-data:
+  jenkins-data:

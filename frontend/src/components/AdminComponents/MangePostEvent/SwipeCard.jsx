@@ -69,7 +69,7 @@ const SwipeCards = ({setStorageImg, storageImg}) => {
   );
 };
 
-const Card = ({ id, src, index, total, onRemove }) => {
+const Card = ({ id, imageUrl, index, total, onRemove }) => {
   const [dragging, setDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
@@ -137,7 +137,7 @@ const Card = ({ id, src, index, total, onRemove }) => {
       onTouchEnd={handleDragEnd}
     >
       {/* Card content styled to look like a sneaker product card */}
-        <img src={src} alt="Sneaker" className="w-full h-full object-cover" draggable="false"/>
+        <img src={imageUrl} alt="Post image" className="w-full h-full object-cover" draggable="false"/>
       
     </div>
   );

@@ -3,6 +3,7 @@ import {DatePicker, Tabs  } from 'antd';
 import dayjs from 'dayjs';
 import MedicalService from './MedicalService';
 import VaccineService from './VaccineService';
+import GroupVaccineService from './GroupVaccineService';
 const ManageService = () => {
     const today = dayjs()
     const dateFormat = 'DD/MM/YYYY';
@@ -20,8 +21,8 @@ const ManageService = () => {
         },
         {
           key: '3',
-          label: 'Dụng cụ y tế',
-          children: 'Content of Tab Pane 3',
+          label: 'Gói dịch vụ tiêm phòng',
+          children: <GroupVaccineService/>,
         },
     ];
     return (

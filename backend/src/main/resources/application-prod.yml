@@ -2,17 +2,47 @@ spring:
   config:
     activate:
       on-profile: prod
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
-    show-sql: false
-    properties:
-      hibernate:
-        format_sql: true
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DB}?useSSL=true&serverTimezone=Asia/Ho_Chi_Minh
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS}
+jwt:
+  accessToken:
+    secretKey: ${JWT_ACCESS_TOKEN_SECRET_KEY}
+    expiry: ${JWT_ACCESS_TOKEN_EXPIRY}
+  refreshToken:
+    secretKey: ${JWT_REFRESH_TOKEN_SECRET_KEY}
+    expiry: ${JWT_REFRESH_TOKEN_EXPIRY}
+  verificationToken:
+    secretKey: ${JWT_VERIFICATION_TOKEN_SECRET_KEY}
+    expiry: ${JWT_VERIFICATION_TOKEN_EXPIRY}
+  resetToken:
+    secretKey: ${JWT_RESET_TOKEN_SECRET_KEY}
+    expiry: ${JWT_RESET_TOKEN_EXPIRY}
+
+payment:
+  vnPay:
+    url: ${VNPAY_URL}
+    tmnCode: ${VNPAY_TMN_CODE}
+    secretKey: ${VNPAY_SECRET_KEY}
+    returnUrl: ${VNPAY_RETURN_URL}
+    version: 2.1.0
+    command: pay
+    orderType: other
+
+SMS:
+  api-key: ${SMS_KEY}
+  base-url: ${SMS_BASE_URL}
+  sender-id: ${SMS_SENDER_ID}
 
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
   swagger-ui:
-    enabled: false
+    enabled: true

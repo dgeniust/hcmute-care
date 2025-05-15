@@ -9,7 +9,7 @@ const Date_Booking = ({selectedValue, onSelectDate}) => {
         border: `1px solid ${token.colorBorderSecondary}`,
         borderRadius: token.borderRadiusLG,
     };
-
+    console.log('Selected date:', selectedValue);
     return (
         <div className='w-3/4 h-fit flex flex-col'>
             <div className='flex w-full justify-center'>
