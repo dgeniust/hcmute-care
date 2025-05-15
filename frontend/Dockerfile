@@ -1,9 +1,8 @@
-FROM node:18-alpine AS build
+FROM node:20-alpine as build
 WORKDIR /app
-COPY package.json .
+COPY package*.json ./
 RUN npm install
 COPY . .
-RUN rm -rf node_modules/.cache && npm install esbuild@0.24.2
 RUN npm run build
 
 FROM nginx:alpine
