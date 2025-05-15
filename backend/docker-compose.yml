@@ -44,6 +44,7 @@ services:
         condition: service_healthy
     networks:
       - utecare-backend-service
+    restart: unless-stopped
 
   frontend-service:
     container_name: utecare-frontend-service
@@ -61,11 +62,12 @@ services:
       - backend-service
     networks:
       - utecare-backend-service
+    restart: unless-stopped
 
   mysql:
     image: mysql:8.0
     container_name: mysql
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${MYSQL_DB}
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
@@ -87,7 +89,7 @@ services:
   redis:
     image: redis:7.4
     container_name: redis
-    restart: always
+    restart: unless-stopped
     ports:
       - "6379:6379"
     volumes:
@@ -114,6 +116,16 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
       - /usr/local/bin/docker:/usr/local/bin/docker
+    networks:
+      - utecare-backend-service
+    restart: unless-stopped
+
+  generate-meal:
+    image: minhvan2403/meal-api
+    container_name: generate-meal
+    restart: unless-stopped
+    ports:
+      - "9080:8080"
     networks:
       - utecare-backend-service
 
