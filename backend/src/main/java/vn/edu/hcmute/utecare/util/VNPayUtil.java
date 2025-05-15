@@ -19,6 +19,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class VNPayUtil {
+    public static final int PAYMENT_EXPIRY_MINUTES = 10;
     public static String hmacSHA512(@NonNull String key, @NonNull String data) {
         try {
             Mac hmac512 = Mac.getInstance("HmacSHA512");

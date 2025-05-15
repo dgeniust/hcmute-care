@@ -22,7 +22,7 @@ const PatientRecords = () => {
     return storedData ? JSON.parse(storedData) : null;
   });
   const [encounters, setEncounters] = useState([]);
-
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const { token } = theme.useToken();
   
   const panelStyle = {
@@ -37,7 +37,7 @@ const PatientRecords = () => {
   useEffect(() => {
     const fetchPatientEncounterInfo = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/medical-records/${medicalRecordPatientId}/encounters`, {
+        const response = await fetch(`${apiUrl}v1/medical-records/${medicalRecordPatientId}/encounters`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

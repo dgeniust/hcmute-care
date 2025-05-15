@@ -14,8 +14,7 @@ public interface MedicalRecordMapper {
     @Mapping(target = "customerId", source = "customer.id")
     MedicalRecordResponse toResponse(MedicalRecord medicalRecord);
 
-
-    @Mapping(target = "customer.id", source = "customerId")
+    //@Mapping(target = "customer.id", source = "customerId")
     MedicalRecord toEntity(MedicalRecordRequest request);
 
     @Mapping(target = "patientId", source = "patient.id")

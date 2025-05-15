@@ -61,8 +61,6 @@ const ChatbotContextMenu = () => {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
     // Step 1: Translate selectedText to English using Gemini
     const translationPrompt = `Translate the following Vietnamese text to English: "${selectedText}"`;
-    const translationResult = await model.generateContent(translationPrompt);
-    const translatedText = translationResult.response.text().trim();
     const textPrompt = `
       Hãy cung cấp thông tin chi tiết bằng tiếng Việt về "${selectedText}" trong lĩnh vực y tế, sử dụng định dạng markdown. Nội dung cần bao gồm:
       - **Mô tả ngắn gọn**: Tóm tắt về chủ đề.

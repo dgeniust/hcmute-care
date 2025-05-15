@@ -98,7 +98,6 @@ const Payment_Booking = ({ bookingList, setCurrent }) => {
   const handlePayment = async () => {
     try {
       const payload = {
-        bankCode: "NCB",
         appointmentId: appointmentId,
       };
       

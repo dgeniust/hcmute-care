@@ -135,10 +135,11 @@ const DiagnoseRecord = () => {
 
   // Gửi chẩn đoán và kê đơn thuốc
   const handleDiagnose = async (patient) => {
+    const date = dayjs().format('YYYY-MM-DD');
     localStorage.setItem('patientEncounterInfo', JSON.stringify(patient)); // Lưu medicalRecordId vào localStorage
       try {
         const encounterResponse = await fetch(
-          `${apiUrl}v1/medical-records/${patient.id}/date/encounters?date=2025-05-14`,
+          `${apiUrl}v1/medical-records/${patient.id}/date/encounters?date=${date}`,
           {
             method: 'GET',
             headers: {
@@ -186,7 +187,7 @@ const DiagnoseRecord = () => {
                 <FileTextOutlined className="mr-2 text-blue-500" />
                 Danh sách bệnh nhân
               </h2>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-2 text-black">
                 {scheduleSlots.length > 0 ? (
                   scheduleSlots.map((slot) => (
                     <button

@@ -63,8 +63,8 @@ const ContactPage = () => {
                     <Text strong className="block text-gray-700">
                       Điện thoại
                     </Text>
-                    <Text className="text-gray-600">+84 123 456 789</Text>
-                    <Text className="block text-gray-600">+84 987 654 321 (Hotline)</Text>
+                    <Text className="text-gray-600">+84 38 7731 823</Text>
+                    <Text className="block text-gray-600">+84 38 7731 823(Hotline)</Text>
                   </div>
                 </div>
 
@@ -74,8 +74,8 @@ const ContactPage = () => {
                     <Text strong className="block text-gray-700">
                       Email
                     </Text>
-                    <Text className="text-gray-600">info@healthcare.com</Text>
-                    <Text className="block text-gray-600">support@healthcare.com</Text>
+                    <Text className="text-gray-600">utecare@gmail.com</Text>
+                    <Text className="block text-gray-600">utecaresupport@gmail.com</Text>
                   </div>
                 </div>
 
@@ -85,7 +85,7 @@ const ContactPage = () => {
                     <Text strong className="block text-gray-700">
                       Địa chỉ
                     </Text>
-                    <Text className="text-gray-600">123 Đường Nguyễn Văn Linh, Quận 7, TP. Hồ Chí Minh</Text>
+                    <Text className="text-gray-600">Số 1 Đường Võ Văn Ngân, TP. Thủ Đức</Text>
                   </div>
                 </div>
 
@@ -95,8 +95,8 @@ const ContactPage = () => {
                     <Text strong className="block text-gray-700">
                       Giờ làm việc
                     </Text>
-                    <Text className="text-gray-600">Thứ Hai - Thứ Sáu: 8:00 - 17:30</Text>
-                    <Text className="block text-gray-600">Thứ Bảy: 8:00 - 12:00</Text>
+                    <Text className="text-gray-600">Thứ Hai - Thứ Sáu: 6:30 - 17:30</Text>
+                    <Text className="block text-gray-600">Thứ Bảy: 7:00 - 12:00</Text>
                     <Text className="block text-gray-600">Chủ Nhật: Nghỉ</Text>
                   </div>
                 </div>
@@ -252,7 +252,7 @@ const ContactPage = () => {
           </Paragraph>
           <div className="mt-6 flex flex-wrap justify-center gap-4">
             <Button type="primary" size="large" icon={<PhoneOutlined />}>
-              Gọi ngay: 1900 1234
+              Gọi ngay: 038 7731 823
             </Button>
             <Button type="default" size="large">
               Đặt lịch trực tuyến

@@ -20,7 +20,7 @@ import 'moment/locale/vi';
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
 
-const GEMINI_API_KEY = '';
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
 const ChatbotService = () => {
@@ -40,13 +40,13 @@ const ChatbotService = () => {
   const [currentConversation, setCurrentConversation] = useState('Cuộc trò chuyện mới');
   const [speechEnabled, setSpeechEnabled] = useState(false);
   const [language, setLanguage] = useState('vi');
+  
   const [suggestedQuestions, setSuggestedQuestions] = useState([
     'Giới thiệu về trường ĐHSPKT TP.HCM',
     'Quy trình nhập học như thế nào?',
     'Các ngành đào tạo của trường?',
     'Học phí các ngành năm 2025',
   ]);
-
   // Refs
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -95,6 +95,90 @@ const ChatbotService = () => {
         'Could not fetch response from Gemini API.');
     }
   };
+  const processBotResponse = (response) => {
+    // Chia nhỏ văn bản thành các đoạn dựa trên dấu xuống dòng hoặc tiêu đề
+    const paragraphs = response.split('\n').filter((para) => para.trim() !== '');
+
+    // Tạo cấu trúc dữ liệu trả về
+    const processedResponse = {
+      summary: '',
+      sections: [],
+    };
+
+    // Tổng quan ngắn gọn
+    processedResponse.summary = paragraphs[0].substring(0, 150) + '...';
+
+    // Phân tích từng đoạn
+    paragraphs.forEach((para) => {
+      let section = { title: '', content: '' };
+
+      // Xác định tiêu đề (nếu có dấu ** hoặc chữ in đậm)
+      if (para.includes('**')) {
+        const boldMatch = para.match(/\*\*(.*?)\*\*/);
+        if (boldMatch) {
+          section.title = boldMatch[1];
+          section.content = para.replace(/\*\*(.*?)\*\*/, '').trim();
+        } else {
+          section.content = para;
+        }
+      } else {
+        section.content = para;
+      }
+
+      // Loại bỏ các ký tự markdown không cần thiết
+      section.content = section.content.replace(/[\*\#]/g, '').trim();
+
+      // Thêm vào danh sách sections
+      if (section.title || section.content) {
+        processedResponse.sections.push(section);
+      }
+    });
+
+    // Tạo danh sách các điểm chính (key points)
+    const keyPoints = [];
+    processedResponse.sections.forEach((section) => {
+      if (section.title.toLowerCase().includes('giai đoạn') || section.title.toLowerCase().includes('quan trọng')) {
+        keyPoints.push({
+          title: section.title,
+          summary: section.content.substring(0, 100) + (section.content.length > 100 ? '...' : ''),
+        });
+      }
+    });
+
+    return {
+      ...processedResponse,
+      keyPoints,
+    };
+  };
+
+  const renderProcessedResponse = (processedResponse) => {
+    return (
+      <div>
+        <Text strong>{language === 'vi' ? 'Tóm tắt:' : 'Summary:'}</Text>
+        <Paragraph className={`text-sm mb-1 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
+          {processedResponse.summary}
+        </Paragraph>
+        <Divider className={theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} />
+        {processedResponse.keyPoints.map((point, index) => (
+          <div key={index}>
+            <Text strong>{point.title}</Text>
+            <Paragraph className={`text-sm mb-1 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
+              {point.summary}
+            </Paragraph>
+          </div>
+        ))}
+        <Divider className={theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} />
+        {processedResponse.sections.map((section, index) => (
+          <div key={index}>
+            {section.title && <Text strong>{section.title}</Text>}
+            <Paragraph className={`text-sm mb-1 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
+              {section.content}
+            </Paragraph>
+          </div>
+        ))}
+      </div>
+    );
+  };
 
   const handleSend = async () => {
     if (!inputValue.trim()) return;
@@ -111,9 +195,10 @@ const ChatbotService = () => {
 
     try {
       const response = await fetchGeminiResponse(inputValue);
+      const processedResponse = processBotResponse(response);
       const botMessage = {
         type: 'bot',
-        content: response,
+        content: processedResponse,
         time: new Date(),
       };
       setMessages((prev) => [...prev, botMessage]);
@@ -325,9 +410,13 @@ const ChatbotService = () => {
                         : theme === 'dark' ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
                     } shadow-sm`}
                   >
-                    <Paragraph className={`text-sm mb-1 ${message.type === 'user' ? 'text-white' : theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
-                      {message.content}
-                    </Paragraph>
+                    {message.type === 'bot' && typeof message.content === 'object' ? (
+                      renderProcessedResponse(message.content)
+                    ) : (
+                      <Paragraph className={`text-sm mb-1 ${message.type === 'user' ? 'text-white' : theme === 'dark' ? 'text-gray-200' : 'text-gray-800'}`}>
+                        {message.content}
+                      </Paragraph>
+                    )}
                     <Text className={`text-xs ${message.type === 'user' ? 'text-blue-100' : theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                       {formatTime(message.time)}
                     </Text>
@@ -337,7 +426,7 @@ const ChatbotService = () => {
                       type="text"
                       size="small"
                       icon={<CopyOutlined />}
-                      onClick={() => copyToClipboard(message.content)}
+                      onClick={() => copyToClipboard(typeof message.content === 'object' ? message.content.summary : message.content)}
                       className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-gray-600"
                     />
                   )}

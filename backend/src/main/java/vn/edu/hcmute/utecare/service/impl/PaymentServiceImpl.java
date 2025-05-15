@@ -46,89 +46,106 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     @Override
     public String createPaymentUrl(PaymentRequest request, HttpServletRequest httpServletRequest) {
-        log.info("Tạo URL thanh toán cho cuộc hẹn ID: {}", request.getAppointmentId());
+        log.info("Đang tạo URL thanh toán cho cuộc hẹn ID: {}", request.getAppointmentId());
 
         Appointment appointment = appointmentRepository.findById(request.getAppointmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy cuộc hẹn với ID: " + request.getAppointmentId()));
 
         BigDecimal amount = appointmentService.calculateTotalPrice(appointment);
 
-
-        Map<String, String> vnpParams = vnpayConfig.getVNPayConfig();
-        String vnp_TxnRef = VNPayUtil.getRandomNumber(8);
-        vnpParams.put("vnp_TxnRef", vnp_TxnRef);
-        vnpParams.put("vnp_Amount", String.valueOf(amount.multiply(new BigDecimal(100)).longValue()));
-        vnpParams.put("vnp_OrderInfo", "Thanh toán cuộc hẹn ID: " + request.getAppointmentId());
-        vnpParams.put("vnp_IpAddr", VNPayUtil.getIpAddress(httpServletRequest));
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("GMT+7"));
-        String vnp_CreateDate = now.format(formatter);
-        vnpParams.put("vnp_CreateDate", vnp_CreateDate);
-
-        String vnp_ExpireDate = now.plusMinutes(10).format(formatter);
-        vnpParams.put("vnp_ExpireDate", vnp_ExpireDate);
-
-        String hashData = VNPayUtil.getPaymentURL(vnpParams, false);
-        String vnp_SecureHash = VNPayUtil.hmacSHA512(vnpayConfig.getSecretKey(), hashData);
-        vnpParams.put("vnp_SecureHash", vnp_SecureHash);
-
-        String paymentUrl = vnpayConfig.getVnpPayUrl() + "?" + VNPayUtil.getPaymentURL(vnpParams, true);
+        Map<String, String> vnpParams = initializeVNPayParams(appointment, amount, httpServletRequest);
+        String paymentUrl = buildPaymentUrl(vnpParams);
 
         Payment payment = Payment.builder()
                 .amount(amount)
                 .paymentMethod(PaymentMethod.VNPAY)
                 .paymentStatus(PaymentStatus.PENDING)
-                .transactionId(vnp_TxnRef)
+                .transactionId(vnpParams.get("vnp_TxnRef"))
                 .appointment(appointment)
                 .paymentDate(LocalDateTime.now())
                 .build();
         paymentRepository.save(payment);
-        log.info("Tạo URL thanh toán thành công cho giao dịch: {}", vnp_TxnRef);
+        log.info("Tạo URL thanh toán thành công cho giao dịch: {}", vnpParams.get("vnp_TxnRef"));
 
         return paymentUrl;
+    }
+
+    private Map<String, String> initializeVNPayParams(Appointment appointment, BigDecimal amount, HttpServletRequest request) {
+        Map<String, String> params = vnpayConfig.getVNPayConfig();
+        String transactionRef = VNPayUtil.getRandomNumber(8);
+
+        params.put("vnp_TxnRef", transactionRef);
+        params.put("vnp_Amount", String.valueOf(amount.multiply(BigDecimal.valueOf(100)).longValue()));
+        params.put("vnp_OrderInfo", "Thanh toán cuộc hẹn ID: " + appointment.getId());
+        params.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
+        params.put("vnp_CreateDate", LocalDateTime.now(ZoneId.of("GMT+7"))
+                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+        params.put("vnp_ExpireDate", LocalDateTime.now(ZoneId.of("GMT+7"))
+                .plusMinutes(VNPayUtil.PAYMENT_EXPIRY_MINUTES)
+                .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+
+        return params;
+    }
+
+    private String buildPaymentUrl(Map<String, String> vnpParams) {
+        String hashData = VNPayUtil.getPaymentURL(vnpParams, false);
+        String secureHash = VNPayUtil.hmacSHA512(vnpayConfig.getSecretKey(), hashData);
+        vnpParams.put("vnp_SecureHash", secureHash);
+        return vnpayConfig.getVnpPayUrl() + "?" + VNPayUtil.getPaymentURL(vnpParams, true);
     }
 
     @Transactional
     @Override
     public PaymentAppointmentResponse processPaymentReturn(HttpServletRequest request) {
-        log.info("Xử lý phản hồi thanh toán VNPay: {}", request.getQueryString());
+        log.info("Đang xử lý phản hồi thanh toán VNPay: {}", request.getQueryString());
 
-        Map<String, String> vnpParams = new HashMap<>();
-        for (String paramName : request.getParameterMap().keySet()) {
-            vnpParams.put(paramName, request.getParameter(paramName));
-        }
+        Map<String, String> vnpParams = extractParameters(request);
+        validateSecureHash(vnpParams);
 
-        String vnpSecureHash = vnpParams.remove("vnp_SecureHash");
-        String hashData = VNPayUtil.getPaymentURL(vnpParams, false);
-        String calculatedHash = VNPayUtil.hmacSHA512(vnpayConfig.getSecretKey(), hashData);
-        if (!calculatedHash.equalsIgnoreCase(vnpSecureHash)) {
-            throw new SecurityException("Mã bảo mật không hợp lệ");
-        }
-
-        String vnpResponseCode = vnpParams.get("vnp_ResponseCode");
-        String vnpTransactionNo = vnpParams.get("vnp_TransactionNo");
-        String vnpPayDate = vnpParams.get("vnp_PayDate");
         String vnpTxnRef = vnpParams.get("vnp_TxnRef");
-
         Payment payment = paymentRepository.findByTransactionId(vnpTxnRef)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy giao dịch thanh toán với mã: " + vnpTxnRef));
 
-        if ("00".equals(vnpResponseCode)) {
+        updatePaymentStatus(payment, vnpParams);
+        return paymentMapper.toPaymentAppointmentResponse(payment);
+    }
+
+    private Map<String, String> extractParameters(HttpServletRequest request) {
+        Map<String, String> params = new HashMap<>();
+        request.getParameterMap().forEach((key, value) -> params.put(key, value[0]));
+        return params;
+    }
+
+    private void validateSecureHash(Map<String, String> vnpParams) {
+        String receivedHash = vnpParams.remove("vnp_SecureHash");
+        String hashData = VNPayUtil.getPaymentURL(vnpParams, false);
+        String calculatedHash = VNPayUtil.hmacSHA512(vnpayConfig.getSecretKey(), hashData);
+
+        if (!calculatedHash.equalsIgnoreCase(receivedHash)) {
+            throw new SecurityException("Mã bảo mật không hợp lệ");
+        }
+    }
+
+    private void updatePaymentStatus(Payment payment, Map<String, String> vnpParams) {
+        String responseCode = vnpParams.get("vnp_ResponseCode");
+        String transactionNo = vnpParams.get("vnp_TransactionNo");
+        String payDate = vnpParams.get("vnp_PayDate");
+
+        if ("00".equals(responseCode)) {
             payment.setPaymentStatus(PaymentStatus.COMPLETED);
-            payment.setTransactionId(vnpTransactionNo);
-            payment.setPaymentDate(VNPayUtil.parseVNPayDate(vnpPayDate));
+            payment.setTransactionId(transactionNo);
+            payment.setPaymentDate(VNPayUtil.parseVNPayDate(payDate));
             paymentRepository.save(payment);
             appointmentService.confirmAppointment(payment.getAppointment().getId());
-            log.info("Thanh toán thành công cho giao dịch: {}", vnpTransactionNo);
+            log.info("Thanh toán thành công cho giao dịch: {}", transactionNo);
         } else {
             payment.setPaymentStatus(PaymentStatus.FAILED);
             paymentRepository.save(payment);
             appointmentService.cancelAppointment(payment.getAppointment().getId());
-            log.info("Thanh toán thất bại cho giao dịch: {}", vnpTxnRef);
+            log.info("Thanh toán thất bại cho giao dịch: {}", vnpParams.get("vnp_TxnRef"));
         }
-        return paymentMapper.toPaymentAppointmentResponse(payment);
     }
+
 
     @Override
     @Transactional(readOnly = true)

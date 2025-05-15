@@ -54,6 +54,7 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
                 5
               )} - ${slot.timeSlot.endTime.slice(0, 5)}`,
               bookedSlots: slot.bookedSlots,
+              startTime: slot.timeSlot.startTime, // Keep startTime for comparison
               originalSlot: slot,
             })).sort((a, b) => a.id - b.id),
           }));
@@ -78,6 +79,20 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
     background: token.colorFillAlter,
     borderRadius: token.borderRadiusLG,
     border: "1px solid black",
+  };
+
+  // Function to check if a time slot is in the past
+  const isTimeSlotPast = (startTime, bookingDate) => {
+    const currentDate = new Date();
+    const currentDateString = currentDate.toISOString().split("T")[0]; // e.g., "2025-05-14"
+    const slotDateTime = new Date(`${bookingDate}T${startTime}`); // e.g., "2025-05-14T09:00"
+
+    // If the booking date is today, check if the start time has passed
+    if (bookingDate === currentDateString) {
+      return slotDateTime < currentDate;
+    }
+    // If the booking date is in the past, disable all slots
+    return new Date(bookingDate) < new Date(currentDateString);
   };
 
   const getItems = (panelStyle) => {
@@ -115,31 +130,36 @@ const TimeADoctor_Booking = ({ handleSlotClick }) => {
       ),
       children: (
         <div className="w-full">
-          {item.timeSlots.map((slot) => (
-            <Button
-              key={slot.id}
-              onClick={() => {
-                handleSlotClick(
-                  slot.timeString,
-                  item.doctor.fullName,
-                  item.roomDetail.name,
-                  slot.id
-                );
-              }}
-              disabled={slot.bookedSlots > 6}
-              style={{
-                padding: "10px 20px",
-                marginRight: "4px",
-                borderRadius: "8px",
-                border: "1px solid #273c75",
-                backgroundColor: slot.bookedSlots > 6 ? "#f5f5f5" : "white",
-                cursor: slot.bookedSlots > 6 ? "not-allowed" : "pointer",
-                color: slot.bookedSlots > 6 ? "#999" : "#273c75",
-              }}
-            >
-              {slot.timeString}
-            </Button>
-          ))}
+          {item.timeSlots.map((slot) => {
+            const isPast = isTimeSlotPast(slot.startTime, dateBooking);
+            return (
+              <Button
+                key={slot.id}
+                onClick={() => {
+                  handleSlotClick(
+                    slot.timeString,
+                    item.doctor.fullName,
+                    item.roomDetail.name,
+                    slot.id
+                  );
+                }}
+                //disabled={slot.bookedSlots > 6 || isPast} // Disable if booked or past
+                style={{
+                  padding: "10px 20px",
+                  marginRight: "4px",
+                  borderRadius: "8px",
+                  border: "1px solid #273c75",
+                  backgroundColor:
+                    slot.bookedSlots > 6 || isPast ? "#f5f5f5" : "white",
+                  cursor:
+                    slot.bookedSlots > 6 || isPast ? "not-allowed" : "pointer",
+                  color: slot.bookedSlots > 6 || isPast ? "#999" : "#273c75",
+                }}
+              >
+                {slot.timeString}
+              </Button>
+            );
+          })}
         </div>
       ),
       style: panelStyle,

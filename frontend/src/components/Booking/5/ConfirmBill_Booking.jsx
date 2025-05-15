@@ -119,14 +119,14 @@ const ConfirmBill_Booking = () => {
                             ? `${ticket.timeSlot.startTime} - ${ticket.timeSlot.endTime}`
                             : "-:00 - -:00"}
                         </p>
-                        <p>
+                        {/* <p>
                           <span className="font-semibold">Tiền khám:</span>{" "}
                           <span className="text-green-600 font-semibold">
                             {paymentItem?.amount
                               ? `${paymentItem.amount.toLocaleString()}đ`
                               : "---.000đ"}
                           </span>
-                        </p>
+                        </p> */}
                         <p>
                           <span className="font-semibold">Đối tượng:</span> Thu phí
                         </p>

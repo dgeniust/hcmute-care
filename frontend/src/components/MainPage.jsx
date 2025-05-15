@@ -41,7 +41,7 @@ const MainPage = () => {
   useEffect(() => {
     const handlePost = async () => {
       try {
-        const response = await fetch(`${apiUrl}/v1/posts?page=0&size=6&sort=doc&direction=desc`, {
+        const response = await fetch(`${apiUrl}v1/posts?page=0&size=6&sort=doc&direction=desc`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

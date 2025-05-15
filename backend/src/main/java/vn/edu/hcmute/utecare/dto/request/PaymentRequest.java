@@ -8,9 +8,6 @@ import java.math.BigDecimal;
 
 @Getter
 public class PaymentRequest {
-    @NotNull(message = "bank code is required")
-    private String bankCode;
-
     @NotNull(message = "appointment id is required")
     private Long appointmentId;
 }

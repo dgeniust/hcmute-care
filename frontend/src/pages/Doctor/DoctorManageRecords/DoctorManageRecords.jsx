@@ -31,6 +31,9 @@ const DoctorManageRecords = () => {
   const formatDate = dayjs().format('YYYY-MM-DD'); // Định dạng ngày hiện tại
   // Gọi API khi component mount
   //const formatDate = "2025-05-09"
+
+  //BƯỚC 1: Gọi API lấy danh sách lịch làm việc của bác sĩ
+  //HÀM : getDoctorSchedule
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
@@ -63,6 +66,7 @@ const DoctorManageRecords = () => {
     fetchSchedule();
   }, []); // Gọi API khi component mount
 
+  //BƯỚC 3 : Khi click vào bệnh nhân, gọi API lấy thông tin bệnh nhân
   const handleSelectPatient = async (pat) => {
     localStorage.setItem("medicalRecordPatientId", pat.medicalRecordId); // Lưu medicalRecordId vào localStorage
     localStorage.setItem("ticketId", pat.id); // Lưu tên bệnh nhân vào localStorage
@@ -100,7 +104,8 @@ const DoctorManageRecords = () => {
       ); // Thông báo lỗi
     }
   };
-
+  //BƯỚC 2: Khi click vào time slot, gọi API lấy danh sách bệnh nhân
+  //HÀM: getTicketsByScheduleSlotId
   const handleSelectSlot = async (slotId) => {
     setSelectedSlotId(slotId); // Lưu scheduleSlotId khi click vào time slot
     localStorage.setItem("scheduleSlotDoctorId", slotId); // Lưu vào localStorage nếu cần thiết
@@ -152,6 +157,8 @@ const DoctorManageRecords = () => {
   };
 
   const navigate = useNavigate();
+
+  //BƯỚC 4: Khi click khám thì tạo encounter cho bệnh nhân
   const handleOpenRecord = async (patient) => {
     localStorage.setItem("patientEncounterInfo", JSON.stringify(patient)); // Lưu medicalRecordId vào localStorage
     const medicalRecordPatientId = localStorage.getItem(
@@ -223,7 +230,7 @@ const DoctorManageRecords = () => {
               </h2>
 
               {/* Hiển thị danh sách time slots */}
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-2 text-black">
                 {scheduleSlots && scheduleSlots.length > 0 ? (
                   scheduleSlots.map((slot) => (
                     <button
